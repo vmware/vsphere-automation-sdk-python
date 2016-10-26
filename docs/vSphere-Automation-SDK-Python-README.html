@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/tr/1999/REC-html401-19991224/loose.dtd">
+<html><head>
+<title>VMware vSphere Automation Python SDK README</title>
+
+<meta content="VMware, Inc. All rights reserved." name="copyright"></meta>
+<link rel="stylesheet" type="text/css" href="docs/resources/template.css"></link>
+<style type="text/css">
+
+h4 {
+	padding: 0;
+	font-size: 12px;
+	font-weight: bold;
+	border-top: 1px solid #dedede;
+	background-color:#E6EDF6;
+}
+
+
+.Parameter {
+	margin: 0 0 7px 0;
+	width: 100%;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.Code
+    {
+	font-size: 11px; font-family:
+	"Courier New", Courier, monospace;
+	}
+
+.Console
+    {
+	font-size: 11px; font-family:
+	"Courier New", Courier, monospace;
+	color: #ffffff;
+	font-weight: bold;
+	background: #000000;
+	}
+.Caption {
+	font-size:11px; line-height:12px; text-transform: uppercase; FONT-WEIGHT: bold; COLOR: #000000; TEXT-DECORATION: none
+}
+.Exp {
+	font-size:11px; text-transform: uppercase; FONT-WEIGHT: bold; COLOR: #3366AA;
+}
+.Large { font-size: 16px; FONT-WEIGHT: bold; }
+
+.TableText {
+	FONT-SIZE: 11px;
+}
+
+.TableHead {
+	FONT-SIZE: 10px; font-weight: bold;
+}
+
+.BoldRedText {
+	FONT-WEIGHT: bold; COLOR: #CC0000; TEXT-DECORATION: none
+}
+.BoldBlue {
+	FONT-WEIGHT: bold; COLOR: #3366AA; TEXT-DECORATION: none
+}
+.Miniscule {font-size: 9px;
+           }
+
+.Nav {font-size: 11px; COLOR: #3366AA;
+           }
+.Large { font-size: 16px; FONT-WEIGHT: bold; }
+</style>
+
+
+</head>
+<body>
+
+<table cellpadding="0" cellspacing="5" id="main-table">
+<tr><td id="main-body" align="left">
+<!-- ///*** start of content area ***/// -->
+
+
+<table width="100%" cellpadding="5">
+<tr>
+<td><h1>VMware vSphere Automation Python SDK README</h1></td>
+<td align="right">
+<img src="docs/resources/vmware.gif" alt="VMware logo" width="187" height="72" border="0"></img>
+</td>
+</tr>
+</table>
+
+<p class="Nav">
+<img src="docs/resources/page.gif" alt="README for client SDK" width="13" height="16" border="0"></img> &nbsp;
+<a href="client/vSphere-Automation-Client-SDK-Python-README.html" title="README for client SDK...">README for client SDK</a><br />
+</p>
+<hr/>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr><td width="50%" vAlign="top">
+
+
+<p>The <strong>VMware vSphere Automation SDK for Python</strong> enables programmatic access to vSphere.
+ Access to capabilities exposed through the vSphere Web Services API is done using the open-source
+ <a href="https://github.com/vmware/pyvmomi">pyVmomi</a> project. The SDK includes python libraries
+ for accessing new features like Content Library and existing features like Tagging which did not
+ support a public API prior to vSphere 6.5.
+ <br/>
+ The SDK contains samples for the features mentioned above as well as samples to demonstrate how to interoperate with vSphere APIs.
+ If you want to look at the vSphere API samples, please refer to <a href="https://github.com/vmware/pyvmomi-community-samples">pyVmomi community samples</a>.
+ </br>
+ This README contains the following topics:</p>
+
+	 <ul>
+	  <li><a href="#audience" target="_top">Intended Audience</a></li>
+	  <li><a href="#prerequisites" target="_top">Prerequisites</a></li>
+	  <li><a href="#systemrequirements" target="_top">System Requirements</a></li>
+	  <li><a href="#packagecontents" target="_top">What&#146;s in the SDK Package?</a></li>
+	  <li><a href="#resources" target="_top">VMware Resources</a></li>
+	 </ul>
+
+</td><td vAlign="top" align="right">
+
+</td></tr></table>
+
+<a name="audience"></a>
+<h2><strong>Intended Audience</strong></h2>
+<p>The VMware vSphere Automation SDK for Python is intended for the following audiences:</p>
+<ul>
+<li>Developers who want to write new application(s) for vSphere 6.5.</li>
+<li>Developers migrating an existing vSphere application to use new features.</li>
+</ul>
+
+<a name="prerequisites"></a>
+<h2><strong>Prerequisites</strong></h2>
+<p>For exercising the samples included in this SDK, you need a vSphere 6.5 deployment.
+ Refer to <a href="https://www.vmware.com/support/pubs/vsphere-esxi-vcenter-server-pubs.html">vSphere product documentation</a>
+ for more information and specific installation and deployment options.
+</p>
+
+<a name="systemrequirements"></a>
+<h2><strong>System Requirements</strong></h2>
+vSphere Automation SDK for Python 6.5 supports python 2.7, 3.3, 3.4 and 3.5</br>
+Note: VMware strongly recommends using <a href="https://www.openssl.org/">openssl</a> version <strong>1.0.1j or, higher</strong> because of some critical security fixes.</br>
+Currently we test the SDK and samples on python 2.7, 3.3, 3.4 and 3.5 on these operating systems:</br>
+<ul>
+<li>x86-64 RHEL 7</li>
+<li>64 bit Windows 10</li>
+<li>OS X 10.11.6 El Capitan</li>
+</ul>
+</p>
+Please see the instructions for <a href="client/vSphere-Automation-Client-SDK-Python-README.html#installingsdklibs">installing the SDK and 3rd party libraries</a>.
+
+</p>
+<a name="packagecontents"></a>
+<h2><strong>What&#146;s in the SDK Package?</strong></h2>
+<p>The vSphere Automation SDK for Python contains:
+ <ul>
+ <li>Python libraries, API reference documentation for features like Content Library and Tagging.</li>
+ <li>WSDL for lookup service API (required for Service Registration and Discovery).</li>
+ <li>Samples for new features and services which also demonstrate how to interoperate new APIs with vSphere APIs.</li>
+ </ul>
+
+<p>
+The following table contains a brief description of the contents of the vSphere Automation SDK for Python.
+</p>
+
+<h3>Directory structure (under VMware-vSphereAutomation-Python-SDK): </h3>
+
+<table cellpadding="5" cellspacing="0" border="1" width="100%" class="TableText">
+<tr><th width="15%">Directory</th><th width="60%">Contents</th><th width="35%">Documentation</th></tr>
+
+<tr>
+<td>client</td>
+<td>Client libraries, API documentation and samples</td>
+<td>
+<a href="client/vSphere-Automation-Client-SDK-Python-README.html">Client SDK README</a><br />
+</td>
+</tr>
+
+<tr>
+<td>docs</td>
+<td>API reference documentation and documentation resource files</td>
+<td>
+<a href="docs/apidocs/vSphere-Automation-SDK-Python-APIRef-README.html">Client SDK API Reference Index</a><br />
+</td>
+</tr>
+
+</table>
+</p>
+
+<a name="resources"></a>
+<h2><strong>VMware Resources</strong></h2>
+<ul>
+<li><a href="https://developercenter.vmware.com/home">Developer Center</a></li>
+<li><a href="https://communities.vmware.com/community/vmtn/developer">VMware Developer Community</a> </li>
+</ul>
+
+<hr />
+<table border="0" width="100%">
+<tr>
+<td>
+<p class="Miniscule">Copyright &copy; 2015-2016 VMware, Inc.  All rights not expressly granted herein are reserved.</p>
+</td>
+<td align="right"><p class="Miniscule">Last updated: 26 Oct 2016&nbsp;|&nbsp; VMware vSphere Automation Python SDK</p></td>
+</tr>
+</table>
+
+</td></tr></table>
+
+</body>
+</html>

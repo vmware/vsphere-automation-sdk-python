@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/tr/1999/REC-html401-19991224/loose.dtd">
+<html><head>
+<title>VMware vSphere Automation Python SDK: client samples README</title>
+
+<meta content="VMware, Inc. All rights reserved." name="copyright"></meta>
+<link rel="stylesheet" type="text/css" href="../../docs/resources/template.css"></link>
+<script src="../../docs/resources/version.js" type="text/javascript"></script>
+<style type="text/css">
+
+h4 {
+	padding: 0;
+	font-size: 12px;
+	font-weight: bold;
+	border-top: 1px solid #dedede;
+	background-color:#E6EDF6;
+}
+
+
+.Parameter {
+	margin: 0 0 7px 0;
+	width: 100%;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.Code
+    {
+	font-size: 11px; font-family: 
+	"Courier New", Courier, monospace; 
+	}
+	
+.Console
+    {
+	font-size: 11px; font-family: 
+	"Courier New", Courier, monospace; 
+	color: #ffffff;
+	font-weight: bold;
+	background: #000000;
+	}
+.Caption {
+	font-size:11px; line-height:12px; text-transform: uppercase; FONT-WEIGHT: bold; COLOR: #000000; TEXT-DECORATION: none
+}
+.Exp {
+	font-size:11px; text-transform: uppercase; FONT-WEIGHT: bold; COLOR: #3366AA;
+}
+.Large { font-size: 16px; FONT-WEIGHT: bold; }
+
+.TableText {
+	FONT-SIZE: 11px;
+}
+
+.TableHead {
+	FONT-SIZE: 10px; font-weight: bold;
+}
+
+.BoldRedText {
+	FONT-WEIGHT: bold; COLOR: #CC0000; TEXT-DECORATION: none
+}
+.BoldBlue {
+	FONT-WEIGHT: bold; COLOR: #3366AA; TEXT-DECORATION: none
+}
+.Miniscule {font-size: 9px;
+           }
+
+.Nav {font-size: 11px; COLOR: #3366AA;
+           }
+.Large { font-size: 16px; FONT-WEIGHT: bold; }
+</style>
+
+
+</head>
+<body>
+	
+<table cellpadding="0" cellspacing="5" id="main-table">
+<tr><td id="main-body" align="left">
+<!-- ///*** start of content area ***/// -->
+
+
+<table width="100%" cellpadding="5">
+<tr>
+<td><h1>VMware vSphere Automation Python SDK: client samples README</h1></td>
+<td align="right">
+<img src="../../docs/resources/vmware.gif" alt="VMware logo" width="187" height="72" border="0"></img>
+</td>
+</tr>
+</table>
+
+<p class="Nav">
+<img src="../../docs/resources/page.gif" alt="vSphere Automation Python SDK client README" width="13" height="16" border="0"></img> &nbsp;
+<a href="../vSphere-Automation-Client-SDK-Python-README.html" title="vSphere Automation Python SDK client README...">VMware vSphere Automation Python SDK: client README</a><br />
+</p>
+<hr/>
+
+<p>
+<script type="text/javascript">
+  document.write('This document describes the vSphere Automation Python SDK samples that use the vSphere Automation python client library.')
+  document.write(' (vapi_common_client-' + gVersions.vapiversion + ') ')
+  document.write('and vAPI runtime library')
+  document.write(' (vapi_runtime-' + gVersions.vapiversion + ').')
+</script>
+Additionally, some of the samples demonstrate the combined use of the
+ vSphere Automation and vSphere APIs. To support this combined use, the vSphere
+ Automation Python SDK samples require the vSphere Management SDK packages
+(<a href="https://github.com/vmware/pyvmomi">pyVmomi</a>)
+ to be installed on the client.
+ The examples have been developed to work with python <strong>2.7</strong>,
+ <strong>3.3</strong>, <strong>3.4</strong> and <strong>3.5</strong>.
+</p>
+
+The following sections provide information about using the samples..
+
+<ul>
+<li><a href="#dependencies">Python SDK and 3rd party Library Dependencies</a></li>
+<li><a href="#packaging">Feature Samples</a></li>
+<li><a href="#vcentersample">vAPI Samples for Managing vSphere Infrastructure and Virtual Machines</a></li>
+<li><a href="#cltaggingsample">Content Library and Tagging Samples</a></li>
+<li><a href="#connectionsample">Connection Workflow Samples</a></li>
+<li><a href="#runningsample">Running the Samples</a></li>
+</ul>
+
+
+<a name="dependencies"></a>
+<h2>Python SDK and 3rd party Dependencies</h2>
+<p>
+Please see the instructions for
+<a href="../vSphere-Automation-Client-SDK-Python-README.html#installingsdklibs">
+ installing the SDK and 3rd party libraries</a>.
+</p>
+
+<a name="packaging"></a>
+<h2>Feature Samples</h2>
+
+<p> The vSphere Automation Python SDK samples are located in the client sample
+ directory:
+<strong>samples</strong><br/><br/>
+The following table shows the sample sub-directories and their contents.
+</p>
+
+<table border="1" cellpadding="5">
+<tr><th>Directory</th><th>Description</th></tr>
+<tr><td>vsphere.samples.common</td><td>Samples common classes and abstractions; This package does NOT contain any sample</td></tr>
+<tr><td>vsphere.samples.vim.helpers</td><td>Samples and utilities for accessing and manipulating VC objects using pyVmomi</td></tr>
+<tr><td>vsphere.samples.lookupservice</td><td>Service discovery sample using lookup service APIs</td></tr>
+<tr><td>vsphere.samples.vcenter</td><td>vAPI samples for managing vSphere infrastructure and virtual machines</td></tr>
+<tr><td>vsphere.samples.workflow</td><td>Various vAPI work flow samples</td></tr>
+<tr><td>vsphere.samples.inventory</td><td>Samples for inventory APIs for retrieving information about vCenter datastore and network objects.</td></tr>
+</table>
+
+<a name="vcentersample"></a>
+<h2>vAPI Samples for Managing vSphere Infrastructure and Virtual Machines</h2>
+<p>
+The directory vsphere.samples.vcenter contains samples for the vSphere infrastructure and virtual machine APIs.
+
+You have two options to run samples inside this package:
+<ol>
+    <li>
+        Run the whole sample suite which contains all vCenter samples using main.py in vsphere.samples.vcenter.setup package. Please see the README in the setup package for detailed steps.
+    </li>
+    <li>
+        Run an individual sample in an existing environment. You can either pass the environment parameters through command line arguments or specify them in setup.py in the setup package.
+        <br/>
+        For example, to run the create_default_vm sample in the vsphere.samples.vcenter.vm.create package:
+        <ul>
+            <li><code>$ cd /path/to/VMware-vSphere-Automation-SDK-Python-&lt;version&gt;/client/bin</code></li>
+            <li>Run the sample with the testbed settings specified in setup.py in a Linux machine:<br/>
+                <code>$ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/vm/create/create_default_vm.py -v</code>
+            </li>
+            <li>Or specify the credentials using command line parameters:<br/>
+                <code>$ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/vm/create/create_default_vm.py -s &lt;server&gt; -u &lt;username&gt; -p &lt;password&gt; -v</code>
+            </li>
+        </ul>
+    </li>
+</ol>
+</p>
+
+<a name="cltaggingsample"></a>
+<h2>Sample Program Structure for the Content Library and Tagging Samples</h2>
+<p>
+The Content Library and Tagging samples use a framework to facilitate different
+ aspects of using the samples. Some of the framework capabilities are:
+<ul>
+<li>Command line argument parsing.</li>
+<li>Specifying mandatory and optional arguments for a sample.</li>
+<li>Sample setup, execution and post-execution cleanup.</li>
+<li>Information about samples.</li>
+</ul>
+</p>
+
+Each sample extends the class <code>samples_base</code>.
+ This class uses <code>service_manager_factory</code> to create and manage the
+ vAPI service endpoint and vSphere service port. Every sample implements the
+ following methods from the class <code>samples_base</code>:
+</p>
+
+<ul>
+<li><code>_options()</code> - Called by <code>samples_base</code> during <code>parse_args</code> phase. This occurs during initialization.</li>
+<li><code>_setup()</code> - Called by <code>samples_base</code> during <code>before</code> phase. This occurs after authentication and vAPI and vSphere service initialization.</li>
+<li><code>_execute()</code> - Called by <code>samples_base</code> during <code>run</code> phase. At this point all the connections and services are initialized.</li>
+<li><code>_cleanup()</code> - Called by <code>samples_base</code> during <code>after</code> phase. This occurs before disconnecting the services.</li>
+</ul>
+
+<h3>Samples configuration</h3>
+You can specify server, username and password in the configuration file
+ (sample.cfg). If you use a configuration file, you can run samples without
+ specifying these options on the command line.
+ When you run a sample, you can override the configuration file values by
+ specifying command line options.
+
+<pre style="border: 2px solid #A9A9A9; width: 60em; max-width: 60em; background-color:#DCDCDC;">
+[connection]
+server=vCenter server IP
+username=username
+password=password
+</pre>
+
+The sample.cfg file can be found under <code>VMware-vSphere-Automation-SDK-Python-&lt;version&gt;/client/samples/src</code>
+</br>
+</p>
+
+<a name="connectionsample"></a>
+<h2>
+Connection Workflow Samples:
+</h2>
+<p>
+To work with the VMWare-supported deployment configurations of
+ Platform Services Controllers (Single Sign-On) and vCenter Servers,
+ applications need to dynamically discover service URLs to make service requests.
+ Before making service requests, applications need to authenticate.
+ They can authenticate using a username and password or with a token obtained
+ from the Single Sign-On service.
+<br/>
+vApi connection workflow sample performs the following basic steps to connect
+ to the vAPI service endpoint (on a management node).
+</p>
+
+<ul>
+<li>Step 1: Retrieve the vAPI service endpoint URL from the lookup service.</li>
+<li>Step 2: Connect to the vAPI service endpoint.</li>
+<li>Step 3: Use the username/password to login to the vAPI service endpoint.</li>
+<li>Step 4: Create a vAPI session.</li>
+<li>Step 5: Validate some of the vAPI services.</li>
+<li>Step 6: Delete the vAPI session.</li>
+</ul>
+
+The call sequence shown above is implemented in the samples framework through the following modules:</br>
+<ul>
+<li><code>src/vsphere/samples/common/lookup_service_helper</code> provides methods for discovering management nodes and service endpoint URLs on management nodes from lookup service.</li>
+<li><code>src/vsphere/samples/common/platform_service_controller</code> uses lookup_service_helper to discover the Single Sign-On URL (on any of the Platform Service Controller node) and then retrieves the SAML token from the Single Sign-On server by authenticating the given user.</li>
+<li><code>src/vsphere/samples/common/service_manager</code> login to the vAPI and vim service endpoints (on a management node).</li>
+</ul>
+
+<h3>Running the Connection Workflow Samples:</h3>
+
+<p>
+The following parameters are needed for running the samples:
+</p>
+<ul>
+<li><code>lswsdlurl</code> -lookup service WSDL file URL. See <a href="#using_wsdl"> Using WSDL</a></li>
+<li><code>lssoapurl</code> - Platform Service controller's/node's (any, since data is replicated) lookupservice soap URL. Ex: https://psc/lookupservice/sdk</li>
+<li><code>mgmtinstancename</code> - Instance name of the vCenter Server management node. When only one node is registered, it is selected by default; otherwise, omit the parameter to get a list of available nodes.</li>
+<li><code>username</code> - username for authentication with the SSO server</li>
+<li><code>password</code> - password for the SSO user</li>
+<li><code>skipverification</code> - Do not verify server certificate</li>
+</ul>
+
+You can also specify these parameters in the configuration file (sample.cfg).
+ If you use a configuration file, you can run samples without specifying these
+ options on the command line.
+
+<a name="using_wsdl"></a>
+<h3>Working with lookup service WSDL</h3>
+The vSphere Automation SDK for Python samples use the vSphere Automation Lookup Service to obtain the URLs for other vSphere Automation services (SSO, vAPI, VIM, SPBM, etc.).
+The SDK contains the Lookup Service WSDL files. The samples use the python SUDS client for accessing the lookup service.
+<br/>
+The Lookup Service WSDL files are located in the following SDK directory:
+<br/>
+<code>VMware-vSphere-Automation-SDK-Python-&lt;version&gt;/client/wsdl</code>.
+<br/>
+You must specify the WSDL file location in the <code>client/samples/src/sample.cfg</code> file and in the lookupservice.wsdl file (located in the WSDL directory).
+
+<ol>
+<li>In sample.cfg, set 'lswsdlurl' to the lokkupservice WSDL file location. Use a local file URL specification:
+e.g. lswsdlurl=file:///path/to/the/VMware-vSphere-Automation-SDK-Python-6.5.0/client/wsdl/lookupservice.wsdl</br>
+(Note: You can also specify the lookup service WSDL path to the sample as a command line option)</li>
+<li>In lookupservice.wsdl, set 'import location' to the local lookup WSDL file. Use a local file URL specification.
+<pre>
+&lt;import location="file:///path/to/the/VMware-vSphere-Automation-SDK-Python-6.5.0/client/wsdl/lookup.wsdl" namespace="urn:lookup" /&gt;
+   &lt;service name="LsService"&gt;
+      &lt;port binding="interface:LsBinding" name="LsPort"&gt;
+          &lt;soap:address location="http://localhost:8080/lookupservice/sdk" /&gt;
+      &lt;/port&gt;
+   &lt;/service&gt;
+</pre>
+</li>
+</ol>
+</p>
+
+<a name="runningsample"></a>
+<h2>Running the samples from the command line</h2>
+
+<p>
+You can run the samples from command line using the scripts supplied in <code>VMware-vSphere-Automation-SDK-Python-&lt;version&gt;/client/bin</code> directory:
+</p>
+Before running the samples:
+<ol>
+<li>You must set the <code>PYTHON_HOME</code> environment variable to the base directory for the python 2.7</li>
+<li>You must install all the dependencies required by the samples on client. See <a href="#dependencies"> Sample Dependencies</a></li>
+</ol>
+<p>
+<strong>Examples:</strong>
+</p>
+<pre>
+$cd /path/to/VMware-vSphere-Automation-SDK-Python-&lt;version&gt;/client/bin
+$run_sample.sh ../samples/src/vsphere/samples/workflow/connection_workflow.py \
+    -vapiurl https://203.0.113.0/api \
+    -stsurl https://203.0.113.0:443/sts/STSService/vsphere.local \
+    -username administrator@vsphere.local \
+    -password AdminPassword
+</pre>
+
+</br>
+Use the -h option to print information about a sample.
+ The following example shows the help for the vAPI connection workflow sample.
+<pre>
+$ ./run_sample.sh  ../samples/src/vsphere/samples/workflow/vapi_connection_workflow.py -h
+usage: vapi_connection_workflow.py [-h] [-w LSWSDLURL] [-s LSSOAPURL]
+                                   [-m MGMTINSTANCENAME] [-u USERNAME]
+                                   [-p PASSWORD] [-v]
+
+Demonstrates vAPI connection and service initialization call flow using the
+username and password.
+Step 1: Retrieve the vAPI service endpoint URL from lookup service.
+Step 2: Connect to the vAPI service endpoint.
+Step 3: Use the username/password to login to the vAPI service endpoint.
+Step 4: Create a vAPI session.
+Step 5: Validate some of the vAPI services.
+Step 6: Delete the vAPI session.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -w LSWSDLURL, --lswsdlurl LSWSDLURL
+                        Lookup service WSDL URL
+  -s LSSOAPURL, --lssoapurl LSSOAPURL
+                        Lookup service SOAP URL
+  -m MGMTINSTANCENAME, --mgmtinstancename MGMTINSTANCENAME
+                        Instance name of the vCenter Server management node.
+                        When only one node is registered, it is selected by
+                        default; otherwise, omit the parameter to get a list
+                        of available nodes.
+  -u USERNAME, --username USERNAME
+                        SSO user name
+  -p PASSWORD, --password PASSWORD
+                        SSO user password
+  -v, --skipverification
+                        Do not verify server certificate
+
+</pre>
+
+<p>
+Note: In the above example <b>mgmtinstancename</b> is optional and can be omitted if there's a single vCenter Server management node in the deployment.
+When there is more than one management node, the user MUST specify the management node instance name against which the sample needs
+ to run, else the sample throws <b>MultipleManagementNodeException</b>.
+Example of a multiple management node exception:
+<pre>
+raise MultipleManagementNodeException(MultipleManagementNodeException.format(result))
+vsphere.samples.common.lookup_service_helper.MultipleManagementNodeException: Multiple Management Node Found on server
+Node name: vcenter-1.example.com uuid: de2afd86-790e-11e4-9c20-0200087f55c6
+Node name: vcenter-2.example.com uuid: 545da868-7910-11e4-81e1-020008e89d83
+</pre>
+Example exception when an invalid management instance name is specified by the user:
+<pre>
+ValueError: abc is not a valid management node instance name
+Available management nodes:
+Node name: vcenter-2.example.com uuid: 545da868-7910-11e4-81e1-020008e89d83
+Node name: vcenter-1.example.com uuid: de2afd86-790e-11e4-9c20-0200087f55c6
+</pre> 
+</p>
+
+
+<hr />
+<table border="0" width="100%">
+<tr>
+<td>
+<p class="Miniscule">Copyright &copy; 2015, 2016 VMware, Inc.  All rights not expressly granted herein are reserved.</p>
+</td>
+<td align="right"><p class="Miniscule">Last updated: 20 Oct 2016&nbsp;|&nbsp; VMware vSphere Automation SDK for Python</p></td>
+</tr>
+</table>
+
+</td></tr></table>
+
+
+</body>
+</html>
