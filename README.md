@@ -20,80 +20,21 @@
 * [LICENSE AGREEMENT](https://github.com/vmware/vsphere-automation-sdk-java-samples#license-agreement)
 
 ## Abstract
-This document for the vSphere Automation SDK for java describes -
-1. How to build the java samples in this repository.
-2. How to run the samples in this repository
-3. The procedure for contributing new samples.
+This document describes the vSphere Automation Python SDK samples that use the vSphere Automation python client library. Additionally, some of the samples demonstrate the combined use of the vSphere Automation and vSphere APIs. To support this combined use, the vSphere Automation Python SDK samples require the vSphere Management SDK packages (pyVmomi) to be installed on the client. The examples have been developed to work with python 2.7, 3.3, 3.4 and 3.5.
 
 ## Getting Started
-### Downloading the Repository for Local Access
-1. Load the GitHub repository page: <https://github.com/vmware/vsphere-automation-sdk-java-samples>
-2. Click on the green “Clone or Download” button and then click “Download ZIP”  
-3. Once downloaded, extract the zip file to the location of your choosing  
-4. At this point, you now have a local copy of the repository
-
 ### Prerequisites
 #### Required:
 The below items need to be installed for building and running the samples:
-* Maven 3
-* JDK 8
+* Python 2.7, 3.3, 3.4 or 3.5
 * vCenter Server 6.5
-
-### Building the Samples
-In the root directory of your folder after cloning the repository, run the below maven commands -
-
-`mvn initialize`
-
-`mvn clean install`
+* [Installing SDK and 3rd party libraries]
 
 ### Running the Samples
-When running the samples, parameters can be provided either on the command line, in a configuration file (using the --config-file parameter), or a combination of both. The parameter values specified on the command line will override those specified in the configuration file. When using a configuration file, each required parameter for the sample must be specified either in the configuration file or as a command line parameter. Each parameter specified in the configuration file should be in the "key=value" format. For example:
-
-`vmname=TestVM`
-
-`cluster=Cluster1`
-
-Use a command like the following to display usage information for a particular sample.
-```` bash
-$java -cp target/samples-6.5.0-jar-with-dependencies.jar vmware.samples.tagging.workflow.TaggingWorkflow
-
-java -cp target/samples-6.5.0-jar-with-dependencies.jar packagename.SampleClassName [--config-file <CONFIGURATION FILE>]
-       --server <SERVER> --username <USERNAME> --password <PASSWORD> --cluster <CLUSTER> [--truststorepath <ABSOLUTE PATH OF JAVA TRUSTSTORE FILE>]
-       [--truststorepassword <JAVA TRUSTSTORE PASSWORD>] [--cleardata] [--skip-server-verification]
-
-Sample Options:
-    --config-file <CONFIGURATION FILE>                         OPTIONAL: Absolute path to  the configuration file containing the sample options.
-                                                               NOTE: Parameters can be specified either in the configuration file or on the command
-                                                               line. Command line parameters will override values specified in the configuration file.
-    --server <SERVER>                                          hostname of vCenter Server
-    --username <USERNAME>                                      username to login to the vCenter Server
-    --password <PASSWORD>                                      password to login to the vCenter Server
-    --cluster <CLUSTER>                                        The name of the cluster to be tagged
-    --truststorepath <ABSOLUTE PATH OF JAVA TRUSTSTORE FILE>   Specify the absolute path to the file containing the trusted server certificates. This
-                                                               option can be skipped if the parameter skip-server-verification is specified.
-    --truststorepassword <JAVA TRUSTSTORE PASSWORD>            Specify the password for the java truststore. This option can be skipped if the
-                                                               parameter skip-server-verification is specified.
-    --cleardata                                                OPTIONAL: Specify this option to undo all persistent results of running the sample.
-    --skip-server-verification                                 OPTIONAL: Specify this option if you do not want to perform SSL certificate
-                                                               verification.
-                                                               NOTE: Circumventing SSL trust in this manner is unsafe and should not be used with
-                                                               production code. This is ONLY FOR THE PURPOSE OF DEVELOPMENT ENVIRONMENT.
-````
-
-Use a command like the following to run a sample using only command line parameters:
-```` bash
-$java -cp target/samples-6.5.0-jar-with-dependencies.jar vmware.samples.tagging.taggingworkflow.TaggingWorkflow --server servername --username administrator@vsphere.local --password password --cluster vAPISDKCluster --cleardata true --skip-server-verification
-````
-
-Use a command like the following to run a sample using only a configuration file:
-```` bash
-$java -cp target/samples-6.5.0-jar-with-dependencies.jar vmware.samples.tagging.workflow.TaggingWorkflow --config-file sample.properties
-````
-
-Use the following command to run the sample using a combination of configuration file and command line parameters:
-```` bash
-$java -cp target/samples-6.5.0-jar-with-dependencies.jar vmware.samples.tagging.workflow.TaggingWorkflow --config-file sample.properties --cluster Cluster1
-````
+Please refer to running a vcenter sample for detailed steps to run a vCenter sample. 
+Please refer to running a workflow sample for detailed steps to run a vCenter Single Sign-On, Content Library or Tagging sample.
+* run_sample.sh is needed for running the samples in UNIX/mac OS X environment
+* run_sample.bat is a windows bat file needed for running the samples in windows
 
 ### API Documentation and Programming Guide
 The API documentation for the samples can be found here :
