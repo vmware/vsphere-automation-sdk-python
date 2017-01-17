@@ -42,9 +42,9 @@ class ClsApiHelper(object):
 
     """
 
-    ISO_FILE_RELATIVE_DIR = '../../../../../resources/isoImages/'
-    PLAIN_OVF_RELATIVE_DIR = '../../../../../resources/plainVmTemplate'
-    SIMPLE_OVF_RELATIVE_DIR = '../../../../../resources/simpleVmTemplate'
+    ISO_FILE_RELATIVE_DIR = '../resources/isoImages/'
+    PLAIN_OVF_RELATIVE_DIR = '../resources/plainVmTemplate'
+    SIMPLE_OVF_RELATIVE_DIR = '../resources/simpleVmTemplate'
 
     def __init__(self, cls_api_client, skip_verification):
         self.client = cls_api_client
