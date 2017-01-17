@@ -8,5 +8,5 @@ Running the samples
 * Testbed Requirement:
     - 1 vCenter Server
     - 1 ESX hosts
-    - 1 datastore
+    - 1 cluster
 
