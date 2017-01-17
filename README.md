@@ -29,21 +29,33 @@ The below items need to be installed for running the samples:
 - Installing SDK and 3rd party libraries
   The supplied python libs can be installed using **pip install**; For details on how to install python packages using pip please refer to [pip user guide](https://pip.pypa.io/en/stable/user_guide/)
   - vapi_runtime, vapi_common_client and vapi_client_bindings
+  
     `pip install lib/vapi_client_bindings-2.5.0.zip --find-links=lib/`
   - pyVmomi
+  
     This library is needed for accessing/manipulating vCenter Server managed objects using vSphere APIs; For more information please refer to [vmware pyVmomi](https://github.com/vmware/pyvmomi)
+    
     `pip install pyvmomi`
   - pyOpenSSL
+  
     This requires python cryptography package to be installed as a pre-requisite.
+    
     Please follow the detailed instruction from [installing cryptography dev documentation](https://cryptography.io/en/latest/installation/)
+    
     VMware strongly recommends using openssl version 1.0.1j or, higher. SDK and samples are tested against openssl version >= 1.0.1j.
+    
     pyOpenSSL version 0.14 is needed for the SDK (vapi_runtime) and samples. For details on how to install the package please go to pypi.python.org/pypi/pyOpenSSL/0.14.
   - lxml
+
     `pip install lxml`
   - suds(suds-jurko)
+  
     This library is needed for lookup service queries; For more information please refer to [suds Documentation](https://fedorahosted.org/suds/wiki/Documentation)
+    
     `pip install suds`
+    
     Use suds-jurko for python 3.x
+    
     `pip install suds-jurko`
 
 ### Running the Samples
