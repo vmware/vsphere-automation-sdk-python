@@ -177,6 +177,8 @@ Sample Exchange can be allowed to access your GitHub resources, by way of a link
 Board members are volunteers from the SDK community and VMware staff members, board members are not held responsible for any issues which may occur from running of samples from this repository.
 
 Members:
+* Tianhao He (VMware)
+* Steve Trefethen (VMware)
 
 ### Approval of Additions
 Items added to the repository, including items from the Board members, require 2 votes from the board members before being added to the repository. The approving members will have ideally downloaded and tested the item. When two “Approved for Merge” comments are added from board members, the pull can then be committed to the repository.
