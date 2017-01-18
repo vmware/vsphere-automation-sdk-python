@@ -136,7 +136,7 @@ This script will perform the following:
 After completion you will see from the output and also the vSphere Webclient that the environment has now been fully setup and is ready to easily run further samples.
 
 ### Running a complex sample
-This SDK includes a sample script which can be used to perform a number of actions and give you an indication of how to perform multiple vCenter actions, this script is located in the /samples/src/vsphere/samples/vcenter/setup/ directory, use the following instructions to run this sample:
+This SDK includes a sample script which can be used to perform a number of actions and give you an indication of how to perform multiple vCenter actions, this script is located in the /vsphere/samples/vcenter/setup/ directory, use the following instructions to run this sample:
 
 **Run the vAPI vCenter sample suite:**
 
@@ -154,7 +154,7 @@ The following information must be included in the README.md (TODO: header of the
 * Minimal/High Level Description
   * What does the sample do ?
 * vSphere version against which the sample was developed/tested
-* SDK version against which the sample was developed/tested (TODO: do we need SDK version?)
+* SDK version against which the sample was developed/tested
 * Python version against which the sample was developed/tested
 * Any KNOWN limitations or dependencies
 
