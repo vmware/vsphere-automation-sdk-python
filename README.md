@@ -1,20 +1,28 @@
 # VMware vSphere Automation SDK for Python
+
 ## Table of Contents
-* [Abstract](#abstract)
-* [Quick Start Guide](https://github.com/vmware/vsphere-automation-sdk-python-samples#quick-start-guide)
-  * [Prerequisites](https://github.com/vmware/vsphere-automation-sdk-python-samples#prerequisites)
-  * [Running the Samples](https://github.com/vmware/vsphere-automation-sdk-python-samples#running-the-samples)
-* [Submitting Samples](https://github.com/vmware/vsphere-automation-sdk-python-samples#submitting-samples)
-  * [Required Information](https://github.com/vmware/vsphere-automation-sdk-python-samples#required-information)
-  * [Suggested Information](https://github.com/vmware/vsphere-automation-sdk-python-samples#suggested-information)
-* [Resource Maintenance](https://github.com/vmware/vsphere-automation-sdk-python-samples#resource-maintenance)
-  * [Maintenance Ownership](https://github.com/vmware/vsphere-automation-sdk-python-samples#maintenance-ownership)
-  * [Filing issues](https://github.com/vmware/vsphere-automation-sdk-python-samples#filing-isssues)
-  * [Resolving issues](https://github.com/vmware/vsphere-automation-sdk-python-samples#resolving-issues)
-* [Additional Resources](https://github.com/vmware/vsphere-automation-sdk-python-samples#additional-resources)
-  * [Discussions](https://github.com/vmware/vsphere-automation-sdk-python-samples#discussions)
-  * [VMware Sample Exchange](https://github.com/vmware/vsphere-automation-sdk-python-samples#vmware-sample-exchange)
-* [LICENSE AGREEMENT](https://github.com/vmware/vsphere-automation-sdk-python-samples#license-agreement)
+- [Abstract](#abstract)
+- [Quick Start Guide](#quick-start-guide)
+  - [Setting up a vSphere Test Environment](#setting-up-a-vsphere-test-environment)
+  - [Installing the required Python Packages](#installing-the-required-python-packages)
+    - [pyOpenSSL](#pyopenssl)
+    - [pyVmomi](#pyvmomi)
+    - [lxml](#lxml)
+    - [suds (suds-jurko)](#suds-suds-jurko)
+  - [Installing SDK Bundled Packages](#installing-sdk-bundled-packages)
+    - [vapi_runtime, vapi_common_client and vapi_client_bindings](#vapi_runtime-vapi_common_client-and-vapi_client_bindings)
+  - [Running the SDK Sample Setup Script](#running-the-sdk-sample-setup-script)
+  - [Running a complex sample](#running-a-complex-sample)
+- [API Documentation and Programming Guide](#api-documentation-and-programming-guide)
+- [Submitting samples](#submitting-samples)
+- [Resource Maintenance](#resource-maintenance)
+  - [Maintenance Ownership](#maintenance-ownership)
+  - [Filing Issues](#filing-issues)
+  - [Resolving Issues](#resolving-issues)
+  - [VMware Sample Exchange](#vmware-sample-exchange)
+- [Repository Administrator Resources](#repository-administrator-resources)
+  - [Board Members](#board-members)
+  - [Approval of Additions](#approval-of-additions)
 
 ## Abstract
 This document describes the vSphere Automation Python SDK samples that use the vSphere Automation python client library. Additionally, some of the samples demonstrate the combined use of the vSphere Automation and vSphere APIs. To support this combined use, the vSphere Automation Python SDK samples require the vSphere Management SDK packages (pyVmomi) to be installed on the client. The examples have been developed to work with python 2.7, 3.3, 3.4 and 3.5.
@@ -168,16 +176,12 @@ It is highly recommended to add any and all submitted samples to the VMware Samp
 
 Sample Exchange can be allowed to access your GitHub resources, by way of a linking process, where they can be indexed and searched by the community. There are VMware social media accounts which will advertise resources posted to the site and there's no additional accounts needed, as the VMware Sample Exchange uses MyVMware credentials.     
 
-# Repository Administrator Resources
-## Table of Contents
-* Board Members
-* Approval of Additions
-
-## Board Members
+## Repository Administrator Resources
+### Board Members
 
 Board members are volunteers from the SDK community and VMware staff members, board members are not held responsible for any issues which may occur from running of samples from this repository.
 
 Members:
 
-## Approval of Additions
+### Approval of Additions
 Items added to the repository, including items from the Board members, require 2 votes from the board members before being added to the repository. The approving members will have ideally downloaded and tested the item. When two “Approved for Merge” comments are added from board members, the pull can then be committed to the repository.
