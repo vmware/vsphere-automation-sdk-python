@@ -61,7 +61,7 @@ This library is needed for accessing/manipulating vCenter Server managed objects
     pip install pyvmomi
 
 #### lxml
-Please follow detailed instructions from [Installing lxml](http://lxml.de/installation.html) (for Windows refer to the section below on installation).
+Please follow detailed instructions from [Installing lxml](http://lxml.de/installation.html).
 
     pip install lxml
 
