@@ -43,7 +43,7 @@ To run the samples a vSphere test environment is required with the following con
 Please have the details of these available but do not have any configuration pre-created on vCenter server or ESXi Hosts, for example there should be no existing datacenters, clusters or attached hosts on the vCenter server.
 
 ### Installing the required Python Packages
-**Note:** The SDK requires Python v2.7 (preferably v2.7.12+) to run the setup/samples, please make sure you have the appropriate version installed before continuing. If you are on macOS/OSX/Linux, please note that the system installed version of Python may be outdated and/or not be intended for development and we recommended you [install Python](http://docs.python-guide.org/en/latest/starting/installation/) yourself before installing the required packages. 
+**Note:** The SDK requires Python v2.7 (preferably v2.7.12+) to run the setup/samples, please make sure you have the appropriate version installed before continuing. If you are on macOS/OSX/Linux, please note that the system installed version of Python may be outdated and/or not be intended for development and we recommended you [install Python](http://docs.python-guide.org/en/latest/starting/installation/) yourself before installing the required packages. [Virtualenv](https://virtualenv.pypa.io/en/stable/) is also highly recommended.
 
 In this section we list the various packages which need to be installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
 
