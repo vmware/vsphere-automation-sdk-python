@@ -48,7 +48,7 @@ The required packages are listed in the requirements.txt file and installed usin
 To run the samples a vSphere test environment is required with the following configuration
 * 1 vCenter Server
 * 2 ESX hosts
-* 1 Datastore with at least 3GB of free capacity
+* 1 NFS Datastore with at least 3GB of free capacity
 
 Please have the details of these available but do not have any configuration pre-created on vCenter server or ESXi Hosts, for example there should be no existing datacenters, clusters or attached hosts on the vCenter server.
 
@@ -61,17 +61,17 @@ First, from the command line change to the SDK ./bin folder.
 
 Next, using a text editor open ../vsphere/samples/vcenter/setup/testbed.py and edit the following settings replace everything in < > brackts with your environment information. Leave the rest of the settings in this file at their default values.
 
-    config["SERVER"] = "<vcenter_hostname_or_ip>"
-    config["USERNAME"] = "<vsphere_username>"
-    config["PASSWORD"] = "<vsphere_password>"
+    config["SERVER"]    = "<vcenter_hostname_or_ip>"
+    config["USERNAME"]  = "<vsphere_username>"
+    config["PASSWORD"]  = "<vsphere_password>"
 
     config["ESX_HOST1"] = "<ESX_host1_ipaddress>"
     config["ESX_HOST2"] = "<ESX_host2_ipaddress>"
-    config["ESX_USER"] = "<esx_username>"
-    config["ESX_PASS"] = "<esx_password>"
+    config["ESX_USER"]  = "<esx_username>"
+    config["ESX_PASS"]  = "<esx_password>"
 
-    config["USE_NFS"] = True
-    config["NFS_HOST"] = "<nfs_ipaddress>"
+    config["USE_NFS"]   = True
+    config["NFS_HOST"]  = "<nfs_ipaddress>"
 
 Save and close the file. 
 
