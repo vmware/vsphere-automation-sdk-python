@@ -3,13 +3,16 @@
 ## Table of Contents
 - [Abstract](#abstract)
 - [Quick Start Guide](#quick-start-guide)
-  - [Setting up a vSphere Test Environment](#setting-up-a-vsphere-test-environment)
   - [Installing the required Python Packages](#installing-the-required-python-packages)
-  - [Installing SDK Bundled Packages](#installing-sdk-bundled-packages)
+  - [Setting up a vSphere Test Environment](#setting-up-a-vsphere-test-environment)
   - [Running the SDK Sample Setup Script](#running-the-sdk-sample-setup-script)
   - [Running a complex sample](#running-a-complex-sample)
 - [API Documentation and Programming Guide](#api-documentation-and-programming-guide)
 - [Submitting samples](#submitting-samples)
+  - [Required Information](#required-information)
+  - [Suggested Information](#suggested-information)
+  - [Contribution Process](#contribution-process)
+  - [Code Style](#code-style)
 - [Resource Maintenance](#resource-maintenance)
   - [Maintenance Ownership](#maintenance-ownership)
   - [Filing Issues](#filing-issues)
@@ -27,10 +30,17 @@ This document will walk you through getting up and running with the Python SDK S
 
 Before you can run the SDK samples we'll need to walk you through the following steps:
 
-1. Setting up a vSphere test environment
-2. Installing the required Python packages
-3. Installing SDK provided packages
+1. Installing the required Python packages
+2. Installing SDK provided packages
+3. Setting up a vSphere test environment
 4. Running SDK Samples setup script
+
+### Installing the required Python Packages
+**Note:** The SDK requires Python v2.7 (preferably v2.7.12+) to run the setup/samples, please make sure you have the appropriate version installed before continuing. If you are on macOS/OSX/Linux, please note that the system installed version of Python may be outdated and/or not be intended for development and we recommended you [install Python](http://docs.python-guide.org/en/latest/starting/installation/) yourself before installing the required packages. [Virtualenv](https://virtualenv.pypa.io/en/stable/) is also highly recommended.
+
+The required packages are listed in the requirements.txt file and installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
+
+    pip install -r requirements.txt
 
 ### Setting up a vSphere Test Environment
 **NOTE:** The samples are intended to be run against a freshly installed **non-Production** vSphere setup as the scripts may make changes to the test environment and in some cases can destroy items when needed.
@@ -41,46 +51,6 @@ To run the samples a vSphere test environment is required with the following con
 * 1 Datastore with at least 3GB of free capacity
 
 Please have the details of these available but do not have any configuration pre-created on vCenter server or ESXi Hosts, for example there should be no existing datacenters, clusters or attached hosts on the vCenter server.
-
-### Installing the required Python Packages
-**Note:** The SDK requires Python v2.7 (preferably v2.7.12+) to run the setup/samples, please make sure you have the appropriate version installed before continuing. If you are on macOS/OSX/Linux, please note that the system installed version of Python may be outdated and/or not be intended for development and we recommended you [install Python](http://docs.python-guide.org/en/latest/starting/installation/) yourself before installing the required packages. [Virtualenv](https://virtualenv.pypa.io/en/stable/) is also highly recommended.
-
-In this section we list the various packages which need to be installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
-
-#### pyOpenSSL
-pyOpenSSL requires the python cryptography packge to be installed. Please follow the detailed instructions [here](https://cryptography.io/en/latest/installation/) to install the cryptography package. VMware strongly recommends using openssl version **1.0.1j** or, higher. SDK and samples are tested against openssl version >= 1.0.1j.
-
-pyOpenSSL version 0.14 is needed for the SDK (vapi_runtime) and samples.
-
-    pip install pyopenssl
-
-#### pyVmomi
-
-This library is needed for accessing/manipulating vCenter Server managed objects using vSphere APIs; For more information please refer to vmware pyVmomi
-
-    pip install pyvmomi
-
-#### lxml
-Please follow detailed instructions from [Installing lxml](http://lxml.de/installation.html).
-
-    pip install lxml
-
-#### suds (suds-jurko)
-This library is needed for lookup service queries; For more information please refer to [suds Documentation](https://fedorahosted.org/suds/wiki/Documentation)
-
-    pip install suds
-
-Use suds-jurko for python 3.x
-
-    pip install suds-jurko
-
-### Installing SDK Bundled Packages
-To run the samples for Content Library and Tagging you will need to install these additional packages.
-
-**Note:** You will need to update the package path below accordingly to point to your local SDK folder.
-
-#### vapi_runtime, vapi_common_client and vapi_client_bindings
-    pip install /path/to/VMware-vSphere-Automation-SDK-Python/lib/vapi_client_bindings-2.5.0.zip --find-links=/path/to/VMware-vSphere-Automation-SDK-Python/lib/
 
 ### Running the SDK Sample Setup Script
 Before executing the samples we'll need to setup the vSphere test environment using one of the sample scripts. Before we run the script we'll need to edit one of the files and provide IP addresses for the various machine instances.
