@@ -23,7 +23,7 @@ from samples.vsphere.vim.helpers.get_datastore_by_name import get_datastore_id
 
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved. -- VMware Confidential'
+__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
 
 
 class LibraryCrud(SampleBase):

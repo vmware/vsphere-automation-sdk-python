@@ -58,6 +58,7 @@ def setup(context=None):
                                           password,
                                           skip_verification)
 
+
 def run():
     global vm
     vm = get_vm(stub_config, vm_name)

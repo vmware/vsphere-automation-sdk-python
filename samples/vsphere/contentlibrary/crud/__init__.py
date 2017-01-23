@@ -12,7 +12,7 @@
 
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved. -- VMware Confidential'
+__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
 
 
 # Required to distribute different parts of this
