@@ -19,9 +19,6 @@ from com.vmware.content_client import Library
 from com.vmware.vcenter.inventory_client import Datastore
 from samples.vsphere.vim.helpers.vim_utils import get_obj_by_moId
 from samples.vsphere.common.sample_base import SampleBase
-from samples.vsphere.common.logging_context import LoggingContext
-
-logger = LoggingContext.get_logger('samples.vsphere.inventory.find_cl_datastore')
 
 
 class FindClDatastore(SampleBase):
@@ -57,11 +54,11 @@ class FindClDatastore(SampleBase):
     def _execute(self):
         library_model = self.find_cl_by_name()
         assert library_model is not None
-        logger.info('Found CL: {0} Id: {1}'.format(library_model.name, library_model.id))
+        print('Found CL: {0} Id: {1}'.format(library_model.name, library_model.id))
 
         datastore_ids = []
         for storage_backing in library_model.storage_backings:
-            logger.info('Storage backing datastore id: {0} storage uri:{1}'
+            print('Storage backing datastore id: {0} storage uri:{1}'
                         .format(storage_backing.datastore_id, storage_backing.storage_uri))
             if storage_backing.datastore_id is not None:
                 datastore_ids.append(storage_backing.datastore_id)
@@ -69,11 +66,11 @@ class FindClDatastore(SampleBase):
         self.datastore_vim_objs = []  # for testing only
         datastores = self.inv_datastore_service.find(datastore_ids)
         for moid, info in datastores.items():
-            logger.info('Datastore moid: {0} type: {1}'.format(moid, info.type))
+            print('Datastore moid: {0} type: {1}'.format(moid, info.type))
             vim_type = self.get_vim_type(info.type)
             datastore = get_obj_by_moId(self.servicemanager.content, [vim_type], moid)
             assert datastore is not None
-            logger.info('Vim object retrieved for datastore: {0}'.format(datastore.name))
+            print('Vim object retrieved for datastore: {0}'.format(datastore.name))
             self.datastore_vim_objs.append(datastore)  # for testing only
 
     def _cleanup(self):

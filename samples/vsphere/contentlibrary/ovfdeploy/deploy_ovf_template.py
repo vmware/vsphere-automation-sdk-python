@@ -24,7 +24,6 @@ from pyVmomi import vim
 
 from samples.vsphere.common.id_generator import generate_random_uuid
 from samples.vsphere.common.sample_base import SampleBase
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 from samples.vsphere.vim.helpers.vim_utils import (
@@ -32,9 +31,6 @@ from samples.vsphere.vim.helpers.vim_utils import (
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
-
-
-logger = LoggingContext.get_logger('samples.vsphere.contentlibrary.deploy_ovf_template')
 
 
 class DeployOvfTemplate(SampleBase):
@@ -82,7 +78,7 @@ class DeployOvfTemplate(SampleBase):
         cluster_obj = get_obj(self.servicemanager.content,
                               [vim.ClusterComputeResource], self.cluster_name)
         assert cluster_obj is not None
-        logger.info("Cluster Moref: {0}".format(cluster_obj))
+        print("Cluster Moref: {0}".format(cluster_obj))
 
         deployment_target = LibraryItem.DeploymentTarget(
             resource_pool_id=cluster_obj.resourcePool._GetMoId())
@@ -97,7 +93,7 @@ class DeployOvfTemplate(SampleBase):
 
         ovf_summary = self.client.ovf_lib_item_service.filter(ovf_library_item_id=lib_item_id,
                                                               target=deployment_target)
-        logger.info('Found an OVF template :{0} to deploy.'.format(ovf_summary.name))
+        print('Found an OVF template :{0} to deploy.'.format(ovf_summary.name))
 
         # Deploy the ovf template
         self.deploy_ovf_template(lib_item_id, ovf_summary, deployment_target)
@@ -125,13 +121,13 @@ class DeployOvfTemplate(SampleBase):
 
         # The type and ID of the target deployment is available in the deployment result.
         if result.succeeded:
-            logger.info('Deployment successful. Result resource: {0}, ID: {1}'
+            print('Deployment successful. Result resource: {0}, ID: {1}'
                         .format(result.resource_id.type, result.resource_id.id))
             self.vm_id = result.resource_id.id
             error = result.error
             if error is not None:
                 for warning in error.warnings:
-                    logger.warn('OVF warning: {}'.format(warning.message))
+                    print('OVF warning: {}'.format(warning.message))
 
             # Power on the VM and wait  for the power on operation to be completed
             self.vm_obj = get_obj_by_moId(self.servicemanager.content,
@@ -140,9 +136,9 @@ class DeployOvfTemplate(SampleBase):
             poweron_vm(self.servicemanager.content, self.vm_obj)
 
         else:
-            logger.error('Deployment failed.')
+            print('Deployment failed.')
             for error in result.error.errors:
-                logger.error('OVF error: {}'.format(error.message))
+                print('OVF error: {}'.format(error.message))
 
     def _cleanup(self):
         if self.vm_obj is not None:

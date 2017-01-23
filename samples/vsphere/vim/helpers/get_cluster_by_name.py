@@ -16,10 +16,6 @@ __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 from pyVmomi import vim
 from samples.vsphere.common.sample_base import SampleBase
 from samples.vsphere.vim.helpers.vim_utils import get_obj
-from samples.vsphere.common.logging_context import LoggingContext
-
-# Get the logger #
-logger = LoggingContext().get_logger('samples.vsphere.vim.helpers.get_cluster_by_name')
 
 
 class GetClusterByName(SampleBase):
@@ -47,9 +43,9 @@ class GetClusterByName(SampleBase):
         cluster_obj = get_obj(content, [vim.ClusterComputeResource], self.cluster_name)
         if cluster_obj is not None:
             self.mo_id = cluster_obj._GetMoId()
-            logger.info('Cluster MoId: {0}'.format(self.mo_id))
+            print('Cluster MoId: {0}'.format(self.mo_id))
         else:
-            logger.info('Cluster: {0} not found'.format(self.cluster_name))
+            print('Cluster: {0} not found'.format(self.cluster_name))
 
     def _cleanup(self):
         pass

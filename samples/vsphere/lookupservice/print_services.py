@@ -16,9 +16,6 @@ __copyright__ = 'Copyright 2014 VMware, Inc. All rights reserved.'
 import argparse
 from samples.vsphere.common.sample_config import SampleConfig
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
-from samples.vsphere.common.logging_context import LoggingContext
-
-logger = LoggingContext.get_logger('samples.vsphere.lookupservice.print_services')
 
 
 class PrintServices(object):
@@ -46,35 +43,35 @@ class PrintServices(object):
         else:
             self.lswsdlurl = self.args.lswsdlurl
         assert self.lswsdlurl is not None
-        logger.info('lswsdlurl: {0}'.format(self.lswsdlurl))
+        print('lswsdlurl: {0}'.format(self.lswsdlurl))
 
         if self.args.lssoapurl is None:
             self.lssoapurl = SampleConfig.get_ls_soap_url()  # look for lookup service SOAP URL in the sample config
         else:
             self.lssoapurl = self.args.lssoapurl
         assert self.lssoapurl is not None
-        logger.info('lssoapurl: {0}'.format(self.lssoapurl))
+        print('lssoapurl: {0}'.format(self.lssoapurl))
 
     def execute(self):
-        logger.info('Connecting to lookup service url: {0}'.format(self.lssoapurl))
+        print('Connecting to lookup service url: {0}'.format(self.lssoapurl))
         lookupservicehelper = LookupServiceHelper(wsdl_url=self.lswsdlurl, soap_url=self.lssoapurl)
         lookupservicehelper.connect()
 
         # print the PSC nodes and SSO service endpoint URLs
         for index, sso_url in enumerate(lookupservicehelper.find_sso_urls(), start=1):
-            logger.info('=============================')
-            logger.info('PSC node: {0}'.format(index))
-            logger.info('    SSO URL: {0}'.format(sso_url))
-            logger.info('=============================')
+            print('=============================')
+            print('PSC node: {0}'.format(index))
+            print('    SSO URL: {0}'.format(sso_url))
+            print('=============================')
 
         # print the mgmt (vCenter Server) nodes and some of the critical service endpoint URLs
         for instance_name, node_id in lookupservicehelper.find_mgmt_nodes().items():
-            logger.info('=============================')
-            logger.info('Mgmt node instance name: {0} node_id: {1}'.format(instance_name, node_id))
-            logger.info('    VAPI URL: {0}'.format(lookupservicehelper.find_vapi_url(node_id)))
-            logger.info('    VIM URL: {0}'.format(lookupservicehelper.find_vim_url(node_id)))
-            logger.info('    SPBM URL: {0}'.format(lookupservicehelper.find_vim_pbm_url(node_id)))
-            logger.info('=============================')
+            print('=============================')
+            print('Mgmt node instance name: {0} node_id: {1}'.format(instance_name, node_id))
+            print('    VAPI URL: {0}'.format(lookupservicehelper.find_vapi_url(node_id)))
+            print('    VIM URL: {0}'.format(lookupservicehelper.find_vim_url(node_id)))
+            print('    SPBM URL: {0}'.format(lookupservicehelper.find_vim_pbm_url(node_id)))
+            print('=============================')
 
     def cleanup(self):
         pass

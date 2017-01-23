@@ -16,12 +16,10 @@ __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 
 from vmware.vapi.security.sso import create_saml_bearer_security_context
 from samples.vsphere.common import sso
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
 
 from samples.common.ssl_helper import get_unverified_context
 
-logger = LoggingContext.get_logger('samples.vsphere.common.platform_service_controller')
 
 
 class PlatformServiceController(object):
@@ -43,7 +41,7 @@ class PlatformServiceController(object):
         """
         Finds the SSO URL from the lookup service and retrieves the SAML token from STS URL
         """
-        logger.info('Connecting to lookup service url: {0}'.format(self.lssoapurl))
+        print('Connecting to lookup service url: {0}'.format(self.lssoapurl))
         self.lookupservicehelper = LookupServiceHelper(wsdl_url=self.lswsdlurl,
                                                        soap_url=self.lssoapurl,
                                                        skip_verification=self.skip_verification)
@@ -52,7 +50,7 @@ class PlatformServiceController(object):
         self.stsurl = self.lookupservicehelper.find_sso_url()
         assert self.stsurl is not None
 
-        logger.info('Retrieving a SAML bearer token from STS url : {0}'.format(self.stsurl))
+        print('Retrieving a SAML bearer token from STS url : {0}'.format(self.stsurl))
         au = sso.SsoAuthenticator(self.stsurl)
         context = None
         if self.skip_verification:

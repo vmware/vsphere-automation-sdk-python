@@ -28,11 +28,8 @@ from com.vmware.cis_client import Session
 from vmware.vapi.security.sso import create_saml_bearer_security_context
 from vmware.vapi.security.session import create_session_security_context
 from vmware.vapi.stdlib.client.factories import StubConfigurationFactory
-from samples.vsphere.common.logging_context import LoggingContext
 from vmware.vapi.lib.connect import get_requests_connector
 from samples.common.ssl_helper import get_unverified_context
-
-logger = LoggingContext.get_logger('samples.vsphere.workflow.connection_workflow')
 
 
 class ConnectionWorkflow(object):
@@ -77,16 +74,16 @@ class ConnectionWorkflow(object):
         self.skip_verification = self.args.skipverification
 
     def execute(self):
-        logger.info('vapi_url: {0}'.format(self.vapi_url))
+        print('vapi_url: {0}'.format(self.vapi_url))
         # parse the URL and determine the scheme
         o = urlparse(self.vapi_url)
         assert o.scheme is not None
         if o.scheme.lower() != 'https':
-            logger.error('VAPI URL must be a https URL')
+            print('VAPI URL must be a https URL')
             raise Exception('VAPI URL must be a https URL')
 
-        logger.info('sts_url: {0}'.format(self.sts_url))
-        logger.info('Initialize SsoAuthenticator and fetching SAML bearer token...')
+        print('sts_url: {0}'.format(self.sts_url))
+        print('Initialize SsoAuthenticator and fetching SAML bearer token...')
         authenticator = sso.SsoAuthenticator(self.sts_url)
         context = None
         if self.skip_verification:
@@ -96,10 +93,10 @@ class ConnectionWorkflow(object):
                                                                delegatable=True,
                                                                ssl_context=context)
 
-        logger.info('Creating SAML Bearer Security Context...')
+        print('Creating SAML Bearer Security Context...')
         sec_ctx = create_saml_bearer_security_context(bearer_token)
 
-        logger.info('Connecting to VAPI provider and preparing stub configuration...')
+        print('Connecting to VAPI provider and preparing stub configuration...')
         session = requests.Session()
         if self.skip_verification:
             session.verify = False
@@ -110,17 +107,17 @@ class ConnectionWorkflow(object):
         self.stub_config = StubConfigurationFactory.new_std_configuration(connector)
         self.session = Session(self.stub_config)
 
-        logger.info('Login to VAPI endpoint and get the session_id...')
+        print('Login to VAPI endpoint and get the session_id...')
         self.session_id = self.session.create()
 
-        logger.info('Update the VAPI connection with session_id...')
+        print('Update the VAPI connection with session_id...')
         session_sec_ctx = create_session_security_context(self.session_id)
         connector.set_security_context(session_sec_ctx)
 
     def cleanup(self):
         if self.session_id is not None:
             self.disconnect()
-            logger.info('VAPI session disconnected successfully...')
+            print('VAPI session disconnected successfully...')
 
     def disconnect(self):
         self.session.delete()

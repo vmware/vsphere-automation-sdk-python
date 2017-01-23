@@ -15,15 +15,12 @@ except ImportError:
 
 from com.vmware.content.library.item_client import UpdateSessionModel
 from samples.vsphere.common.id_generator import generate_random_uuid
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.common.sample_base import SampleBase
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
-
-logger = LoggingContext.get_logger('samples.vsphere.contentlibrary.content_update')
 
 
 class ContentUpdate(SampleBase):
@@ -84,14 +81,14 @@ class ContentUpdate(SampleBase):
                                                       item_name=self.ISO_ITEM_NAME,
                                                       item_description='Sample iso file',
                                                       item_type='iso')
-        logger.info('ISO Library item version (on creation) {0}:'.format(
+        print('ISO Library item version (on creation) {0}:'.format(
             self.get_item_version(iso_item_id)))
 
         iso_files_map = self.helper.get_iso_file_map(item_filename=self.ISO_FILE_1,
                                                      disk_filename=self.ISO_FILE_1)
         self.helper.upload_files(library_item_id=iso_item_id, files_map=iso_files_map)
         original_version = self.get_item_version(iso_item_id)
-        logger.info('ISO Library item version (on original content upload) {0}:'.format(
+        print('ISO Library item version (on original content upload) {0}:'.format(
             original_version))
 
         session_id = self.client.upload_service.create(
@@ -105,7 +102,7 @@ class ContentUpdate(SampleBase):
         self.client.upload_service.complete(session_id)
         self.client.upload_service.delete(session_id)
         updated_version = self.get_item_version(iso_item_id)
-        logger.info('ISO Library item version (after content update): {0}'.format(
+        print('ISO Library item version (after content update): {0}'.format(
             updated_version))
         assert updated_version > original_version, 'content update should increase the version'
 
@@ -127,16 +124,16 @@ class ContentUpdate(SampleBase):
                                                       item_description='Sample simple VM template',
                                                       item_type='ovf')
         assert ovf_item_id is not None
-        logger.info('Library item created id: {0}'.format(ovf_item_id))
-        logger.info('OVF Library item version (at creation) {0}:'.format(
+        print('Library item created id: {0}'.format(ovf_item_id))
+        print('OVF Library item version (at creation) {0}:'.format(
             self.get_item_version(ovf_item_id)))
 
         # Upload a VM template to the CL
         ovf_files_map = self.helper.get_ovf_files_map(ClsApiHelper.SIMPLE_OVF_RELATIVE_DIR)
         self.helper.upload_files(library_item_id=ovf_item_id, files_map=ovf_files_map)
-        logger.info('Uploaded ovf and vmdk files to library item {0}'.format(ovf_item_id))
+        print('Uploaded ovf and vmdk files to library item {0}'.format(ovf_item_id))
         original_version = self.get_item_version(ovf_item_id)
-        logger.info('OVF Library item version (on original content upload): {0}'.format(
+        print('OVF Library item version (on original content upload): {0}'.format(
             original_version))
 
         # Create a new session and perform content update
@@ -145,7 +142,7 @@ class ContentUpdate(SampleBase):
             client_token=generate_random_uuid())
         existing_files = self.client.upload_file_service.list(session_id)
         for file in existing_files:
-            logger.info('deleting {0}'.format(file.name))
+            print('deleting {0}'.format(file.name))
             self.client.upload_file_service.remove(session_id, file.name)
         ovf_files_map = self.helper.get_ovf_files_map(
             ovf_location=ClsApiHelper.PLAIN_OVF_RELATIVE_DIR)
@@ -153,7 +150,7 @@ class ContentUpdate(SampleBase):
         self.client.upload_service.complete(session_id)
         self.client.upload_service.delete(session_id)
         updated_version = self.get_item_version(ovf_item_id)
-        logger.info('OVF Library item version (after content update): {0}'.format(
+        print('OVF Library item version (after content update): {0}'.format(
             updated_version))
         assert updated_version > original_version, 'content update should increase the version'
 
@@ -165,7 +162,7 @@ class ContentUpdate(SampleBase):
     def _cleanup(self):
         if self.local_library:
             self.client.local_library_service.delete(library_id=self.local_library.id)
-            logger.info('Deleted Library Id: {0}'.format(self.local_library.id))
+            print('Deleted Library Id: {0}'.format(self.local_library.id))
 
 
 def main():

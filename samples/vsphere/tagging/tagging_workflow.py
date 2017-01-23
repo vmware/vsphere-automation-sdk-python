@@ -21,9 +21,6 @@ from com.vmware.cis.tagging_client import (
     Category, CategoryModel, Tag, TagAssociation)
 from samples.vsphere.vim.helpers.get_cluster_by_name import get_cluster_id
 from samples.vsphere.common.sample_base import SampleBase
-from samples.vsphere.common.logging_context import LoggingContext
-
-logger = LoggingContext.get_logger('samples.vsphere.workflow.tagging_workflow')
 
 
 class TaggingWorkflow(SampleBase):
@@ -71,27 +68,27 @@ class TaggingWorkflow(SampleBase):
         if self.cluster_name is None:  # for testing
             self.cluster_name = self.args.clustername
         assert self.cluster_name is not None
-        logger.info('Cluster Name: {0}'.format(self.cluster_name))
+        print('Cluster Name: {0}'.format(self.cluster_name))
 
         if self.category_name is None:
             self.category_name = self.args.categoryname
         assert self.category_name is not None
-        logger.info('Category Name: {0}'.format(self.category_name))
+        print('Category Name: {0}'.format(self.category_name))
 
         if self.category_desc is None:
             self.category_desc = self.args.categorydesc
         assert self.category_desc is not None
-        logger.info('Category Description: {0}'.format(self.category_desc))
+        print('Category Description: {0}'.format(self.category_desc))
 
         if self.tag_name is None:
             self.tag_name = self.args.tagname
         assert self.tag_name is not None
-        logger.info('Tag Name: {0}'.format(self.tag_name))
+        print('Tag Name: {0}'.format(self.tag_name))
 
         if self.tag_desc is None:
             self.tag_desc = self.args.tagdesc
         assert self.tag_desc is not None
-        logger.info('Tag Description: {0}'.format(self.tag_desc))
+        print('Tag Description: {0}'.format(self.tag_desc))
 
         if self.servicemanager is None:
             self.servicemanager = self.get_service_manager()
@@ -101,43 +98,43 @@ class TaggingWorkflow(SampleBase):
         self.tag_association = TagAssociation(self.servicemanager.stub_config)
 
     def _execute(self):
-        logger.info('List all the existing categories user has access to...')
+        print('List all the existing categories user has access to...')
         categories = self.category_svc.list()
         if len(categories) > 0:
             for category in categories:
-                logger.info('Found Category: {0}'.format(category))
+                print('Found Category: {0}'.format(category))
         else:
-            logger.info('No Tag Category Found...')
+            print('No Tag Category Found...')
 
-        logger.info('List all the existing tags user has access to...')
+        print('List all the existing tags user has access to...')
         tags = self.tag_svc.list()
         if len(tags) > 0:
             for tag in tags:
-                logger.info('Found Tag: {0}'.format(tag))
+                print('Found Tag: {0}'.format(tag))
         else:
-            logger.info('No Tag Found...')
+            print('No Tag Found...')
 
-        logger.info('creating a new tag category...')
+        print('creating a new tag category...')
         self.category_id = self.create_tag_category(self.category_name, self.category_desc, CategoryModel.Cardinality.MULTIPLE)
         assert self.category_id is not None
-        logger.info('Tag category created; Id: {0}'.format(self.category_id))
+        print('Tag category created; Id: {0}'.format(self.category_id))
 
-        logger.info("creating a new Tag...")
+        print("creating a new Tag...")
         self.tag_id = self.create_tag(self.tag_name, self.tag_desc, self.category_id)
         assert self.tag_id is not None
-        logger.info('Tag created; Id: {0}'.format(self.tag_id))
+        print('Tag created; Id: {0}'.format(self.tag_id))
 
-        logger.info('updating the tag...')
+        print('updating the tag...')
         date_time = time.strftime('%d/%m/%Y %H:%M:%S')
         self.update_tag(self.tag_id, 'Server Tag updated at ' + date_time)
-        logger.info('Tag updated; Id: {0}'.format(self.tag_id))
+        print('Tag updated; Id: {0}'.format(self.tag_id))
 
-        logger.info('finding the cluster {0}'.format(self.cluster_name))
+        print('finding the cluster {0}'.format(self.cluster_name))
         self.cluster_moid = get_cluster_id(service_manager=self.servicemanager, cluster_name=self.cluster_name)
         assert self.cluster_moid is not None
-        logger.info('Found cluster:{0} mo_id:{1}'.format('vAPISDKCluster', self.cluster_moid))
+        print('Found cluster:{0} mo_id:{1}'.format('vAPISDKCluster', self.cluster_moid))
 
-        logger.info('Tagging the cluster {0}...'.format(self.cluster_name))
+        print('Tagging the cluster {0}...'.format(self.cluster_name))
         self.dynamic_id = DynamicID(type='ClusterComputeResource', id=self.cluster_moid)
         self.tag_association.attach(tag_id=self.tag_id, object_id=self.dynamic_id)
         for tag_id in self.tag_association.list_attached_tags(self.dynamic_id):
@@ -145,21 +142,21 @@ class TaggingWorkflow(SampleBase):
                 self.tag_attached = True
                 break
         assert self.tag_attached
-        logger.info('Tagged cluster: {0}'.format(self.cluster_moid))
+        print('Tagged cluster: {0}'.format(self.cluster_moid))
 
     def _cleanup(self):
         try:
             if self.tag_attached:
                 self.tag_association.detach(self.tag_id, self.dynamic_id)
-                logger.info('Removed tag from cluster: {0}'.format(self.cluster_moid))
+                print('Removed tag from cluster: {0}'.format(self.cluster_moid))
 
             if self.tag_id is not None:
                 self.delete_tag(self.tag_id)
-                logger.info('Tag deleted; Id: {0}'.format(self.tag_id))
+                print('Tag deleted; Id: {0}'.format(self.tag_id))
 
             if self.category_id is not None:
                 self.delete_tag_category(self.category_id)
-                logger.info('Tag category deleted; Id: {0}'.format(self.category_id))
+                print('Tag category deleted; Id: {0}'.format(self.category_id))
         except Exception as e:
             raise Exception(e)
 

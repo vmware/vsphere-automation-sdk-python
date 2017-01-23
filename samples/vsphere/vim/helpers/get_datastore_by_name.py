@@ -16,10 +16,6 @@ __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 from pyVmomi import vim
 from samples.vsphere.common.sample_base import SampleBase
 from samples.vsphere.vim.helpers.vim_utils import get_obj
-from samples.vsphere.common.logging_context import LoggingContext
-
-# Get the logger #
-logger = LoggingContext().get_logger('samples.vsphere.vim.helpers.get_datastore_by_name')
 
 
 class GetDatastoreByName(SampleBase):
@@ -47,9 +43,9 @@ class GetDatastoreByName(SampleBase):
         datastore_obj = get_obj(content, [vim.Datastore], self.datastore_name)
         if datastore_obj is not None:
             self.mo_id = datastore_obj._GetMoId()
-            logger.info('Datastore MoId: {0}'.format(self.mo_id))
+            print('Datastore MoId: {0}'.format(self.mo_id))
         else:
-            logger.info('Datastore: {0} not found'.format(self.datastore_name))
+            print('Datastore: {0} not found'.format(self.datastore_name))
 
     def _cleanup(self):
         pass

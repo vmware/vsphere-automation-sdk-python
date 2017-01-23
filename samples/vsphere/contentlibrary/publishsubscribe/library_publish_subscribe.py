@@ -22,16 +22,12 @@ from com.vmware.content.library_client import (ItemModel, PublishInfo,
                                                StorageBacking, SubscriptionInfo)
 from samples.vsphere.common.id_generator import generate_random_uuid
 from samples.vsphere.common.sample_base import SampleBase
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 from samples.vsphere.contentlibrary.lib.cls_sync_helper import ClsSyncHelper
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
-
-
-logger = LoggingContext.get_logger('samples.vsphere.contentlibrary.library_publish_subscribe')
 
 
 class LibraryPublishSubscribe(SampleBase):
@@ -74,11 +70,11 @@ class LibraryPublishSubscribe(SampleBase):
         # Create a published library backed the VC datastore using vAPIs
         self.pub_lib_id = self.create_published_library(storage_backings)
         assert self.pub_lib_id is not None
-        logger.info('Published library created: ID: {0}'.format(self.pub_lib_id))
+        print('Published library created: ID: {0}'.format(self.pub_lib_id))
         pub_lib = self.client.local_library_service.get(self.pub_lib_id)
         pub_lib_url = pub_lib.publish_info.publish_url
         assert pub_lib_url is not None
-        logger.info('Publish URL : {0}'.format(pub_lib_url))
+        print('Publish URL : {0}'.format(pub_lib_url))
 
         # Create a library item in the published library
         pub_lib_item_id = self.helper.create_iso_library_item(self.pub_lib_id, 'item_1', self.DEMO_FILENAME)
@@ -88,13 +84,13 @@ class LibraryPublishSubscribe(SampleBase):
         sub_lib, sub_spec = self.create_subcribed_library(storage_backings,
                                                           pub_lib_url)
         assert self.sub_lib_id is not None
-        logger.info('Subscribed library created: ID: {0}'.format(self.sub_lib_id))
+        print('Subscribed library created: ID: {0}'.format(self.sub_lib_id))
 
         # It is not mandatory to verify sync, it is just for demonstrating the sample workflow.
         assert (ClsSyncHelper(self.client, self.SYNC_TIMEOUT_SEC).
                 verify_library_sync(self.pub_lib_id, sub_lib))
         sub_lib = self.client.subscribed_library_service.get(self.sub_lib_id)
-        logger.info('Subscribed library synced : {0}'.format(sub_lib.last_sync_time))
+        print('Subscribed library synced : {0}'.format(sub_lib.last_sync_time))
 
         sub_item_ids = self.client.library_item_service.list(self.sub_lib_id)
         assert len(sub_item_ids) == 1, 'Subscribed library must have one item'
@@ -108,14 +104,14 @@ class LibraryPublishSubscribe(SampleBase):
         assert (ClsSyncHelper(self.client, self.SYNC_TIMEOUT_SEC).
                 verify_library_sync(self.pub_lib_id, sub_lib))
         sub_lib = self.client.subscribed_library_service.get(self.sub_lib_id)
-        logger.info('Subscribed library synced : {0}'.format(sub_lib.last_sync_time))
+        print('Subscribed library synced : {0}'.format(sub_lib.last_sync_time))
 
         # List the subscribed items.
         sub_item_ids = self.client.library_item_service.list(self.sub_lib_id)
         assert len(sub_item_ids) == 2, 'Subscribed library must have two items'
         for sub_item_id in sub_item_ids :
             sub_item = self.client.library_item_service.get(sub_item_id)
-            logger.info('Subscribed item : {0}'.format(sub_item.name))
+            print('Subscribed item : {0}'.format(sub_item.name))
 
         # Change the subscribed library to be on-demand
         sub_spec.subscription_info.on_demand = True
@@ -124,7 +120,7 @@ class LibraryPublishSubscribe(SampleBase):
         # Evict the cached content of the first subscribed library item
         self.client.subscribed_item_service.evict(sub_item_id)
         sub_item = self.client.library_item_service.get(sub_item_id)
-        logger.info('Subscribed item evicted : {0}'.format(sub_item.name))
+        print('Subscribed item evicted : {0}'.format(sub_item.name))
         assert not sub_item.cached, 'Subscribed item must not be cached'
 
         # Force synchronize the subscribed library item to fetch and cache the content
@@ -133,7 +129,7 @@ class LibraryPublishSubscribe(SampleBase):
         assert (ClsSyncHelper(self.client, self.SYNC_TIMEOUT_SEC).
                 verify_item_sync(sub_item_id))
         sub_item = self.client.library_item_service.get(sub_item_id)
-        logger.info('Subscribed item force sync : {0}'.format(sub_item.name))
+        print('Subscribed item force sync : {0}'.format(sub_item.name))
         assert sub_item.cached, 'Subscribed item must be cached'
 
     def create_published_library(self, storage_backings):
@@ -183,11 +179,11 @@ class LibraryPublishSubscribe(SampleBase):
     def _cleanup(self):
         if self.sub_lib_id:
             self.client.subscribed_library_service.delete(self.sub_lib_id)
-            logger.info('Deleted subscribed library Id: {0}'.format(self.sub_lib_id))
+            print('Deleted subscribed library Id: {0}'.format(self.sub_lib_id))
 
         if self.pub_lib_id:
             self.client.local_library_service.delete(self.pub_lib_id)
-            logger.info('Deleted published library Id : {0}'.format(self.pub_lib_id))
+            print('Deleted published library Id : {0}'.format(self.pub_lib_id))
 
 
 def main():

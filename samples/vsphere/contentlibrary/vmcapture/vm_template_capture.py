@@ -18,7 +18,6 @@ except ImportError:
     import urllib.request as urllib2
 from com.vmware.vcenter.ovf_client import LibraryItem
 from samples.vsphere.common.id_generator import generate_random_uuid
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.common.sample_base import SampleBase
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
@@ -27,8 +26,6 @@ from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
-
-logger = LoggingContext.get_logger('samples.vsphere.contentlibrary.vm_template_capture')
 
 
 class CaptureVMTemplateToContentLibrary(SampleBase):
@@ -76,7 +73,7 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
         storage_backings = self.helper.create_storage_backings(self.servicemanager,
                                                                self.datastore_name)
 
-        logger.info('Creating Content Library')
+        print('Creating Content Library')
         # Create a content library
         library_id = self.helper.create_local_library(storage_backings,
                                                       self.cl_name)
@@ -91,7 +88,7 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
         self.library_item_id = self.capture_source_vm(vm_id, param)
         assert self.library_item_id is not None
         assert self.client.library_item_service.get(self.library_item_id) is not None
-        logger.info('The VM id : {0} is captured as vm template library item id : {1}'.format
+        print('The VM id : {0} is captured as vm template library item id : {1}'.format
                     (vm_id, self.library_item_id))
 
     def capture_source_vm(self, vm_id, param):
@@ -113,7 +110,7 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
         # delete the local library.
         if self.content_library is not None:
             self.client.local_library_service.delete(library_id=self.content_library.id)
-            logger.info('Deleted Library Id: {0}'.format
+            print('Deleted Library Id: {0}'.format
                         (self.content_library.id))
 
 

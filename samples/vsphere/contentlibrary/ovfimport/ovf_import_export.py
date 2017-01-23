@@ -23,7 +23,6 @@ from com.vmware.content_client import LibraryModel
 from com.vmware.content.library_client import ItemModel, StorageBacking
 from samples.vsphere.common.id_generator import generate_random_uuid
 from samples.vsphere.common.sample_base import SampleBase
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 from samples.vsphere.vim.helpers.get_datastore_by_name import get_datastore_id
@@ -31,9 +30,6 @@ from samples.vsphere.vim.helpers.get_datastore_by_name import get_datastore_id
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
-
-
-logger = LoggingContext.get_logger('samples.vsphere.contentlibrary.ovef_import_export')
 
 
 class OvfImportExport(SampleBase):
@@ -74,7 +70,7 @@ class OvfImportExport(SampleBase):
         # Find the datastore by the given datastore name using property collector
         self.datastore_id = get_datastore_id(service_manager=self.servicemanager, datastore_name=self.datastore_name)
         assert self.datastore_id is not None
-        logger.info('DataStore: {0} ID: {1}'.format(self.datastore_name, self.datastore_id))
+        print('DataStore: {0} ID: {1}'.format(self.datastore_name, self.datastore_id))
 
         # Build the storage backing for the library to be created
         storage_backings = []
@@ -91,7 +87,7 @@ class OvfImportExport(SampleBase):
         # Create a local content library backed the VC datastore using vAPIs
         library_id = self.client.local_library_service.create(create_spec=create_spec,
                                                               client_token=generate_random_uuid())
-        logger.info('Local library created: ID: {0}'.format(library_id))
+        print('Local library created: ID: {0}'.format(library_id))
         self.local_library = self.client.local_library_service.get(library_id)
 
         # Create a new library item in the content library for uploading the files
@@ -101,23 +97,23 @@ class OvfImportExport(SampleBase):
                                                                item_type='ovf')
         assert self.library_item_id is not None
         assert self.client.library_item_service.get(self.library_item_id) is not None
-        logger.info('Library item created id: {0}'.format(self.library_item_id))
+        print('Library item created id: {0}'.format(self.library_item_id))
 
         # Upload a VM template to the CL
         ovf_files_map = self.helper.get_ovf_files_map(ClsApiHelper.SIMPLE_OVF_RELATIVE_DIR)
         self.helper.upload_files(library_item_id=self.library_item_id, files_map=ovf_files_map)
-        logger.info('Uploaded ovf and vmdk files to library item {0}'.format(self.library_item_id))
+        print('Uploaded ovf and vmdk files to library item {0}'.format(self.library_item_id))
 
         # Download the library item from the CL
         temp_dir = tempfile.mkdtemp(prefix='simpleVmTemplate-')
-        logger.info('Downloading library item {0} to directory {1}'.format(self.library_item_id, temp_dir))
+        print('Downloading library item {0} to directory {1}'.format(self.library_item_id, temp_dir))
         downloaded_files_map = self.helper.download_files(library_item_id=self.library_item_id, directory=temp_dir)
         assert len(downloaded_files_map) == len(ovf_files_map)
 
     def _cleanup(self):
         if self.local_library:
             self.client.local_library_service.delete(library_id=self.local_library.id)
-            logger.info('Deleted Library Id: {0}'.format(self.local_library.id))
+            print('Deleted Library Id: {0}'.format(self.local_library.id))
 
 
 def main():

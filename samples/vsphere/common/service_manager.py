@@ -15,11 +15,8 @@ __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 
 from pyVim.connect import SmartConnect, Disconnect
 from samples.vsphere.common import vapiconnect
-from samples.vsphere.common.logging_context import LoggingContext
 
 from samples.common.ssl_helper import get_unverified_context
-
-logger = LoggingContext.get_logger('samples.vsphere.common.service_manager')
 
 
 class ServiceManager(object):
@@ -64,7 +61,7 @@ class ServiceManager(object):
         self.vim_uuid = self.content.about.instanceUuid
 
     def disconnect(self):
-        logger.info('disconnecting the session')
+        print('disconnecting the session')
         vapiconnect.logout(self.stub_config)
         Disconnect(self.si)
 

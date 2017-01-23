@@ -17,10 +17,7 @@ __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 import argparse
 import traceback
 from samples.vsphere.common.service_manager_factory import ServiceManagerFactory
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.common.sample_config import SampleConfig
-
-logger = LoggingContext.get_logger(__name__)
 
 
 class SampleBase(object):
@@ -56,7 +53,7 @@ class SampleBase(object):
         else:
             self.server = self.args.server
         assert self.server is not None
-        logger.info('server: {0}'.format(self.server))
+        print('server: {0}'.format(self.server))
 
         if self.args.username is None:
             self.username = SampleConfig.get_username()  # look for username in the sample config
@@ -88,7 +85,6 @@ class SampleBase(object):
                     attr()  # calling the method
                 except Exception as e:
                     # print the exception and move on to the cleanup stage if cleardata is set to True.
-                    logger.exception(e)
                     traceback.print_exc()
                     if bool(self.cleardata) is not True:
                         # re-throw the exception

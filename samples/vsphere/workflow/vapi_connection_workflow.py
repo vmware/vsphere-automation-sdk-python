@@ -25,9 +25,6 @@ from vmware.vapi.stdlib.client.factories import StubConfigurationFactory
 from com.vmware.cis.tagging_client import Tag
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
 from samples.vsphere.common.sample_config import SampleConfig
-from samples.vsphere.common.logging_context import LoggingContext
-
-logger = LoggingContext.get_logger('samples.vsphere.workflow.vapi_connection_workflow')
 
 
 class VapiConnectionWorkflow(object):
@@ -76,14 +73,14 @@ class VapiConnectionWorkflow(object):
         else:
             self.lswsdlurl = self.args.lswsdlurl
         assert self.lswsdlurl is not None
-        logger.info('lswsdlurl: {0}'.format(self.lswsdlurl))
+        print('lswsdlurl: {0}'.format(self.lswsdlurl))
 
         if self.args.lssoapurl is None:
             self.lssoapurl = SampleConfig.get_ls_soap_url()  # look for lookup service SOAP URL in the sample config
         else:
             self.lssoapurl = self.args.lssoapurl
         assert self.lssoapurl is not None
-        logger.info('lssoapurl: {0}'.format(self.lssoapurl))
+        print('lssoapurl: {0}'.format(self.lssoapurl))
 
         if self.args.username is None:
             self.username = SampleConfig.get_username()  # look for sso user name in the sample config
@@ -103,7 +100,7 @@ class VapiConnectionWorkflow(object):
         self.skip_verification = self.args.skipverification
 
     def execute(self):
-        logger.info('Connecting to lookup service url: {0}'.format(self.lssoapurl))
+        print('Connecting to lookup service url: {0}'.format(self.lssoapurl))
         lookupservicehelper = LookupServiceHelper(wsdl_url=self.lswsdlurl,
                                                   soap_url=self.lssoapurl,
                                                   skip_verification=self.skip_verification)
@@ -116,9 +113,9 @@ class VapiConnectionWorkflow(object):
         assert self.mgmtnodeid is not None
 
         self.vapiurl = lookupservicehelper.find_vapi_url(self.mgmtnodeid)
-        logger.info('vapi_url: {0}'.format(self.vapiurl))
+        print('vapi_url: {0}'.format(self.vapiurl))
 
-        logger.info('Connecting to VAPI endpoint and preparing stub configuration...')
+        print('Connecting to VAPI endpoint and preparing stub configuration...')
         session = requests.Session()
         if self.skip_verification:
             session.verify = False
@@ -130,27 +127,27 @@ class VapiConnectionWorkflow(object):
         self.stub_config = StubConfigurationFactory.new_std_configuration(connector)
         self.session = Session(self.stub_config)
 
-        logger.info('Login to VAPI endpoint and get the session_id...')
+        print('Login to VAPI endpoint and get the session_id...')
         self.session_id = self.session.create()
 
-        logger.info('Update the VAPI connection with session_id...')
+        print('Update the VAPI connection with session_id...')
         session_sec_ctx = create_session_security_context(self.session_id)
         connector.set_security_context(session_sec_ctx)
 
         # make sure you can access some of the VAPI services
         tag_svc = Tag(self.stub_config)
-        logger.info('List all the existing tags user has access to...')
+        print('List all the existing tags user has access to...')
         tags = tag_svc.list()
         if len(tags) > 0:
             for tag in tags:
-                logger.info('Found Tag: {0}'.format(tag))
+                print('Found Tag: {0}'.format(tag))
         else:
-            logger.info('No Tag Found...')
+            print('No Tag Found...')
 
     def cleanup(self):
         if self.session_id is not None:
             self.disconnect()
-            logger.info('VAPI session disconnected successfully...')
+            print('VAPI session disconnected successfully...')
 
     def disconnect(self):
         self.session.delete()

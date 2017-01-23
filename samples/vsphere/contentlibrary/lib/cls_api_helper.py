@@ -27,13 +27,10 @@ from com.vmware.content.library.item_client import (DownloadSessionModel,
 from com.vmware.content.library.item.downloadsession_client import File as DownloadSessionFile
 from com.vmware.content.library.item.updatesession_client import File as UpdateSessionFile
 from samples.vsphere.common.id_generator import generate_random_uuid
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.vim.helpers.get_datastore_by_name import get_datastore_id
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
-
-logger = LoggingContext.get_logger('samples.vsphere.contentlibrary.lib')
 
 
 class ClsApiHelper(object):
@@ -81,7 +78,7 @@ class ClsApiHelper(object):
         # Create a local content library backed the VC datastore
         library_id = self.client.local_library_service.create(create_spec=create_spec,
                                                               client_token=generate_random_uuid())
-        logger.info('Local library created, ID: {0}'.format(library_id))
+        print('Local library created, ID: {0}'.format(library_id))
 
         return library_id
 
@@ -117,12 +114,12 @@ class ClsApiHelper(object):
                                                    item_description='Sample iso file',
                                                    item_type='iso')
         assert library_item_id is not None
-        logger.info('Library item created id: {0}'.format(library_item_id))
+        print('Library item created id: {0}'.format(library_item_id))
 
         # Upload an iso file to above library item, use the filename as the item_filename
         iso_files_map = self.get_iso_file_map(item_filename=iso_filename, disk_filename=iso_filename)
         self.upload_files(library_item_id=library_item_id, files_map=iso_files_map)
-        logger.info('Uploaded iso file to library item {0}'.format(library_item_id))
+        print('Uploaded iso file to library item {0}'.format(library_item_id))
         return library_item_id
 
     def get_iso_file_map(self, item_filename, disk_filename):

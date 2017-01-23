@@ -14,10 +14,7 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2013 VMware, Inc. All rights reserved.'
 
 from pyVmomi import vim, vmodl
-from samples.vsphere.common.logging_context import LoggingContext
 
-# Get the logger #
-logger = LoggingContext().get_logger('samples.vsphere.vim.helpers.vim_utils')
 
 _views = []  # list of container views
 
@@ -54,12 +51,12 @@ def delete_object(content, mo):
     """
     Deletes a vsphere managed object and waits for the deletion to complete
     """
-    logger.info('Deleting {0}'.format(mo._GetMoId()))
+    print('Deleting {0}'.format(mo._GetMoId()))
     try:
         wait_for_tasks(content, [mo.Destroy()])
-        logger.info('Deleted {0}'.format(mo._GetMoId()))
+        print('Deleted {0}'.format(mo._GetMoId()))
     except:
-        logger.error('Unexpected error while deleting managed object {0}'.format(mo._GetMoId()))
+        print('Unexpected error while deleting managed object {0}'.format(mo._GetMoId()))
         return False
     return True
 
@@ -71,12 +68,12 @@ def poweron_vm(content, mo):
     if not isinstance(mo, vim.VirtualMachine):
         return False
 
-    logger.info('Powering on vm {0}'.format(mo._GetMoId()))
+    print('Powering on vm {0}'.format(mo._GetMoId()))
     try:
         wait_for_tasks(content, [mo.PowerOn()])
-        logger.info('{0} powered on successfully'.format(mo._GetMoId()))
+        print('{0} powered on successfully'.format(mo._GetMoId()))
     except:
-        logger.error('Unexpected error while powering on vm {0}'.format(mo._GetMoId()))
+        print('Unexpected error while powering on vm {0}'.format(mo._GetMoId()))
         return False
     return True
 
@@ -88,12 +85,12 @@ def poweroff_vm(content, mo):
     if not isinstance(mo, vim.VirtualMachine):
         return False
 
-    logger.info('Powering off vm {0}'.format(mo._GetMoId()))
+    print('Powering off vm {0}'.format(mo._GetMoId()))
     try:
         wait_for_tasks(content, [mo.PowerOff()])
-        logger.info('{0} powered off successfully'.format(mo._GetMoId()))
+        print('{0} powered off successfully'.format(mo._GetMoId()))
     except:
-        logger.error('Unexpected error while powering off vm {0}'.format(mo._GetMoId()))
+        print('Unexpected error while powering off vm {0}'.format(mo._GetMoId()))
         return False
     return True
 

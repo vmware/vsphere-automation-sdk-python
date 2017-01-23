@@ -12,7 +12,6 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-from samples.vsphere.common.logging_context import LoggingContext
 from samples.vsphere.common.sample_base import SampleBase
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
@@ -21,9 +20,6 @@ from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
-
-
-logger = LoggingContext.get_logger('samples.vsphere.contentlibrary.iso_mount')
 
 
 class IsoMount(SampleBase):
@@ -81,11 +77,11 @@ class IsoMount(SampleBase):
         # Mount the iso item as a CDROM device
         device_id = self.client.iso_service.mount(library_item_id, vm_id)
         assert device_id is not None
-        logger.info('Mounted library item {0}'
+        print('Mounted library item {0}'
                     ' on vm {1} at device {2}'.format(self.iso_item_name, self.vm_name, device_id))
         # Unmount the CDROM
         self.client.iso_service.unmount(vm_id, device_id)
-        logger.info('Unmounted library item {0}'
+        print('Unmounted library item {0}'
                     'from vm {1} mounted at device {2}'.format(self.iso_item_name,
                                                                self.vm_name, device_id))
 
@@ -93,7 +89,7 @@ class IsoMount(SampleBase):
     def _cleanup(self):
         if self.local_library:
             self.client.local_library_service.delete(library_id=self.local_library.id)
-            logger.info('Deleted Library Id: {0}'.format(self.local_library.id))
+            print('Deleted Library Id: {0}'.format(self.local_library.id))
 
 
 def main():
