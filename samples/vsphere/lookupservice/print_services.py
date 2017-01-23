@@ -14,7 +14,6 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2014 VMware, Inc. All rights reserved.'
 
 import argparse
-from samples.vsphere.common.sample_config import SampleConfig
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
 
 
@@ -38,17 +37,11 @@ class PrintServices(object):
         self.args = self.argparser.parse_args()   # parse all the sample arguments when they are all set
 
     def setup(self):
-        if self.args.lswsdlurl is None:
-            self.lswsdlurl = SampleConfig.get_ls_wsdl_url()  # look for lookup service WSDL in the sample config
-        else:
-            self.lswsdlurl = self.args.lswsdlurl
+        self.lswsdlurl = self.args.lswsdlurl
         assert self.lswsdlurl is not None
         print('lswsdlurl: {0}'.format(self.lswsdlurl))
 
-        if self.args.lssoapurl is None:
-            self.lssoapurl = SampleConfig.get_ls_soap_url()  # look for lookup service SOAP URL in the sample config
-        else:
-            self.lssoapurl = self.args.lssoapurl
+        self.lssoapurl = self.args.lssoapurl
         assert self.lssoapurl is not None
         print('lssoapurl: {0}'.format(self.lssoapurl))
 

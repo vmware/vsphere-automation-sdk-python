@@ -24,7 +24,6 @@ from vmware.vapi.security.session import create_session_security_context
 from vmware.vapi.stdlib.client.factories import StubConfigurationFactory
 from com.vmware.cis.tagging_client import Tag
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
-from samples.vsphere.common.sample_config import SampleConfig
 
 
 class VapiConnectionWorkflow(object):
@@ -68,35 +67,21 @@ class VapiConnectionWorkflow(object):
         self.args = self.argparser.parse_args()   # parse all the sample arguments when they are all set
 
     def setup(self):
-        if self.args.lswsdlurl is None:
-            self.lswsdlurl = SampleConfig.get_ls_wsdl_url()  # look for lookup service WSDL in the sample config
-        else:
-            self.lswsdlurl = self.args.lswsdlurl
+        self.lswsdlurl = self.args.lswsdlurl
         assert self.lswsdlurl is not None
         print('lswsdlurl: {0}'.format(self.lswsdlurl))
 
-        if self.args.lssoapurl is None:
-            self.lssoapurl = SampleConfig.get_ls_soap_url()  # look for lookup service SOAP URL in the sample config
-        else:
-            self.lssoapurl = self.args.lssoapurl
+        self.lssoapurl = self.args.lssoapurl
         assert self.lssoapurl is not None
         print('lssoapurl: {0}'.format(self.lssoapurl))
 
-        if self.args.username is None:
-            self.username = SampleConfig.get_username()  # look for sso user name in the sample config
-        else:
-            self.username = self.args.username
+        self.username = self.args.username
         assert self.username is not None
 
-        if self.args.password is None:
-            self.password = SampleConfig.get_password()  # look for sso password in the sample config
-        else:
-            self.password = self.args.password
+        self.password = self.args.password
         assert self.password is not None
 
-        if self.mgmtinstancename is None:
-            self.mgmtinstancename = self.args.mgmtinstancename
-
+        self.mgmtinstancename = self.args.mgmtinstancename
         self.skip_verification = self.args.skipverification
 
     def execute(self):

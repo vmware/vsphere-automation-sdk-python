@@ -17,7 +17,6 @@ __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 import argparse
 import traceback
 from samples.vsphere.common.service_manager_factory import ServiceManagerFactory
-from samples.vsphere.common.sample_config import SampleConfig
 
 
 class SampleBase(object):
@@ -48,23 +47,14 @@ class SampleBase(object):
                 attr()  # calling the method
         self.args = self.argparser.parse_args()  # parse all the sample arguments when they are all set
 
-        if self.args.server is None:
-            self.server = SampleConfig.get_server_url()  # look for server IP in the sample config
-        else:
-            self.server = self.args.server
+        self.server = self.args.server
         assert self.server is not None
         print('server: {0}'.format(self.server))
 
-        if self.args.username is None:
-            self.username = SampleConfig.get_username()  # look for username in the sample config
-        else:
-            self.username = self.args.username
+        self.username = self.args.username
         assert self.username is not None
 
-        if self.args.password is None:
-            self.password = SampleConfig.get_password()  # look for password in the sample config
-        else:
-            self.password = self.args.password
+        self.password = self.args.password
         assert self.password is not None
 
         self.cleardata = self.args.cleardata
