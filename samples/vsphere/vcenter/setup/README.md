@@ -10,10 +10,10 @@ inside the vcenter.vm package.
 * Prepare testbed using setup script:
     - Edit testbed.py with your settings. In particular, you need to set the IP addresses and credentials in this file.
     $ cd /path/to/VMware-vSphere-Automation-SDK-Python-<version>/client/bin
-    $ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/setup/main.py -st
+    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -st
 
 * Run the vAPI vCenter sample suite:
-    $ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/setup/main.py -rit
+    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -rit
 
 * To check available options:
-    $ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/setup/main.py -h
+    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -h
