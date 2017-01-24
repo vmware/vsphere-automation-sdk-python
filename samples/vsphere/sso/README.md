@@ -1,4 +1,4 @@
-This directory contains samples for Tagging APIs:
+This directory contains samples for Platform Service Controller, SSO and Lookup Service APIs:
 
 Running the samples
 
@@ -7,5 +7,3 @@ Running the samples
 
 * Testbed Requirement:
     - 1 vCenter Server
-    - 1 cluster
-

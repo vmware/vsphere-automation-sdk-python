@@ -163,10 +163,10 @@ You have two options to run samples inside this package:
         <ul>
             <li><code>$ cd /path/to/VMware-vSphere-Automation-SDK-Python-&lt;version&gt;/client/bin</code></li>
             <li>Run the sample with the testbed settings specified in setup.py in a Linux machine:<br/>
-                <code>$ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/vm/create/create_default_vm.py -v</code>
+                <code>$ ./run_sample.sh ../samples/src/samples/vsphere/vcenter/vm/create/create_default_vm.py -v</code>
             </li>
             <li>Or specify the credentials using command line parameters:<br/>
-                <code>$ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/vm/create/create_default_vm.py -s &lt;server&gt; -u &lt;username&gt; -p &lt;password&gt; -v</code>
+                <code>$ ./run_sample.sh ../samples/src/samples/vsphere/vcenter/vm/create/create_default_vm.py -s &lt;server&gt; -u &lt;username&gt; -p &lt;password&gt; -v</code>
             </li>
         </ul>
     </li>
@@ -244,9 +244,9 @@ vApi connection workflow sample performs the following basic steps to connect
 
 The call sequence shown above is implemented in the samples framework through the following modules:</br>
 <ul>
-<li><code>src/vsphere/samples/common/lookup_service_helper</code> provides methods for discovering management nodes and service endpoint URLs on management nodes from lookup service.</li>
-<li><code>src/vsphere/samples/common/platform_service_controller</code> uses lookup_service_helper to discover the Single Sign-On URL (on any of the Platform Service Controller node) and then retrieves the SAML token from the Single Sign-On server by authenticating the given user.</li>
-<li><code>src/vsphere/samples/common/service_manager</code> login to the vAPI and vim service endpoints (on a management node).</li>
+<li><code>src/samples/vsphere/common/lookup_service_helper</code> provides methods for discovering management nodes and service endpoint URLs on management nodes from lookup service.</li>
+<li><code>src/samples/vsphere/common/platform_service_controller</code> uses lookup_service_helper to discover the Single Sign-On URL (on any of the Platform Service Controller node) and then retrieves the SAML token from the Single Sign-On server by authenticating the given user.</li>
+<li><code>src/samples/vsphere/common/service_manager</code> login to the vAPI and vim service endpoints (on a management node).</li>
 </ul>
 
 <h3>Running the Connection Workflow Samples:</h3>
@@ -311,7 +311,7 @@ Before running the samples:
 </p>
 <pre>
 $cd /path/to/VMware-vSphere-Automation-SDK-Python-&lt;version&gt;/client/bin
-$run_sample.sh ../samples/src/vsphere/samples/workflow/connection_workflow.py \
+$run_sample.sh ../samples/src/samples/vsphere/workflow/connection_workflow.py \
     -vapiurl https://203.0.113.0/api \
     -stsurl https://203.0.113.0:443/sts/STSService/vsphere.local \
     -username administrator@vsphere.local \
@@ -322,7 +322,7 @@ $run_sample.sh ../samples/src/vsphere/samples/workflow/connection_workflow.py \
 Use the -h option to print information about a sample.
  The following example shows the help for the vAPI connection workflow sample.
 <pre>
-$ ./run_sample.sh  ../samples/src/vsphere/samples/workflow/vapi_connection_workflow.py -h
+$ ./run_sample.sh  ../samples/src/samples/vsphere/workflow/vapi_connection_workflow.py -h
 usage: vapi_connection_workflow.py [-h] [-w LSWSDLURL] [-s LSSOAPURL]
                                    [-m MGMTINSTANCENAME] [-u USERNAME]
                                    [-p PASSWORD] [-v]

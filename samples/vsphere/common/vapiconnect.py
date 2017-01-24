@@ -75,8 +75,9 @@ def logout(stub_config):
     """
     Delete session with vCenter.
     """
-    session_svc = Session(stub_config)
-    session_svc.delete()
+    if stub_config:
+        session_svc = Session(stub_config)
+        session_svc.delete()
 
 
 def create_unverified_session(session, suppress_warning):

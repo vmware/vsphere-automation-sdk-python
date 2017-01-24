@@ -29,7 +29,7 @@ from vmware.vapi.security.sso import create_saml_bearer_security_context
 from vmware.vapi.security.session import create_session_security_context
 from vmware.vapi.stdlib.client.factories import StubConfigurationFactory
 from vmware.vapi.lib.connect import get_requests_connector
-from samples.common.ssl_helper import get_unverified_context
+from samples.vsphere.common.ssl_helper import get_unverified_context
 
 
 class ConnectionWorkflow(object):

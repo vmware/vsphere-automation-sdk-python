@@ -57,7 +57,7 @@ Before executing the samples we'll need to setup the vSphere test environment us
 
 First, from the command line change to the SDK ./bin folder.
 
-    $ cd /path/to/VMware-vSphere-Automation-SDK-Python-<version>/bin
+    $ cd /path/to/vsphere-automation-sdk-python-samples/bin
 
 Next, using a text editor open ../samples/vsphere/vcenter/setup/testbed.py and edit the following settings replace everything in < > brackts with your environment information. Leave the rest of the settings in this file at their default values.
 

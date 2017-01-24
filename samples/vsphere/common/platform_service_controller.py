@@ -18,7 +18,7 @@ from vmware.vapi.security.sso import create_saml_bearer_security_context
 from samples.vsphere.common import sso
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
 
-from samples.common.ssl_helper import get_unverified_context
+from samples.vsphere.common.ssl_helper import get_unverified_context
 
 
 

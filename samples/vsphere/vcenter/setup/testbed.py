@@ -13,35 +13,35 @@
 """
 
 config = {}
-config["SERVER"] = ""
-config["USERNAME"] = ""
-config["PASSWORD"] = ""
+config["SERVER"] = "10.192.34.73"
+config["USERNAME"] = "administrator@vsphere.local"
+config["PASSWORD"] = "Admin!23"
 
-config["ESX_HOST1"] = ""
-config["ESX_HOST2"] = ""
-config["ESX_USER"] = ""
+config["ESX_HOST1"] = "10.192.49.29"
+config["ESX_HOST2"] = "10.192.51.199"
+config["ESX_USER"] = "root"
 config["ESX_PASS"] = ""
 
 config["USE_NFS"] = True
-config["NFS_HOST"] = ""
+config["NFS_HOST"] = "10.192.43.16"
 config["NFS_REMOTE_PATH"] = "/store1"
-config["NFS_DATASTORE_NAME"] = "Shared NFS Volume"
+config["NFS_DATASTORE_NAME"] = "Shared_NFS_Volume"
 
-config["ESX_HOST1_VMFS_DATASTORE"] = "Local VMFS Volume on Host1"
-config["ESX_HOST2_VMFS_DATASTORE"] = "Local VMFS Volume on Host2"
+config["ESX_HOST1_VMFS_DATASTORE"] = "Local_VMFS_Volume_on_Host1"
+config["ESX_HOST2_VMFS_DATASTORE"] = "Local_VMFS_Volume_on_Host2"
 
-config["DATACENTER1_NAME"] = "Sample DC 1"
-config["DATACENTER2_NAME"] = "Sample DC 2"
+config["DATACENTER1_NAME"] = "Sample_DC_1"
+config["DATACENTER2_NAME"] = "Sample_DC_2"
 
-config["VM_FOLDER1_NAME"] = "Sample VM Folder 1"
-config["VM_FOLDER2_NAME"] = "Sample VM Folder 2"
+config["VM_FOLDER1_NAME"] = "Sample_VM_Folder_1"
+config["VM_FOLDER2_NAME"] = "Sample_VM_Folder_2"
 
-config["CLUSTER1_NAME"] = "Cluster 1"
+config["CLUSTER1_NAME"] = "Cluster1"
 
-config["VDSWITCH1_NAME"] = "DSwitch 1"
-config["VDPORTGROUP1_NAME"] = "Static Portgroup on DSwitch 1"
+config["VDSWITCH1_NAME"] = "DSwitch1"
+config["VDPORTGROUP1_NAME"] = "Static_Portgroup_on_DSwitch_1"
 
-config["STDPORTGROUP_NAME"] = "VM Network"
+config["STDPORTGROUP_NAME"] = "VM_Network"
 
 # The main datacenter and datastore that will be used for the VM tests
 config["VM_DATACENTER_NAME"] = config["DATACENTER2_NAME"]
@@ -50,9 +50,9 @@ config["VM_DATASTORE_NAME"] = config["NFS_DATASTORE_NAME"]
 # GestOS should be one of the enumeration values in com.vmware.vcenter.vm.GuestOS
 config["VM_GUESTOS"] = "WINDOWS_9_64"
 
-config["VM_NAME_DEFAULT"] = "Sample Default VM for Simple Testbed"
-config["VM_NAME_BASIC"] = "Sample Basic VM for Simple Testbed"
-config["VM_NAME_EXHAUSTIVE"] = "Sample Exhaustive VM for Simple Testbed"
+config["VM_NAME_DEFAULT"] = "Sample_Default_VM_for_Simple_Testbed"
+config["VM_NAME_BASIC"] = "Sample_Basic_VM_for_Simple_Testbed"
+config["VM_NAME_EXHAUSTIVE"] = "Sample_Exhaustive_VM_for_Simple_Testbed"
 
 config["BACKENDS_DATACENTER_NAME"] = config["VM_DATACENTER_NAME"]
 

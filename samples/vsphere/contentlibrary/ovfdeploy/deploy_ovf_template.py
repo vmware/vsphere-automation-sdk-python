@@ -23,7 +23,7 @@ from pyVmomi import vim
 
 from samples.vsphere.common.id_generator import generate_random_uuid
 from samples.vsphere.common.sample_base import SampleBase
-from samples.vsphere.common.vim.helpers import (
+from samples.vsphere.common.vim.helpers.vim_utils import (
     get_obj, get_obj_by_moId, poweron_vm, poweroff_vm, delete_object)
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper

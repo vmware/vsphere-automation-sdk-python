@@ -10,9 +10,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-from samples.vsphere.vim.file import (detect_file, delete_file,
+from samples.vsphere.common.vim.file import (detect_file, delete_file,
                                       parse_datastore_path)
-from samples.vsphere.vim.inventory import get_datastore_mo
+from samples.vsphere.common.vim.inventory import get_datastore_mo
 
 from samples.vsphere.common.vim import datastore_file
 

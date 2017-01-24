@@ -28,7 +28,7 @@ from samples.vsphere.vcenter.setup.testbed_setup import validate as testbed_vali
 from samples.vsphere.vcenter.vm.main import cleanup as sample_cleanup
 from samples.vsphere.vcenter.vm.main import run as sample_run
 
-from samples.common.ssl_helper import get_unverified_context
+from samples.vsphere.common.ssl_helper import get_unverified_context
 
 
 # Parse command line params for setup script

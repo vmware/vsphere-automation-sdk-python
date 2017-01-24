@@ -11,7 +11,7 @@
 """
 
 import samples.vsphere.vcenter.helper.network_helper
-import samples.vcenter.vm.hardware.main
+import samples.vsphere.vcenter.vm.hardware.main
 import samples.vsphere.vcenter.vm.placement
 import samples.vsphere.vcenter.vm.power
 from samples.vsphere.common.sample_util import pp
@@ -127,11 +127,11 @@ def run(context):
     #
     ###########################################################################
     if context.option['DO_SAMPLES_INCREMENTAL']:
-        samples.vcenter.vm.hardware.main.setup(context)
-        samples.vcenter.vm.hardware.main.validate(context)
-        samples.vcenter.vm.hardware.main.run()
+        samples.vsphere.vcenter.vm.hardware.main.setup(context)
+        samples.vsphere.vcenter.vm.hardware.main.validate(context)
+        samples.vsphere.vcenter.vm.hardware.main.run()
         if context.option['DO_SAMPLES_CLEANUP']:
-            samples.vcenter.vm.hardware.main.cleanup()
+            samples.vsphere.vcenter.vm.hardware.main.cleanup()
 
 
     # Sample cleanup

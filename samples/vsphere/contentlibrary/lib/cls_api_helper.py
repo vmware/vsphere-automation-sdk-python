@@ -27,7 +27,7 @@ from com.vmware.content.library.item_client import (DownloadSessionModel,
 from com.vmware.content.library.item.downloadsession_client import File as DownloadSessionFile
 from com.vmware.content.library.item.updatesession_client import File as UpdateSessionFile
 from samples.vsphere.common.id_generator import generate_random_uuid
-from samples.vsphere.common.vim.helpers import get_datastore_id
+from samples.vsphere.common.vim.helpers.get_datastore_by_name import get_datastore_id
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'

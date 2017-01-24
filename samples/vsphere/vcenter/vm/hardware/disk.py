@@ -19,7 +19,7 @@ from com.vmware.vcenter.vm.hardware_client import (IdeAddressSpec,
                                                    SataAddressSpec,
                                                    ScsiAddressSpec)
 from pyVim.connect import SmartConnect, Disconnect
-from samples.vsphere.vim.vmdk import (create_vmdk, delete_vmdk, detect_vmdk)
+from samples.vsphere.common.vim.vmdk import (create_vmdk, delete_vmdk, detect_vmdk)
 
 from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args_vm

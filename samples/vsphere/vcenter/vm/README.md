@@ -13,7 +13,7 @@ This directory contains samples for vCenter virtual machine APIs:
     * Configure virtual SCSI adapters of a virtual machine      - hardware/adapter/scsi.py
     * Configure the booting settings for virtual machine        - hardware/boot.py
     * Configure the boot devices used by a virtual machine      - hardware/boot_device.py
-    * Configure CD-ROM devices for a virtual machine           - hardware/cdrom.py
+    * Configure CD-ROM devices for a virtual machine            - hardware/cdrom.py
     * Configure CPU settings for a virtual machine              - hardware/cpu.py
     * Configure disk settings for a virtual machine             - hardware/disk.py
     * Configure virtual ethernet adapters of a virtual machine  - hardware/ethernet.py
@@ -34,12 +34,12 @@ You have two options to run samples inside this package:
 
     For example, to run the create_default_vm sample in the samples.vsphere.vcenter.vm.create package:
 
-    * $ cd /path/to/VMware-vSphere-Automation-SDK-Python-<version>/client/bin
+    * $ cd /path/to/vsphere-automation-sdk-python-samples/bin
 
     * Run the sample with the testbed settings specified in setup.py in a Linux machine:
 
-       $ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/vm/create/create_default_vm.py -v
+       $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -v
 
     * Or specify the credentials using command line parameters:
 
-       $ ./run_sample.sh ../samples/src/vsphere/samples/vcenter/vm/create/create_default_vm.py -s &lt;server&gt; -u &lt;username&gt; -p &lt;password&gt; -v
+       $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -s &lt;server&gt; -u &lt;username&gt; -p &lt;password&gt; -v
