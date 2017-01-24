@@ -12,9 +12,9 @@
 
 import pyVim.task
 from pyVmomi import vim
+from samples.vsphere.common.vim.inventory import get_datastore_mo
 
-from samples.vsphere.vim import datastore_file
-from samples.vsphere.vim.inventory import get_datastore_mo
+from samples.vsphere.common.vim import datastore_file
 
 
 def create_vmdk(service_instance, datacenter_mo, datastore_path):

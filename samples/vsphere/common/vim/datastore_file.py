@@ -10,12 +10,11 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-import requests
-
 import pyVim.task
+import requests
 from pyVmomi import vim
 
-from samples.vsphere.vim.inventory import get_datacenter_for_datastore
+from samples.vsphere.common.vim.inventory import get_datacenter_for_datastore
 
 # TODO:
 # verify=False in all cases.  Expose this as a top level control

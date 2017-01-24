@@ -20,12 +20,12 @@ except ImportError:
     import urllib.request as urllib2
 
 from com.vmware.content_client import LibraryModel
-from com.vmware.content.library_client import ItemModel, StorageBacking
+from com.vmware.content.library_client import StorageBacking
 from samples.vsphere.common.id_generator import generate_random_uuid
 from samples.vsphere.common.sample_base import SampleBase
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
-from samples.vsphere.vim.helpers.get_datastore_by_name import get_datastore_id
+from samples.vsphere.common.vim.helpers import get_datastore_id
 
 
 __author__ = 'VMware, Inc.'

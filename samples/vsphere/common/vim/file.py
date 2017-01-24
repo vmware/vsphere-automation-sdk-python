@@ -12,8 +12,9 @@
 
 import re
 
-from samples.vsphere.vim import datastore_file
-from samples.vsphere.vim.inventory import get_datastore_mo
+from samples.vsphere.common.vim.inventory import get_datastore_mo
+
+from samples.vsphere.common.vim import datastore_file
 
 datastore_path_regex = re.compile('\[(.+)\]\s?(.*)')
 

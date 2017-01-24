@@ -10,9 +10,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-from samples.vsphere.vim.file import (detect_directory,
-                                      create_directory,
-                                      delete_directory)
+from samples.vsphere.common.vim.file import (detect_directory,
+                                             create_directory,
+                                             delete_directory)
 
 
 def setup(context):

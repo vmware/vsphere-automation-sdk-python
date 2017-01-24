@@ -16,11 +16,13 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2014, 2016 VMware, Inc. All rights reserved.'
 
 import time
-from com.vmware.vapi.std_client import DynamicID
+
 from com.vmware.cis.tagging_client import (
     Category, CategoryModel, Tag, TagAssociation)
-from samples.vsphere.vim.helpers.get_cluster_by_name import get_cluster_id
+from com.vmware.vapi.std_client import DynamicID
+
 from samples.vsphere.common.sample_base import SampleBase
+from samples.vsphere.common.vim.helpers.get_cluster_by_name import get_cluster_id
 
 
 class TaggingWorkflow(SampleBase):

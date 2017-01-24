@@ -19,15 +19,14 @@ except ImportError:
 
 from com.vmware.content.library_client import Item
 from com.vmware.vcenter.ovf_client import LibraryItem
-
 from pyVmomi import vim
 
 from samples.vsphere.common.id_generator import generate_random_uuid
 from samples.vsphere.common.sample_base import SampleBase
+from samples.vsphere.common.vim.helpers import (
+    get_obj, get_obj_by_moId, poweron_vm, poweroff_vm, delete_object)
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
-from samples.vsphere.vim.helpers.vim_utils import (
-    get_obj, get_obj_by_moId, poweron_vm, poweroff_vm, delete_object)
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'

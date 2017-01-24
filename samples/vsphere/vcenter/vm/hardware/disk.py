@@ -19,16 +19,16 @@ from com.vmware.vcenter.vm.hardware_client import (IdeAddressSpec,
                                                    SataAddressSpec,
                                                    ScsiAddressSpec)
 from pyVim.connect import SmartConnect, Disconnect
+from samples.vsphere.vim.vmdk import (create_vmdk, delete_vmdk, detect_vmdk)
+
 from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args_vm
 from samples.vsphere.common.sample_util import pp
 from samples.vsphere.common.ssl_helper import get_unverified_context
-from samples.vsphere.vcenter.setup import testbed
-from samples.vsphere.vim.inventory import \
+from samples.vsphere.common.vim.inventory import \
     (get_datacenter_for_datastore, get_datastore_mo)
-from samples.vsphere.vim.vmdk import (create_vmdk, delete_vmdk, detect_vmdk)
-
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
+from samples.vsphere.vcenter.setup import testbed
 
 """
 Demonstrates how to configure disk settings for a VM.

@@ -14,8 +14,9 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 
 from pyVmomi import vim
+
 from samples.vsphere.common.sample_base import SampleBase
-from samples.vsphere.vim.helpers.vim_utils import get_obj
+from samples.vsphere.common.vim.helpers import get_obj
 
 
 class GetClusterByName(SampleBase):

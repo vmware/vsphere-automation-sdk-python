@@ -15,14 +15,14 @@
 from com.vmware.vcenter.vm.hardware_client import Parallel
 from com.vmware.vcenter.vm_client import Power
 from pyVim.connect import SmartConnect, Disconnect
+
 from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args_vm
 from samples.vsphere.common.sample_util import pp
 from samples.vsphere.common.ssl_helper import get_unverified_context
-from samples.vsphere.vcenter.setup import testbed
-from samples.vsphere.vim.file import delete_file
-
+from samples.vsphere.common.vim.file import delete_file
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
+from samples.vsphere.vcenter.setup import testbed
 
 """
 Demonstrates how to configure Parallel ports for a VM.
