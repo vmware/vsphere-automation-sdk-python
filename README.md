@@ -76,10 +76,6 @@ Next, using a text editor open ../samples/vsphere/vcenter/setup/testbed.py and e
 
 Save and close the file. 
 
-Next, on OSX/Linux we will ensure our setup script we use to run the samples is set to execute, run the following:
-
-    $ chmod +x ./run_sample.sh
-
 At this point, we're ready to run the setup script. 
 
 This script will perform the following:
@@ -113,8 +109,8 @@ This SDK includes a sample script which can be used to perform a number of actio
 
     $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -rit
 
-## API Documentation and Programming Guide
-The API documentation for the samples can be found here : TODO
+## API Documentation
+The API documentation can be found here : TODO
 
 ## Submitting samples
 ### Required Information
