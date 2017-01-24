@@ -72,6 +72,7 @@ Next, using a text editor open ../samples/vsphere/vcenter/setup/testbed.py and e
 
     config["USE_NFS"]   = True
     config["NFS_HOST"]  = "<nfs_ipaddress>"
+    config["NFS_REMOTE_PATH"] = "/store1"
 
 Save and close the file. 
 
