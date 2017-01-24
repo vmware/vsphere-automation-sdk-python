@@ -59,7 +59,7 @@ First, from the command line change to the SDK ./bin folder.
 
     $ cd /path/to/VMware-vSphere-Automation-SDK-Python-<version>/bin
 
-Next, using a text editor open ../vsphere/samples/vcenter/setup/testbed.py and edit the following settings replace everything in < > brackts with your environment information. Leave the rest of the settings in this file at their default values.
+Next, using a text editor open ../samples/vsphere/vcenter/setup/testbed.py and edit the following settings replace everything in < > brackts with your environment information. Leave the rest of the settings in this file at their default values.
 
     config["SERVER"]    = "<vcenter_hostname_or_ip>"
     config["USERNAME"]  = "<vsphere_username>"
@@ -97,20 +97,20 @@ This script will perform the following:
 
 **To view the available command-line options:**
 
-    $ ./run_sample.sh ../vsphere/samples/vcenter/setup/main.py -h
+    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -h
 
 **To run the setup script:**
 
-    $ ./run_sample.sh ../vsphere/samples/vcenter/setup/main.py -st
+    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -st
 
 After completion you will see from the output and also the vSphere Webclient that the environment has now been fully setup and is ready to easily run further samples.
 
 ### Running a complex sample
-This SDK includes a sample script which can be used to perform a number of actions and give you an indication of how to perform multiple vCenter actions, this script is located in the /vsphere/samples/vcenter/setup/ directory, use the following instructions to run this sample:
+This SDK includes a sample script which can be used to perform a number of actions and give you an indication of how to perform multiple vCenter actions, this script is located in the /samples/vsphere/vcenter/setup/ directory, use the following instructions to run this sample:
 
 **Run the vAPI vCenter sample suite:**
 
-    $ ./run_sample.sh ../vsphere/samples/vcenter/setup/main.py -rit
+    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -rit
 
 ## API Documentation and Programming Guide
 The API documentation for the samples can be found here : TODO
