@@ -23,10 +23,16 @@
   - [Approval of Additions](#approval-of-additions)
 
 ## Abstract
-This document describes the vSphere Automation Python SDK samples that use the vSphere Automation python client library. Additionally, some of the samples demonstrate the combined use of the vSphere Automation and vSphere APIs. To support this combined use, the vSphere Automation Python SDK samples require the vSphere Management SDK packages (pyVmomi) to be installed on the client. The examples have been developed to work with python 2.7, 3.3, 3.4 and 3.5.
+This document describes the vSphere Automation Python SDK samples that use the vSphere Automation
+python client library. Additionally, some of the samples demonstrate the combined use of the
+vSphere Automation and vSphere APIs. To support this combined use, the vSphere Automation Python SDK
+samples require the vSphere Management SDK packages (pyVmomi) to be installed on the client.
+The examples have been developed to work with python 2.7, 3.3, 3.4 and 3.5. (TODO: verify 3.6)
 
 ## Quick Start Guide
-This document will walk you through getting up and running with the Python SDK Samples. Prior to running the samples you will need to setup a vCenter test environment and install local Python packages, the following steps will take you through this process.
+This document will walk you through getting up and running with the Python SDK Samples.
+Prior to running the samples you will need to setup a vCenter test environment and
+install local Python packages, the following steps will take you through this process.
 
 Before you can run the SDK samples we'll need to walk you through the following steps:
 
@@ -36,7 +42,10 @@ Before you can run the SDK samples we'll need to walk you through the following 
 4. Running SDK Samples setup script
 
 ### Installing the required Python Packages
-**Note:** The SDK requires Python v2.7 (preferably v2.7.12+) to run the setup/samples, please make sure you have the appropriate version installed before continuing. If you are on macOS/OSX/Linux, please note that the system installed version of Python may be outdated and/or not be intended for development and we recommended you [install Python](http://docs.python-guide.org/en/latest/starting/installation/) yourself before installing the required packages. [Virtualenv](https://virtualenv.pypa.io/en/stable/) is also highly recommended.
+**Note:** The SDK requires Python v2.7+ (preferably v3.5) to run the setup/samples,
+please make sure you have the appropriate version installed before continuing.
+If you are on macOS/OSX/Linux, please note that the system installed version of
+Python may be outdated and/or not be intended for development and we recommended you [install Python](http://docs.python-guide.org/en/latest/starting/installation/) yourself before installing the required packages. [Virtualenv](https://virtualenv.pypa.io/en/stable/) is also highly recommended.
 
 The required packages are listed in the requirements.txt file and installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
 

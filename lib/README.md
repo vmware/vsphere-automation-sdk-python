@@ -1,9 +1,9 @@
-This directory contains samples for Platform Service Controller, SSO and Lookup Service APIs:
+# SDK libraries
 
-Running the samples
+For python developers, client libraries are supplied for testing and development purposes. All the supplied libraries are located under lib directory.
 
-    * $ cd /path/to/vsphere-automation-sdk-python-samples/bin
-    * $ ./run_sample.sh ../samples/vsphere/tagging/tagging_workflow.py --server <vCenter Server IP> --username <username> --password <password> --clustername <clustername> --categoryname <categoryname> --categorydesc <categorydesc> --tagname <tagname> -tagdesc <tagdesc> -v
-
-* Testbed Requirement:
-    - 1 vCenter Server
+Name                           | Description
+-------------------------------| -------------
+vapi_runtime-<version>	       | vAPI runtime responsible for serialization/de-serialization of objects and wire protocol
+vapi_common_client-<version>   | vAPI common client code
+vapi_client_bindings-<version> | client stubs for vSphere Automation APIs
