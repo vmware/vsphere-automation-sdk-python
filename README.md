@@ -107,7 +107,7 @@ This script will perform the following:
 
 **To run the setup script:**
 
-    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -st
+    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -sv
 
 After completion you will see from the output and also the vSphere Webclient that the environment has now been fully setup and is ready to easily run further samples.
 
@@ -116,7 +116,7 @@ This SDK includes a sample script which can be used to perform a number of actio
 
 **Run the vAPI vCenter sample suite:**
 
-    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -rit
+    $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -riv
 
 ## API Documentation
 The API documentation can be found here : TODO
