@@ -2,19 +2,16 @@
 
 The directory vsphere.samples.vcenter contains samples for the vSphere infrastructure and virtual machine APIs. You have two options to run samples inside this package:
 
-    * Run all samples under vcenter folder using main.py in samples.vsphere.vcenter.setup package.
-    Please see the [README](../../../README.md#running-a-complex-sample) for more details.
+* Run all samples under vcenter folder using main.py in samples.vsphere.vcenter.setup package. Please see the [README](../../../README.md#running-a-complex-sample) for more details.
 
-    * Run an individual sample in an existing environment.
-    You can either pass the environment parameters through command line arguments or specify them in setup.py in the setup package.
-    For example, to run the create_default_vm sample in the vsphere.samples.vcenter.vm.create package:
+* Run an individual sample in an existing environment. You can either pass the environment parameters through command line arguments or specify them in setup.py in the setup package.
+ 
+   For example, to run the create_default_vm sample in the vsphere.samples.vcenter.vm.create package:
 
-        $ cd /path/to/vsphere-automation-sdk-python-samples/client/bin
+      * with the testbed settings specified in testbed.py in a Linux machine:
 
-        * Run the sample with the testbed settings specified in setup.py in a Linux machine:
+         $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -v
 
-            $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -v
+      * Or specify the credentials using command line parameters:
 
-        * Or specify the credentials using command line parameters:
-
-            $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -s <server> -u <username> -p <password> -v
+         $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -s <server> -u <username> -p <password> -v
