@@ -22,14 +22,14 @@ def build_arg_parser():
     setup script
 
     -s, --testbed_setup
-    -v, --testbed_validate
+    -t, --testbed_validate
     -c, --testbed_cleanup
     -o, --iso_cleanup
     -e, --samples_setup
     -r, --samples
     -i, --samples_incremental
     -l, --samples_cleanup
-    -t, --skipverification
+    -v, --skipverification
 
     """
     parser = argparse.ArgumentParser(
@@ -41,7 +41,7 @@ def build_arg_parser():
                              'trying to build in case there is '
                              'an intermediate failure')
 
-    parser.add_argument('-v', '--testbed_validate',
+    parser.add_argument('-t', '--testbed_validate',
                         action='store_true',
                         help='Validate if the testbed is ready for the samples')
 
@@ -70,7 +70,7 @@ def build_arg_parser():
                         action='store_true',
                         help='Clean up after sample run. ')
 
-    parser.add_argument('-t', '--skipverification',
+    parser.add_argument('-v', '--skipverification',
                         action='store_true',
                         help='Verify server certificate when connecting to '
                              'vcenter. ')
