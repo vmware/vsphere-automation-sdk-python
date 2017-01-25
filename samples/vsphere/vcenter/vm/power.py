@@ -56,8 +56,8 @@ def run():
     global vm
     vm = get_vm(stub_config, vm_name)
     if not vm:
-        exit('Sample requires an existing vm with name ({}). '
-             'Please create the vm first.'.format(vm_name))
+        raise Exception('Sample requires an existing vm with name ({}).'
+                        'Please create the vm first.'.format(vm_name))
     print("Using VM '{}' ({}) for Power Sample".format(vm_name, vm))
 
     # Create Power stub used for making requests

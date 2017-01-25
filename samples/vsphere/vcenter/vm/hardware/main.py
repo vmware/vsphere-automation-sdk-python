@@ -71,8 +71,8 @@ def validate(context):
         if not get_vm(context.stub_config, name):
             valid = False
     if not valid:
-        exit('==> Samples Setup validation failed: '
-              'Missing VMs required to run hardware samples')
+        raise Exception('==> Samples Setup validation failed: '
+                        'Missing VMs required to run hardware samples')
     print('==> Samples Setup validated')
 
 

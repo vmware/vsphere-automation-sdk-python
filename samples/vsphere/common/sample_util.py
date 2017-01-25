@@ -55,9 +55,9 @@ def parse_cli_args_vm(vm_name):
     if args.vm_name:
         vm_name = args.vm_name
     else:
-        print("Using vm name({}) specified in testbed.py".format(vm_name))
+        print("Try to use vm name({}) specified in testbed.py".format(vm_name))
     if not vm_name:
-        exit("vm name is required")
+        raise Exception("vm name is required")
     print("vm name = {}".format(vm_name))
 
     return server, username, password, cleardata, skip_verification, vm_name
@@ -74,7 +74,7 @@ def process_cli_args(args):
         print("Using vcenter server specified in testbed.py")
         server = testbed.config['SERVER']
     if not server:
-        exit("vcenter server is required")
+        raise Exception("vcenter server is required")
     print("vcenter server = {}".format(server))
 
     if args.username:
@@ -83,8 +83,8 @@ def process_cli_args(args):
         print("Using vc user specified in testbed.py")
         username = testbed.config['USERNAME']
     if not username:
-        exit("vc user is required")
-    print("vc user = {}".format(username))
+        raise Exception("vc username is required")
+    print("vc username = {}".format(username))
 
     if args.password:
         password = args.password

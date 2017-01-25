@@ -32,19 +32,19 @@ Inputs:
   different folders looking for the entities.
 
 * Two Datacenters
-  * "Sample DC 1"
-  * "Sample DC 2"
+  * "Sample_DC_1"
+  * "Sample_DC_2"
 * One Cluster
-  * "Sample Cluster"
+  * "Sample_Cluster"
 * 2 host environment
-  * 1 host in Sample Cluster in Sample DC 1
+  * 1 host in Sample Cluster in Sample_DC_1
   * One network adapter per Host
   * Name of Host will be the IP address
 * 3 Datastores, any constraints?
   * Shared NFS Datastore
-    * "Shared NFS Volume"
+    * "Shared_NFS_Volume"
   * 2 Local VMFS Datastore (name the datastores based on the host)
-    * "Local VMFS Datastore on <host_ip>"
+    * "Local_VMFS_Datastore_on_<host_ip>"
 * 1 Standard Portgroups (verify)
     * "VM Network" (the default created per host)
 * 1 Distributed Switch ("DSwitch 1")
