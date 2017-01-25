@@ -11,10 +11,10 @@ The directory vsphere.samples.vcenter contains samples for the vSphere infrastru
 
         $ cd /path/to/vsphere-automation-sdk-python-samples/client/bin
 
-        Run the sample with the testbed settings specified in setup.py in a Linux machine:
+        * Run the sample with the testbed settings specified in setup.py in a Linux machine:
 
             $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -v
 
-        Or specify the credentials using command line parameters:
+        * Or specify the credentials using command line parameters:
 
             $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -s <server> -u <username> -p <password> -v
