@@ -1,6 +1,4 @@
-## vAPI Samples for Managing vSphere Infrastructure and Virtual Machines
-
-The directory vsphere.samples.vcenter contains samples for the vSphere infrastructure and virtual machine APIs. You have two options to run samples inside this package:
+This directory contains samples for the vSphere infrastructure and virtual machine APIs. You have two options to run samples inside this package:
 
 * Run all samples under vcenter folder using main.py in samples.vsphere.vcenter.setup package. Please see the [README](../../../README.md#running-a-complex-sample) for more details.
 
