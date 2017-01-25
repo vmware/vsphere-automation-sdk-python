@@ -21,25 +21,3 @@ This directory contains samples for vCenter virtual machine APIs:
     * Configure Memory settings of a virtual machine            - hardware/memory.py
     * Configure Parallel ports for a virtual machine            - hardware/parallel.py
     * Configure Serial ports for a virtual machine              - hardware/serial.py
-
-You have two options to run samples inside this package:
-
-1.  Run the whole sample suite which contains all vcenter samples using main.py
-    in samples.vsphere.vcenter.setup package.
-    Please see the README in the setup package for detailed steps.
-
-2.  Run an individual sample in an existing environment.
-    You can either pass the testbed settings through command line
-    arguments or specify them in setup.py in the setup package.
-
-    For example, to run the create_default_vm sample in the samples.vsphere.vcenter.vm.create package:
-
-    * $ cd /path/to/vsphere-automation-sdk-python-samples/bin
-
-    * Run the sample with the testbed settings specified in setup.py in a Linux machine:
-
-       $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -v
-
-    * Or specify the credentials using command line parameters:
-
-       $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -s &lt;server&gt; -u &lt;username&gt; -p &lt;password&gt; -v

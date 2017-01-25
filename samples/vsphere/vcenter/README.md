@@ -2,7 +2,7 @@ This directory contains samples for the vSphere infrastructure and virtual machi
 
 * Run all samples under vcenter folder using main.py in samples.vsphere.vcenter.setup package. Please see the [README](../../../README.md#running-a-complex-sample) for more details.
 
-* Run an individual sample in an existing environment. You can either pass the environment parameters through command line arguments or specify them in setup.py in the setup package.
+* Run an individual sample in an existing environment. You can either pass the environment parameters through command line arguments or specify them in testbed.py in the setup package.
  
    For example, to run the create_default_vm sample in the vsphere.samples.vcenter.vm.create package:
 
