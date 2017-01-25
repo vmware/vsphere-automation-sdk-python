@@ -1,4 +1,4 @@
-vAPI Samples for Managing vSphere Infrastructure and Virtual Machines
+## vAPI Samples for Managing vSphere Infrastructure and Virtual Machines
 
 The directory vsphere.samples.vcenter contains samples for the vSphere infrastructure and virtual machine APIs. You have two options to run samples inside this package:
 
@@ -9,12 +9,12 @@ The directory vsphere.samples.vcenter contains samples for the vSphere infrastru
     You can either pass the environment parameters through command line arguments or specify them in setup.py in the setup package.
     For example, to run the create_default_vm sample in the vsphere.samples.vcenter.vm.create package:
 
-        * $ cd /path/to/vsphere-automation-sdk-python-samples/client/bin
+        $ cd /path/to/vsphere-automation-sdk-python-samples/client/bin
 
-        * Run the sample with the testbed settings specified in setup.py in a Linux machine:
+        Run the sample with the testbed settings specified in setup.py in a Linux machine:
 
-            * $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -v
+            $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -v
 
-        * Or specify the credentials using command line parameters:
+        Or specify the credentials using command line parameters:
 
-            * $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -s <server> -u <username> -p <password> -v
+            $ ./run_sample.sh ../samples/vsphere/vcenter/vm/create/create_default_vm.py -s <server> -u <username> -p <password> -v
