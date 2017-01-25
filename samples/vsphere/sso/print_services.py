@@ -32,8 +32,13 @@ class PrintServices(object):
     def options(self):
         self.argparser = argparse.ArgumentParser(description=self.__doc__)
         # setup the argument parser
-        self.argparser.add_argument('-lswsdlurl', '--lswsdlurl', help='Lookup service WSDL URL')
-        self.argparser.add_argument('-lssoapurl', '--lssoapurl', help='Lookup service SOAP URL')
+        self.argparser.add_argument('-w', '--lswsdlurl',
+                                    help='Lookup service WSDL URL')
+        self.argparser.add_argument('-s', '--lssoapurl',
+                                    help='Lookup service SOAP URL')
+        self.argparser.add_argument('-v', '--skipverification',
+                                    action='store_true',
+                                    help='Do not verify server certificate')
         self.args = self.argparser.parse_args()   # parse all the sample arguments when they are all set
 
     def setup(self):
@@ -45,9 +50,13 @@ class PrintServices(object):
         assert self.lssoapurl is not None
         print('lssoapurl: {0}'.format(self.lssoapurl))
 
+        self.skip_verification = self.args.skipverification
+
     def execute(self):
         print('Connecting to lookup service url: {0}'.format(self.lssoapurl))
-        lookupservicehelper = LookupServiceHelper(wsdl_url=self.lswsdlurl, soap_url=self.lssoapurl)
+        lookupservicehelper = LookupServiceHelper(wsdl_url=self.lswsdlurl,
+                                                  soap_url=self.lssoapurl,
+                                                  skip_verification=self.skip_verification)
         lookupservicehelper.connect()
 
         # print the PSC nodes and SSO service endpoint URLs
