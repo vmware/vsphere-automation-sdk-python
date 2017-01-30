@@ -13,17 +13,17 @@
 """
 
 config = {}
-config["SERVER"] = "10.192.34.73"
+config["SERVER"] = ""
 config["USERNAME"] = "administrator@vsphere.local"
 config["PASSWORD"] = "Admin!23"
 
-config["ESX_HOST1"] = "10.192.49.29"
-config["ESX_HOST2"] = "10.192.51.199"
-config["ESX_USER"] = "root"
+config["ESX_HOST1"] = ""
+config["ESX_HOST2"] = ""
+config["ESX_USER"] = ""
 config["ESX_PASS"] = ""
 
 config["USE_NFS"] = True
-config["NFS_HOST"] = "10.192.43.16"
+config["NFS_HOST"] = ""
 config["NFS_REMOTE_PATH"] = "/store1"
 config["NFS_DATASTORE_NAME"] = "Shared_NFS_Volume"
 
@@ -41,7 +41,7 @@ config["CLUSTER1_NAME"] = "Cluster1"
 config["VDSWITCH1_NAME"] = "DSwitch1"
 config["VDPORTGROUP1_NAME"] = "Static_Portgroup_on_DSwitch_1"
 
-config["STDPORTGROUP_NAME"] = "VM_Network"
+config["STDPORTGROUP_NAME"] = "VM Network"
 
 # The main datacenter and datastore that will be used for the VM tests
 config["VM_DATACENTER_NAME"] = config["DATACENTER2_NAME"]
