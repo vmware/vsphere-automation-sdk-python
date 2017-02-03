@@ -68,7 +68,7 @@ First, from the command line change to the SDK ./bin folder.
 
     $ cd /path/to/vsphere-automation-sdk-python-samples/bin
 
-Next, using a text editor open ../samples/vsphere/vcenter/setup/testbed.py and edit the following settings replace everything in < > brackts with your environment information. Leave the rest of the settings in this file at their default values.
+Next, using a text editor open ../samples/vsphere/vcenter/setup/testbed.py and edit the following settings replace everything in < > brackets with your environment information. Leave the rest of the settings in this file at their default values.
 
     config["SERVER"]    = "<vcenter_hostname_or_ip>"
     config["USERNAME"]  = "<vsphere_username>"
