@@ -49,7 +49,9 @@ Python may be outdated and/or not be intended for development and we recommended
 
 The required packages are listed in the requirements.txt file and installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
 
-    pip install -r requirements.txt
+```cmd
+pip install -r requirements.txt
+```
 
 ### Setting up a vSphere Test Environment
 **NOTE:** The samples are intended to be run against a freshly installed **non-Production** vSphere setup as the scripts may make changes to the test environment and in some cases can destroy items when needed.
