@@ -66,22 +66,26 @@ Before executing the samples we'll need to setup the vSphere test environment us
 
 First, from the command line change to the SDK ./bin folder.
 
-    $ cd /path/to/vsphere-automation-sdk-python-samples/bin
+```
+$ cd /path/to/vsphere-automation-sdk-python-samples/bin
+```
 
 Next, using a text editor open ../samples/vsphere/vcenter/setup/testbed.py and edit the following settings replace everything in < > brackets with your environment information. Leave the rest of the settings in this file at their default values.
 
-    config["SERVER"]    = "<vcenter_hostname_or_ip>"
-    config["USERNAME"]  = "<vsphere_username>"
-    config["PASSWORD"]  = "<vsphere_password>"
+```
+config["SERVER"]    = "<vcenter_hostname_or_ip>"
+config["USERNAME"]  = "<vsphere_username>"
+config["PASSWORD"]  = "<vsphere_password>"
 
-    config["ESX_HOST1"] = "<ESX_host1_ipaddress>"
-    config["ESX_HOST2"] = "<ESX_host2_ipaddress>"
-    config["ESX_USER"]  = "<esx_username>"
-    config["ESX_PASS"]  = "<esx_password>"
+config["ESX_HOST1"] = "<ESX_host1_ipaddress>"
+config["ESX_HOST2"] = "<ESX_host2_ipaddress>"
+config["ESX_USER"]  = "<esx_username>"
+config["ESX_PASS"]  = "<esx_password>"
 
-    config["USE_NFS"]   = True
-    config["NFS_HOST"]  = "<nfs_ipaddress>"
-    config["NFS_REMOTE_PATH"] = "/store1"
+config["USE_NFS"]   = True
+config["NFS_HOST"]  = "<nfs_ipaddress>"
+config["NFS_REMOTE_PATH"] = "/store1"
+```
 
 Save and close the file. 
 
@@ -103,11 +107,15 @@ This script will perform the following:
 
 **To view the available command-line options:**
 
+```
     $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -h
+```
 
 **To run the setup script:**
 
+```
     $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -sv
+```
 
 After completion you will see from the output and also the vSphere Webclient that the environment has now been fully setup and is ready to easily run further samples.
 
@@ -116,7 +124,9 @@ This SDK includes a sample script which can be used to perform a number of actio
 
 **Run the vAPI vCenter sample suite:**
 
+```
     $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -riv
+```
 
 ## API Documentation
 The API documentation can be found here : TODO
