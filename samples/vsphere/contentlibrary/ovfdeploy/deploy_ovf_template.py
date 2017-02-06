@@ -52,7 +52,7 @@ class DeployOvfTemplate(SampleBase):
     def _options(self):
         self.argparser.add_argument('-clustername',
                                     '--clustername',
-                                    help='The name of the VM to be created in the cluster.')
+                                    help='The name of the cluster to be used.')
         self.argparser.add_argument('-libitemname',
                                     '--libitemname',
                                     help='The name of the library item to deploy.'
