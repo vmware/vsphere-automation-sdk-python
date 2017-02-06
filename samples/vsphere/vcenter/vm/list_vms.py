@@ -12,6 +12,7 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+import atexit
 from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args
 from samples.vsphere.common.sample_util import pp
@@ -34,37 +35,30 @@ def setup(context=None):
 									  username,
 									  password,
 									  skip_verification)
-	#atexit.register(vapiconnect.logout, stub_config)
+	atexit.register(vapiconnect.logout, stub_config)
 
 
 def run():
-    list_vms(stub_config)
-
-
-def list_vms(stub_config):
     """
     List VMs present in server
     """
     vm_svc = VM(stub_config)
     list_of_vms = vm_svc.list()
+    print "----------------------------"
+    print "List Of VMs"
+    print "----------------------------"
     for vm in list_of_vms:
         print ('{}'.format(vm))
-
-
-def cleanup():
-    pass
-
+    print "----------------------------"
+   
 
 def main():
     try:
         setup()
-        cleanup()
         run()
-        if cleardata:
-            cleanup()
     finally:
         if stub_config:
-            vapiconnect.logout(stub_config)
+            pass
 
 
 if __name__ == '__main__':
