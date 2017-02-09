@@ -29,9 +29,9 @@ vSphere Automation and vSphere APIs. To support this combined use, the vSphere A
 samples require the vSphere Management SDK packages (pyVmomi) to be installed on the client.
 The samples have been developed to work with python 2.7, 3.3, 3.4 and 3.5. (TODO: verify 3.6)
 
-## Supported vSphere Releases:
-vSphere 6.0 and 6.5. 
-Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Plesae refer to notes in each sample for detailed compatibility information. 
+## Supported vCenter Releases:
+vCenter 6.0 and 6.5. 
+Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Plesae refer to the notes in each sample for detailed compatibility information. 
 
 ## Quick Start Guide
 This document will walk you through getting up and running with the Python SDK Samples.
