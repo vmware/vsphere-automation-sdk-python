@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 """
 * *******************************************************
 * Copyright (c) VMware, Inc. 2016. All Rights Reserved.
@@ -11,6 +9,9 @@
 * WARRANTIES OR CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY,
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
+
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 config = {}
 config["SERVER"] = ""
@@ -95,7 +96,7 @@ class Testbed(object):
 
     @config.setter
     def config(self, value):
-        'setting'
+        """setting"""
         self._config = value
 
     @property
@@ -104,7 +105,7 @@ class Testbed(object):
 
     @entities.setter
     def entities(self, value):
-        'setting'
+        """setting"""
         self._entities = value
 
     def to_config_string(self):

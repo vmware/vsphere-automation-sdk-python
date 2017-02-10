@@ -10,6 +10,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
 from com.vmware.vcenter_client import VM
 
 from samples.vsphere.vcenter.helper import datastore_helper

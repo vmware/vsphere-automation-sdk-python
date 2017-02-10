@@ -10,6 +10,10 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+__vcenter__ = 'since 6.0'
+
 from pyVmomi import vim
 
 from samples.vsphere.vcenter.helper.datastore_helper import get_datastore

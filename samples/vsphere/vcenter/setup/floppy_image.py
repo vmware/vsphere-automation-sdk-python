@@ -10,6 +10,10 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
+
 from samples.vsphere.common.vim.file import (detect_file, delete_file,
                                       parse_datastore_path)
 from samples.vsphere.common.vim.inventory import get_datastore_mo

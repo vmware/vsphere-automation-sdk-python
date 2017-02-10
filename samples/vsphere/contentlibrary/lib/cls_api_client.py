@@ -10,6 +10,8 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
 
 from com.vmware.content_client import (Library,
                                        LocalLibrary,
@@ -22,10 +24,6 @@ from com.vmware.content.library.item.updatesession_client import File as UpdateS
 from com.vmware.vcenter_client import VM
 from com.vmware.vcenter.iso_client import Image
 from com.vmware.vcenter.ovf_client import LibraryItem
-
-
-__author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
 
 
 class ClsApiClient(object):

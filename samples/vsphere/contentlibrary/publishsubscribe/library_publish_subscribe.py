@@ -12,6 +12,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
+
 try:
     import urllib2
 except ImportError:
@@ -25,9 +28,6 @@ from samples.vsphere.common.sample_base import SampleBase
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 from samples.vsphere.contentlibrary.lib.cls_sync_helper import ClsSyncHelper
-
-__author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
 
 
 class LibraryPublishSubscribe(SampleBase):
@@ -174,7 +174,7 @@ class LibraryPublishSubscribe(SampleBase):
         self.sub_lib_id = self.client.subscribed_library_service.create(
             create_spec=sub_spec, client_token=generate_random_uuid())
         sub_lib = self.client.subscribed_library_service.get(self.sub_lib_id)
-        return (sub_lib, sub_spec)
+        return sub_lib, sub_spec
 
     def _cleanup(self):
         if self.sub_lib_id:

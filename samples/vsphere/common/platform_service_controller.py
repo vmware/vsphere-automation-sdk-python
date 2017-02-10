@@ -10,7 +10,6 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 
@@ -19,7 +18,6 @@ from samples.vsphere.common import sso
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
 
 from samples.vsphere.common.ssl_helper import get_unverified_context
-
 
 
 class PlatformServiceController(object):

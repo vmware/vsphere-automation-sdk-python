@@ -10,6 +10,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
 from six.moves import cStringIO
 from vmware.vapi.bindings.struct import PrettyPrinter
 

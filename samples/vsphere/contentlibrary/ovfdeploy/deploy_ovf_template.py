@@ -12,6 +12,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
+
 try:
     import urllib2
 except ImportError:
@@ -28,8 +31,6 @@ from samples.vsphere.common.vim.helpers.vim_utils import (
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 
-__author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
 
 
 class DeployOvfTemplate(SampleBase):

@@ -1,10 +1,21 @@
-import time
+"""
+* *******************************************************
+* Copyright VMware, Inc. 2016. All Rights Reserved.
+* *******************************************************
+*
+* DISCLAIMER. THIS PROGRAM IS PROVIDED TO YOU "AS IS" WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, WHETHER ORAL OR WRITTEN,
+* EXPRESS OR IMPLIED. THE AUTHOR SPECIFICALLY DISCLAIMS ANY IMPLIED
+* WARRANTIES OR CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY,
+* NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
+"""
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
 
+import time
 
-class ClsSyncHelper():
+class ClsSyncHelper:
     """
     Helper class to wait for the subscribed libraries and items to be
     synchronized completely with the publisher.

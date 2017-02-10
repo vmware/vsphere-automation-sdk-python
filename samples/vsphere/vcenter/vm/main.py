@@ -10,6 +10,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
 import samples.vsphere.vcenter.helper.network_helper
 import samples.vsphere.vcenter.vm.hardware.main
 import samples.vsphere.vcenter.vm.placement

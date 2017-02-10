@@ -10,6 +10,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
 import re
 
 from samples.vsphere.common.vim.inventory import get_datastore_mo
@@ -24,8 +27,8 @@ def parse_datastore_path(datastore_path):
     m = datastore_path_regex.match(datastore_path)
     if m:
         (datastore_name, path) = m.groups()
-        return (datastore_name, path)
-    return (None, None)
+        return datastore_name, path
+    return None, None
 
 
 def detect_directory(context, description, datacenter_name, datastore_path):

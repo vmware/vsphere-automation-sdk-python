@@ -12,6 +12,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
 try:
     import urllib2
 except ImportError:
@@ -24,8 +27,6 @@ from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
-__author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 
 class CaptureVMTemplateToContentLibrary(SampleBase):

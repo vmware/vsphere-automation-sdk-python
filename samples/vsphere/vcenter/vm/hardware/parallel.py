@@ -12,6 +12,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
 from com.vmware.vcenter.vm.hardware_client import Parallel
 from com.vmware.vcenter.vm_client import Power
 from pyVim.connect import SmartConnect, Disconnect

@@ -17,6 +17,10 @@
 Script that runs through all the setup and samples.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
+
 import pyVim.connect
 from samples.vsphere.common import sample_util
 from samples.vsphere.common import vapiconnect

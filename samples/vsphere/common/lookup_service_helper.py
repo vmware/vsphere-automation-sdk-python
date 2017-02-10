@@ -308,7 +308,7 @@ class LookupServiceHelper(object):
             raise Exception('No management node found')
         if len(result) > 1:
             raise MultipleManagementNodeException(MultipleManagementNodeException.format(result))
-        return (list(result.keys())[0], list(result.values())[0])  # python 3.x dict.keys() returns a view rather than a list
+        return list(result.keys())[0], list(result.values())[0]  # python 3.x dict.keys() returns a view rather than a list
 
 
 class MultipleManagementNodeException(Exception):

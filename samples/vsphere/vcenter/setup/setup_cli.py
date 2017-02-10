@@ -13,6 +13,11 @@
 """
 This module implements simple helper functions for python samples
 """
+
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+
+
 import argparse
 
 
