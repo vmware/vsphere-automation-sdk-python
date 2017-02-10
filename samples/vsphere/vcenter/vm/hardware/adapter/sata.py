@@ -14,6 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+__vcenter_version__ = '6.5+'
 
 from com.vmware.vcenter.vm.hardware.adapter_client import Sata
 from samples.vsphere.common import vapiconnect
