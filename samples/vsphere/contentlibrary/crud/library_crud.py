@@ -14,6 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+__vcenter_version__ = '6.0+'
 
 from com.vmware.content.library_client import StorageBacking
 from com.vmware.content_client import LibraryModel

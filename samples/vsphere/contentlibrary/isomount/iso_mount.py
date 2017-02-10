@@ -14,6 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+__vcenter_version__ = '6.5+'
 
 from samples.vsphere.common.sample_base import SampleBase
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
