@@ -176,7 +176,7 @@ Any bugs or other issues should be filed within GitHub by way of the repositoryâ
 Any community member can resolve issues within the repository, however only the board member can approve the update. Once approved, assuming the resolution involves a pull request, only a board member will be able to merge and close the request.
 
 ### VMware Sample Exchange
-It is highly recommended to add any and all submitted samples to the VMware Sample Exchange:  <https://developercenter.vmware.com/samples>
+It is highly recommended to add any and all submitted samples to the VMware Sample Exchange:  <https://code.vmware.com/samples>
 
 Sample Exchange can be allowed to access your GitHub resources, by way of a linking process, where they can be indexed and searched by the community. There are VMware social media accounts which will advertise resources posted to the site and there's no additional accounts needed, as the VMware Sample Exchange uses MyVMware credentials.     
 
