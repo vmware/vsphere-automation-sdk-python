@@ -32,7 +32,7 @@ def get_jsonrpc_endpoint_url(host):
 
 def connect(host, user, pwd, skip_verification=False, suppress_warning=True):
     """
-    Create an authenticated stub configuraiton object that can be used to issue
+    Create an authenticated stub configuration object that can be used to issue
     requests against vCenter.
 
     Returns a stub_config that stores the session identifier that can be used
@@ -83,7 +83,7 @@ def logout(stub_config):
         session_svc.delete()
 
 
-def create_unverified_session(session, suppress_warning):
+def create_unverified_session(session, suppress_warning=True):
     """
     Create a unverified session to disable the server certificate verification.
     """
