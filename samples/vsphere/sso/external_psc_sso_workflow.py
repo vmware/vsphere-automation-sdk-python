@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2017. All Rights Reserved.
 * *******************************************************
 *
 * DISCLAIMER. THIS PROGRAM IS PROVIDED TO YOU "AS IS" WITHOUT
@@ -16,9 +16,12 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.0+'
 
+import os
 import argparse
 import requests
 from pprint import pprint
+
+from six.moves.urllib import request, parse
 
 from com.vmware.cis_client import Session
 from com.vmware.vcenter_client import Datacenter
@@ -57,7 +60,10 @@ class ExternalPscSsoWorkflow(object):
         self.argparser = argparse.ArgumentParser(description=self.__doc__)
         # setup the argument parser
         self.argparser.add_argument('-w', '--lswsdl',
-                                    help='Lookup service WSDL')
+                                    help='Path to the Lookup Service WSDL. '
+                                         'By default, lookupservice.wsdl in '
+                                         '../wsdl will be used if the parameter'
+                                         ' is absent')
         self.argparser.add_argument('-s', '--lsurl', help='Lookup service URL')
         self.argparser.add_argument('-m', '--mgmtinstancename',
                                     help='Instance name of the vCenter Server '
@@ -76,6 +82,11 @@ class ExternalPscSsoWorkflow(object):
 
     def setup(self):
         self.lswsdl = self.args.lswsdl
+        if not self.lswsdl:
+            self.lswsdl = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                'wsdl',
+                'lookupservice.wsdl')
         assert self.lswsdl is not None
         print('lswsdl: {0}'.format(self.lswsdl))
 
@@ -98,6 +109,10 @@ class ExternalPscSsoWorkflow(object):
 
         print('\nStep 1: Connect to the lookup service on the '
               'Platform Services Controller node: {0}'.format(self.lsurl))
+
+        # Convert wsdl path to url
+        self.lswsdl = parse.urljoin('file:', request.pathname2url(self.lswsdl))
+
         lookupservicehelper = LookupServiceHelper(wsdl_url=self.lswsdl,
                                                   soap_url=self.lsurl,
                                                   skip_verification=self.skip_verification)
@@ -134,7 +149,7 @@ class ExternalPscSsoWorkflow(object):
         vapi_url = lookupservicehelper.find_vapi_url(self.mgmtnodeid)
         print('vAPI URL: {0}'.format(vapi_url))
 
-        print('\nStep 5. Login to vAPI services using the SAML bearer token.')
+        print('\nStep 5. Login to vAPI service using the SAML bearer token.')
 
         # Create an authenticated stub configuration object that can be used to
         # issue requests against vCenter.
@@ -154,7 +169,7 @@ class ExternalPscSsoWorkflow(object):
         session_sec_ctx = create_session_security_context(self.session_id)
         connector.set_security_context(session_sec_ctx)
 
-        print('\nStep 6: List available datacenters using the vAPI services')
+        print('\nStep 6: List available datacenters using the vAPI service')
 
         datacenter_svc = Datacenter(stub_config)
         pprint(datacenter_svc.list())
