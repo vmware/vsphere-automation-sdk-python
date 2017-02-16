@@ -48,19 +48,15 @@ class LookupServiceHelper(object):
 
             self.client = Client(url=self.wsdl_url, location=self.soap_url)
             assert self.client is not None
-            # print(self.client)
             self.client.set_options(service='LsService', port='LsPort')
 
         self.managedObjectReference = self.client.factory.create('ns0:ManagedObjectReference')
         self.managedObjectReference._type = 'LookupServiceInstance'
         self.managedObjectReference.value = 'ServiceInstance'
-        # print(self.managedObjectReference)
 
         lookupServiceContent = self.client.service.RetrieveServiceContent(self.managedObjectReference)
-        # print(lookupServiceContent)
 
         self.serviceRegistration = lookupServiceContent.serviceRegistration
-        # print(self.serviceRegistration)
 
     def find_sso_urls(self):
         """
@@ -189,10 +185,8 @@ class LookupServiceHelper(object):
         assert self.serviceRegistration is not None
 
         lookupServiceRegistrationFilter = self.__create_filter_spec(product, service, endpoint, protocol)
-        # print(lookupServiceRegistrationFilter)
 
         result = self.client.service.List(self.serviceRegistration, lookupServiceRegistrationFilter)
-        # print(result)
         assert len(result) > 0
         # Support for MxN
         # return the results in a dictionary where key is NodeId and Value is Service URL
@@ -212,10 +206,8 @@ class LookupServiceHelper(object):
         assert self.serviceRegistration is not None
 
         lookupServiceRegistrationFilter = self.__create_filter_spec(product, service, endpoint, protocol)
-        # print(lookupServiceRegistrationFilter)
 
         result = self.client.service.List(self.serviceRegistration, lookupServiceRegistrationFilter)
-        # print(result)
         assert len(result) > 0
 
         urls = []
@@ -254,20 +246,16 @@ class LookupServiceHelper(object):
         lookupServiceRegistrationServiceType = self.client.factory.create('ns0:LookupServiceRegistrationServiceType')
         lookupServiceRegistrationServiceType.product = 'com.vmware.cis'
         lookupServiceRegistrationServiceType.type = 'vcenterserver'
-        # print(lookupServiceRegistrationServiceType)
 
         lookupServiceRegistrationEndpointType = self.client.factory.create('ns0:LookupServiceRegistrationEndpointType')
         lookupServiceRegistrationEndpointType.type = 'com.vmware.vim'
         lookupServiceRegistrationEndpointType.protocol = 'vmomi'
-        # print(lookupServiceRegistrationEndpointType)
 
         lookupServiceRegistrationFilter = self.client.factory.create('ns0:LookupServiceRegistrationFilter')
         lookupServiceRegistrationFilter.serviceType = lookupServiceRegistrationServiceType
         lookupServiceRegistrationFilter.endpointType = lookupServiceRegistrationEndpointType
-        # print(lookupServiceRegistrationFilter)
 
         result = self.client.service.List(self.serviceRegistration, lookupServiceRegistrationFilter)
-        # print(result)
         assert len(result) > 0
 
         results_dict = {}
