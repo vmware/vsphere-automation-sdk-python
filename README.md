@@ -31,7 +31,7 @@ The samples have been developed to work with python 2.7.* and 3.3+
 
 ## Supported vCenter Releases:
 vCenter 6.0 and 6.5. 
-Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Plesae refer to the notes in each sample for detailed compatibility information. 
+Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
 
 ## Quick Start Guide
 This document will walk you through getting up and running with the Python SDK Samples.
