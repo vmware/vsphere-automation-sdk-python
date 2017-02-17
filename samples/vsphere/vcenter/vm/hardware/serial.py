@@ -15,6 +15,8 @@
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
+import atexit
+
 from com.vmware.vcenter.vm.hardware_client import Serial
 from com.vmware.vcenter.vm_client import Power
 from pyVim.connect import SmartConnect, Disconnect
@@ -59,6 +61,7 @@ def setup(context=None):
                                           username,
                                           password,
                                           skip_verification)
+        atexit.register(vapiconnect.logout, stub_config)
 
         context = None
         if skip_verification:
@@ -67,6 +70,7 @@ def setup(context=None):
                                         user=username,
                                         pwd=password,
                                         sslContext=context)
+        atexit.register(Disconnect, service_instance)
 
 
 def run():
@@ -231,20 +235,12 @@ def cleanup_backends():
                 datacenter_name,
                 datastore_path)
 
-
 def main():
-    try:
-        setup()
-        cleanup_backends()
-        run()
-        if cleardata:
-            cleanup()
-    finally:
-        if stub_config:
-            vapiconnect.logout(stub_config)
-        if service_instance:
-            Disconnect(service_instance)
-
+    setup()
+    cleanup_backends()
+    run()
+    if cleardata:
+        cleanup()
 
 if __name__ == '__main__':
     main()

@@ -16,6 +16,8 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
+import atexit
+
 from com.vmware.vcenter.vm.hardware.adapter_client import Sata
 from com.vmware.vcenter.vm.hardware_client import (Cdrom,
                                                    IdeAddressSpec,
@@ -61,6 +63,7 @@ def setup(context=None):
                                           username,
                                           password,
                                           skip_verification)
+        atexit.register(vapiconnect.logout, stub_config)
 
 
 def run():
@@ -278,14 +281,10 @@ def cleanup():
 
 
 def main():
-    try:
-        setup()
-        run()
-        if cleardata:
-            cleanup()
-    finally:
-        if stub_config:
-            vapiconnect.logout(stub_config)
+    setup()
+    run()
+    if cleardata:
+        cleanup()
 
 
 if __name__ == '__main__':

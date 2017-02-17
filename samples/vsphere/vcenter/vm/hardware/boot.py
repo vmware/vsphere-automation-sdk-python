@@ -16,6 +16,8 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
+import atexit
+
 from com.vmware.vcenter.vm.hardware_client import Boot
 from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args_vm
@@ -53,6 +55,7 @@ def setup(context=None):
                                           username,
                                           password,
                                           skip_verification)
+        atexit.register(vapiconnect.logout, stub_config)
 
 
 def run():
@@ -125,14 +128,10 @@ def cleanup():
 
 
 def main():
-    try:
-        setup()
-        run()
-        if cleardata:
-            cleanup()
-    finally:
-        if stub_config:
-            vapiconnect.logout(stub_config)
+    setup()
+    run()
+    if cleardata:
+        cleanup()
 
 
 if __name__ == '__main__':
