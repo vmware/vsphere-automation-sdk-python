@@ -13,7 +13,6 @@
 """
 
 import atexit
-import json
 from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args
 from samples.vsphere.common.sample_util import pp
