@@ -13,6 +13,7 @@
 """
 
 import atexit
+import json
 from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args
 from samples.vsphere.common.sample_util import pp
@@ -39,27 +40,22 @@ def setup(context=None):
 
 
 def run():
-    """
-    List VMs present in server
-    """
-    vm_svc = VM(stub_config)
-    list_of_vms = vm_svc.list()
-    print "----------------------------"
-    print "List Of VMs"
-    print "----------------------------"
-    for vm in list_of_vms:
-        print ('{}'.format(vm))
-    print "----------------------------"
+	"""
+	List VMs present in server
+	"""
+	vm_svc = VM(stub_config)
+	list_of_vms = vm_svc.list()
+	print ("----------------------------")
+	print ("List Of VMs")
+	print ("----------------------------")
+	for vm in list_of_vms:
+		print ('{}'.format(vm))
+	print ("----------------------------")
    
 
 def main():
-    try:
-        setup()
-        run()
-    finally:
-        if stub_config:
-            pass
-
+	setup()
+	run()
 
 if __name__ == '__main__':
     main()
