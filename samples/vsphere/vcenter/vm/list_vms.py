@@ -27,34 +27,31 @@ vCenter/ESX
 stub_config = None
 cleardata = False
 
+
 def setup(context=None):
-	global stub_config, cleardata
-	server, username, password, cleardata, skip_verification = \
-		parse_cli_args()
-	stub_config = vapiconnect.connect(server,
-									  username,
-									  password,
-									  skip_verification)
-	atexit.register(vapiconnect.logout, stub_config)
+    global stub_config, cleardata
+    server, username, password, cleardata, skip_verification = parse_cli_args()
+    stub_config = vapiconnect.connect(server, username, password, skip_verification)
+    atexit.register(vapiconnect.logout, stub_config)
 
 
 def run():
-	"""
-	List VMs present in server
-	"""
-	vm_svc = VM(stub_config)
-	list_of_vms = vm_svc.list()
-	print ("----------------------------")
-	print ("List Of VMs")
-	print ("----------------------------")
-	for vm in list_of_vms:
-		print ('{}'.format(vm))
-	print ("----------------------------")
-   
+    """
+    List VMs present in server
+    """
+    vm_svc = VM(stub_config)
+    list_of_vms = vm_svc.list()
+    print ("----------------------------")
+    print ("List Of VMs")
+    print ("----------------------------")
+    for vm in list_of_vms:
+        print ('{}'.format(vm))
+    print ("----------------------------")
+
 
 def main():
-	setup()
-	run()
+    setup()
+    run()
 
 if __name__ == '__main__':
     main()
