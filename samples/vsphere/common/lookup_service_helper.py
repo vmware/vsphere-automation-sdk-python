@@ -16,6 +16,7 @@ __copyright__ = 'Copyright 2013 VMware, Inc. All rights reserved.'
 import os
 from suds.client import Client
 
+
 class LookupServiceHelper(object):
     def __init__(self, wsdl_url, soap_url, skip_verification):
         self.wsdl_url = wsdl_url
@@ -50,11 +51,13 @@ class LookupServiceHelper(object):
             assert self.client is not None
             self.client.set_options(service='LsService', port='LsPort')
 
-        self.managedObjectReference = self.client.factory.create('ns0:ManagedObjectReference')
+        self.managedObjectReference = self.client.factory.create(
+            'ns0:ManagedObjectReference')
         self.managedObjectReference._type = 'LookupServiceInstance'
         self.managedObjectReference.value = 'ServiceInstance'
 
-        lookupServiceContent = self.client.service.RetrieveServiceContent(self.managedObjectReference)
+        lookupServiceContent = self.client.service.RetrieveServiceContent(
+            self.managedObjectReference)
 
         self.serviceRegistration = lookupServiceContent.serviceRegistration
 
@@ -67,9 +70,9 @@ class LookupServiceHelper(object):
         :return: list of SSO Service endpoint URLs
         """
         return self.__find_platform_service_urls(product='com.vmware.cis',
-                                                service='cs.identity',
-                                                endpoint='com.vmware.cis.cs.identity.sso',
-                                                protocol='wsTrust')
+                                                 service='cs.identity',
+                                                 endpoint='com.vmware.cis.cs.identity.sso',
+                                                 protocol='wsTrust')
 
     def find_sso_url(self):
         """
@@ -81,9 +84,9 @@ class LookupServiceHelper(object):
         :return: SSO Service endpoint URL
         """
         result = self.__find_platform_service_urls(product='com.vmware.cis',
-                                                  service='cs.identity',
-                                                  endpoint='com.vmware.cis.cs.identity.sso',
-                                                  protocol='wsTrust')
+                                                   service='cs.identity',
+                                                   endpoint='com.vmware.cis.cs.identity.sso',
+                                                   protocol='wsTrust')
         return result[0]
 
     def find_vapi_urls(self):
@@ -95,9 +98,9 @@ class LookupServiceHelper(object):
         :return: vapi service endpoint URLs in a dictionary where the key is the node_id and the value is the service URL
         """
         return self.__find_service_urls(product='com.vmware.cis',
-                                       service='cs.vapi',
-                                       endpoint='com.vmware.vapi.endpoint',
-                                       protocol='vapi.json.https.public')
+                                        service='cs.vapi',
+                                        endpoint='com.vmware.vapi.endpoint',
+                                        protocol='vapi.json.https.public')
 
     def find_vapi_url(self, node_id):
         """
@@ -110,9 +113,9 @@ class LookupServiceHelper(object):
         """
         assert node_id is not None
         result = self.__find_service_urls(product='com.vmware.cis',
-                                         service='cs.vapi',
-                                         endpoint='com.vmware.vapi.endpoint',
-                                         protocol='vapi.json.https.public')
+                                          service='cs.vapi',
+                                          endpoint='com.vmware.vapi.endpoint',
+                                          protocol='vapi.json.https.public')
         assert result is not None
         return result.get(node_id)
 
@@ -125,9 +128,9 @@ class LookupServiceHelper(object):
         :return: vim service endpoint URLs in a dictionary where the key is the node_id and the value is the service URL
         """
         return self.__find_service_urls(product='com.vmware.cis',
-                                       service='vcenterserver',
-                                       endpoint='com.vmware.vim',
-                                       protocol='vmomi')
+                                        service='vcenterserver',
+                                        endpoint='com.vmware.vim',
+                                        protocol='vmomi')
 
     def find_vim_url(self, node_id):
         """
@@ -140,9 +143,9 @@ class LookupServiceHelper(object):
         """
         assert node_id is not None
         result = self.__find_service_urls(product='com.vmware.cis',
-                                         service='vcenterserver',
-                                         endpoint='com.vmware.vim',
-                                         protocol='vmomi')
+                                          service='vcenterserver',
+                                          endpoint='com.vmware.vim',
+                                          protocol='vmomi')
         assert result is not None
         return result.get(node_id)
 
@@ -155,9 +158,9 @@ class LookupServiceHelper(object):
         :return: spbm service endpoint URLs in a dictionary where the key is the node_id and the value is the service URL
         """
         return self.__find_service_urls(product='com.vmware.vim.sms',
-                                       service='sms',
-                                       endpoint='com.vmware.vim.pbm',
-                                       protocol='https')
+                                        service='sms',
+                                        endpoint='com.vmware.vim.pbm',
+                                        protocol='https')
 
     def find_vim_pbm_url(self, node_id):
         """
@@ -170,9 +173,9 @@ class LookupServiceHelper(object):
         """
         assert node_id is not None
         result = self.__find_service_urls(product='com.vmware.vim.sms',
-                                         service='sms',
-                                         endpoint='com.vmware.vim.pbm',
-                                         protocol='https')
+                                          service='sms',
+                                          endpoint='com.vmware.vim.pbm',
+                                          protocol='https')
         assert result is not None
         return result.get(node_id)
 
@@ -184,20 +187,27 @@ class LookupServiceHelper(object):
         assert self.client is not None
         assert self.serviceRegistration is not None
 
-        lookupServiceRegistrationFilter = self.__create_filter_spec(product, service, endpoint, protocol)
+        lookupServiceRegistrationFilter = self.__create_filter_spec(product,
+                                                                    service,
+                                                                    endpoint,
+                                                                    protocol)
 
-        result = self.client.service.List(self.serviceRegistration, lookupServiceRegistrationFilter)
+        result = self.client.service.List(self.serviceRegistration,
+                                          lookupServiceRegistrationFilter)
         assert len(result) > 0
         # Support for MxN
         # return the results in a dictionary where key is NodeId and Value is Service URL
         results_dict = {}
         for lookupServiceRegistrationInfo in result:
-            lookupServiceRegistrationEndpoint = lookupServiceRegistrationInfo.serviceEndpoints[0]
+            lookupServiceRegistrationEndpoint = \
+                lookupServiceRegistrationInfo.serviceEndpoints[0]
             assert lookupServiceRegistrationEndpoint is not None
-            results_dict[lookupServiceRegistrationInfo.nodeId] = lookupServiceRegistrationEndpoint.url
+            results_dict[
+                lookupServiceRegistrationInfo.nodeId] = lookupServiceRegistrationEndpoint.url
         return results_dict
 
-    def __find_platform_service_urls(self, product, service, endpoint, protocol):
+    def __find_platform_service_urls(self, product, service, endpoint,
+                                     protocol):
         """
         Finds the endpoint URLs of a service running on PSCs (Platform Service Controller).
         Returns a list of service URLs since there is no node id associated with the PSC.
@@ -205,14 +215,19 @@ class LookupServiceHelper(object):
         assert self.client is not None
         assert self.serviceRegistration is not None
 
-        lookupServiceRegistrationFilter = self.__create_filter_spec(product, service, endpoint, protocol)
+        lookupServiceRegistrationFilter = self.__create_filter_spec(product,
+                                                                    service,
+                                                                    endpoint,
+                                                                    protocol)
 
-        result = self.client.service.List(self.serviceRegistration, lookupServiceRegistrationFilter)
+        result = self.client.service.List(self.serviceRegistration,
+                                          lookupServiceRegistrationFilter)
         assert len(result) > 0
 
         urls = []
         for lookupServiceRegistrationInfo in result:
-            lookupServiceRegistrationEndpoint = lookupServiceRegistrationInfo.serviceEndpoints[0]
+            lookupServiceRegistrationEndpoint = \
+                lookupServiceRegistrationInfo.serviceEndpoints[0]
             assert lookupServiceRegistrationEndpoint is not None
             urls.append(lookupServiceRegistrationEndpoint.url)
         return urls
@@ -220,15 +235,18 @@ class LookupServiceHelper(object):
     def __create_filter_spec(self, product, service, endpoint, protocol):
         assert self.client is not None
 
-        lookupServiceRegistrationServiceType = self.client.factory.create('ns0:LookupServiceRegistrationServiceType')
+        lookupServiceRegistrationServiceType = self.client.factory.create(
+            'ns0:LookupServiceRegistrationServiceType')
         lookupServiceRegistrationServiceType.product = product
         lookupServiceRegistrationServiceType.type = service
 
-        lookupServiceRegistrationEndpointType = self.client.factory.create('ns0:LookupServiceRegistrationEndpointType')
+        lookupServiceRegistrationEndpointType = self.client.factory.create(
+            'ns0:LookupServiceRegistrationEndpointType')
         lookupServiceRegistrationEndpointType.type = endpoint
         lookupServiceRegistrationEndpointType.protocol = protocol
 
-        lookupServiceRegistrationFilter = self.client.factory.create('ns0:LookupServiceRegistrationFilter')
+        lookupServiceRegistrationFilter = self.client.factory.create(
+            'ns0:LookupServiceRegistrationFilter')
         lookupServiceRegistrationFilter.serviceType = lookupServiceRegistrationServiceType
         lookupServiceRegistrationFilter.endpointType = lookupServiceRegistrationEndpointType
         return lookupServiceRegistrationFilter
@@ -243,26 +261,31 @@ class LookupServiceHelper(object):
         assert self.client is not None
         assert self.serviceRegistration is not None
 
-        lookupServiceRegistrationServiceType = self.client.factory.create('ns0:LookupServiceRegistrationServiceType')
+        lookupServiceRegistrationServiceType = self.client.factory.create(
+            'ns0:LookupServiceRegistrationServiceType')
         lookupServiceRegistrationServiceType.product = 'com.vmware.cis'
         lookupServiceRegistrationServiceType.type = 'vcenterserver'
 
-        lookupServiceRegistrationEndpointType = self.client.factory.create('ns0:LookupServiceRegistrationEndpointType')
+        lookupServiceRegistrationEndpointType = self.client.factory.create(
+            'ns0:LookupServiceRegistrationEndpointType')
         lookupServiceRegistrationEndpointType.type = 'com.vmware.vim'
         lookupServiceRegistrationEndpointType.protocol = 'vmomi'
 
-        lookupServiceRegistrationFilter = self.client.factory.create('ns0:LookupServiceRegistrationFilter')
+        lookupServiceRegistrationFilter = self.client.factory.create(
+            'ns0:LookupServiceRegistrationFilter')
         lookupServiceRegistrationFilter.serviceType = lookupServiceRegistrationServiceType
         lookupServiceRegistrationFilter.endpointType = lookupServiceRegistrationEndpointType
 
-        result = self.client.service.List(self.serviceRegistration, lookupServiceRegistrationFilter)
+        result = self.client.service.List(self.serviceRegistration,
+                                          lookupServiceRegistrationFilter)
         assert len(result) > 0
 
         results_dict = {}
         for lookupServiceRegistrationInfo in result:
             for lookupServiceRegistrationAttribute in lookupServiceRegistrationInfo.serviceAttributes:
                 if lookupServiceRegistrationAttribute.key == 'com.vmware.vim.vcenter.instanceName':
-                    results_dict[lookupServiceRegistrationAttribute.value] = lookupServiceRegistrationInfo.nodeId
+                    results_dict[
+                        lookupServiceRegistrationAttribute.value] = lookupServiceRegistrationInfo.nodeId
         return results_dict
 
     def get_mgmt_node_id(self, instance_name):
@@ -295,8 +318,10 @@ class LookupServiceHelper(object):
         if len(result) < 1:
             raise Exception('No management node found')
         if len(result) > 1:
-            raise MultipleManagementNodeException(MultipleManagementNodeException.format(result))
-        return list(result.keys())[0], list(result.values())[0]  # python 3.x dict.keys() returns a view rather than a list
+            raise MultipleManagementNodeException(
+                MultipleManagementNodeException.format(result))
+        return list(result.keys())[0], list(result.values())[
+            0]  # python 3.x dict.keys() returns a view rather than a list
 
 
 class MultipleManagementNodeException(Exception):
@@ -315,19 +340,22 @@ class MultipleManagementNodeException(Exception):
         """
         message = 'Multiple Management Node Found on server'
         for k, v in nodes.items():
-            message = message + os.linesep + 'Node name: {0} uuid: {1}'.format(k, v)
+            message = message + os.linesep + 'Node name: {0} uuid: {1}'.format(
+                k, v)
         return message
 
 
 def main():
-    lookup_service_helper = LookupServiceHelper(wsdl_url='file:///path/to/lookupservice.wsdl',
-                                                soap_url='https://server_ip/lookupservice/sdk')
+    lookup_service_helper = LookupServiceHelper(
+        wsdl_url='file:///path/to/lookupservice.wsdl',
+        soap_url='https://server_ip/lookupservice/sdk')
     lookup_service_helper.connect()
     print(lookup_service_helper.find_sso_url())
     print(lookup_service_helper.find_vapi_urls())
     print(lookup_service_helper.find_vim_urls())
     print(lookup_service_helper.find_vim_pbm_urls())
     print(lookup_service_helper.find_mgmt_nodes())
+
 
 # Start program
 if __name__ == "__main__":

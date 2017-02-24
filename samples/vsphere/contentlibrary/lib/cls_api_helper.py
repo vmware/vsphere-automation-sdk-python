@@ -126,8 +126,7 @@ class ClsApiHelper(object):
     def get_iso_file_map(self, item_filename, disk_filename):
         iso_files_map = {}
         iso_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                                     self.ISO_FILE_RELATIVE_DIR
-                                                     + disk_filename))
+                                                     self.ISO_FILE_RELATIVE_DIR + disk_filename))
         iso_files_map[item_filename] = iso_file_path
         return iso_files_map
 

@@ -109,4 +109,3 @@ if context.option['DO_SAMPLES_CLEANUP']:
 if context.option['DO_TESTBED_CLEANUP']:
     sample_cleanup(context)
     testbed_cleanup(context)
-

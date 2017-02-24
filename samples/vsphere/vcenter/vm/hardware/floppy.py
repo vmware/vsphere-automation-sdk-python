@@ -39,6 +39,7 @@ stub_config = None
 cleardata = False
 orig_floppy_summaries = None
 
+
 def setup(context=None):
     global vm, vm_name, stub_config, cleardata
     if context:
@@ -53,6 +54,7 @@ def setup(context=None):
                                           username,
                                           password,
                                           skip_verification)
+
 
 def run():
     # * Floppy images must be pre-existing.  This API does not expose
@@ -114,7 +116,7 @@ def run():
 
     print('\n# Example: Create Floppy with IMAGE_FILE backing, '
           'start_connected=True,')
-    print(  '           allow_guest_control=True')
+    print('           allow_guest_control=True')
     floppy_create_spec = Floppy.CreateSpec(
         allow_guest_control=True,
         start_connected=True,

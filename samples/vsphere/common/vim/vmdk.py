@@ -33,11 +33,13 @@ def create_vmdk(service_instance, datacenter_mo, datastore_path):
           format(datastore_path, datacenter_mo.name))
     return task.info.result
 
+
 def delete_vmdk(service_instance, datacenter_mo, datastore_path):
     """Delete vmdk from specific datastore"""
     vdm = service_instance.content.virtualDiskManager
     task = vdm.DeleteVirtualDisk(datastore_path, datacenter_mo)
     pyVim.task.WaitForTask(task)
+
 
 def detect_vmdk(stub_config, soap_stub, datacenter_name, datastore_name,
                 datastore_path):

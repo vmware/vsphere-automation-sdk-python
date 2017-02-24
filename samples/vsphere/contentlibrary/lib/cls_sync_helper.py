@@ -16,6 +16,7 @@ __vcenter_version__ = '6.0+'
 
 import time
 
+
 class ClsSyncHelper:
     """
     Helper class to wait for the subscribed libraries and items to be
@@ -54,7 +55,8 @@ class ClsSyncHelper:
         """
         self.start_time = time.time()
         is_synced = False
-        pub_item_id = self.client.library_item_service.get(sub_item_id).source_id
+        pub_item_id = self.client.library_item_service.get(
+            sub_item_id).source_id
         pub_item = self.client.library_item_service.get(pub_item_id)
 
         while self.not_timed_out():
@@ -94,10 +96,11 @@ class ClsSyncHelper:
 
         while self.not_timed_out():
             # Get the subscribed library's updated information from server.
-            refreshed_sub_lib = self.client.subscribed_library_service.get(sub_lib.id)
-            if refreshed_sub_lib.last_sync_time != None:
-                if (sub_lib.last_sync_time == None or
-                    refreshed_sub_lib.last_sync_time > sub_lib.last_sync_time):
+            refreshed_sub_lib = self.client.subscribed_library_service.get(
+                sub_lib.id)
+            if refreshed_sub_lib.last_sync_time is not None:
+                if (sub_lib.last_sync_time is None or
+                            refreshed_sub_lib.last_sync_time > sub_lib.last_sync_time):
                     is_synced = True
                     break
             time.sleep(self.wait_interval_sec)
@@ -113,7 +116,8 @@ class ClsSyncHelper:
             return False
         synced_item_ids = []
         for sub_item_id in sub_item_ids:
-            source_id = self.client.library_item_service.get(sub_item_id).source_id
+            source_id = self.client.library_item_service.get(
+                sub_item_id).source_id
             if source_id not in synced_item_ids and source_id in pub_item_ids:
                 synced_item_ids.append(sub_item_id)
 

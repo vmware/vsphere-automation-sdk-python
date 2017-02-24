@@ -13,7 +13,6 @@
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
 
-
 import argparse
 import traceback
 from samples.vsphere.common.service_manager_factory import ServiceManagerFactory
@@ -26,12 +25,16 @@ class SampleBase(object):
         self.description = description
         # setup the argument parser
         self.argparser = argparse.ArgumentParser(description=description)
-        self.argparser.add_argument('-s', '--server', help='Hostname of vCenter Server')
-        self.argparser.add_argument('-u', '--username', help='Username to login to the vCenter Server')
-        self.argparser.add_argument('-p', '--password', help='Password to login to the vCenter Server')
+        self.argparser.add_argument('-s', '--server',
+                                    help='Hostname of vCenter Server')
+        self.argparser.add_argument('-u', '--username',
+                                    help='Username to login to the vCenter Server')
+        self.argparser.add_argument('-p', '--password',
+                                    help='Password to login to the vCenter Server')
         self.argparser.add_argument('-c', '--cleardata', action='store_true',
                                     help='Clears the sample data on server after running')
-        self.argparser.add_argument('-v', '--skipverification', action='store_true',
+        self.argparser.add_argument('-v', '--skipverification',
+                                    action='store_true',
                                     help='Do not verify server certificate')
         self.args = None
         self.server = None

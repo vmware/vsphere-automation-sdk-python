@@ -13,7 +13,6 @@
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
-
 import pyVim.task
 from com.vmware.vcenter_client import Host
 from pyVmomi import vim
@@ -39,12 +38,12 @@ def detect_nfs_datastore_on_host(context, host_name):
                 datastore = datastore_mo._moId
                 print("Detected NFS Volume '{}' as {} on Host '{}' ({})".
                       format(datastore_name, datastore, host_name, host))
-                context.testbed.entities['HOST_NFS_DATASTORE_IDS'][host_name]\
+                context.testbed.entities['HOST_NFS_DATASTORE_IDS'][host_name] \
                     = datastore
                 return True
 
     print("NFS Volume '{}' missing on Host '{}'".
-          format(datastore_name,host_name))
+          format(datastore_name, host_name))
     return False
 
 
@@ -81,7 +80,7 @@ def cleanup_nfs_datastore(context):
                 datastore_system.RemoveDatastore(datastore_mo)
                 print("Removed NFS Volume '{}' ({}) from Host '{}' ({})".
                       format(datastore_name, datastore_mo._moId,
-                             host_mo.name,host_mo._moId))
+                             host_mo.name, host_mo._moId))
 
                 # Remote NFS Datastore at the vCenter level
                 # TODO Do we need to do this?
@@ -133,7 +132,7 @@ def setup_nfs_datastore_on_host(context, host_name):
                 if info.name == local_path:
                     print("Found NFS Volume '{}' ({}) on Host '{}' ({})".
                           format(local_path, datastore_mo._moId,
-                                 host_name,host_mo._moId))
+                                 host_name, host_mo._moId))
                     return datastore_mo._moId
                 else:
                     print("Found NFS remote host '{}' and path '{}' on Host '{}' ({}) as '{}'".
@@ -168,7 +167,7 @@ def detect_vmfs_datastore(context, host_name, datastore_name):
                 datastore = datastore_mo._moId
                 print("Detected VMFS Volume '{}' as {} on Host '{}' ({})".
                       format(datastore_name, datastore, host_name, host))
-                context.testbed.entities['HOST_VMFS_DATASTORE_IDS'][host_name]\
+                context.testbed.entities['HOST_VMFS_DATASTORE_IDS'][host_name] \
                     = datastore
                 return True
 
@@ -216,7 +215,7 @@ def setup_vmfs_datastore(context, host_name, datastore_name):
         datastore = vmfs_datastores[datastore_name]._moId
         print("Detected VMFS Volume '{}' as {} on Host '{}' ({})".
               format(datastore_name, datastore, host_name, host))
-        context.testbed.entities['HOST_VMFS_DATASTORE_IDS'][host_name]\
+        context.testbed.entities['HOST_VMFS_DATASTORE_IDS'][host_name] \
             = datastore
         return True
 

@@ -56,6 +56,7 @@ class LibraryPublishSubscribe(SampleBase):
         self.argparser.add_argument('-datastorename',
                                     '--datastorename',
                                     help='The name of the datastore.')
+
     def _setup(self):
         self.datastore_name = self.args.datastorename
         assert self.datastore_name is not None
@@ -65,8 +66,9 @@ class LibraryPublishSubscribe(SampleBase):
         self.helper = ClsApiHelper(self.client, self.skip_verification)
 
     def _execute(self):
-        storage_backings = self.helper.create_storage_backings(self.servicemanager,
-                                                               self.datastore_name)
+        storage_backings = self.helper.create_storage_backings(
+            self.servicemanager,
+            self.datastore_name)
 
         # Create a published library backed the VC datastore using vAPIs
         self.pub_lib_id = self.create_published_library(storage_backings)
@@ -78,7 +80,9 @@ class LibraryPublishSubscribe(SampleBase):
         print('Publish URL : {0}'.format(pub_lib_url))
 
         # Create a library item in the published library
-        pub_lib_item_id = self.helper.create_iso_library_item(self.pub_lib_id, 'item_1', self.DEMO_FILENAME)
+        pub_lib_item_id = self.helper.create_iso_library_item(self.pub_lib_id,
+                                                              'item_1',
+                                                              self.DEMO_FILENAME)
         assert self.client.library_item_service.get(pub_lib_item_id) is not None
 
         # Create the subscribed library
@@ -97,7 +101,8 @@ class LibraryPublishSubscribe(SampleBase):
         assert len(sub_item_ids) == 1, 'Subscribed library must have one item'
 
         # Add another item to the published library
-        self.helper.create_iso_library_item(self.pub_lib_id, 'item_2', self.DEMO_FILENAME)
+        self.helper.create_iso_library_item(self.pub_lib_id, 'item_2',
+                                            self.DEMO_FILENAME)
 
         # Manually synchronize the subscribed library to get the latest changes immediately.
         self.client.subscribed_library_service.sync(self.sub_lib_id)
@@ -110,7 +115,7 @@ class LibraryPublishSubscribe(SampleBase):
         # List the subscribed items.
         sub_item_ids = self.client.library_item_service.list(self.sub_lib_id)
         assert len(sub_item_ids) == 2, 'Subscribed library must have two items'
-        for sub_item_id in sub_item_ids :
+        for sub_item_id in sub_item_ids:
             sub_item = self.client.library_item_service.get(sub_item_id)
             print('Subscribed item : {0}'.format(sub_item.name))
 

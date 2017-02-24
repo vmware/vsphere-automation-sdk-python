@@ -262,7 +262,7 @@ def run():
     print('\n# Example: Attach an existing VMDK using the default bus and unit')
     datastore_path = datastore_root_path + '/attach-defaults.vmdk'
     delete_vmdk_if_exist(stub_config, service_instance._stub, datacenter_name,
-                   datastore_name, datastore_path)
+                         datastore_name, datastore_path)
     create_vmdk(service_instance, datacenter_mo, datastore_path)
     disk_create_spec = Disk.CreateSpec(
         backing=Disk.BackingSpec(type=Disk.BackingType.VMDK_FILE,

@@ -23,6 +23,7 @@ class GetClusterByName(SampleBase):
     """
     Retrieves the given cluster MOID from VC using container view
     """
+
     def __init__(self):
         SampleBase.__init__(self, self.__doc__)
         self.cluster_name = None
@@ -30,7 +31,8 @@ class GetClusterByName(SampleBase):
         self.servicemanager = None
 
     def _options(self):
-        self.argparser.add_argument('-clustername', '--clustername', help='Name of the cluster to be queried')
+        self.argparser.add_argument('-clustername', '--clustername',
+                                    help='Name of the cluster to be queried')
 
     def _setup(self):
         if self.cluster_name is None:
@@ -41,7 +43,8 @@ class GetClusterByName(SampleBase):
 
     def _execute(self):
         content = self.servicemanager.content
-        cluster_obj = get_obj(content, [vim.ClusterComputeResource], self.cluster_name)
+        cluster_obj = get_obj(content, [vim.ClusterComputeResource],
+                              self.cluster_name)
         if cluster_obj is not None:
             self.mo_id = cluster_obj._GetMoId()
             print('Cluster MoId: {0}'.format(self.mo_id))

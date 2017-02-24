@@ -182,7 +182,7 @@ class File(object):
         match_pattern = None
         dirname = None
 
-        if path != None:
+        if path is not None:
             # Determine the dirname and the basename making sure only the
             # basename is passed in the match_pattern
             paths = path.split('/')
@@ -239,13 +239,13 @@ class File(object):
         stub = self._datastore_mo._stub
         cookie = self._make_cookie(stub)
         f = None
-        if src_file != None:
+        if src_file is not None:
             f = src_file
-        elif src_url != None:
+        elif src_url is not None:
             f = requests.get(src_url, stream=True)
-        elif src_path != None:
+        elif src_path is not None:
             f = open(src_file, 'wb')
-        elif content == None:
+        elif content is None:
             raise Exception('No input provided for put')
 
         if f:

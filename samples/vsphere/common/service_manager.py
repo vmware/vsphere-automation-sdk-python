@@ -64,4 +64,3 @@ class ServiceManager(object):
         print('disconnecting the session')
         vapiconnect.logout(self.stub_config)
         Disconnect(self.si)
-

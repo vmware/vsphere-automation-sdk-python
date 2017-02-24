@@ -54,6 +54,7 @@ def setup(context=None):
                                           password,
                                           skip_verification)
 
+
 def run():
     global vm
     vm = get_vm(stub_config, vm_name)
@@ -119,6 +120,7 @@ def main():
     finally:
         if stub_config:
             vapiconnect.logout(stub_config)
+
 
 if __name__ == '__main__':
     main()

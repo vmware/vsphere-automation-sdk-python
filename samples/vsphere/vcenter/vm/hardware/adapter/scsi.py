@@ -39,6 +39,7 @@ cleardata = False
 scsis_to_delete = []
 orig_scsi_summaries = None
 
+
 def setup(context=None):
     global vm, vm_name, stub_config, cleardata
     if context:
@@ -53,6 +54,7 @@ def setup(context=None):
                                           username,
                                           password,
                                           skip_verification)
+
 
 def run():
     global vm
@@ -131,6 +133,7 @@ def cleanup():
     if set(orig_scsi_summaries) != set(scsi_summaries):
         print('vm.hardware.adapter.Scsi WARNING: '
               'Final SCSI adapters info does not match original')
+
 
 def main():
     try:

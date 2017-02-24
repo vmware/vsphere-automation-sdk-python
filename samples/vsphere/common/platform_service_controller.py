@@ -24,7 +24,9 @@ class PlatformServiceController(object):
     """
     Manages services on the infrastructure node (e.g. lookup service, SSO etc.)
     """
-    def __init__(self, lswsdlurl, lssoapurl, ssousername, ssopassword, skip_verification):
+
+    def __init__(self, lswsdlurl, lssoapurl, ssousername, ssopassword,
+                 skip_verification):
         self.lswsdlurl = lswsdlurl
         self.lssoapurl = lssoapurl
         self.ssousername = ssousername
@@ -48,11 +50,13 @@ class PlatformServiceController(object):
         self.stsurl = self.lookupservicehelper.find_sso_url()
         assert self.stsurl is not None
 
-        print('Retrieving a SAML bearer token from STS url : {0}'.format(self.stsurl))
+        print('Retrieving a SAML bearer token from STS url : {0}'.format(
+            self.stsurl))
         au = sso.SsoAuthenticator(self.stsurl)
         context = None
         if self.skip_verification:
             context = get_unverified_context()
         self.bearer_token = au.get_bearer_saml_assertion(
-            self.ssousername, self.ssopassword, delegatable=True, ssl_context=context)
+            self.ssousername, self.ssopassword, delegatable=True,
+            ssl_context=context)
         self.sec_ctx = create_saml_bearer_security_context(self.bearer_token)

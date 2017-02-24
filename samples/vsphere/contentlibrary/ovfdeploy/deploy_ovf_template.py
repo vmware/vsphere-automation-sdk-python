@@ -33,7 +33,6 @@ from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 
 
-
 class DeployOvfTemplate(SampleBase):
     """
     Demonstrates the workflow to deploy an OVF library item to a resource pool.
@@ -71,7 +70,7 @@ class DeployOvfTemplate(SampleBase):
         self.client = ClsApiClient(self.servicemanager)
         self.helper = ClsApiHelper(self.client, self.skip_verification)
         # Default VM name
-        self.vm_name = 'vm-'+str(generate_random_uuid())
+        self.vm_name = 'vm-' + str(generate_random_uuid())
 
     def _execute(self):
 
@@ -123,7 +122,7 @@ class DeployOvfTemplate(SampleBase):
         # The type and ID of the target deployment is available in the deployment result.
         if result.succeeded:
             print('Deployment successful. Result resource: {0}, ID: {1}'
-                        .format(result.resource_id.type, result.resource_id.id))
+                  .format(result.resource_id.type, result.resource_id.id))
             self.vm_id = result.resource_id.id
             error = result.error
             if error is not None:

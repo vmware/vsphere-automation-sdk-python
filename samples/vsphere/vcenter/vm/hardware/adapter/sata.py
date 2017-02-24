@@ -39,6 +39,7 @@ cleardata = False
 satas_to_delete = []
 orig_sata_summaries = None
 
+
 def setup(context=None):
     global vm, vm_name, stub_config, cleardata
     if context:
@@ -53,6 +54,7 @@ def setup(context=None):
                                           username,
                                           password,
                                           skip_verification)
+
 
 def run():
     global vm
