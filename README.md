@@ -1,5 +1,5 @@
 # VMware vSphere Automation SDK for Python  
-![alt text](https://travis-ci.com/tianhao64/vsphere-automation-sdk-python-samples.svg?token=v9mEJjcpDiQ9DrYbzyaQ&branch=master)
+[![Build Status](https://travis-ci.com/tianhao64/vsphere-automation-sdk-python-samples.svg?token=v9mEJjcpDiQ9DrYbzyaQ&branch=master)](https://travis-ci.com/tianhao64/vsphere-automation-sdk-python-samples)
 ## Table of Contents
 - [Abstract](#abstract)
 - [Quick Start Guide](#quick-start-guide)
