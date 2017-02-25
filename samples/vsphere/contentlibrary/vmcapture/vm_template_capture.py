@@ -29,7 +29,6 @@ from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
 
-
 class CaptureVMTemplateToContentLibrary(SampleBase):
     """
     Demonstrates the workflow to capture a virtual machine into a content library.
@@ -54,7 +53,7 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
     def _options(self):
         self.argparser.add_argument('-datastorename', '--datastorename',
                                     help='The name of the datastore for'
-                                    ' content library backing (of type vmfs)')
+                                         ' content library backing (of type vmfs)')
         self.argparser.add_argument('-vmname', '--vmname',
                                     help='Name of the VM to be captured')
 
@@ -72,8 +71,9 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
         self.helper = ClsApiHelper(self.client, self.skip_verification)
 
     def _execute(self):
-        storage_backings = self.helper.create_storage_backings(self.servicemanager,
-                                                               self.datastore_name)
+        storage_backings = self.helper.create_storage_backings(
+            self.servicemanager,
+            self.datastore_name)
 
         print('Creating Content Library')
         # Create a content library
@@ -94,7 +94,8 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
                     (vm_id, self.library_item_id))
 
     def capture_source_vm(self, vm_id, param):
-        source = LibraryItem.DeployableIdentity(self.deployable_resource_type, vm_id)
+        source = LibraryItem.DeployableIdentity(self.deployable_resource_type,
+                                                vm_id)
         result = self.client.ovf_lib_item_service.create(source,
                                                          param["target"],
                                                          param["spec"],
@@ -111,14 +112,16 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
     def _cleanup(self):
         # delete the local library.
         if self.content_library is not None:
-            self.client.local_library_service.delete(library_id=self.content_library.id)
+            self.client.local_library_service.delete(
+                library_id=self.content_library.id)
             print('Deleted Library Id: {0}'.format
-                        (self.content_library.id))
+                  (self.content_library.id))
 
 
 def main():
     vm_template_capture = CaptureVMTemplateToContentLibrary()
     vm_template_capture.main()
+
 
 # Start program
 if __name__ == '__main__':

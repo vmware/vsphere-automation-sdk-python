@@ -78,12 +78,13 @@ config["SERIAL_PORT_NETWORK_PROXY"] = None
 
 config["PARALLEL_PORT_DATACENTER_NAME"] = config["VM_DATACENTER_NAME"]
 config["PARALLEL_PORT_DATASTORE_ROOT_PATH"] = config["BACKENDS_DATASTORE_ROOT_PATH"] + "/parallel"
-config["PARALLEL_PORT_DATASTORE_PATH"] =  config["PARALLEL_PORT_DATASTORE_ROOT_PATH"] + "/parallel.log"
+config["PARALLEL_PORT_DATASTORE_PATH"] = config["PARALLEL_PORT_DATASTORE_ROOT_PATH"] + "/parallel.log"
 
 config["FLOPPY_SRC_URL"] = "http://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.0/fdboot.img"
 config["FLOPPY_DATACENTER_NAME"] = config["VM_DATACENTER_NAME"]
 config["FLOPPY_DATASTORE_ROOT_PATH"] = config["BACKENDS_DATASTORE_ROOT_PATH"] + "/floppy"
 config["FLOPPY_DATASTORE_PATH"] = config["FLOPPY_DATASTORE_ROOT_PATH"] + "/fdboot.img"
+
 
 class Testbed(object):
     def __init__(self):
@@ -133,6 +134,7 @@ class Testbed(object):
 
 _testbed = Testbed()
 _testbed.config.update(config)
+
 
 def get():
     return _testbed

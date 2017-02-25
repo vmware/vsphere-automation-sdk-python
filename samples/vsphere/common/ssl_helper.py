@@ -15,6 +15,7 @@ __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 import ssl
 
+
 def get_unverified_context():
     """
     Get an unverified ssl context. Used to disable the server certificate

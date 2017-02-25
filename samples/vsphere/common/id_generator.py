@@ -36,6 +36,7 @@ def main():
     print(generate_random_string(5))
     print(rand('Simple VM-'))
 
+
 # Start program
 if __name__ == "__main__":
     main()

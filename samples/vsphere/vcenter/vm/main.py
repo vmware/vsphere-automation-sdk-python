@@ -55,7 +55,6 @@ def validate(context):
 
 
 def run(context):
-
     # Clean up in case of past failures
     cleanup(context)
 
@@ -80,14 +79,14 @@ def run(context):
     # 1. STANDARD_PORTGROUP on DATACENTER2
     # 2. DISTRIBUTED_PORTGROUP on DATACENTER2
     ###########################################################################
-    standard_network = samples.vsphere.vcenter.helper\
+    standard_network = samples.vsphere.vcenter.helper \
         .network_helper.get_standard_network_backing(
         context.stub_config,
         context.testbed.config['STDPORTGROUP_NAME'],
         context.testbed.config['VM_DATACENTER_NAME'])
     print('standard_network={}'.format(standard_network))
 
-    distributed_network = samples.vsphere.vcenter.helper\
+    distributed_network = samples.vsphere.vcenter.helper \
         .network_helper.get_distributed_network_backing(
         context.stub_config,
         context.testbed.config['VDPORTGROUP1_NAME'],
@@ -136,7 +135,6 @@ def run(context):
         samples.vsphere.vcenter.vm.hardware.main.run()
         if context.option['DO_SAMPLES_CLEANUP']:
             samples.vsphere.vcenter.vm.hardware.main.cleanup()
-
 
     # Sample cleanup
     if context.option['DO_SAMPLES_CLEANUP']:

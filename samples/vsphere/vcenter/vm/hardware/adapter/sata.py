@@ -41,6 +41,7 @@ cleardata = False
 satas_to_delete = []
 orig_sata_summaries = None
 
+
 def setup(context=None):
     global vm, vm_name, stub_config, cleardata
     if context:
@@ -56,6 +57,7 @@ def setup(context=None):
                                           password,
                                           skip_verification)
         atexit.register(vapiconnect.logout, stub_config)
+
 
 def run():
     global vm

@@ -15,7 +15,6 @@ __copyright__ = 'Copyright 2013 VMware, Inc. All rights reserved.'
 
 from pyVmomi import vim, vmodl
 
-
 _views = []  # list of container views
 
 
@@ -24,7 +23,8 @@ def get_obj(content, vimtype, name):
      Get the vsphere managed object associated with a given text name
     """
     obj = None
-    container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
+    container = content.viewManager.CreateContainerView(content.rootFolder,
+                                                        vimtype, True)
     _views.append(container)
     for c in container.view:
         if c.name == name:
@@ -38,7 +38,8 @@ def get_obj_by_moId(content, vimtype, moid):
     Get the vsphere managed object by moid value
     """
     obj = None
-    container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
+    container = content.viewManager.CreateContainerView(content.rootFolder,
+                                                        vimtype, True)
     _views.append(container)
     for c in container.view:
         if c._GetMoId() == moid:
@@ -55,8 +56,9 @@ def delete_object(content, mo):
     try:
         wait_for_tasks(content, [mo.Destroy()])
         print('Deleted {0}'.format(mo._GetMoId()))
-    except:
-        print('Unexpected error while deleting managed object {0}'.format(mo._GetMoId()))
+    except Exception:
+        print('Unexpected error while deleting managed object {0}'.format(
+            mo._GetMoId()))
         return False
     return True
 
@@ -72,7 +74,7 @@ def poweron_vm(content, mo):
     try:
         wait_for_tasks(content, [mo.PowerOn()])
         print('{0} powered on successfully'.format(mo._GetMoId()))
-    except:
+    except Exception:
         print('Unexpected error while powering on vm {0}'.format(mo._GetMoId()))
         return False
     return True
@@ -89,8 +91,9 @@ def poweroff_vm(content, mo):
     try:
         wait_for_tasks(content, [mo.PowerOff()])
         print('{0} powered off successfully'.format(mo._GetMoId()))
-    except:
-        print('Unexpected error while powering off vm {0}'.format(mo._GetMoId()))
+    except Exception:
+        print(
+            'Unexpected error while powering off vm {0}'.format(mo._GetMoId()))
         return False
     return True
 
@@ -102,7 +105,8 @@ def wait_for_tasks(content, tasks):
     taskList = [str(task) for task in tasks]
 
     # Create filter
-    objSpecs = [vmodl.query.PropertyCollector.ObjectSpec(obj=task) for task in tasks]
+    objSpecs = [vmodl.query.PropertyCollector.ObjectSpec(obj=task) for task in
+                tasks]
     propSpec = vmodl.query.PropertyCollector.PropertySpec(type=vim.Task,
                                                           pathSet=[], all=True)
     filterSpec = vmodl.query.PropertyCollector.FilterSpec()
@@ -149,5 +153,7 @@ def __destroy_container_views():
         except vmodl.fault.ManagedObjectNotFound:
             pass  # silently bypass the exception if the objects are already deleted/not found on the server
 
+
 import atexit
+
 atexit.register(__destroy_container_views)

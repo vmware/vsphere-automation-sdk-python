@@ -13,7 +13,6 @@
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
-
 from com.vmware.vcenter_client import (Datacenter, Folder)
 
 
@@ -64,7 +63,7 @@ def cleanup_datacenters(context):
     datacenter_summaries = datacenter_svc.list(
         Datacenter.FilterSpec(names=names))
     print("Found {} Datacenters matching names {}".
-          format(len(datacenter_summaries),", ".
+          format(len(datacenter_summaries), ", ".
                  join(["'{}'".format(n) for n in names])))
 
     for datacenter_summary in datacenter_summaries:

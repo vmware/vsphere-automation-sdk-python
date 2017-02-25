@@ -23,6 +23,7 @@ class GetDatastoreByName(SampleBase):
     """
     Retrieves the given datastore MOID from VC using container view
     """
+
     def __init__(self):
         SampleBase.__init__(self, self.__doc__)
         self.datastore_name = None
@@ -30,7 +31,8 @@ class GetDatastoreByName(SampleBase):
         self.servicemanager = None
 
     def _options(self):
-        self.argparser.add_argument('-datastorename', '--datastorename', help='Name of the datastore to be queried')
+        self.argparser.add_argument('-datastorename', '--datastorename',
+                                    help='Name of the datastore to be queried')
 
     def _setup(self):
         if self.datastore_name is None:

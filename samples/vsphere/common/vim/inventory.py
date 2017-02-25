@@ -35,7 +35,7 @@ def get_datastore_mo(stub_config, soap_stub,
 # property collector query but it's a little more complicated
 def get_datacenter_for_datastore(datastore_mo):
     datacenter_mo = datastore_mo.parent
-    while datacenter_mo != None:
+    while datacenter_mo is not None:
         if isinstance(datacenter_mo, vim.Datacenter):
             return datacenter_mo
         datacenter_mo = datacenter_mo.parent

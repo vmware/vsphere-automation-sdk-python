@@ -22,6 +22,7 @@ from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
+
 class IsoMount(SampleBase):
     """
     Demonstrates the content library ISO item mount and
@@ -64,12 +65,16 @@ class IsoMount(SampleBase):
         self.helper = ClsApiHelper(self.client, self.skip_verification)
 
     def _execute(self):
-        storage_backings = self.helper.create_storage_backings(self.servicemanager, self.datastore_name)
+        storage_backings = self.helper.create_storage_backings(
+            self.servicemanager, self.datastore_name)
 
-        library_id = self.helper.create_local_library(storage_backings, self.lib_name)
+        library_id = self.helper.create_local_library(storage_backings,
+                                                      self.lib_name)
         self.local_library = self.client.local_library_service.get(library_id)
 
-        library_item_id = self.helper.create_iso_library_item(library_id,self.iso_item_name, self.ISO_FILENAME)
+        library_item_id = self.helper.create_iso_library_item(library_id,
+                                                              self.iso_item_name,
+                                                              self.ISO_FILENAME)
 
         vm_id = get_vm(self.servicemanager.stub_config, self.vm_name)
         assert vm_id is not None
@@ -77,18 +82,17 @@ class IsoMount(SampleBase):
         # Mount the iso item as a CDROM device
         device_id = self.client.iso_service.mount(library_item_id, vm_id)
         assert device_id is not None
-        print('Mounted library item {0}'
-                    ' on vm {1} at device {2}'.format(self.iso_item_name, self.vm_name, device_id))
+        print('Mounted library item {0} on vm {1} at device {2}'.
+              format(self.iso_item_name, self.vm_name, device_id))
         # Unmount the CDROM
         self.client.iso_service.unmount(vm_id, device_id)
-        print('Unmounted library item {0}'
-                    'from vm {1} mounted at device {2}'.format(self.iso_item_name,
-                                                               self.vm_name, device_id))
-
+        print('Unmounted library item {0} from vm {1} mounted at device {2}'.
+              format(self.iso_item_name, self.vm_name, device_id))
 
     def _cleanup(self):
         if self.local_library:
-            self.client.local_library_service.delete(library_id=self.local_library.id)
+            self.client.local_library_service.delete(
+                library_id=self.local_library.id)
             print('Deleted Library Id: {0}'.format(self.local_library.id))
 
 

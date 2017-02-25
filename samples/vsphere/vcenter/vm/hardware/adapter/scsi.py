@@ -41,6 +41,7 @@ cleardata = False
 scsis_to_delete = []
 orig_scsi_summaries = None
 
+
 def setup(context=None):
     global vm, vm_name, stub_config, cleardata
     if context:
@@ -56,6 +57,7 @@ def setup(context=None):
                                           password,
                                           skip_verification)
         atexit.register(vapiconnect.logout, stub_config)
+
 
 
 def run():
@@ -135,6 +137,7 @@ def cleanup():
     if set(orig_scsi_summaries) != set(scsi_summaries):
         print('vm.hardware.adapter.Scsi WARNING: '
               'Final SCSI adapters info does not match original')
+
 
 def main():
     setup()

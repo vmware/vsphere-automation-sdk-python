@@ -36,5 +36,6 @@ class ServiceManagerFactory(object):
         if cls.service_manager:
             cls.service_manager.disconnect()
 
+
 import atexit
 atexit.register(ServiceManagerFactory.disconnect)

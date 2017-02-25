@@ -13,7 +13,6 @@
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
-
 import pyVim.task
 from com.vmware.vcenter_client import Host
 from pyVmomi import vim
@@ -80,7 +79,7 @@ def cleanup_vdswitch(context):
 def find_vdswitch(context, datacenter_name, vdswitch_name):
     """ Retrieve an existing Distributed Switch"""
     # TODO Ugly deep nesting.
-    for datacenter_mo in context.service_instance.content.rootFolder\
+    for datacenter_mo in context.service_instance.content.rootFolder \
             .childEntity:
         if (isinstance(datacenter_mo, vim.Datacenter) and
                     datacenter_mo.name == datacenter_name):
@@ -102,9 +101,10 @@ def find_vdportgroup(context, datacenter_name, vdswitch_name, vdportgroup_name):
     vdswitch_mo = find_vdswitch(context, datacenter_name, vdswitch_name)
     for vdportgroup_mo in vdswitch_mo.portgroup:
         if vdportgroup_mo.name == vdportgroup_name:
-            print("Found Distributed Portgroup '{}' ({}) on Distributed Switch '{}' ({})".
+            print(
+                "Found Distributed Portgroup '{}' ({}) on Distributed Switch '{}' ({})".
                 format(vdportgroup_name, vdportgroup_mo._moId,
-                       vdswitch_name,vdswitch_mo._moId))
+                       vdswitch_name, vdswitch_mo._moId))
             return vdportgroup_mo
     return None
 
@@ -146,8 +146,9 @@ def create_vdportgroup(context, vdswitch_name, vdportgroup_name):
     for vdportgroup_mo in vdswitch_mo.portgroup:
         if vdportgroup_mo.name == vdportgroup_name:
             vdportgroup = vdportgroup_mo._moId
-            print("Created Distributed Portgroup '{}' ({}) on Distributed Switch '{}' ({})".
-                  format(vdportgroup_name, vdportgroup, vdswitch_name, vdswitch))
+            print(
+                "Created Distributed Portgroup '{}' ({}) on Distributed Switch '{}' ({})".
+                format(vdportgroup_name, vdportgroup, vdswitch_name, vdswitch))
     return vdportgroup
 
 
@@ -245,8 +246,9 @@ def detect_stdportgroup(context, host_name, network_name):
             if (type(network_mo) == vim.Network and
                         network_mo.name == network_name):
                 network = network_mo._moId
-                print("Detected Standard Portgroup '{}' as {} on Host '{}' ({})".
-                      format(network_name, network, host_name, host))
+                print(
+                    "Detected Standard Portgroup '{}' as {} on Host '{}' ({})".
+                    format(network_name, network, host_name, host))
                 context.testbed.entities['HOST_STANDARD_SWITCH_IDS'][
                     host_name] = network
                 return True

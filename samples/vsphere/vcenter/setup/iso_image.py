@@ -15,7 +15,7 @@ __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 
 from samples.vsphere.common.vim.file import (detect_file, delete_file,
-                                      parse_datastore_path)
+                                             parse_datastore_path)
 from samples.vsphere.common.vim.inventory import get_datastore_mo
 
 from samples.vsphere.common.vim import datastore_file

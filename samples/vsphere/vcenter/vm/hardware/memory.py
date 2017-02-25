@@ -58,6 +58,7 @@ def setup(context=None):
         atexit.register(vapiconnect.logout, stub_config)
 
 
+
 def run():
     global vm
     vm = get_vm(stub_config, vm_name)
@@ -119,6 +120,7 @@ def main():
     run()
     if cleardata:
         cleanup()
+
 
 if __name__ == '__main__':
     main()
