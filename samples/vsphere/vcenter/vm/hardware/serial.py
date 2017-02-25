@@ -235,12 +235,14 @@ def cleanup_backends():
                 datacenter_name,
                 datastore_path)
 
+
 def main():
     setup()
     cleanup_backends()
     run()
     if cleardata:
         cleanup()
+
 
 if __name__ == '__main__':
     main()
