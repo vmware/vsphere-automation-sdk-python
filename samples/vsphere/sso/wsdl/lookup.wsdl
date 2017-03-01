@@ -1,0 +1,922 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+   Copyright 2005-2015 VMware, Inc.  All rights reserved.
+-->
+<definitions targetNamespace="urn:lookup"
+   xmlns="http://schemas.xmlsoap.org/wsdl/"
+   xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:lookup="urn:lookup"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+   <types>
+      <schema
+         targetNamespace="urn:lookup"
+         xmlns="http://www.w3.org/2001/XMLSchema"
+         xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+         xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+         xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+         xmlns:lookup="urn:lookup"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         elementFormDefault="qualified"
+      >
+         <complexType name="DynamicArray">
+            <sequence>
+               <element name="val" type="xsd:anyType" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <complexType name="DynamicData">
+            <sequence>
+            </sequence>
+         </complexType>
+         <complexType name="DynamicProperty">
+            <sequence>
+               <element name="name" type="xsd:string" />
+               <element name="val" type="xsd:anyType" />
+            </sequence>
+         </complexType>
+         <complexType name="ArrayOfDynamicProperty">
+            <sequence>
+               <element name="DynamicProperty" type="lookup:DynamicProperty" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <complexType name="KeyAnyValue">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="key" type="xsd:string" />
+                     <element name="value" type="xsd:anyType" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="ArrayOfKeyAnyValue">
+            <sequence>
+               <element name="KeyAnyValue" type="lookup:KeyAnyValue" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <complexType name="LocalizableMessage">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="key" type="xsd:string" />
+                     <element name="arg" type="lookup:KeyAnyValue" minOccurs="0" maxOccurs="unbounded" />
+                     <element name="message" type="xsd:string" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="ArrayOfLocalizableMessage">
+            <sequence>
+               <element name="LocalizableMessage" type="lookup:LocalizableMessage" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <complexType name="LocalizedMethodFault">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="fault" type="lookup:MethodFault" />
+                     <element name="localizedMessage" type="xsd:string" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="MethodFault">
+            <sequence>
+               <element name="faultCause" type="lookup:LocalizedMethodFault" minOccurs="0" />
+               <element name="faultMessage" type="lookup:LocalizableMessage" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <element name="MethodFaultFault" type="lookup:MethodFault"/>
+         <complexType name="RuntimeFault">
+            <complexContent>
+               <extension base="lookup:MethodFault">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="RuntimeFaultFault" type="lookup:RuntimeFault"/>
+         <complexType name="HostCommunication">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="HostCommunicationFault" type="lookup:HostCommunication"/>
+         <complexType name="HostNotConnected">
+            <complexContent>
+               <extension base="lookup:HostCommunication">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="HostNotConnectedFault" type="lookup:HostNotConnected"/>
+         <complexType name="HostNotReachable">
+            <complexContent>
+               <extension base="lookup:HostCommunication">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="HostNotReachableFault" type="lookup:HostNotReachable"/>
+         <complexType name="InvalidArgument">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                     <element name="invalidProperty" type="xsd:string" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="InvalidArgumentFault" type="lookup:InvalidArgument"/>
+         <complexType name="InvalidRequest">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="InvalidRequestFault" type="lookup:InvalidRequest"/>
+         <complexType name="InvalidType">
+            <complexContent>
+               <extension base="lookup:InvalidRequest">
+                  <sequence>
+                     <element name="argument" type="xsd:string" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="InvalidTypeFault" type="lookup:InvalidType"/>
+         <complexType name="ManagedObjectNotFound">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                     <element name="obj" type="lookup:ManagedObjectReference" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="ManagedObjectNotFoundFault" type="lookup:ManagedObjectNotFound"/>
+         <complexType name="MethodNotFound">
+            <complexContent>
+               <extension base="lookup:InvalidRequest">
+                  <sequence>
+                     <element name="receiver" type="lookup:ManagedObjectReference" />
+                     <element name="method" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="MethodNotFoundFault" type="lookup:MethodNotFound"/>
+         <complexType name="NotEnoughLicenses">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="NotEnoughLicensesFault" type="lookup:NotEnoughLicenses"/>
+         <complexType name="NotImplemented">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="NotImplementedFault" type="lookup:NotImplemented"/>
+         <complexType name="NotSupported">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="NotSupportedFault" type="lookup:NotSupported"/>
+         <complexType name="RequestCanceled">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="RequestCanceledFault" type="lookup:RequestCanceled"/>
+         <complexType name="SecurityError">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="SecurityErrorFault" type="lookup:SecurityError"/>
+         <complexType name="SystemError">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                     <element name="reason" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="SystemErrorFault" type="lookup:SystemError"/>
+         <complexType name="UnexpectedFault">
+            <complexContent>
+               <extension base="lookup:RuntimeFault">
+                  <sequence>
+                     <element name="faultName" type="xsd:string" />
+                     <element name="fault" type="lookup:LocalizedMethodFault" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="UnexpectedFaultFault" type="lookup:UnexpectedFault"/>
+         <complexType name="RetrieveHaBackupConfigurationRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+            </sequence>
+         </complexType>
+         <element name="RetrieveHaBackupConfiguration"  type="lookup:RetrieveHaBackupConfigurationRequestType" />
+         <element name="RetrieveHaBackupConfigurationResponse">
+            <complexType>
+               <sequence>
+                  <element name="returnval" type="lookup:LookupHaBackupNodeConfiguration" />
+               </sequence>
+            </complexType>
+         </element>
+         <complexType name="LookupHaBackupNodeConfiguration">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="dbType" type="xsd:string" />
+                     <element name="dbJdbcUrl" type="xsd:string" />
+                     <element name="dbUser" type="xsd:string" />
+                     <element name="dbPass" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="SetLocaleRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+               <element name="locale" type="xsd:string" />
+            </sequence>
+         </complexType>
+         <element name="SetLocale"  type="lookup:SetLocaleRequestType" />
+         <element name="SetLocaleResponse">
+            <complexType>
+               <sequence>
+                  <element name="returnval" type="xsd:string" />
+               </sequence>
+            </complexType>
+         </element>
+         <complexType name="GetLocaleRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+            </sequence>
+         </complexType>
+         <element name="GetLocale"  type="lookup:GetLocaleRequestType" />
+         <element name="GetLocaleResponse">
+            <complexType>
+               <sequence>
+                  <element name="returnval" type="xsd:string" />
+               </sequence>
+            </complexType>
+         </element>
+         <complexType name="LookupServiceContent">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="lookupService" type="lookup:ManagedObjectReference" />
+                     <element name="serviceRegistration" type="lookup:ManagedObjectReference" minOccurs="0" />
+                     <element name="deploymentInformationService" type="lookup:ManagedObjectReference" />
+                     <element name="l10n" type="lookup:ManagedObjectReference" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <simpleType name="LookupServiceEndpointEndpointProtocol">
+            <restriction base="xsd:string">
+               <enumeration value="vmomi" />
+               <enumeration value="wsTrust" />
+               <enumeration value="rest" />
+               <enumeration value="http" />
+               <enumeration value="unknown" />
+            </restriction>
+         </simpleType>
+         <complexType name="RetrieveServiceContentRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+            </sequence>
+         </complexType>
+         <element name="RetrieveServiceContent"  type="lookup:RetrieveServiceContentRequestType" />
+         <element name="RetrieveServiceContentResponse">
+            <complexType>
+               <sequence>
+                  <element name="returnval" type="lookup:LookupServiceContent" />
+               </sequence>
+            </complexType>
+         </element>
+         <complexType name="LookupServiceRegistrationMutableServiceInfo">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="serviceVersion" type="xsd:string" />
+                     <element name="vendorNameResourceKey" type="xsd:string" minOccurs="0" />
+                     <element name="vendorNameDefault" type="xsd:string" minOccurs="0" />
+                     <element name="vendorProductInfoResourceKey" type="xsd:string" minOccurs="0" />
+                     <element name="vendorProductInfoDefault" type="xsd:string" minOccurs="0" />
+                     <element name="serviceEndpoints" type="lookup:LookupServiceRegistrationEndpoint" minOccurs="0" maxOccurs="unbounded" />
+                     <element name="serviceAttributes" type="lookup:LookupServiceRegistrationAttribute" minOccurs="0" maxOccurs="unbounded" />
+                     <element name="serviceNameResourceKey" type="xsd:string" minOccurs="0" />
+                     <element name="serviceNameDefault" type="xsd:string" minOccurs="0" />
+                     <element name="serviceDescriptionResourceKey" type="xsd:string" minOccurs="0" />
+                     <element name="serviceDescriptionDefault" type="xsd:string" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="LookupServiceRegistrationCommonServiceInfo">
+            <complexContent>
+               <extension base="lookup:LookupServiceRegistrationMutableServiceInfo">
+                  <sequence>
+                     <element name="ownerId" type="xsd:string" />
+                     <element name="serviceType" type="lookup:LookupServiceRegistrationServiceType" />
+                     <element name="nodeId" type="xsd:string" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="LookupServiceRegistrationCreateSpec">
+            <complexContent>
+               <extension base="lookup:LookupServiceRegistrationCommonServiceInfo">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="LookupServiceRegistrationSetSpec">
+            <complexContent>
+               <extension base="lookup:LookupServiceRegistrationMutableServiceInfo">
+                  <sequence>
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="LookupServiceRegistrationInfo">
+            <complexContent>
+               <extension base="lookup:LookupServiceRegistrationCommonServiceInfo">
+                  <sequence>
+                     <element name="serviceId" type="xsd:string" />
+                     <element name="siteId" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="ArrayOfLookupServiceRegistrationInfo">
+            <sequence>
+               <element name="LookupServiceRegistrationInfo" type="lookup:LookupServiceRegistrationInfo" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <complexType name="LookupServiceRegistrationServiceType">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="product" type="xsd:string" />
+                     <element name="type" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="LookupServiceRegistrationEndpoint">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="url" type="xsd:anyURI" />
+                     <element name="endpointType" type="lookup:LookupServiceRegistrationEndpointType" />
+                     <element name="sslTrust" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+                     <element name="endpointAttributes" type="lookup:LookupServiceRegistrationAttribute" minOccurs="0" maxOccurs="unbounded" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="ArrayOfLookupServiceRegistrationEndpoint">
+            <sequence>
+               <element name="LookupServiceRegistrationEndpoint" type="lookup:LookupServiceRegistrationEndpoint" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <complexType name="LookupServiceRegistrationEndpointType">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="protocol" type="xsd:string" minOccurs="0" />
+                     <element name="type" type="xsd:string" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="LookupServiceRegistrationAttribute">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="key" type="xsd:string" />
+                     <element name="value" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="ArrayOfLookupServiceRegistrationAttribute">
+            <sequence>
+               <element name="LookupServiceRegistrationAttribute" type="lookup:LookupServiceRegistrationAttribute" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <complexType name="LookupServiceRegistrationFilter">
+            <complexContent>
+               <extension base="lookup:DynamicData">
+                  <sequence>
+                     <element name="siteId" type="xsd:string" minOccurs="0" />
+                     <element name="nodeId" type="xsd:string" minOccurs="0" />
+                     <element name="serviceType" type="lookup:LookupServiceRegistrationServiceType" minOccurs="0" />
+                     <element name="endpointType" type="lookup:LookupServiceRegistrationEndpointType" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <complexType name="CreateRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+               <element name="serviceId" type="xsd:string" />
+               <element name="createSpec" type="lookup:LookupServiceRegistrationCreateSpec" />
+            </sequence>
+         </complexType>
+         <element name="Create"  type="lookup:CreateRequestType" />
+         <element name="CreateResponse">
+            <complexType />
+         </element>
+         <complexType name="DeleteRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+               <element name="serviceId" type="xsd:string" />
+            </sequence>
+         </complexType>
+         <element name="Delete"  type="lookup:DeleteRequestType" />
+         <element name="DeleteResponse">
+            <complexType />
+         </element>
+         <complexType name="SetRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+               <element name="serviceId" type="xsd:string" />
+               <element name="serviceSpec" type="lookup:LookupServiceRegistrationSetSpec" />
+            </sequence>
+         </complexType>
+         <element name="Set"  type="lookup:SetRequestType" />
+         <element name="SetResponse">
+            <complexType />
+         </element>
+         <complexType name="GetRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+               <element name="serviceId" type="xsd:string" />
+            </sequence>
+         </complexType>
+         <element name="Get"  type="lookup:GetRequestType" />
+         <element name="GetResponse">
+            <complexType>
+               <sequence>
+                  <element name="returnval" type="lookup:LookupServiceRegistrationInfo" />
+               </sequence>
+            </complexType>
+         </element>
+         <complexType name="ListRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+               <element name="filterCriteria" type="lookup:LookupServiceRegistrationFilter" minOccurs="0" />
+            </sequence>
+         </complexType>
+         <element name="List"  type="lookup:ListRequestType" />
+         <element name="ListResponse">
+            <complexType>
+               <sequence>
+                  <element name="returnval" type="lookup:LookupServiceRegistrationInfo" minOccurs="0" maxOccurs="unbounded" />
+               </sequence>
+            </complexType>
+         </element>
+         <complexType name="GetSiteIdRequestType">
+            <sequence>
+               <element name="_this" type="lookup:ManagedObjectReference" />
+            </sequence>
+         </complexType>
+         <element name="GetSiteId"  type="lookup:GetSiteIdRequestType" />
+         <element name="GetSiteIdResponse">
+            <complexType>
+               <sequence>
+                  <element name="returnval" type="xsd:string" />
+               </sequence>
+            </complexType>
+         </element>
+         <complexType name="LookupFaultEntryExistsFault">
+            <complexContent>
+               <extension base="lookup:LookupFaultServiceFault">
+                  <sequence>
+                     <element name="name" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="LookupFaultEntryExistsFaultFault" type="lookup:LookupFaultEntryExistsFault"/>
+         <complexType name="LookupFaultEntryNotFoundFault">
+            <complexContent>
+               <extension base="lookup:LookupFaultServiceFault">
+                  <sequence>
+                     <element name="name" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="LookupFaultEntryNotFoundFaultFault" type="lookup:LookupFaultEntryNotFoundFault"/>
+         <complexType name="LookupFaultServiceFault">
+            <complexContent>
+               <extension base="lookup:MethodFault">
+                  <sequence>
+                     <element name="errorMessage" type="xsd:string" minOccurs="0" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="LookupFaultServiceFaultFault" type="lookup:LookupFaultServiceFault"/>
+         <complexType name="LookupFaultUnsupportedSiteFault">
+            <complexContent>
+               <extension base="lookup:LookupFaultServiceFault">
+                  <sequence>
+                     <element name="operatingSite" type="xsd:string" />
+                     <element name="requestedSite" type="xsd:string" />
+                  </sequence>
+               </extension>
+            </complexContent>
+         </complexType>
+         <element name="LookupFaultUnsupportedSiteFaultFault" type="lookup:LookupFaultUnsupportedSiteFault"/>
+         <complexType name="ManagedObjectReference">
+            <simpleContent>
+               <extension base="xsd:string">
+                  <attribute name="type" type="xsd:string"/>
+               </extension>
+            </simpleContent>
+         </complexType>
+         <complexType name="ArrayOfString">
+            <sequence>
+               <element name="string" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <complexType name="ArrayOfAnyType">
+            <sequence>
+               <element name="anyType" type="xsd:anyType" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+         </complexType>
+         <element name="versionURI" type="xsd:string" />
+      </schema>
+   </types>
+   <message name="MethodFaultFaultMsg">
+      <part name="fault" element="lookup:MethodFaultFault" />
+   </message>
+   <message name="RuntimeFaultFaultMsg">
+      <part name="fault" element="lookup:RuntimeFaultFault" />
+   </message>
+   <message name="HostCommunicationFaultMsg">
+      <part name="fault" element="lookup:HostCommunicationFault" />
+   </message>
+   <message name="HostNotConnectedFaultMsg">
+      <part name="fault" element="lookup:HostNotConnectedFault" />
+   </message>
+   <message name="HostNotReachableFaultMsg">
+      <part name="fault" element="lookup:HostNotReachableFault" />
+   </message>
+   <message name="InvalidArgumentFaultMsg">
+      <part name="fault" element="lookup:InvalidArgumentFault" />
+   </message>
+   <message name="InvalidRequestFaultMsg">
+      <part name="fault" element="lookup:InvalidRequestFault" />
+   </message>
+   <message name="InvalidTypeFaultMsg">
+      <part name="fault" element="lookup:InvalidTypeFault" />
+   </message>
+   <message name="ManagedObjectNotFoundFaultMsg">
+      <part name="fault" element="lookup:ManagedObjectNotFoundFault" />
+   </message>
+   <message name="MethodNotFoundFaultMsg">
+      <part name="fault" element="lookup:MethodNotFoundFault" />
+   </message>
+   <message name="NotEnoughLicensesFaultMsg">
+      <part name="fault" element="lookup:NotEnoughLicensesFault" />
+   </message>
+   <message name="NotImplementedFaultMsg">
+      <part name="fault" element="lookup:NotImplementedFault" />
+   </message>
+   <message name="NotSupportedFaultMsg">
+      <part name="fault" element="lookup:NotSupportedFault" />
+   </message>
+   <message name="RequestCanceledFaultMsg">
+      <part name="fault" element="lookup:RequestCanceledFault" />
+   </message>
+   <message name="SecurityErrorFaultMsg">
+      <part name="fault" element="lookup:SecurityErrorFault" />
+   </message>
+   <message name="SystemErrorFaultMsg">
+      <part name="fault" element="lookup:SystemErrorFault" />
+   </message>
+   <message name="UnexpectedFaultFaultMsg">
+      <part name="fault" element="lookup:UnexpectedFaultFault" />
+   </message>
+   <message name="RetrieveHaBackupConfigurationRequestMsg">
+      <part name="parameters" element="lookup:RetrieveHaBackupConfiguration" />
+   </message>
+   <message name="RetrieveHaBackupConfigurationResponseMsg">
+      <part name="parameters" element="lookup:RetrieveHaBackupConfigurationResponse" />
+   </message>
+   <message name="SetLocaleRequestMsg">
+      <part name="parameters" element="lookup:SetLocale" />
+   </message>
+   <message name="SetLocaleResponseMsg">
+      <part name="parameters" element="lookup:SetLocaleResponse" />
+   </message>
+   <message name="GetLocaleRequestMsg">
+      <part name="parameters" element="lookup:GetLocale" />
+   </message>
+   <message name="GetLocaleResponseMsg">
+      <part name="parameters" element="lookup:GetLocaleResponse" />
+   </message>
+   <message name="RetrieveServiceContentRequestMsg">
+      <part name="parameters" element="lookup:RetrieveServiceContent" />
+   </message>
+   <message name="RetrieveServiceContentResponseMsg">
+      <part name="parameters" element="lookup:RetrieveServiceContentResponse" />
+   </message>
+   <message name="CreateRequestMsg">
+      <part name="parameters" element="lookup:Create" />
+   </message>
+   <message name="CreateResponseMsg">
+      <part name="parameters" element="lookup:CreateResponse" />
+   </message>
+   <message name="DeleteRequestMsg">
+      <part name="parameters" element="lookup:Delete" />
+   </message>
+   <message name="DeleteResponseMsg">
+      <part name="parameters" element="lookup:DeleteResponse" />
+   </message>
+   <message name="SetRequestMsg">
+      <part name="parameters" element="lookup:Set" />
+   </message>
+   <message name="SetResponseMsg">
+      <part name="parameters" element="lookup:SetResponse" />
+   </message>
+   <message name="GetRequestMsg">
+      <part name="parameters" element="lookup:Get" />
+   </message>
+   <message name="GetResponseMsg">
+      <part name="parameters" element="lookup:GetResponse" />
+   </message>
+   <message name="ListRequestMsg">
+      <part name="parameters" element="lookup:List" />
+   </message>
+   <message name="ListResponseMsg">
+      <part name="parameters" element="lookup:ListResponse" />
+   </message>
+   <message name="GetSiteIdRequestMsg">
+      <part name="parameters" element="lookup:GetSiteId" />
+   </message>
+   <message name="GetSiteIdResponseMsg">
+      <part name="parameters" element="lookup:GetSiteIdResponse" />
+   </message>
+   <message name="LookupFaultEntryExistsFaultFaultMsg">
+      <part name="fault" element="lookup:LookupFaultEntryExistsFaultFault" />
+   </message>
+   <message name="LookupFaultEntryNotFoundFaultFaultMsg">
+      <part name="fault" element="lookup:LookupFaultEntryNotFoundFaultFault" />
+   </message>
+   <message name="LookupFaultServiceFaultFaultMsg">
+      <part name="fault" element="lookup:LookupFaultServiceFaultFault" />
+   </message>
+   <message name="LookupFaultUnsupportedSiteFaultFaultMsg">
+      <part name="fault" element="lookup:LookupFaultUnsupportedSiteFaultFault" />
+   </message>
+   <portType name="LsPortType">
+      <operation name="RetrieveHaBackupConfiguration">
+         <input message="lookup:RetrieveHaBackupConfigurationRequestMsg" />
+         <output message="lookup:RetrieveHaBackupConfigurationResponseMsg" />
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="SetLocale">
+         <input message="lookup:SetLocaleRequestMsg" />
+         <output message="lookup:SetLocaleResponseMsg" />
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="GetLocale">
+         <input message="lookup:GetLocaleRequestMsg" />
+         <output message="lookup:GetLocaleResponseMsg" />
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="RetrieveServiceContent">
+         <input message="lookup:RetrieveServiceContentRequestMsg" />
+         <output message="lookup:RetrieveServiceContentResponseMsg" />
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="Create">
+         <input message="lookup:CreateRequestMsg" />
+         <output message="lookup:CreateResponseMsg" />
+         <fault name="LookupFaultEntryExistsFaultFault" message="lookup:LookupFaultEntryExistsFaultFaultMsg"/>
+         <fault name="InvalidArgumentFault" message="lookup:InvalidArgumentFaultMsg"/>
+         <fault name="SecurityErrorFault" message="lookup:SecurityErrorFaultMsg"/>
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="Delete">
+         <input message="lookup:DeleteRequestMsg" />
+         <output message="lookup:DeleteResponseMsg" />
+         <fault name="LookupFaultEntryNotFoundFaultFault" message="lookup:LookupFaultEntryNotFoundFaultFaultMsg"/>
+         <fault name="SecurityErrorFault" message="lookup:SecurityErrorFaultMsg"/>
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="Set">
+         <input message="lookup:SetRequestMsg" />
+         <output message="lookup:SetResponseMsg" />
+         <fault name="LookupFaultEntryNotFoundFaultFault" message="lookup:LookupFaultEntryNotFoundFaultFaultMsg"/>
+         <fault name="InvalidArgumentFault" message="lookup:InvalidArgumentFaultMsg"/>
+         <fault name="SecurityErrorFault" message="lookup:SecurityErrorFaultMsg"/>
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="Get">
+         <input message="lookup:GetRequestMsg" />
+         <output message="lookup:GetResponseMsg" />
+         <fault name="LookupFaultEntryNotFoundFaultFault" message="lookup:LookupFaultEntryNotFoundFaultFaultMsg"/>
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="List">
+         <input message="lookup:ListRequestMsg" />
+         <output message="lookup:ListResponseMsg" />
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+      <operation name="GetSiteId">
+         <input message="lookup:GetSiteIdRequestMsg" />
+         <output message="lookup:GetSiteIdResponseMsg" />
+         <fault name="RuntimeFault" message="lookup:RuntimeFaultFaultMsg"/>
+      </operation>
+   </portType>
+   <binding name="LsBinding" type="lookup:LsPortType">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+      <operation name="RetrieveHaBackupConfiguration">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="SetLocale">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="GetLocale">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="RetrieveServiceContent">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="Create">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="LookupFaultEntryExistsFaultFault">
+            <soap:fault name="LookupFaultEntryExistsFaultFault" use="literal" />
+         </fault>
+         <fault name="InvalidArgumentFault">
+            <soap:fault name="InvalidArgumentFault" use="literal" />
+         </fault>
+         <fault name="SecurityErrorFault">
+            <soap:fault name="SecurityErrorFault" use="literal" />
+         </fault>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="Delete">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="LookupFaultEntryNotFoundFaultFault">
+            <soap:fault name="LookupFaultEntryNotFoundFaultFault" use="literal" />
+         </fault>
+         <fault name="SecurityErrorFault">
+            <soap:fault name="SecurityErrorFault" use="literal" />
+         </fault>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="Set">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="LookupFaultEntryNotFoundFaultFault">
+            <soap:fault name="LookupFaultEntryNotFoundFaultFault" use="literal" />
+         </fault>
+         <fault name="InvalidArgumentFault">
+            <soap:fault name="InvalidArgumentFault" use="literal" />
+         </fault>
+         <fault name="SecurityErrorFault">
+            <soap:fault name="SecurityErrorFault" use="literal" />
+         </fault>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="Get">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="LookupFaultEntryNotFoundFaultFault">
+            <soap:fault name="LookupFaultEntryNotFoundFaultFault" use="literal" />
+         </fault>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="List">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+      <operation name="GetSiteId">
+         <soap:operation soapAction="urn:lookup/2.0" style="document" />
+         <input>
+            <soap:body use="literal" />
+         </input>
+         <output>
+            <soap:body use="literal" />
+         </output>
+         <fault name="RuntimeFault">
+            <soap:fault name="RuntimeFault" use="literal" />
+         </fault>
+      </operation>
+   </binding>
+</definitions>
