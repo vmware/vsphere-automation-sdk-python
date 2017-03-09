@@ -21,7 +21,7 @@ config["PASSWORD"] = "Admin!23"
 config["ESX_HOST1"] = ""
 config["ESX_HOST2"] = ""
 config["ESX_USER"] = "root"
-config["ESX_PASS"] = ""
+config["ESX_PASS"] = "ca$hc0w"
 
 config["USE_NFS"] = True
 config["NFS_HOST"] = ""
