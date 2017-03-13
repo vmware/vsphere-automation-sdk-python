@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
 """
+* *******************************************************
+* Copyright VMware, Inc. 2016. All Rights Reserved.
+* SODX-License-Identifier: MIT
+* *******************************************************
+*
 * DISCLAIMER. THIS PROGRAM IS PROVIDED TO YOU "AS IS" WITHOUT
 * WARRANTIES OR CONDITIONS OF ANY KIND, WHETHER ORAL OR WRITTEN,
 * EXPRESS OR IMPLIED. THE AUTHOR SPECIFICALLY DISCLAIMS ANY IMPLIED
