@@ -3,7 +3,7 @@
 """
 * *******************************************************
 * Copyright (c) VMware, Inc. 2014, 2016. All Rights Reserved.
-* SODX-License-Identifier: MIT
+* SPDX-License-Identifier: MIT
 * *******************************************************
 *
 * DISCLAIMER. THIS PROGRAM IS PROVIDED TO YOU "AS IS" WITHOUT
