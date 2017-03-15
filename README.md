@@ -21,7 +21,7 @@
 - [Repository Administrator Resources](#repository-administrator-resources)
   - [Board Members](#board-members)
   - [Approval of Additions](#approval-of-additions)
-
+- [VMware Resources](#vmware-resources)
 ## Abstract
 This document describes the vSphere Automation Python SDK samples that use the vSphere Automation
 python client library. Additionally, some of the samples demonstrate the combined use of the
@@ -196,3 +196,11 @@ Members:
 
 ### Approval of Additions
 Items added to the repository, including items from the Board members, require 2 votes from the board members before being added to the repository. The approving members will have ideally downloaded and tested the item. When two “Approved for Merge” comments are added from board members, the pull can then be committed to the repository.
+
+## VMware Resources
+
+* [vSphere Automation SDK Overview](http://pubs.vmware.com/vsphere-65/index.jsp#com.vmware.vapi.progguide.doc/GUID-AF73991C-FC1C-47DF-8362-184B6544CFDE.html)
+* [VMware Code](https://code.vmware.com/home)
+* [VMware Developer Community](https://communities.vmware.com/community/vmtn/developer)
+* VMware vSphere [REST API Reference documentation](https://vdc-repo.vmware.com/vmwb-repository/dcr-public/1cd28284-3b72-4885-9e31-d1c6d9e26686/9a0dbc46-b15f-47cd-af1d-dc64615b03df/doc/index.html).
+* [VMware Python forum](https://code.vmware.com/forums/7508/vsphere-automation-sdk-for-python)
