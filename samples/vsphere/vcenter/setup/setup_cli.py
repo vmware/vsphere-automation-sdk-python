@@ -39,6 +39,7 @@ def build_arg_parser():
     -server, --vcenterserver
     -e1, --esxhost1
     -e2, --esxhost2
+    -epass, --esxpassword
     -n,  --nfsserver
 
     """
@@ -98,6 +99,11 @@ def build_arg_parser():
     parser.add_argument('-e2', '--esxhost2',
                         action='store',
                         help='ESX HOST 2 IP to prepare the testbed to run the samples.'
+                             'If not passed as argument, update testbed.py file')
+
+    parser.add_argument('-epass', '--esxpassword',
+                        action='store',
+                        help='ESX Server password'
                              'If not passed as argument, update testbed.py file')
 
     parser.add_argument('-n', '--nfsserver',

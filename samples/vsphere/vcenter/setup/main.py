@@ -49,8 +49,11 @@ if (args.esxhost1):
     _testbed.config['ESX_HOST1'] = args.esxhost1
 if (args.esxhost2):
     _testbed.config['ESX_HOST2'] = args.esxhost2
+if (args.esxpassword):
+    _testbed.config['ESX_PASS'] = args.esxpassword
 if (args.nfsserver):
     _testbed.config['NFS_HOST'] = args.nfsserver
+
 
 print(_testbed.to_config_string())
 
