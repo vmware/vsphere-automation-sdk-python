@@ -35,6 +35,15 @@ Demonstrates how to configure Serial ports for a VM.
 
 Sample Prerequisites:
 The sample needs an existing VM.
+
+Note:
+The sample adds new serial ports to the existing VM. If you re-run the sample
+without cleaning up the previous created serial ports, the VM may be stuck at
+power on stage as there will be multiple serial ports using the same output
+file. In such case, you will see a question in vCenter UI asking if the file
+should be Replaced or Appended.
+To avoid this, make sure to pass -c to clean up the serial ports or manually
+delete them after running the sample.
 """
 
 vm = None
@@ -121,6 +130,9 @@ def run():
     serial_info = serial_svc.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
+
+    # Make sure output file doesn't exist already
+    cleanup_backends()
 
     print('\n# Example: Create Serial port with FILE backing')
     serial_port_datastore_path = testbed.config['SERIAL_PORT_DATASTORE_PATH']
