@@ -103,6 +103,9 @@ def run():
         print('vm.hardware.Parallel.get({}, {}) -> {}'.format(vm, parallel, pp(
             parallel_info)))
 
+    # Make sure output file doesn't exist already
+    cleanup_backends()
+
     print('\n# Example: Create Parallel port with defaults')
     parallel_create_spec = Parallel.CreateSpec()
     parallel = parallel_svc.create(vm, parallel_create_spec)
@@ -180,6 +183,9 @@ def run():
     print('vm.hardware.Parallel.list({}) -> {}'.
           format(vm, parallel_summaries))
 
+    # Always cleanup output file so the VM can be powered on next time
+    cleanup_backends()
+
 
 def cleanup():
     print('\n# Cleanup: Delete VM Parallel ports that were added')
@@ -192,8 +198,6 @@ def cleanup():
     if set(orig_parallel_summaries) != set(parallel_summaries):
         print('vm.hardware.Parallel WARNING: '
               'Final Parallel ports info does not match original')
-
-    cleanup_backends()
 
 
 def cleanup_backends():
