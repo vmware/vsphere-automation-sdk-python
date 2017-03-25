@@ -214,6 +214,9 @@ def run():
     serial_summaries = serial_svc.list(vm=vm)
     print('vm.hardware.Serial.list({}) -> {}'.format(vm, serial_summaries))
 
+    # Always cleanup output file so the VM can be powered on next time
+    cleanup_backends()
+
 
 def cleanup():
     print('\n# Delete VM Serial ports that were added')
@@ -226,8 +229,6 @@ def cleanup():
     if set(orig_serial_summaries) != set(serial_summaries):
         print('vm.hardware.Serial WARNING: '
               'Final Serial ports info does not match original')
-
-    cleanup_backends()
 
 
 def cleanup_backends():
