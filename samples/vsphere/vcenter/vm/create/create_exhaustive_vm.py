@@ -44,7 +44,6 @@ Sample Prerequisites:
     - vm folder
     - resource pool
     - datastore
-    - cluster
     - standard switch network
     - distributed switch network
     - An iso file on the datastore mentioned above
@@ -74,9 +73,9 @@ def setup(context=None):
 
 def run():
     # Get a placement spec
-    datacenter_name = testbed.config['DATACENTER2_NAME']
+    datacenter_name = testbed.config['VM_DATACENTER_NAME']
     vm_folder_name = testbed.config['VM_FOLDER2_NAME']
-    datastore_name = testbed.config['NFS_DATASTORE_NAME']
+    datastore_name = testbed.config['VM_DATASTORE_NAME']
     std_portgroup_name = testbed.config['STDPORTGROUP_NAME']
     dv_portgroup_name = testbed.config['VDPORTGROUP1_NAME']
     placement_spec = vm_placement_helper.get_placement_spec_for_resource_pool(

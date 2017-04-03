@@ -95,8 +95,8 @@ def setup(context=None):
 
     # Get the datacenter and datastore managed objects to be able to create and
     # delete VMDKs, which are backings for a VM Disk.
-    datacenter_name = testbed.config['DATACENTER2_NAME']
-    datastore_name = testbed.config['NFS_DATASTORE_NAME']
+    datacenter_name = testbed.config['VM_DATACENTER_NAME']
+    datastore_name = testbed.config['VM_DATASTORE_NAME']
     datastore_mo = get_datastore_mo(stub_config,
                                     service_instance._stub,
                                     datacenter_name,
