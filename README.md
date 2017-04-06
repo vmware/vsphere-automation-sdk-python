@@ -135,7 +135,7 @@ $ ./run_sample.sh ../samples/vsphere/vcenter/setup/main.py -riv
 ```
 
 ## API Documentation
-The API documentation can be found [here] (doc/client.zip)
+The API documentation can be found [here](doc/client.zip)
 
 ## Submitting samples
 
