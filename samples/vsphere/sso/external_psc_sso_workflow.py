@@ -82,8 +82,9 @@ class ExternalPscSsoWorkflow(object):
         self.args = self.argparser.parse_args()
 
     def setup(self):
-        self.lswsdl = self.args.lswsdl
-        if not self.lswsdl:
+        if self.args.lswsdl:
+            self.lswsdl = os.path.abspath(self.args.lswsdl)
+        else:
             self.lswsdl = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
                 'wsdl',
@@ -113,7 +114,6 @@ class ExternalPscSsoWorkflow(object):
 
         # Convert wsdl path to url
         self.lswsdl = parse.urljoin('file:', request.pathname2url(self.lswsdl))
-
         lookupservicehelper = LookupServiceHelper(wsdl_url=self.lswsdl,
                                                   soap_url=self.lsurl,
                                                   skip_verification=self.skip_verification)
