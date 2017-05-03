@@ -13,7 +13,6 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.0+'
@@ -22,11 +21,11 @@ from pprint import pprint
 import requests
 
 from com.vmware.cis_client import Session
-from com.vmware.vcenter_client import Datacenter
 from vmware.vapi.lib.connect import get_requests_connector
 from vmware.vapi.security.session import create_session_security_context
 from vmware.vapi.security.sso import create_saml_bearer_security_context
 from vmware.vapi.stdlib.client.factories import StubConfigurationFactory
+from com.vmware.cis.tagging_client import (Category, CategoryModel)
 
 from samples.vsphere.common.ssl_helper import get_unverified_context
 from samples.vsphere.common.vapiconnect import create_unverified_session
@@ -47,6 +46,8 @@ class EmbeddedPscSsoWorkflow(object):
         self.session = None
         self.session_id = None
         self.skip_verification = False
+        self.category_svc = None
+        self.category_id = None
 
     def setup(self):
         self.server, self.username, self.password, _, self.skip_verification = \
@@ -100,13 +101,30 @@ class EmbeddedPscSsoWorkflow(object):
         session_sec_ctx = create_session_security_context(self.session_id)
         connector.set_security_context(session_sec_ctx)
 
-        print('\nStep 3: List available datacenters using the vAPI services')
+        # Create and Delete TagCategory to Verify connection is successful
+        print('\nStep 3: Creating and Deleting Tag Category...\n')
+        self.category_svc = Category(stub_config)
 
-        datacenter_svc = Datacenter(stub_config)
-        pprint(datacenter_svc.list())
+        self.category_id = self.create_tag_category('TestTagCat', 'TestTagDesc',
+                                                    CategoryModel.Cardinality.MULTIPLE)
+        assert self.category_id is not None
+        print('Tag category created; Id: {0}\n'.format(self.category_id))
+
+        # Delete TagCategory
+        self.category_svc.delete(self.category_id)
 
         self.session.delete()
         print('VAPI session disconnected successfully...')
+
+    def create_tag_category(self, name, description, cardinality):
+        """create a category. User who invokes this needs create category privilege."""
+        create_spec = self.category_svc.CreateSpec()
+        create_spec.name = name
+        create_spec.description = description
+        create_spec.cardinality = cardinality
+        associableTypes = set()
+        create_spec.associable_types = associableTypes
+        return self.category_svc.create(create_spec)
 
 
 def main():
