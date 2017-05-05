@@ -25,12 +25,12 @@ from pprint import pprint
 from six.moves.urllib import request, parse
 
 from com.vmware.cis_client import Session
-from com.vmware.vcenter_client import Datacenter
 
 from vmware.vapi.lib.connect import get_requests_connector
 from vmware.vapi.security.session import create_session_security_context
 from vmware.vapi.security.sso import create_saml_bearer_security_context
 from vmware.vapi.stdlib.client.factories import StubConfigurationFactory
+from com.vmware.cis.tagging_client import (Category, CategoryModel)
 
 from samples.vsphere.common import sso
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
@@ -56,6 +56,8 @@ class ExternalPscSsoWorkflow(object):
         self.argparser = None
         self.mgmtinstancename = None
         self.skip_verification = False
+        self.category_svc = None
+        self.category_id = None
 
     def options(self):
         self.argparser = argparse.ArgumentParser(description=self.__doc__)
@@ -170,10 +172,30 @@ class ExternalPscSsoWorkflow(object):
         session_sec_ctx = create_session_security_context(self.session_id)
         connector.set_security_context(session_sec_ctx)
 
-        print('\nStep 6: List available datacenters using the vAPI service')
+        # Create and Delete TagCategory to Verify connection is successful
+        print('\nStep 6: Creating and Deleting Tag Category...\n')
+        self.category_svc = Category(stub_config)
 
-        datacenter_svc = Datacenter(stub_config)
-        pprint(datacenter_svc.list())
+        self.category_id = self.create_tag_category('TestTagCat', 'TestTagDesc',
+                                                    CategoryModel.Cardinality.MULTIPLE)
+        assert self.category_id is not None
+        print('Tag category created; Id: {0}\n'.format(self.category_id))
+
+        # Delete TagCategory
+        self.category_svc.delete(self.category_id)
+
+        self.session.delete()
+        print('VAPI session disconnected successfully...')
+
+    def create_tag_category(self, name, description, cardinality):
+        """create a category. User who invokes this needs create category privilege."""
+        create_spec = self.category_svc.CreateSpec()
+        create_spec.name = name
+        create_spec.description = description
+        create_spec.cardinality = cardinality
+        associableTypes = set()
+        create_spec.associable_types = associableTypes
+        return self.category_svc.create(create_spec)
 
         self.session.delete()
         print('VAPI session disconnected successfully...')
