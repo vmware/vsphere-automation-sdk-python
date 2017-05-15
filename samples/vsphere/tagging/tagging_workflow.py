@@ -97,6 +97,13 @@ class TaggingWorkflow(SampleBase):
         if self.servicemanager is None:
             self.servicemanager = self.get_service_manager()
 
+        # Sample is not failing if Clustername passed is not valid
+        # Validating if Cluster Name passed is Valid
+        print('finding the cluster {0}'.format(self.cluster_name))
+        self.cluster_moid = get_cluster_id(service_manager=self.servicemanager, cluster_name=self.cluster_name)
+        assert self.cluster_moid is not None
+        print('Found cluster:{0} mo_id:{1}'.format(self.cluster_name, self.cluster_moid))
+
         self.category_svc = Category(self.servicemanager.stub_config)
         self.tag_svc = Tag(self.servicemanager.stub_config)
         self.tag_association = TagAssociation(self.servicemanager.stub_config)
@@ -119,7 +126,8 @@ class TaggingWorkflow(SampleBase):
             print('No Tag Found...')
 
         print('creating a new tag category...')
-        self.category_id = self.create_tag_category(self.category_name, self.category_desc, CategoryModel.Cardinality.MULTIPLE)
+        self.category_id = self.create_tag_category(self.category_name, self.category_desc,
+                                                    CategoryModel.Cardinality.MULTIPLE)
         assert self.category_id is not None
         print('Tag category created; Id: {0}'.format(self.category_id))
 
@@ -132,11 +140,6 @@ class TaggingWorkflow(SampleBase):
         date_time = time.strftime('%d/%m/%Y %H:%M:%S')
         self.update_tag(self.tag_id, 'Server Tag updated at ' + date_time)
         print('Tag updated; Id: {0}'.format(self.tag_id))
-
-        print('finding the cluster {0}'.format(self.cluster_name))
-        self.cluster_moid = get_cluster_id(service_manager=self.servicemanager, cluster_name=self.cluster_name)
-        assert self.cluster_moid is not None
-        print('Found cluster:{0} mo_id:{1}'.format('vAPISDKCluster', self.cluster_moid))
 
         print('Tagging the cluster {0}...'.format(self.cluster_name))
         self.dynamic_id = DynamicID(type='ClusterComputeResource', id=self.cluster_moid)
