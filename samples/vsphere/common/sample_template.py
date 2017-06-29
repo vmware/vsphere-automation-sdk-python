@@ -16,11 +16,9 @@
 __author__ = 'VMware, Inc.'
 __vcenter_version__ = '6.5+'
 
-import atexit
-
 from com.vmware.vcenter_client import VM
-from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args
+from samples.vsphere.common.service_manager_factory import ServiceManagerFactory
 
 
 class Sample:
@@ -33,20 +31,35 @@ class Sample:
 
     def __init__(self):
         self.vm_service = None  # Service used by the sample code.
+        self.stub_config = None
+        self.si = None
         self.cleardata = None
 
     def setup(self):
         server, username, password, cleardata, skip_verification = \
             parse_cli_args()
-        stub_config = vapiconnect.connect(server, username, password,
-                                          skip_verification)
-        self.vm_service = VM(stub_config)
         self.cleardata = cleardata
-        atexit.register(vapiconnect.logout, stub_config)
+
+        # Connect to both Vim and vAPI services
+        service_manager = ServiceManagerFactory.get_service_manager(
+            server,
+            username,
+            password,
+            skip_verification)
+
+        # Get the vAPI stub
+        self.stub_config = service_manager.stub_config
+        self.vm_service = VM(self.stub_config)
+
+        # Get VIM service instance (pyVmomi)
+        self.si = service_manager.si
 
     def run(self):
         vms = self.vm_service.list()
         print(vms)
+
+        current_time = self.si.CurrentTime()
+        print(current_time)
 
     def cleanup(self):
         if self.cleardata:
@@ -60,6 +73,5 @@ def main():
     sample.cleanup()
 
 
-# Start program
 if __name__ == '__main__':
     main()
