@@ -31,7 +31,7 @@ def get_jsonrpc_endpoint_url(host):
     return "https://{}/api".format(host)
 
 
-def connect(host, user, pwd, skip_verification=False, suppress_warning=True):
+def connect(host, user, pwd, skip_verification=False, cert_path=None, suppress_warning=True):
     """
     Create an authenticated stub configuration object that can be used to issue
     requests against vCenter.
@@ -44,6 +44,8 @@ def connect(host, user, pwd, skip_verification=False, suppress_warning=True):
     session = requests.Session()
     if skip_verification:
         session = create_unverified_session(session, suppress_warning)
+    elif cert_path:
+        session.verify = cert_path
     connector = get_requests_connector(session=session, url=host_url)
     stub_config = StubConfigurationFactory.new_std_configuration(connector)
 
