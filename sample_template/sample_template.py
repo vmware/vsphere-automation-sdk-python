@@ -13,17 +13,20 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-__author__ = 'VMware, Inc.'
-__vcenter_version__ = '6.5+'
+__author__ = 'TODO: <your name and email>'
+__vcenter_version__ = 'TODO: <compatible vcenter versions>'
+
+import atexit
 
 from com.vmware.vcenter_client import VM
 from samples.vsphere.common.sample_util import parse_cli_args
-from samples.vsphere.common.service_manager_factory import ServiceManagerFactory
+from samples.vsphere.common.service_manager import ServiceManager
 
 
 class Sample:
     """
-    Demonstrates getting list of VMs present in vCenter
+    TODO: Sample description and prerequisites.
+    e.g. Demonstrates getting list of VMs present in vCenter
 
     Sample Prerequisites:
         - vCenter
@@ -41,11 +44,12 @@ class Sample:
         self.cleardata = cleardata
 
         # Connect to both Vim and vAPI services
-        service_manager = ServiceManagerFactory.get_service_manager(
-            server,
-            username,
-            password,
-            skip_verification)
+        service_manager = ServiceManager(server,
+                                         username,
+                                         password,
+                                         skip_verification)
+        service_manager.connect()
+        atexit.register(service_manager.disconnect)
 
         # Get the vAPI stub
         self.stub_config = service_manager.stub_config
@@ -55,14 +59,19 @@ class Sample:
         self.si = service_manager.si
 
     def run(self):
+        # TODO add steps to demo your API
+
+        # Using vAPI services
         vms = self.vm_service.list()
         print(vms)
 
+        # Using vim services
         current_time = self.si.CurrentTime()
         print(current_time)
 
     def cleanup(self):
         if self.cleardata:
+            # TODO add cleanup code
             pass
 
 

@@ -143,12 +143,14 @@ The API documentation can be found [here](doc/client.zip)
 
 Before you start working with this project, please read our [Developer Certificate of Origin](https://cla.vmware.com/dco). All contributions to this repository must be signed as described on that page. Your signature certifies that you wrote the patch or have the right to pass it on as an open-source patch.
 
+### Sample Template
+[Sample template](sample_template) contains boilerplate code that can be used to build a new sample.
+Please copy the file and use it as a starting point to write a new sample.
+
 ### Required Information
 The following information must be included in the README.md or in the sample docstring in case README already exists in same folder.
 * Author Name
   * This can include full name, email address or other identifiable piece of information that would allow interested parties to contact author with questions.
-* Date
-  * Date the sample was originally written
 * Minimal/High Level Description
   * What does the sample do ?
 * Any KNOWN limitations or dependencies
