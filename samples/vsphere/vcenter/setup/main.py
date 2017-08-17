@@ -45,6 +45,8 @@ _testbed = testbed.get()
 # then override testbed.py values
 if (args.vcenterserver):
     _testbed.config['SERVER'] = args.vcenterserver
+if (args.vcenterpassword):
+    _testbed.config['PASSWORD'] = args.vcenterpassword
 if (args.esxhost1):
     _testbed.config['ESX_HOST1'] = args.esxhost1
 if (args.esxhost2):

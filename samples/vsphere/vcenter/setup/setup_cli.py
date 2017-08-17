@@ -37,6 +37,7 @@ def build_arg_parser():
     -l, --samples_cleanup
     -v, --skipverification
     -server, --vcenterserver
+    -p, --vcenterpassword
     -e1, --esxhost1
     -e2, --esxhost2
     -epass, --esxpassword
@@ -89,6 +90,11 @@ def build_arg_parser():
     parser.add_argument('-server', '--vcenterserver',
                         action='store',
                         help='Vcenter server IP to prepare the testbed to run the samples.'
+                             'If not passed as argument, update testbed.py file')
+
+    parser.add_argument('-p', '--vcenterpassword',
+                        action='store',
+                        help='Vcenter server password'
                              'If not passed as argument, update testbed.py file')
 
     parser.add_argument('-e1', '--esxhost1',

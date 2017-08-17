@@ -10,8 +10,7 @@ This directory contains samples for Content Library APIs:
 
 Running the samples
 
-    $ cd /path/to/vsphere-automation-sdk-python-samples/bin
-    $ ./run_sample.sh ../samples/vsphere/contentlibrary/<sample-dir>/<sample>.py --server <vCenter Server IP> --username <username> --password <password> <additional-sample-parameters>
+    $ python <sample-dir>/<sample>.py --server <vCenter Server IP> --username <username> --password <password> <additional-sample-parameters>
 
 The additional sample parameters are as follows (all parameters can be displayed for any sample using option --help)
 
