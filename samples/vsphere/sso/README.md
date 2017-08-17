@@ -7,8 +7,7 @@ for accessing the lookup service. The Lookup Service WSDL files are located in w
 
 Running the samples
 ```cmd
-$ cd /path/to/vsphere-automation-sdk-python-samples/bin
-$ ./run_sample.sh ../samples/vsphere/sso/external_psc_sso_workflow.py --lsurl https://<server>/lookupservice/sdk -u 'administrator@vsphere.local' -p 'Admin!23' -v
+$ python external_psc_sso_workflow.py --lsurl https://<server>/lookupservice/sdk -u 'administrator@vsphere.local' -p 'Admin!23' -v
 ```
 * Testbed Requirement:
     - 1 vCenter Server
