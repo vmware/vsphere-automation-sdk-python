@@ -91,6 +91,11 @@ def build_arg_parser():
                         help='Vcenter server IP to prepare the testbed to run the samples.'
                              'If not passed as argument, update testbed.py file')
 
+    parser.add_argument('-p', '--vcenterpassword',
+                        action='store',
+                        help='Vcenter server password'
+                             'If not passed as argument, update testbed.py file')
+
     parser.add_argument('-e1', '--esxhost1',
                         action='store',
                         help='ESX HOST 1 IP to prepare the testbed to run the samples.'
