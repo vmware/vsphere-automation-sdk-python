@@ -37,6 +37,7 @@ def build_arg_parser():
     -l, --samples_cleanup
     -v, --skipverification
     -server, --vcenterserver
+    -p, --vcenterpassword
     -e1, --esxhost1
     -e2, --esxhost2
     -epass, --esxpassword
