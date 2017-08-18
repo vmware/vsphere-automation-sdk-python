@@ -21,122 +21,118 @@ import samples.vsphere.vcenter.vm.placement
 import samples.vsphere.vcenter.vm.power
 from samples.vsphere.common.sample_util import pp
 from samples.vsphere.vcenter.setup import testbed_setup
-from samples.vsphere.vcenter.vm.create import create_basic_vm
-from samples.vsphere.vcenter.vm.create import create_default_vm
-from samples.vsphere.vcenter.vm.create import create_exhaustive_vm
+from samples.vsphere.vcenter.setup import testbed
+from samples.vsphere.vcenter.vm.create.create_default_vm import CreateDefaultVM
+from samples.vsphere.vcenter.vm.create.create_basic_vm import CreateBasicVM
+from samples.vsphere.vcenter.vm.create.create_exhaustive_vm import \
+    CreateExhaustiveVM
 
 
-def setup(context):
-    print('Setup Samples Started')
-    create_default_vm.setup(context)
-    create_basic_vm.setup(context)
-    create_exhaustive_vm.setup(context)
-    print('Setup Samples Complete')
+class VMSetup(object):
+    def __init__(self, context=None):
+        self.context = context
+        self.basic_vm = None
+        self.default_vm = None
+        self.exhaustive_vm = None
 
+    def setup(self, context):
+        print('Setup Samples Started')
 
-def cleanup(context):
-    setup(context)
+        self.context = context
 
-    print('Cleanup Samples Started')
-    create_default_vm.cleanup()
-    create_basic_vm.cleanup()
-    create_exhaustive_vm.cleanup()
-    print('Cleanup Samples Complete\n')
+        ###########################################################################
+        # Getting a PlacementSpec
+        ###########################################################################
+        placement_spec = samples.vsphere.vcenter.vm.placement.get_placement_spec_for_resource_pool(context)
+        print('=' * 79)
+        print('= Resource selection')
+        print('=' * 79)
+        print('placement_spec={}'.format(pp(placement_spec)))
 
+        ###########################################################################
+        # Getting a Network
+        # Choose one of the following ways to get the PlacementSpec
+        # 1. STANDARD_PORTGROUP on DATACENTER2
+        # 2. DISTRIBUTED_PORTGROUP on DATACENTER2
+        ###########################################################################
+        standard_network = samples.vsphere.vcenter.helper \
+            .network_helper.get_standard_network_backing(
+            context.stub_config,
+            context.testbed.config['STDPORTGROUP_NAME'],
+            context.testbed.config['VM_DATACENTER_NAME'])
+        print('standard_network={}'.format(standard_network))
 
-def validate(context):
-    print('Validating and Detecting Resources in vcenter.vm Samples')
-    r = testbed_setup.validate(context)
-    if r:
-        print('==> Samples Setup validated')
-        return True
-    else:
-        print('==> Samples Setup has errors')
-        return False
+        distributed_network = samples.vsphere.vcenter.helper \
+            .network_helper.get_distributed_network_backing(
+            context.stub_config,
+            context.testbed.config['VDPORTGROUP1_NAME'],
+            context.testbed.config['VM_DATACENTER_NAME'])
+        print('distributed_network={}'.format(distributed_network))
 
+        print('=' * 79)
 
-def run(context):
-    # Clean up in case of past failures
-    cleanup(context)
+        self.default_vm = CreateDefaultVM(context.stub_config,
+                                          placement_spec)
+        self.basic_vm = CreateBasicVM(context.stub_config, placement_spec)
+        self.exhaustive_vm = CreateExhaustiveVM(context.stub_config,
+                                                placement_spec,
+                                                standard_network,
+                                                distributed_network)
 
-    # Check that sample is ready to run
-    if context.option['DO_SAMPLES']:
-        if not validate(context):
-            exit(0)
+        print('Setup Samples Complete')
 
-    ###########################################################################
-    # Getting a PlacementSpec
-    ###########################################################################
-    placement_spec = samples.vsphere.vcenter.vm.placement \
-        .get_placement_spec_for_resource_pool(context)
-    print('=' * 79)
-    print('= Resource selection')
-    print('=' * 79)
-    print('placement_spec={}'.format(pp(placement_spec)))
+    def cleanup(self):
 
-    ###########################################################################
-    # Getting a Network
-    # Choose one of the following ways to get the PlacementSpec
-    # 1. STANDARD_PORTGROUP on DATACENTER2
-    # 2. DISTRIBUTED_PORTGROUP on DATACENTER2
-    ###########################################################################
-    standard_network = samples.vsphere.vcenter.helper \
-        .network_helper.get_standard_network_backing(
-        context.stub_config,
-        context.testbed.config['STDPORTGROUP_NAME'],
-        context.testbed.config['VM_DATACENTER_NAME'])
-    print('standard_network={}'.format(standard_network))
+        print('Cleanup Samples Started')
+        CreateDefaultVM(self.context.stub_config).cleanup()
+        CreateBasicVM(self.context.stub_config).cleanup()
+        CreateExhaustiveVM(self.context.stub_config).cleanup()
+        print('Cleanup Samples Complete\n')
 
-    distributed_network = samples.vsphere.vcenter.helper \
-        .network_helper.get_distributed_network_backing(
-        context.stub_config,
-        context.testbed.config['VDPORTGROUP1_NAME'],
-        context.testbed.config['VM_DATACENTER_NAME'])
-    print('distributed_network={}'.format(distributed_network))
+    def validate(self):
+        print('Validating and Detecting Resources in vcenter.vm Samples')
+        r = testbed_setup.validate(self.context)
+        if r:
+            print('==> Samples Setup validated')
+            return True
+        else:
+            print('==> Samples Setup has errors')
+            return False
 
-    print('=' * 79)
+    def run(self):
+        # Clean up in case of past failures
+        self.cleanup()
 
-    ###########################################################################
-    # Create VM samples
-    #
-    # Choose one of the following ways to create the VM
-    # 1. Default
-    # 2. Basic (2 disks, 1 nic)
-    # 3. Exhaustive (3 disks, 2 nics, 2 vcpu, 2 GB memory, boot=BIOS, 1 cdrom,
-    #                1 serial port, 1 parallel port, 1 floppy,
-    #                boot_devices= [CDROM, DISK, ETHERNET])
-    ###########################################################################
-    create_default_vm.create_default_vm(context.stub_config, placement_spec)
-    create_basic_vm.create_basic_vm(context.stub_config,
-                                    placement_spec,
-                                    standard_network)
-    create_exhaustive_vm.create_exhaustive_vm(context.stub_config,
-                                              placement_spec,
-                                              standard_network,
-                                              distributed_network)
+        # Check that sample is ready to run
+        if self.context.option['DO_SAMPLES']:
+            if not self.validate():
+                exit(0)
 
-    ###########################################################################
-    # Power operation samples
-    #
-    # Runs through the power lifecycle for the VM: start, suspend,
-    # resume (start), stop
-    #
-    ###########################################################################
-    samples.vsphere.vcenter.vm.power.setup(context)
-    samples.vsphere.vcenter.vm.power.run()
-    samples.vsphere.vcenter.vm.power.cleanup()
+        ###########################################################################
+        # Create VM samples
+        #
+        # Choose one of the following ways to create the VM
+        # 1. Default
+        # 2. Basic (2 disks, 1 nic)
+        # 3. Exhaustive (3 disks, 2 nics, 2 vcpu, 2 GB memory, boot=BIOS, 1 cdrom,
+        #                1 serial port, 1 parallel port, 1 floppy,
+        #                boot_devices= [CDROM, DISK, ETHERNET])
+        ###########################################################################
+        self.default_vm.run()
+        self.basic_vm.run()
+        self.exhaustive_vm.run()
 
-    ###########################################################################
-    # Incremental device CRUDE + connect/disconnect samples
-    #
-    ###########################################################################
-    if context.option['DO_SAMPLES_INCREMENTAL']:
-        samples.vsphere.vcenter.vm.hardware.main.setup(context)
-        samples.vsphere.vcenter.vm.hardware.main.validate(context)
-        samples.vsphere.vcenter.vm.hardware.main.run()
-        if context.option['DO_SAMPLES_CLEANUP']:
-            samples.vsphere.vcenter.vm.hardware.main.cleanup()
+        ###########################################################################
+        # Incremental device CRUDE + connect/disconnect samples
+        #
+        ###########################################################################
+        if self.context.option['DO_SAMPLES_INCREMENTAL']:
+            samples.vsphere.vcenter.vm.hardware.main.setup(self.context)
+            samples.vsphere.vcenter.vm.hardware.main.validate(self.context)
+            samples.vsphere.vcenter.vm.hardware.main.run()
+            if self.context.option['DO_SAMPLES_CLEANUP']:
+                samples.vsphere.vcenter.vm.hardware.main.cleanup()
 
-    # Sample cleanup
-    if context.option['DO_SAMPLES_CLEANUP']:
-        cleanup(context)
+        # Sample cleanup
+        if self.context.option['DO_SAMPLES_CLEANUP']:
+            self.cleanup()

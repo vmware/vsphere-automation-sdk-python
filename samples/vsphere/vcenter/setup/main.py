@@ -30,8 +30,7 @@ from samples.vsphere.vcenter.setup.setup_cli import build_arg_parser
 from samples.vsphere.vcenter.setup.testbed_setup import cleanup as testbed_cleanup
 from samples.vsphere.vcenter.setup.testbed_setup import setup as testbed_setup
 from samples.vsphere.vcenter.setup.testbed_setup import validate as testbed_validate
-from samples.vsphere.vcenter.vm.main import cleanup as sample_cleanup
-from samples.vsphere.vcenter.vm.main import run as sample_run
+from samples.vsphere.vcenter.vm.main import VMSetup
 
 from samples.vsphere.common.ssl_helper import get_unverified_context
 
@@ -91,10 +90,12 @@ print(context.to_option_string())
 # Testbed Setup
 ###############################################################################
 
+vm_setup = VMSetup(context)
+
 # Setup testbed
 if context.option['DO_TESTBED_SETUP']:
     # Clean up in case of past failures
-    sample_cleanup(context)
+    vm_setup.cleanup()
     testbed_cleanup(context)
     testbed_setup(context)
 
@@ -113,11 +114,12 @@ if (context.option['DO_TESTBED_SETUP'] or
 
 # Run Sample
 if context.option['DO_SAMPLES']:
-    sample_run(context)
+    vm_setup.setup(context)
+    vm_setup.run()
 
 # Cleanup after sample run
 if context.option['DO_SAMPLES_CLEANUP']:
-    sample_cleanup(context)
+    vm_setup.cleanup()
 
 ###############################################################################
 # Testbed Cleanup
@@ -125,5 +127,5 @@ if context.option['DO_SAMPLES_CLEANUP']:
 
 # Teardown testbed.
 if context.option['DO_TESTBED_CLEANUP']:
-    sample_cleanup(context)
+    vm_setup.cleanup()
     testbed_cleanup(context)

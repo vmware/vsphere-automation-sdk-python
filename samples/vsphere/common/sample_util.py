@@ -28,18 +28,6 @@ def pp(value):
     return output.getvalue()
 
 
-def parse_cli_args():
-    """
-    Parse the server IP and credential used by samples.
-    Use values from command line arguments if present, otherwise use values
-    from testbed.py
-    """
-    # parse command line
-    parser = sample_cli.build_arg_parser()
-    args = parser.parse_args()
-    return process_cli_args(args)
-
-
 def parse_cli_args_vm(vm_name):
     """
     Parse the server IP, credential and vm name used by vcenter vm samples.
@@ -51,10 +39,7 @@ def parse_cli_args_vm(vm_name):
     parser.add_argument('-n', '--vm_name',
                         action='store',
                         help='Name of the testing vm')
-    args = parser.parse_args()
-
-    server, username, password, cleardata, skip_verification = \
-        process_cli_args(args)
+    args = process_cli_args(parser.parse_args())
 
     if args.vm_name:
         vm_name = args.vm_name
@@ -64,45 +49,37 @@ def parse_cli_args_vm(vm_name):
         raise Exception("vm name is required")
     print("vm name = {}".format(vm_name))
 
-    return server, username, password, cleardata, skip_verification, vm_name
+    return args.server, args.username, args.password, args.cleardata, \
+           args.skipverification, vm_name
 
 
 def process_cli_args(args):
     """
-    Process server IP and credential args.
+    Verify if required inputs (server, username and password) are provided.
+    If they are not passed through cmd arguments, we will try to get them from
+    testbed.py. If they are not configured in testbed.py either, we will raise
+    an exception to remind the user to provide them.
     """
 
-    if args.server:
-        server = args.server
-    else:
+    if not args.server:
         print("Using vcenter server specified in testbed.py")
-        server = testbed.config['SERVER']
-    if not server:
+        args.server = testbed.config['SERVER']
+    if not args.server:
         raise Exception("vcenter server is required")
-    print("vcenter server = {}".format(server))
+    print("vcenter server = {}".format(args.server))
 
-    if args.username:
-        username = args.username
-    else:
+    if not args.username:
         print("Using vc user specified in testbed.py")
-        username = testbed.config['USERNAME']
-    if not username:
+        args.username = testbed.config['USERNAME']
+    if not args.username:
         raise Exception("vc username is required")
-    print("vc username = {}".format(username))
+    print("vc username = {}".format(args.username))
 
-    if args.password:
-        password = args.password
-    else:
+    if not args.password:
         print("Using vc password specified in testbed.py")
-        password = testbed.config['PASSWORD']
+        args.password = testbed.config['PASSWORD']
 
-    cleardata = args.cleanup
-    print("sample cleanup = {}".format(cleardata))
-
-    skip_verification = args.skipverification
-    print("skip server cert verification = {}".format(skip_verification))
-
-    return server, username, password, cleardata, skip_verification
+    return args
 
 
 class Context(object):
