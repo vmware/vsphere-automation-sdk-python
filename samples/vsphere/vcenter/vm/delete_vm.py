@@ -13,58 +13,73 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
+__vcenter_version__ = '6.5+'
+
 import atexit
-from samples.vsphere.common import vapiconnect
-from samples.vsphere.common.sample_util import parse_cli_args_vm
-from com.vmware.vcenter_client import VM
+
 from com.vmware.vcenter.vm_client import Power
+from com.vmware.vcenter_client import VM
+
+from samples.vsphere.common import sample_cli
+from samples.vsphere.common import sample_util
+from samples.vsphere.common.service_manager import ServiceManager
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
-"""
-Demonstrates Deleting User specified Virtual Machine (VM)
-Sample Prerequisites:
-vCenter/ESX
-"""
 
-stub_config = None
-vm_name = None
-vm = None
-
-
-def setup(context=None):
-    global stub_config, vm_name
-    server, username, password, cleardata, skip_verification, vm_name = \
-        parse_cli_args_vm(vm_name)
-    stub_config = vapiconnect.connect(server, username, password,
-                                      skip_verification)
-    atexit.register(vapiconnect.logout, stub_config)
-
-
-def run():
+class DeleteVM(object):
     """
-    Delete User specified VM from Server
+    Demonstrates Deleting User specified Virtual Machine (VM)
+    Sample Prerequisites:
+    vCenter/ESX
     """
-    global vm
-    vm_svc = VM(stub_config)
-    power_svc = Power(stub_config)
-    vm = get_vm(stub_config, vm_name)
-    if not vm:
-        raise Exception('Sample requires an existing vm with name ({}).'
-                        'Please create the vm first.'.format(vm_name))
-    print("Deleting VM -- '{}-({})')".format(vm_name, vm))
-    state = power_svc.get(vm)
-    if state == Power.Info(state=Power.State.POWERED_ON):
-        power_svc.stop(vm)
-    elif state == Power.Info(state=Power.State.SUSPENDED):
-        power_svc.start(vm)
-        power_svc.stop(vm)
-    vm_svc.delete(vm)
-    print("Deleted VM -- '{}-({})".format(vm_name, vm))
+
+    def __init__(self):
+        self.service_manager = None
+        self.vm_name = None
+
+    def setup(self):
+        parser = sample_cli.build_arg_parser()
+        parser.add_argument('-n', '--vm_name',
+                            action='store',
+                            default='Sample_Default_VM_for_Simple_Testbed',
+                            help='Name of the testing vm')
+        args = sample_util.process_cli_args(parser.parse_args())
+        self.vm_name = args.vm_name
+
+        self.service_manager = ServiceManager(args.server,
+                                              args.username,
+                                              args.password,
+                                              args.skipverification)
+        self.service_manager.connect()
+        atexit.register(self.service_manager.disconnect)
+
+    def run(self):
+        """
+        Delete User specified VM from Server
+        """
+        vm_svc = VM(self.service_manager.stub_config)
+        power_svc = Power(self.service_manager.stub_config)
+        vm = get_vm(self.service_manager.stub_config, self.vm_name)
+        if not vm:
+            raise Exception('Sample requires an existing vm with name ({}).'
+                            'Please create the vm first.'.format(vm_name))
+        print("Deleting VM -- '{}-({})')".format(self.vm_name, vm))
+        state = power_svc.get(vm)
+        if state == Power.Info(state=Power.State.POWERED_ON):
+            power_svc.stop(vm)
+        elif state == Power.Info(state=Power.State.SUSPENDED):
+            power_svc.start(vm)
+            power_svc.stop(vm)
+        vm_svc.delete(vm)
+        print("Deleted VM -- '{}-({})".format(self.vm_name, vm))
 
 
 def main():
-    setup()
-    run()
+    delete_vm = DeleteVM()
+    delete_vm.setup()
+    delete_vm.run()
 
 
 if __name__ == '__main__':

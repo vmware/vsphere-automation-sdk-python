@@ -13,47 +13,58 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+__author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
+__vcenter_version__ = '6.5+'
+
 import atexit
-from samples.vsphere.common import vapiconnect
-from samples.vsphere.common.sample_util import parse_cli_args
-from samples.vsphere.common.sample_util import pp
+
 from com.vmware.vcenter_client import VM
 
-"""
-Demonstrates getting list of VMs present in vCenter
-Sample Prerequisites:
-vCenter/ESX
-"""
-
-stub_config = None
-cleardata = False
+from samples.vsphere.common import sample_cli
+from samples.vsphere.common import sample_util
+from samples.vsphere.common.service_manager import ServiceManager
+from pprint import pprint
 
 
-def setup(context=None):
-    global stub_config, cleardata
-    server, username, password, cleardata, skip_verification = parse_cli_args()
-    stub_config = vapiconnect.connect(server, username, password,
-                                      skip_verification)
-    atexit.register(vapiconnect.logout, stub_config)
-
-
-def run():
+class ListVM(object):
     """
-    List VMs present in server
+    Demonstrates getting list of VMs present in vCenter
+    Sample Prerequisites:
+    vCenter/ESX
     """
-    vm_svc = VM(stub_config)
-    list_of_vms = vm_svc.list()
-    print("----------------------------")
-    print("List Of VMs")
-    print("----------------------------")
-    for vm in list_of_vms:
-        print('{}'.format(vm))
-    print("----------------------------")
+
+    def __init__(self):
+        self.service_manager = None
+
+    def setup(self):
+        parser = sample_cli.build_arg_parser()
+        args = sample_util.process_cli_args(parser.parse_args())
+
+        self.service_manager = ServiceManager(args.server,
+                                              args.username,
+                                              args.password,
+                                              args.skipverification)
+        self.service_manager.connect()
+        atexit.register(self.service_manager.disconnect)
+
+    def run(self):
+        """
+        List VMs present in server
+        """
+        vm_svc = VM(self.service_manager.stub_config)
+        list_of_vms = vm_svc.list()
+        print("----------------------------")
+        print("List Of VMs")
+        print("----------------------------")
+        pprint(list_of_vms)
+        print("----------------------------")
 
 
 def main():
-    setup()
-    run()
+    list_vm = ListVM()
+    list_vm.setup()
+    list_vm.run()
 
 
 if __name__ == '__main__':

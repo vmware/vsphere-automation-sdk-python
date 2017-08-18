@@ -17,20 +17,19 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.0+'
 
-from pprint import pprint
 import requests
-
+from com.vmware.cis.tagging_client import (Category, CategoryModel)
 from com.vmware.cis_client import Session
 from vmware.vapi.lib.connect import get_requests_connector
 from vmware.vapi.security.session import create_session_security_context
 from vmware.vapi.security.sso import create_saml_bearer_security_context
 from vmware.vapi.stdlib.client.factories import StubConfigurationFactory
-from com.vmware.cis.tagging_client import (Category, CategoryModel)
 
+from samples.vsphere.common import sample_cli
+from samples.vsphere.common import sample_util
+from samples.vsphere.common import sso
 from samples.vsphere.common.ssl_helper import get_unverified_context
 from samples.vsphere.common.vapiconnect import create_unverified_session
-from samples.vsphere.common.sample_util import parse_cli_args
-from samples.vsphere.common import sso
 
 
 class EmbeddedPscSsoWorkflow(object):
@@ -40,18 +39,15 @@ class EmbeddedPscSsoWorkflow(object):
     """
 
     def __init__(self):
-        self.server = None
-        self.username = None
-        self.password = None
+        self.args = None
         self.session = None
         self.session_id = None
-        self.skip_verification = False
         self.category_svc = None
         self.category_id = None
 
     def setup(self):
-        self.server, self.username, self.password, _, self.skip_verification = \
-            parse_cli_args()
+        parser = sample_cli.build_arg_parser()
+        self.args = sample_util.process_cli_args(parser.parse_args())
 
     def run(self):
         print('\n\n#### Example: Login to vCenter server with '
@@ -59,18 +55,18 @@ class EmbeddedPscSsoWorkflow(object):
 
         # Since the platform services controller is embedded, the sso server
         # is the same as the vCenter server.
-        ssoUrl = 'https://{}/sts/STSService'.format(self.server)
+        ssoUrl = 'https://{}/sts/STSService'.format(self.args.server)
 
         print('\nStep 1: Connect to the Single Sign-On URL and '
               'retrieve the SAML bearer token.')
 
         authenticator = sso.SsoAuthenticator(ssoUrl)
         context = None
-        if self.skip_verification:
+        if self.args.skipverification:
             context = get_unverified_context()
         bearer_token = authenticator.get_bearer_saml_assertion(
-            self.username,
-            self.password,
+            self.args.username,
+            self.args.password,
             delegatable=True,
             ssl_context=context)
 
@@ -81,12 +77,12 @@ class EmbeddedPscSsoWorkflow(object):
 
         # The URL for the stub requests are made against the /api HTTP endpoint
         # of the vCenter system.
-        vapi_url = 'https://{}/api'.format(self.server)
+        vapi_url = 'https://{}/api'.format(self.args.server)
 
         # Create an authenticated stub configuration object that can be used to
         # issue requests against vCenter.
         session = requests.Session()
-        if self.skip_verification:
+        if self.args.skipverification:
             session = create_unverified_session(session)
         connector = get_requests_connector(session=session, url=vapi_url)
         connector.set_security_context(sec_ctx)

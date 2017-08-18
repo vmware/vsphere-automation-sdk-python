@@ -22,19 +22,23 @@ try:
 except ImportError:
     import urllib.request as urllib2
 
+import atexit
+
 from com.vmware.content.library_client import Item
 from com.vmware.vcenter.ovf_client import LibraryItem
 from pyVmomi import vim
 
+from samples.vsphere.common import sample_cli
+from samples.vsphere.common import sample_util
 from samples.vsphere.common.id_generator import generate_random_uuid
-from samples.vsphere.common.sample_base import SampleBase
+from samples.vsphere.common.service_manager import ServiceManager
 from samples.vsphere.common.vim.helpers.vim_utils import (
     get_obj, get_obj_by_moId, poweron_vm, poweroff_vm, delete_object)
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
 
 
-class DeployOvfTemplate(SampleBase):
+class DeployOvfTemplate:
     """
     Demonstrates the workflow to deploy an OVF library item to a resource pool.
     Note: the sample needs an existing library item with an OVF template
@@ -42,7 +46,6 @@ class DeployOvfTemplate(SampleBase):
     """
 
     def __init__(self):
-        SampleBase.__init__(self, self.__doc__)
         self.servicemanager = None
         self.client = None
         self.helper = None
@@ -51,29 +54,37 @@ class DeployOvfTemplate(SampleBase):
         self.vm_obj = None
         self.vm_name = None
 
-    def _options(self):
-        self.argparser.add_argument('-clustername',
-                                    '--clustername',
-                                    help='The name of the cluster to be used.')
-        self.argparser.add_argument('-libitemname',
-                                    '--libitemname',
-                                    help='The name of the library item to deploy.'
-                                         'The library item should contain an OVF package.')
+    def setup(self):
+        parser = sample_cli.build_arg_parser()
+        parser.add_argument('-n', '--vm_name',
+                            action='store',
+                            help='Name of the testing vm')
+        parser.add_argument('-clustername',
+                            '--clustername',
+                            help='The name of the cluster to be used.')
+        parser.add_argument('-libitemname',
+                            '--libitemname',
+                            help='The name of the library item to deploy.'
+                                 'The library item should contain an OVF package.')
+        args = sample_util.process_cli_args(parser.parse_args())
+        self.lib_item_name = args.libitemname
+        self.cluster_name = args.clustername
+        self.vm_name = args.vm_name
 
-    def _setup(self):
-        self.cluster_name = self.args.clustername
-        assert self.cluster_name is not None
+        self.servicemanager = ServiceManager(args.server,
+                                             args.username,
+                                             args.password,
+                                             args.skipverification)
+        self.servicemanager.connect()
+        atexit.register(self.servicemanager.disconnect)
 
-        self.lib_item_name = self.args.libitemname
-        assert self.lib_item_name is not None
-
-        self.servicemanager = self.get_service_manager()
         self.client = ClsApiClient(self.servicemanager)
-        self.helper = ClsApiHelper(self.client, self.skip_verification)
+        self.helper = ClsApiHelper(self.client, args.skipverification)
+
         # Default VM name
         self.vm_name = 'vm-' + str(generate_random_uuid())
 
-    def _execute(self):
+    def execute(self):
 
         # Find the cluster's resource pool moid
         cluster_obj = get_obj(self.servicemanager.content,
@@ -141,7 +152,7 @@ class DeployOvfTemplate(SampleBase):
             for error in result.error.errors:
                 print('OVF error: {}'.format(error.message))
 
-    def _cleanup(self):
+    def cleanup(self):
         if self.vm_obj is not None:
             # Power off the VM and wait for the power off operation to complete
             poweroff_vm(self.servicemanager.content, self.vm_obj)
@@ -151,7 +162,9 @@ class DeployOvfTemplate(SampleBase):
 
 def main():
     deploy_ovf_sample = DeployOvfTemplate()
-    deploy_ovf_sample.main()
+    deploy_ovf_sample.setup()
+    deploy_ovf_sample.execute()
+    deploy_ovf_sample.cleanup()
 
 
 if __name__ == '__main__':

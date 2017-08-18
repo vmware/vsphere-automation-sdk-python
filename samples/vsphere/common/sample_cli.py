@@ -25,7 +25,7 @@ def build_arg_parser():
     -u username
     -p password
     -c cleanup
-    -v skip_verification
+    -v skipverification
 
     """
     parser = argparse.ArgumentParser(
@@ -43,7 +43,7 @@ def build_arg_parser():
                         action='store',
                         help='Password to use when connecting to vc')
 
-    parser.add_argument('-c', '--cleanup',
+    parser.add_argument('-c', '--cleardata',
                         action='store_true',
                         help='Clean up after sample run. ')
 

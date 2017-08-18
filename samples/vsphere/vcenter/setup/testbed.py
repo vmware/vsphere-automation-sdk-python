@@ -15,9 +15,9 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 config = {}
-config["SERVER"] = ""
+config["SERVER"] = "10.192.248.66"
 config["USERNAME"] = "administrator@vsphere.local"
-config["PASSWORD"] = "VMware1!"
+config["PASSWORD"] = "Admin!23"
 
 config["ESX_HOST1"] = ""
 config["ESX_HOST2"] = ""
