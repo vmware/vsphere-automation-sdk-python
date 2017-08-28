@@ -1,7 +1,7 @@
 # VMworld 2017 Python SDK Hackathon
 
 ## Install Python
-Go to: (https://www.python.org/downloads/) and download and install Python for your Platform.
+Go to: [downloads](https://www.python.org/downloads/) and download and install Python for your Platform.
 The SDK supports both python2 and python3, but we recommend to install the latest version of python3. 
 
 ## Setup Python SDK
