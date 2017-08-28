@@ -30,7 +30,7 @@ The python github repo is located [here](https://github.com/vmware/vsphere-autom
 ```bash
 git clone https://github.com/vmware/vsphere-automation-sdk-python
 ```
-Or optionally [download](https://github.com/vmware/vsphere-automation-sdk-python/archive/master.zip) the SDK from Github as a .zip file.
+Or optionally [download](https://github.com/vmware/vsphere-automation-sdk-python/archive/master.zip) the SDK from Github as a .zip file and unzip it to the current dir.
 
 ##  Install dependencies
 
