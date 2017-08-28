@@ -35,7 +35,7 @@ Or optionally [download](https://github.com/vmware/vsphere-automation-sdk-python
 ##  Install dependencies
 
 ```bash
-cd vsphere-automation-sdk-python
+cd <sdk-dir>
 pip install -r requirements.txt
 ```
 
