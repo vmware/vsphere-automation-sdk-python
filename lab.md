@@ -148,6 +148,7 @@ And then change the following two settings:
 
 ```python
 config["SERVER"] = "<VC_IP_Address>"
+config["PASSWORD"] = "VMware1!"
 config["VM_DATASTORE_NAME"] = "vsanDatastore"
 ```
 
