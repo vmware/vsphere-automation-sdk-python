@@ -4,6 +4,5 @@ For python developers, client libraries are supplied for testing and development
 
 Name                                | Description
 ------------------------------------| -------------
-vapi_runtime-\<version>.zip	        | vAPI runtime responsible for serialization/de-serialization of objects and wire protocol
-vapi_common_client-\<version>.zip   | vAPI common client code
-vapi_client_bindings-\<version>.zip | client stubs for vSphere Automation APIs
+vapi_runtime	                    | vAPI runtime responsible for serialization/de-serialization of objects and wire protocol
+vapi_client_bindings                | Client stubs for vSphere Automation APIs
