@@ -22,7 +22,7 @@ Create and activate a virtual env:
 
 | Windows | OSX |
 |---------|-----|
-```<env_dir>\Scripts\activate```|```source <env_dir>/bin/activate```|
+|```<env_dir>\Scripts\activate```|```source <env_dir>/bin/activate```|
 
 ##  Clone the github repo
 The python github repo is located [here](https://github.com/vmware/vsphere-automation-sdk-python)
