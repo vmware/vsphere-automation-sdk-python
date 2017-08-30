@@ -208,5 +208,5 @@ Items added to the repository, including items from the Board members, require 2
 * [vSphere Automation SDK Overview](http://pubs.vmware.com/vsphere-65/index.jsp#com.vmware.vapi.progguide.doc/GUID-AF73991C-FC1C-47DF-8362-184B6544CFDE.html)
 * [VMware Code](https://code.vmware.com/home)
 * [VMware Developer Community](https://communities.vmware.com/community/vmtn/developer)
-* VMware vSphere [REST API Reference documentation](https://vdc-repo.vmware.com/vmwb-repository/dcr-public/1cd28284-3b72-4885-9e31-d1c6d9e26686/9a0dbc46-b15f-47cd-af1d-dc64615b03df/doc/index.html).
+* VMware vSphere [REST API Reference documentation](https://code.vmware.com/web/dp/doc/preview?id=4644).
 * [VMware Python forum](https://code.vmware.com/forums/7508/vsphere-automation-sdk-for-python)
