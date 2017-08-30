@@ -36,7 +36,7 @@ Or optionally [download](https://github.com/vmware/vsphere-automation-sdk-python
 
 ```bash
 cd <sdk-dir>
-pip install -r requirements.txt
+pip install -r requirements.txt --extra-index-url <file:///abs_path/to/sdk/lib/>
 ```
 
 ## Set PYTHONPATH to use SDK helper methods  
