@@ -41,9 +41,8 @@ install local Python packages, the following steps will take you through this pr
 Before you can run the SDK samples we'll need to walk you through the following steps:
 
 1. Installing the required Python packages
-2. Installing SDK provided packages
-3. Setting up a vSphere test environment
-4. Running SDK Samples setup script
+2. Setting up a vSphere test environment
+3. Running SDK Samples setup script
 
 ### Installing the required Python Packages
 **Note:** The SDK requires Python v2.7+ (preferably v3.6) to run the setup/samples,
@@ -51,11 +50,19 @@ please make sure you have the appropriate version installed before continuing.
 If you are on macOS/OSX/Linux, please note that the system installed version of
 Python may be outdated and/or not be intended for development and we recommended you [install Python](http://docs.python-guide.org/en/latest/starting/installation/) yourself before installing the required packages. [Virtualenv](https://virtualenv.pypa.io/en/stable/) is also highly recommended.
 
-The required packages are listed in the requirements.txt file and installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
+The required packages are:
+
+* pyVmomi
+* suds (suds-jurko for python3+)
+* vapi-client-bindings
+
+These dependencies are listed in the requirements.txt file and installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
 
 ```cmd
 pip install -r requirements.txt --extra-index-url <file:///abs_path/to/sdk/lib/>
 ```
+
+**NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2
 
 ### Setting up a vSphere Test Environment
 **NOTE:** The samples are intended to be run against a freshly installed **non-Production** vSphere setup as the scripts may make changes to the test environment and in some cases can destroy items when needed.
