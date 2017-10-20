@@ -89,6 +89,7 @@ def logout(stub_config):
 def create_unverified_session(session, suppress_warning=True):
     """
     Create a unverified session to disable the server certificate verification.
+    This is not recommended in production code. 
     """
     session.verify = False
     if suppress_warning:
