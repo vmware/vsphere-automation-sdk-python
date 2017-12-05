@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright VMware, Inc. 2016. All Rights Reserved.
+* Copyright VMware, Inc. 2016-2017. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,7 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
+__copyright__ = 'Copyright 2016-2017 VMware, Inc.  All rights reserved.'
 __vcenter_version__ = '6.0+'
 
 import os
@@ -25,7 +25,8 @@ except ImportError:
     import urllib.request as urllib2
 
 from com.vmware.content_client import LibraryModel
-from com.vmware.content.library_client import (ItemModel,
+from com.vmware.content.library_client import (Item,
+                                               ItemModel,
                                                StorageBacking)
 from com.vmware.content.library.item_client import (DownloadSessionModel,
                                                     UpdateSessionModel)
@@ -249,3 +250,22 @@ class ClsApiHelper(object):
         raise Exception(
             'timed out after waiting {0} seconds for file {1} to reach a terminal state'.format(
                 timeout, file_name))
+
+    def get_item_id_by_name(self, name):
+        """
+        Returns the identifier of the item with the given name.
+
+        Args:
+            name (str): The name of item to look for
+
+        Returns:
+            str: The item ID or None if the item is not found
+        """
+        find_spec = Item.FindSpec(name=name)
+        item_ids = self.client.library_item_service.find(find_spec)
+        item_id = item_ids[0] if item_ids else None
+        if item_id:
+            print('Library item ID: {0}'.format(item_id))
+        else:
+            print("Library item with name '{0}' not found".format(name))
+        return item_id

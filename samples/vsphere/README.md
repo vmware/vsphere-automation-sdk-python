@@ -1,4 +1,4 @@
-#Client Samples
+# vSphere Samples
 
 The following table shows the sample sub-directories and their contents.
 
