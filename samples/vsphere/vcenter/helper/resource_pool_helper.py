@@ -20,16 +20,19 @@ from com.vmware.vcenter_client import ResourcePool
 from samples.vsphere.vcenter.helper import datacenter_helper
 
 
-def get_resource_pool(stub_config, datacenter_name):
+def get_resource_pool(stub_config, datacenter_name, resource_pool_name=None):
     """
-    Returns the identifier of the first resourcepool in the datacenter
+    Returns the identifier of the resource pool with the given name or the
+    first resource pool in the datacenter if the name is not provided.
     """
     datacenter = datacenter_helper.get_datacenter(stub_config, datacenter_name)
     if not datacenter:
         print("Datacenter '{}' not found".format(datacenter_name))
         return None
 
-    filter_spec = ResourcePool.FilterSpec(datacenters=set([datacenter]))
+    names = set([resource_pool_name]) if resource_pool_name else None
+    filter_spec = ResourcePool.FilterSpec(datacenters=set([datacenter]),
+                                          names=names)
 
     resource_pool_svc = ResourcePool(stub_config)
     resource_pool_summaries = resource_pool_svc.list(filter_spec)

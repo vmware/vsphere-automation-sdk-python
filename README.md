@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.com/vmware/vsphere-automation-sdk-python.svg?token=v9mEJjcpDiQ9DrYbzyaQ&branch=master)](https://travis-ci.com/vmware/vsphere-automation-sdk-python)
 ## Table of Contents
 - [Abstract](#abstract)
+- [Supported vCenter Releases](#supported-vcenter-releases)
+- [VMware Cloud on AWS Support](#vmware-cloud-on-aws-support)
 - [Quick Start Guide](#quick-start-guide)
   - [Installing the required Python Packages](#installing-the-required-python-packages)
   - [Setting up a vSphere Test Environment](#setting-up-a-vsphere-test-environment)
@@ -29,9 +31,12 @@ vSphere Automation and vSphere APIs. To support this combined use, the vSphere A
 samples require the vSphere Management SDK packages (pyVmomi) to be installed on the client.
 The samples have been developed to work with python 2.7.x and 3.3+
 
-## Supported vCenter Releases:
+## Supported vCenter Releases
 vCenter 6.0 and 6.5. 
 Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
+
+## VMware Cloud on AWS Support
+The VMware Cloud on AWS API and samples are currently available as a preview and are subject to change in the future.
 
 ## Quick Start Guide
 This document will walk you through getting up and running with the Python SDK Samples.
@@ -55,11 +60,13 @@ The required packages are:
 * pyVmomi
 * suds (suds-jurko for python3+)
 * vapi-client-bindings
+* vmc-client-bindings
+* vapi-vmc-client
 
 These dependencies are listed in the requirements.txt file and installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
 
 ```cmd
-pip install -r requirements.txt --extra-index-url <file:///abs_path/to/sdk/lib/>
+pip install --upgrade --force-reinstall --no-cache -r requirements.txt --extra-index-url <file:///abs_path/to/sdk/lib/>
 ```
 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2

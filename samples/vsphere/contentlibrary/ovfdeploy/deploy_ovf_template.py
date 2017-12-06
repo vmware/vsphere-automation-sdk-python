@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright VMware, Inc. 2016. All Rights Reserved.
+* Copyright VMware, Inc. 2016-2017. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,7 +14,7 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc.  All rights reserved.'
+__copyright__ = 'Copyright 2016-2017 VMware, Inc.  All rights reserved.'
 __vcenter_version__ = '6.0+'
 
 try:
@@ -24,7 +24,6 @@ except ImportError:
 
 import atexit
 
-from com.vmware.content.library_client import Item
 from com.vmware.vcenter.ovf_client import LibraryItem
 from pyVmomi import vim
 
@@ -94,15 +93,8 @@ class DeployOvfTemplate:
 
         deployment_target = LibraryItem.DeploymentTarget(
             resource_pool_id=cluster_obj.resourcePool._GetMoId())
-
-        # Find lib item id from given item name
-        find_spec = Item.FindSpec()
-        find_spec.name = self.lib_item_name
-        item_ids = self.client.library_item_service.find(find_spec)
-        assert (item_ids is not None and len(item_ids) > 0), ('No items found with name: {0}'
-                                                              .format(self.lib_item_name))
-        lib_item_id = item_ids[0]
-
+        lib_item_id = self.helper.get_item_id_by_name(self.lib_item_name)
+        assert lib_item_id
         ovf_summary = self.client.ovf_lib_item_service.filter(ovf_library_item_id=lib_item_id,
                                                               target=deployment_target)
         print('Found an OVF template :{0} to deploy.'.format(ovf_summary.name))

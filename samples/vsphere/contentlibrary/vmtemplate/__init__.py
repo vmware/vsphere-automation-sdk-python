@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright VMware, Inc. 2016. All Rights Reserved.
+* Copyright VMware, Inc. 2017. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -11,15 +11,16 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
+
 __author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2017 VMware, Inc.  All rights reserved.'
+
 
 # Required to distribute different parts of this
 # package as multiple distribution
 try:
     import pkg_resources
-
     pkg_resources.declare_namespace(__name__)
 except ImportError:
     from pkgutil import extend_path
-
     __path__ = extend_path(__path__, __name__)  # @ReservedAssignment
