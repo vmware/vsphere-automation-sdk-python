@@ -66,7 +66,7 @@ The required packages are:
 These dependencies are listed in the requirements.txt file and installed using "pip install"; For more details on how to install python packages using pip please refer to the [pip user guide](http://pip.readthedocs.io/en/latest/user_guide/).
 
 ```cmd
-pip install --upgrade --force-reinstall --no-cache -r requirements.txt --extra-index-url <file:///abs_path/to/sdk/lib/>
+pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url <file:///abs_path/to/sdk/lib/>
 ```
 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2
