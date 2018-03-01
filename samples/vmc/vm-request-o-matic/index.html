@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>VMware Cloud on AWS VM Request-O-Matic</title><!-- Get a pretty style sheet -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<div align="center"><img src="vmc-sticker.png" width="200"></div>
+	<h2 align="center">VM Request-O-Matic</h2>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-sm-push-3">
+				<p>Use this form to create a new VM on VMware Cloud on AWS</p>
+				<form id="vmForm" name="vmForm">
+					<div class="form-group">
+						<label for="username">Your Name</label> <input class="form-control" id="username" name="username" placeholder="Bob Bobber" required="" type="tel">
+					</div>
+					<div class="form-group">
+						<label for="emailaddress">Email Address</label> <input class="form-control" id="emailaddress" name="emailaddress" placeholder="Bob@bobber.com" required="" type="tel">
+					</div>
+					<div class="form-group">
+						<label for="vmtype">VM Type</label> <select class="form-control" id="vmtype" name="vmtype" required="">
+							<option selected value="40ff3b8c-f6c7-4aa3-8db8-bb631e16ffae">
+								Windows 10 Desktop (4 CPU, 4GB RAM, 25GB HDD)
+							</option>
+							<option value="37561477-a8c2-4aed-9fce-1bb38557c2b0">
+								Windows Server 2016 (8 CPU, 12GB RAM, 100GB HDD)
+							</option>
+							<option value="40ff3b8c-f6c7-4aa3-8db8-bb631e16ffae">
+								Ubuntu Desktop (4 CPU, 4GB RAM, 25GB HDD)
+							</option>
+							<option value="575fbc82-fb0f-4c1f-95c3-3b0fb0613b82">
+								Ubuntu Server (8 CPU, 12GB RAM, 100GB HDD)
+							</option>
+						</select>
+					</div><button class="btn btn-default" type="submit">Create a VM!</button>
+				</form>
+			</div>
+			<div class="hidden alert alert-success" id="success" role="alert">
+				<br>
+				<br>
+				Success! Your VM was created successfully, check your email for login instructions.
+			</div>
+			<div class="hidden alert alert-danger" id="error" role="alert">
+				<br>
+				<br>
+				Dang. Something went wrong, check your email for next steps.
+			</div>
+		</div>
+	</div><!-- get the AWS Javascript library -->
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.98.0.min.js">
+	</script> 
+	<script>
+	    
+
+
+
+	    // set up Amazon Cognito (create a federated identity pool)
+	    // https://us-west-2.console.aws.amazon.com/cognito/create
+		// Initialize the Amazon Cognito credentials provider
+		AWS.config.region = 'us-west-2'; // Region
+		AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+			IdentityPoolId: 'us-west-2:e93c4c86-240d-4966-86ef-e56cf60ba468',
+		}); 
+
+	       
+	function invokeLambda( e ){
+
+	<!-- pull the variables out of the form -->
+	var username = document.getElementById('username'),
+		emailaddress =  document.getElementById('emailaddress');
+
+
+	var selectid = document.getElementById("vmtype");
+	var selectedvm = selectid.options[selectid.selectedIndex].value;    
+	   
+
+	// create JSON object for parameters for invoking Lambda function
+	var lambdaParams = {
+	 FunctionName : 'vm-request-o-matic',
+	 InvocationType : 'RequestResponse',
+	 LogType : 'None',
+	 Payload: JSON.stringify({
+	       username: username.value,
+	       emailaddress: emailaddress.value,
+	       vmtype: selectedvm})
+	};
+
+	// create variable to hold data returned by the Lambda function
+	var lambdaResults;      
+	   
+	   
+	var lambda = new AWS.Lambda({region: 'us-west-2', apiVersion: '2015-03-31'});
+	e.preventDefault();
+	
+	lambda.invoke(lambdaParams, function(error, data) {
+	 if (error) {
+	   prompt(error);
+	 } else {
+	   lambdaResults = JSON.parse(data.Payload);
+	   prompt(lambdaResults);
+	 }
+	});
+	};
+	    
+	document.getElementById('vmForm').addEventListener('submit', invokeLambda);
+	</script>
+</body>
+</html>
