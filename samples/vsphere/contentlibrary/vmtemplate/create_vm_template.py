@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright VMware, Inc. 2017. All Rights Reserved.
+* Copyright VMware, Inc. 2017-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -15,26 +15,32 @@
 
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2017 VMware, Inc.  All rights reserved.'
 __vcenter_version__ = '6.6.2+'
 
 from com.vmware.vcenter.vm_template_client import (
     LibraryItems as VmtxLibraryItem)
 
+from vmware.vapi.vsphere.client import create_vsphere_client
+
 from samples.vsphere.common.id_generator import rand
 from samples.vsphere.common.sample_base import SampleBase
+from samples.vsphere.common.ssl_helper import get_unverified_session
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
+from samples.vsphere.vcenter.helper.resource_pool_helper import (
+    get_resource_pool)
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
 
 class CreateVmTemplate(SampleBase):
     """
-    Demonstrates how to create a library item containing a native VMware
-    virtual machine template from a virtual machine.
+    Demonstrates how to create a library item containing a virtual machine
+    template from a virtual machine.
 
     Prerequisites:
         - A virtual machine
+        - A datacenter
+        - A resource pool
         - A datastore
     """
 
@@ -54,19 +60,29 @@ class CreateVmTemplate(SampleBase):
                                     required=True,
                                     help='The name of the source VM from '
                                          'which to create a library item')
+        self.argparser.add_argument('-datacentername', '--datacentername',
+                                    required=True,
+                                    help='The name of the datacenter in which '
+                                         'to place the VM template')
+        self.argparser.add_argument('-resourcepoolname', '--resourcepoolname',
+                                    required=True,
+                                    help='The name of the resource pool in '
+                                         'the datacenter in which to place '
+                                         'the VM template')
         self.argparser.add_argument('-datastorename', '--datastorename',
                                     required=True,
                                     help='The name of the datastore in which '
-                                         'to create a library and native VM '
-                                         'template')
+                                         'to create a library and VM template')
         self.argparser.add_argument('-itemname', '--itemname',
                                     help='The name of the library item to '
                                          'create. The item will contain a '
-                                         'native VM template.')
+                                         'VM template.')
 
     def _setup(self):
         # Required arguments
         self.vm_name = self.args.vmname
+        self.datacenter_name = self.args.datacentername
+        self.resource_pool_name = self.args.resourcepoolname
         self.datastore_name = self.args.datastorename
 
         # Optional arguments
@@ -77,10 +93,20 @@ class CreateVmTemplate(SampleBase):
         self.client = ClsApiClient(self.servicemanager)
         self.helper = ClsApiHelper(self.client, self.skip_verification)
 
+        session = get_unverified_session() if self.skip_verification else None
+        self.vsphere_client = create_vsphere_client(server=self.server,
+                                                    username=self.username,
+                                                    password=self.password,
+                                                    session=session)
+
     def _execute(self):
-        # Get the identifier of the source VM
-        vm_id = get_vm(self.servicemanager.stub_config, self.vm_name)
+        # Get the identifiers
+        vm_id = get_vm(self.vsphere_client, self.vm_name)
         assert vm_id
+        resource_pool_id = get_resource_pool(self.vsphere_client,
+                                             self.datacenter_name,
+                                             self.resource_pool_name)
+        assert resource_pool_id
 
         # Create a library
         storage_backings = self.helper.create_storage_backings(
@@ -93,6 +119,8 @@ class CreateVmTemplate(SampleBase):
         create_spec.source_vm = vm_id
         create_spec.library = self.library_id
         create_spec.name = self.item_name
+        create_spec.placement = VmtxLibraryItem.CreatePlacementSpec(
+            resource_pool=resource_pool_id)
 
         # Create a new library item from the source VM
         self.item_id = self.client.vmtx_service.create(create_spec)

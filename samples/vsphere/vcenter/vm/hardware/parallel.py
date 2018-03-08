@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,21 +12,20 @@
 * WARRANTIES OR CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY,
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
+from vmware.vapi.vsphere.client import create_vsphere_client
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
 import atexit
 
 from com.vmware.vcenter.vm.hardware_client import Parallel
-from com.vmware.vcenter.vm_client import Power
 from pyVim.connect import SmartConnect, Disconnect
 
-from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args_vm
 from samples.vsphere.common.sample_util import pp
-from samples.vsphere.common.ssl_helper import get_unverified_context
+from samples.vsphere.common.ssl_helper import get_unverified_context, \
+    get_unverified_session
 from samples.vsphere.common.vim.file import delete_file
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 from samples.vsphere.vcenter.setup import testbed
@@ -40,30 +39,29 @@ The sample needs an existing VM.
 
 vm = None
 vm_name = None
-stub_config = None
+client = None
 service_instance = None
-parallel_svc = None
 cleardata = False
 parallels_to_delete = []
 orig_parallel_summaries = None
 
 
 def setup(context=None):
-    global vm_name, stub_config, service_instance, cleardata
+    global vm_name, client, service_instance, cleardata
     if context:
         # Run sample suite via setup script
-        stub_config = context.stub_config
+        client = context.client
         vm_name = testbed.config['VM_NAME_DEFAULT']
         service_instance = context.service_instance
     else:
         # Run sample in standalone mode
         server, username, password, cleardata, skip_verification, vm_name = \
             parse_cli_args_vm(testbed.config['VM_NAME_DEFAULT'])
-        stub_config = vapiconnect.connect(server,
-                                          username,
-                                          password,
-                                          skip_verification)
-        atexit.register(vapiconnect.logout, stub_config)
+        session = get_unverified_session() if skip_verification else None
+        client = create_vsphere_client(server=server,
+                                       username=username,
+                                       password=password,
+                                       session=session)
 
         context = None
         if skip_verification:
@@ -76,19 +74,15 @@ def setup(context=None):
 
 
 def run():
-    global vm, parallel_svc
-    vm = get_vm(stub_config, vm_name)
+    global vm, client
+    vm = get_vm(client, vm_name)
     if not vm:
         raise Exception('Sample requires an existing vm with name ({}). '
                         'Please create the vm first.'.format(vm_name))
     print("Using VM '{}' ({}) for Parallel Sample".format(vm_name, vm))
 
-    # Create Parallel port stub used for making requests
-    parallel_svc = Parallel(stub_config)
-    vm_power_svc = Power(stub_config)
-
     print('\n# Example: List all Parallel ports for a VM')
-    parallel_summaries = parallel_svc.list(vm=vm)
+    parallel_summaries = client.vcenter.vm.hardware.Parallel.list(vm=vm)
     print('vm.hardware.Parallel.list({}) -> {}'.format(vm, parallel_summaries))
 
     # Save current list of Parallel ports to verify that we have cleaned up
@@ -99,7 +93,8 @@ def run():
     # Get information for each Parallel port on the VM
     for parallel_summary in parallel_summaries:
         parallel = parallel_summary.port
-        parallel_info = parallel_svc.get(vm=vm, port=parallel)
+        parallel_info = client.vcenter.vm.hardware.Parallel.get(vm=vm,
+                                                                port=parallel)
         print('vm.hardware.Parallel.get({}, {}) -> {}'.format(vm, parallel, pp(
             parallel_info)))
 
@@ -108,12 +103,12 @@ def run():
 
     print('\n# Example: Create Parallel port with defaults')
     parallel_create_spec = Parallel.CreateSpec()
-    parallel = parallel_svc.create(vm, parallel_create_spec)
+    parallel = client.vcenter.vm.hardware.Parallel.create(vm, parallel_create_spec)
     print('vm.hardware.Parallel.create({}, {}) -> {}'.
           format(vm, parallel_create_spec, parallel))
     global parallels_to_delete
     parallels_to_delete.append(parallel)
-    parallel_info = parallel_svc.get(vm, parallel)
+    parallel_info = client.vcenter.vm.hardware.Parallel.get(vm, parallel)
     print('vm.hardware.Parallel.get({}, {}) -> {}'.format(vm, parallel,
                                                           pp(parallel_info)))
 
@@ -125,11 +120,11 @@ def run():
         allow_guest_control=True,
         backing=Parallel.BackingSpec(type=Parallel.BackingType.FILE,
                                      file=parallel_port_datastore_path))
-    parallel = parallel_svc.create(vm, parallel_create_spec)
+    parallel = client.vcenter.vm.hardware.Parallel.create(vm, parallel_create_spec)
     print('vm.hardware.Parallel.create({}, {}) -> {}'.
           format(vm, parallel_create_spec, parallel))
     parallels_to_delete.append(parallel)
-    parallel_info = parallel_svc.get(vm, parallel)
+    parallel_info = client.vcenter.vm.hardware.Parallel.get(vm, parallel)
     print('vm.hardware.Parallel.get({}, {}) -> {}'.
           format(vm, parallel, pp(parallel_info)))
 
@@ -143,43 +138,43 @@ def run():
         allow_guest_control=False,
         backing=Parallel.BackingSpec(type=Parallel.BackingType.FILE,
                                      file=parallel_port_datastore_path))
-    parallel_svc.update(vm, parallel, parallel_update_spec)
+    client.vcenter.vm.hardware.Parallel.update(vm, parallel, parallel_update_spec)
     print('vm.hardware.Parallel.update({}, {}) -> {}'.
           format(vm, parallel_update_spec, parallel))
-    parallel_info = parallel_svc.get(vm, parallel)
+    parallel_info = client.vcenter.vm.hardware.Parallel.get(vm, parallel)
     print('vm.hardware.Parallel.get({}, {}) -> {}'.
           format(vm, parallel, pp(parallel_info)))
 
     print('\n# Starting VM to run connect/disconnect sample')
     print('vm.Power.start({})'.format(vm))
-    vm_power_svc.start(vm)
-    parallel_info = parallel_svc.get(vm, parallel)
+    client.vcenter.vm.Power.start(vm)
+    parallel_info = client.vcenter.vm.hardware.Parallel.get(vm, parallel)
     print('vm.hardware.Parallel.get({}, {}) -> {}'.
           format(vm, parallel, pp(parallel_info)))
 
     print('\n# Example: Connect Parallel port after powering on VM')
-    parallel_svc.connect(vm, parallel)
+    client.vcenter.vm.hardware.Parallel.connect(vm, parallel)
     print('vm.hardware.Parallel.connect({}, {})'.format(vm, parallel))
-    parallel_info = parallel_svc.get(vm, parallel)
+    parallel_info = client.vcenter.vm.hardware.Parallel.get(vm, parallel)
     print('vm.hardware.Parallel.get({}, {}) -> {}'.
           format(vm, parallel, pp(parallel_info)))
 
     print('\n# Example: Disconnect Parallel port while VM is powered on')
-    parallel_svc.disconnect(vm, parallel)
+    client.vcenter.vm.hardware.Parallel.disconnect(vm, parallel)
     print('vm.hardware.Parallel.disconnect({}, {})'.format(vm, parallel))
-    parallel_info = parallel_svc.get(vm, parallel)
+    parallel_info = client.vcenter.vm.hardware.Parallel.get(vm, parallel)
     print('vm.hardware.Parallel.get({}, {}) -> {}'.
           format(vm, parallel, pp(parallel_info)))
 
     print('\n# Stopping VM after connect/disconnect sample')
     print('vm.Power.start({})'.format(vm))
-    vm_power_svc.stop(vm)
-    parallel_info = parallel_svc.get(vm, parallel)
+    client.vcenter.vm.Power.stop(vm)
+    parallel_info = client.vcenter.vm.hardware.Parallel.get(vm, parallel)
     print('vm.hardware.Parallel.get({}, {}) -> {}'.
           format(vm, parallel, pp(parallel_info)))
 
     # List all Parallel ports for a VM
-    parallel_summaries = parallel_svc.list(vm=vm)
+    parallel_summaries = client.vcenter.vm.hardware.Parallel.list(vm=vm)
     print('vm.hardware.Parallel.list({}) -> {}'.
           format(vm, parallel_summaries))
 
@@ -190,10 +185,10 @@ def run():
 def cleanup():
     print('\n# Cleanup: Delete VM Parallel ports that were added')
     for parallel in parallels_to_delete:
-        parallel_svc.delete(vm, parallel)
+        client.vcenter.vm.hardware.Parallel.delete(vm, parallel)
         print('vm.hardware.Parallel.delete({}, {})'.format(vm, parallel))
 
-    parallel_summaries = parallel_svc.list(vm)
+    parallel_summaries = client.vcenter.vm.hardware.Parallel.list(vm)
     print('vm.hardware.Parallel.list({}) -> {}'.format(vm, parallel_summaries))
     if set(orig_parallel_summaries) != set(parallel_summaries):
         print('vm.hardware.Parallel WARNING: '
@@ -212,7 +207,7 @@ def cleanup_backends():
     """
     datacenter_name = testbed.config['PARALLEL_PORT_DATACENTER_NAME']
     datastore_path = testbed.config['PARALLEL_PORT_DATASTORE_PATH']
-    delete_file(stub_config,
+    delete_file(client,
                 service_instance,
                 'Parallel Port',
                 datacenter_name,

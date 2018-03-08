@@ -7,8 +7,8 @@ This directory contains samples for Content Library APIs:
     * Basic workflow to publish and subscribe content libraries                                                             - publishsubscribe/library_publish_subscribe.py
     * Workflow to capture a virtual machine into a content library                                                          - vmcapture/vm_template_capture.py
     * Content library ISO item mount and unmount workflow                                                                   - isomount/iso_mount.py
-    * Create a library item containing a native VMware virtual machine template                                             - vmtemplate/create_vm_template.py
-    * Deploy a virtual machine from a library item containing a native VMware virtual machine template                      - vmtemplate/deploy_vm_template.py
+    * Create a library item containing a virtual machine template                                                           - vmtemplate/create_vm_template.py
+    * Deploy a virtual machine from a library item containing a virtual machine template                                    - vmtemplate/deploy_vm_template.py
 
 Running the samples
 
@@ -23,8 +23,8 @@ The additional sample parameters are as follows (all parameters can be displayed
     * library_publish_subscribe.py  --datastorename <datastore-name>
     * vm_template_capture.py        --datastorename <datastore-name> --vmname <vm-name>
     * iso_mount.py                  --datastorename <datastore-name> --vmname <vm-name>
-    * create_vm_template.py         --datastorename <datastore-name> --vmname <vm-name>
-    * deploy_vm_template.py         --itemname <item-name> --datacentername <datacenter-name> --foldername <folder-name>  --resourcepoolname <resource-pool-name> --datastorename <datastore-name>
+    * create_vm_template.py         --datacentername <datacenter-name> --resourcepoolname <resource-pool-name> --datastorename <datastore-name> --vmname <vm-name>
+    * deploy_vm_template.py         --itemname <item-name> --datacentername <datacenter-name> --foldername <folder-name>  --resourcepoolname <resource-pool-name> --datastorename <datastore-name>    
 
 * Testbed Requirement:
     - 1 vCenter Server

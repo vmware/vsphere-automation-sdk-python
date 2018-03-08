@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright VMware, Inc. 2016. All Rights Reserved.
+* Copyright VMware, Inc. 2016, 2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,13 +14,14 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
+from vmware.vapi.vsphere.client import create_vsphere_client
+
 from samples.vsphere.common.sample_base import SampleBase
+from samples.vsphere.common.ssl_helper import get_unverified_session
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
-
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
 
@@ -46,10 +47,12 @@ class IsoMount(SampleBase):
     def _options(self):
         self.argparser.add_argument('-datastorename',
                                     '--datastorename',
+                                    required=True,
                                     help='The name of a datastore (of type vmfs) that is'
-                                         ' acceassible to the vm specified with --vmname.')
+                                         ' accessible to the vm specified with --vmname.')
         self.argparser.add_argument('-vmname',
                                     '--vmname',
+                                    required=True,
                                     help='The name of the vm where iso will be mounted. '
                                          'The vm needs to be already created on the vCenter')
 
@@ -65,6 +68,12 @@ class IsoMount(SampleBase):
         self.client = ClsApiClient(self.servicemanager)
         self.helper = ClsApiHelper(self.client, self.skip_verification)
 
+        session = get_unverified_session() if self.skip_verification else None
+        self.vsphere_client = create_vsphere_client(server=self.server,
+                                                    username=self.username,
+                                                    password=self.password,
+                                                    session=session)
+
     def _execute(self):
         storage_backings = self.helper.create_storage_backings(
             self.servicemanager, self.datastore_name)
@@ -77,7 +86,7 @@ class IsoMount(SampleBase):
                                                               self.iso_item_name,
                                                               self.ISO_FILENAME)
 
-        vm_id = get_vm(self.servicemanager.stub_config, self.vm_name)
+        vm_id = get_vm(self.vsphere_client, self.vm_name)
         assert vm_id is not None
 
         # Mount the iso item as a CDROM device

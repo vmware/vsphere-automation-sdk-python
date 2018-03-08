@@ -16,12 +16,12 @@
 __author__ = 'TODO: <your name and email>'
 __vcenter_version__ = 'TODO: <compatible vcenter versions>'
 
-import atexit
-
 from com.vmware.vcenter_client import VM
+from vmware.vapi.vsphere.client import create_vsphere_client
+
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
-from samples.vsphere.common.service_manager import ServiceManager
+from samples.vsphere.common.ssl_helper import get_unverified_session
 
 
 class Sample(object):
@@ -32,13 +32,7 @@ class Sample(object):
     Sample Prerequisites:
         - vCenter
     """
-
     def __init__(self):
-        self.service_manager = None
-        self.vm_name = None
-        self.cleardata = None
-
-    def setup(self):
         # Create argument parser for standard inputs:
         # server, username, password, cleanup and skipverification
         parser = sample_cli.build_arg_parser()
@@ -53,26 +47,23 @@ class Sample(object):
         self.vm_name = args.vm_name
         self.cleardata = args.cleardata
 
-        # Connect to both Vim and vAPI services
-        self.service_manager = ServiceManager(args.server,
-                                              args.username,
-                                              args.password,
-                                              args.skipverification)
-        self.service_manager.connect()
-        atexit.register(self.service_manager.disconnect)
+        # Skip server cert verification if needed.
+        # This is not recommended in production code.
+        session = get_unverified_session() if args.skipverification else None
+
+        # Connect to vSphere client
+        self.client = create_vsphere_client(server=args.server,
+                                            username=args.username,
+                                            password=args.password,
+                                            session=session)
 
     def run(self):
         # TODO add your sample code here
 
         # Using REST API service
-        vm_service = VM(self.service_manager.stub_config)
         filter_spec = VM.FilterSpec(names=set([self.vm_name]))
-        vms = vm_service.list(filter_spec)
+        vms = self.client.vcenter.VM.list(filter_spec)
         print(vms)
-
-        # Using Vim API service (pyVmomi)
-        current_time = self.service_manager.si.CurrentTime()
-        print(current_time)
 
     def cleanup(self):
         if self.cleardata:
@@ -82,7 +73,6 @@ class Sample(object):
 
 def main():
     sample = Sample()
-    sample.setup()
     sample.run()
     sample.cleanup()
 

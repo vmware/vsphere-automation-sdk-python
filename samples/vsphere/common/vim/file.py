@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 import re
 
@@ -35,7 +34,7 @@ def parse_datastore_path(datastore_path):
 def detect_directory(context, description, datacenter_name, datastore_path):
     """Find directory based on specific datacenter and datastore path"""
     (datastore_name, path) = parse_datastore_path(datastore_path)
-    datastore_mo = get_datastore_mo(context.stub_config,
+    datastore_mo = get_datastore_mo(context.client,
                                     context.service_instance._stub,
                                     datacenter_name,
                                     datastore_name)
@@ -57,7 +56,7 @@ def detect_directory(context, description, datacenter_name, datastore_path):
 def create_directory(context, description, datacenter_name, datastore_path):
     """Create directory in specific datacenter"""
     (datastore_name, path) = parse_datastore_path(datastore_path)
-    datastore_mo = get_datastore_mo(context.stub_config,
+    datastore_mo = get_datastore_mo(context.client,
                                     context.service_instance._stub,
                                     datacenter_name,
                                     datastore_name)
@@ -76,7 +75,7 @@ def create_directory(context, description, datacenter_name, datastore_path):
 def delete_directory(context, description, datacenter_name, datastore_path):
     """Delete directory from specific datacenter"""
     (datastore_name, path) = parse_datastore_path(datastore_path)
-    datastore_mo = get_datastore_mo(context.stub_config,
+    datastore_mo = get_datastore_mo(context.client,
                                     context.service_instance._stub,
                                     datacenter_name,
                                     datastore_name)
@@ -92,7 +91,7 @@ def delete_directory(context, description, datacenter_name, datastore_path):
 def detect_file(context, description, datacenter_name, datastore_path):
     """Find specific file in specific datacenter"""
     (datastore_name, path) = parse_datastore_path(datastore_path)
-    datastore_mo = get_datastore_mo(context.stub_config,
+    datastore_mo = get_datastore_mo(context.client,
                                     context.service_instance._stub,
                                     datacenter_name,
                                     datastore_name)
@@ -111,11 +110,11 @@ def detect_file(context, description, datacenter_name, datastore_path):
     return True
 
 
-def delete_file(stub_config, service_instance,
+def delete_file(client, service_instance,
                 description, datacenter_name, datastore_path):
     """Delete a file from specific datacenter"""
     (datastore_name, path) = parse_datastore_path(datastore_path)
-    datastore_mo = get_datastore_mo(stub_config,
+    datastore_mo = get_datastore_mo(client,
                                     service_instance._stub,
                                     datacenter_name,
                                     datastore_name)

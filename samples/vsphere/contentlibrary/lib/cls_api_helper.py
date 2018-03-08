@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright VMware, Inc. 2016-2017. All Rights Reserved.
+* Copyright VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016-2017 VMware, Inc.  All rights reserved.'
 __vcenter_version__ = '6.0+'
 
 import os

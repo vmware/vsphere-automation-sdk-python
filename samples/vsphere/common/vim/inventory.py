@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter__ = 'since 6.0'
 
 from pyVmomi import vim
@@ -20,12 +19,12 @@ from pyVmomi import vim
 from samples.vsphere.vcenter.helper.datastore_helper import get_datastore
 
 
-def get_datastore_mo(stub_config, soap_stub,
+def get_datastore_mo(client, soap_stub,
                      datacenter_name, datastore_name):
     """
     Return datastore managed object with specific datacenter and datastore name
     """
-    datastore = get_datastore(stub_config, datacenter_name, datastore_name)
+    datastore = get_datastore(client, datacenter_name, datastore_name)
     if not datastore:
         return None
     datastore_mo = vim.Datastore(datastore, soap_stub)

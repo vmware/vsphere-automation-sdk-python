@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright VMware, Inc. 2013, 2016. All Rights Reserved.
+* Copyright VMware, Inc. 2016, 2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,7 +14,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.0+'
 
 try:
@@ -22,11 +21,13 @@ try:
 except ImportError:
     import urllib.request as urllib2
 from com.vmware.vcenter.ovf_client import LibraryItem
+from vmware.vapi.vsphere.client import create_vsphere_client
+
 from samples.vsphere.common.id_generator import generate_random_uuid
 from samples.vsphere.common.sample_base import SampleBase
+from samples.vsphere.common.ssl_helper import get_unverified_session
 from samples.vsphere.contentlibrary.lib.cls_api_client import ClsApiClient
 from samples.vsphere.contentlibrary.lib.cls_api_helper import ClsApiHelper
-
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 
 
@@ -53,9 +54,11 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
 
     def _options(self):
         self.argparser.add_argument('-datastorename', '--datastorename',
+                                    required=True,
                                     help='The name of the datastore for'
                                          ' content library backing (of type vmfs)')
         self.argparser.add_argument('-vmname', '--vmname',
+                                    required=True,
                                     help='Name of the VM to be captured')
 
     def _setup(self):
@@ -71,6 +74,12 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
         self.client = ClsApiClient(self.servicemanager)
         self.helper = ClsApiHelper(self.client, self.skip_verification)
 
+        session = get_unverified_session() if self.skip_verification else None
+        self.vsphere_client = create_vsphere_client(server=self.server,
+                                                    username=self.username,
+                                                    password=self.password,
+                                                    session=session)
+
     def _execute(self):
         storage_backings = self.helper.create_storage_backings(
             self.servicemanager,
@@ -82,7 +91,7 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
                                                       self.cl_name)
         self.content_library = self.client.local_library_service.get(library_id)
 
-        vm_id = get_vm(self.servicemanager.stub_config, self.vm_name)
+        vm_id = get_vm(self.vsphere_client, self.vm_name)
         assert vm_id is not None
 
         param = self.create_capture_param(self.content_library,
@@ -92,7 +101,7 @@ class CaptureVMTemplateToContentLibrary(SampleBase):
         assert self.library_item_id is not None
         assert self.client.library_item_service.get(self.library_item_id) is not None
         print('The VM id : {0} is captured as vm template library item id : {1}'.format
-                    (vm_id, self.library_item_id))
+              (vm_id, self.library_item_id))
 
     def capture_source_vm(self, vm_id, param):
         source = LibraryItem.DeployableIdentity(self.deployable_resource_type,

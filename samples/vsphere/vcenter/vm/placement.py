@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
 from com.vmware.vcenter_client import (Cluster, Datastore, Folder, ResourcePool,
@@ -45,17 +44,13 @@ def get_placement_spec_for_cluster(context):
     # Select a Cluster meeting our requirements
     datacenter_name = context.testbed.config['DATACENTER2_NAME']
     datacenter = context.testbed.entities['DATACENTER_IDS'][datacenter_name]
-
     cluster_name = context.testbed.config['CLUSTER1_NAME']
-    names = set([cluster_name])
 
-    cluster_svc = Cluster(context.stub_config)
     filter = Cluster.FilterSpec(
         names=set([cluster_name]),
         datacenters=set([datacenter]))
-    cluster_summaries = cluster_svc.list(filter=filter)
+    cluster_summaries = context.client.vcenter.Cluster.list(filter=filter)
 
-    cluster = None
     if len(cluster_summaries) > 0:
         cluster = cluster_summaries[0].cluster
         print("Selecting Cluster '{}' ({})".format(cluster_name, cluster))
@@ -71,13 +66,11 @@ def get_placement_spec_for_cluster(context):
 
     folder_name = context.testbed.config['VM_FOLDER2_NAME']
 
-    folder_svc = Folder(context.stub_config)
     filter = Folder.FilterSpec(
         names=set([folder_name]),
         datacenters=set([datacenter]))
-    folder_summaries = folder_svc.list(filter=filter)
+    folder_summaries = context.client.vcenter.Folder.list(filter=filter)
 
-    folder = None
     if len(folder_summaries) > 0:
         folder = folder_summaries[0].folder
         print("Selecting Folder '{}' ({})".format(folder_name, folder))
@@ -95,13 +88,11 @@ def get_placement_spec_for_cluster(context):
     # TODO Parameterize based on NFS or VMFS
     datastore_name = context.testbed.config['NFS_DATASTORE_NAME']
 
-    datastore_svc = Datastore(context.stub_config)
     filter = Datastore.FilterSpec(
         names=set([datastore_name]),
         datacenters=set([datacenter]))
-    datastore_summaries = datastore_svc.list(filter=filter)
+    datastore_summaries = context.client.vcenter.Datastore.list(filter=filter)
 
-    datastore = None
     if len(datastore_summaries) > 0:
         datastore = datastore_summaries[0].datastore
         print("Selecting Datastore '{}' ({})".format(datastore_name, datastore))
@@ -122,11 +113,9 @@ def get_placement_spec_for_resource_pool(context):
     datacenter_name = context.testbed.config['DATACENTER2_NAME']
     datacenter = context.testbed.entities['DATACENTER_IDS'][datacenter_name]
 
-    resource_pool_svc = ResourcePool(context.stub_config)
     filter = ResourcePool.FilterSpec(datacenters=set([datacenter]))
-    resource_pool_summaries = resource_pool_svc.list(filter=filter)
+    resource_pool_summaries = context.client.vcenter.ResourcePool.list(filter=filter)
 
-    resource_pool = None
     if len(resource_pool_summaries) > 0:
         resource_pool = resource_pool_summaries[0].resource_pool
         print('Selecting ResourcePool ({})'.format(resource_pool))
@@ -143,13 +132,11 @@ def get_placement_spec_for_resource_pool(context):
 
     folder_name = context.testbed.config['VM_FOLDER2_NAME']
 
-    folder_svc = Folder(context.stub_config)
     filter = Folder.FilterSpec(
         names=set([folder_name]),
         datacenters=set([datacenter]))
-    folder_summaries = folder_svc.list(filter=filter)
+    folder_summaries = context.client.vcenter.Folder.list(filter=filter)
 
-    folder = None
     if len(folder_summaries) > 0:
         folder = folder_summaries[0].folder
         print("Selecting Folder '{}' ({})".format(folder_name, folder))
@@ -166,13 +153,11 @@ def get_placement_spec_for_resource_pool(context):
     # TODO Parameterize based on NFS or VMFS
     datastore_name = context.testbed.config['NFS_DATASTORE_NAME']
 
-    datastore_svc = Datastore(context.stub_config)
     filter = Datastore.FilterSpec(
         names=set([datastore_name]),
         datacenters=set([datacenter]))
-    datastore_summaries = datastore_svc.list(filter=filter)
+    datastore_summaries = context.client.vcenter.Datastore.list(filter=filter)
 
-    datastore = None
     if len(datastore_summaries) > 0:
         datastore = datastore_summaries[0].datastore
         print("Selecting Datastore '{}' ({})".format(datastore_name, datastore))

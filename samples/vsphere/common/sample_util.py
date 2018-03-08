@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 from six.moves import cStringIO
 from vmware.vapi.bindings.struct import PrettyPrinter
@@ -85,17 +84,17 @@ def process_cli_args(args):
 class Context(object):
     """Class that holds common context for running vcenter samples."""
 
-    def __init__(self, testbed, service_instance, stub_config):
+    def __init__(self, testbed, service_instance, client):
         # Testbed configuration
-        self.testbed = testbed
+        self._testbed = testbed
 
         # pyVmomi SOAP Service Instance
-        self.service_instance = service_instance
+        self._service_instance = service_instance
 
-        # vAPI stub configuration used to make other stubs
-        self.stub_config = stub_config
+        # vAPI vSphere client
+        self._client = client
 
-        self.option = {}
+        self._option = {}
 
     @property
     def testbed(self):
@@ -122,12 +121,12 @@ class Context(object):
         self._soap_stub = value
 
     @property
-    def stub_config(self):
-        return self._stub_config
+    def client(self):
+        return self._client
 
-    @stub_config.setter
-    def stub_config(self, value):
-        self._stub_config = value
+    @client.setter
+    def client(self, value):
+        self._client = value
 
     @property
     def option(self):

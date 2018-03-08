@@ -45,16 +45,19 @@ class AddRemoveHosts(object):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-        parser.add_argument('refresh_token',
+        parser.add_argument('-r', '--refresh-token',
+                            required=True,
                             help='VMware Cloud API refresh token')
 
-        parser.add_argument('org_id',
+        parser.add_argument('-o', '--org-id',
+                            required=True,
                             help='Organization identifier.')
 
-        parser.add_argument('sddc_id',
+        parser.add_argument('-s', '--sddc-id',
+                            required=True,
                             help='Sddc Identifier.')
 
-        parser.add_argument('-i', '--interval_sec',
+        parser.add_argument('-i', '--interval-sec',
                             default=60,
                             help='Task pulling interval in sec')
 

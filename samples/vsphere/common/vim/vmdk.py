@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 import pyVim.task
 from pyVmomi import vim
@@ -42,10 +41,10 @@ def delete_vmdk(service_instance, datacenter_mo, datastore_path):
     pyVim.task.WaitForTask(task)
 
 
-def detect_vmdk(stub_config, soap_stub, datacenter_name, datastore_name,
+def detect_vmdk(client, soap_stub, datacenter_name, datastore_name,
                 datastore_path):
     """Find vmdk in specific datastore"""
-    datastore_mo = get_datastore_mo(stub_config,
+    datastore_mo = get_datastore_mo(client,
                                     soap_stub,
                                     datacenter_name,
                                     datastore_name)

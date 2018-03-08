@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -13,46 +13,43 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-
 """
 Script that runs through all the setup and samples.
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
-
 
 import pyVim.connect
+from vmware.vapi.vsphere.client import create_vsphere_client
+
 from samples.vsphere.common import sample_util
-from samples.vsphere.common import vapiconnect
 from samples.vsphere.vcenter.setup import testbed
-from samples.vsphere.vcenter.setup.setup_cli import build_arg_parser
+from samples.vsphere.vcenter.setup import setup_cli
 from samples.vsphere.vcenter.setup.testbed_setup import cleanup as testbed_cleanup
 from samples.vsphere.vcenter.setup.testbed_setup import setup as testbed_setup
 from samples.vsphere.vcenter.setup.testbed_setup import validate as testbed_validate
 from samples.vsphere.vcenter.vm.main import VMSetup
-
-from samples.vsphere.common.ssl_helper import get_unverified_context
-
+from samples.vsphere.common.ssl_helper import get_unverified_context, \
+    get_unverified_session
 
 # Parse command line params for setup script
-args = build_arg_parser().parse_args()
+args = setup_cli.build_arg_parser().parse_args()
 
 _testbed = testbed.get()
 
 # If VC/ESX/NFS Server IPs are passed as arguments,
 # then override testbed.py values
-if (args.vcenterserver):
+if args.vcenterserver:
     _testbed.config['SERVER'] = args.vcenterserver
-if (args.vcenterpassword):
+if args.vcenterpassword:
     _testbed.config['PASSWORD'] = args.vcenterpassword
-if (args.esxhost1):
+if args.esxhost1:
     _testbed.config['ESX_HOST1'] = args.esxhost1
-if (args.esxhost2):
+if args.esxhost2:
     _testbed.config['ESX_HOST2'] = args.esxhost2
-if (args.esxpassword):
+if args.esxpassword:
     _testbed.config['ESX_PASS'] = args.esxpassword
-if (args.nfsserver):
+if args.nfsserver:
     _testbed.config['NFS_HOST'] = args.nfsserver
 
 
@@ -68,12 +65,13 @@ service_instance = pyVim.connect.SmartConnect(host=_testbed.config['SERVER'],
                                               sslContext=context)
 
 # Connect to vAPI Endpoint on vCenter system
-stub_config = vapiconnect.connect(host=_testbed.config['SERVER'],
-                                  user=_testbed.config['USERNAME'],
-                                  pwd=_testbed.config['PASSWORD'],
-                                  skip_verification=args.skipverification)
+session = get_unverified_session() if args.skipverification else None
+client = create_vsphere_client(server=_testbed.config['SERVER'],
+                               username=_testbed.config['USERNAME'],
+                               password=_testbed.config['PASSWORD'],
+                               session=session)
 
-context = sample_util.Context(_testbed, service_instance, stub_config)
+context = sample_util.Context(_testbed, service_instance, client)
 
 context.option['DO_TESTBED_SETUP'] = args.testbed_setup
 context.option['DO_TESTBED_VALIDATE'] = args.testbed_validate

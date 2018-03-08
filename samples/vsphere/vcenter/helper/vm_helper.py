@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,20 +12,18 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
 from com.vmware.vcenter_client import VM
 
 
-def get_vm(stub_config, vm_name):
+def get_vm(client, vm_name):
     """
     Return the identifier of a vm
     Note: The method assumes that there is only one vm with the mentioned name.
     """
-    vm_svc = VM(stub_config)
     names = set([vm_name])
-    vms = vm_svc.list(VM.FilterSpec(names=names))
+    vms = client.vcenter.VM.list(VM.FilterSpec(names=names))
 
     if len(vms) == 0:
         print("VM with name ({}) not found".format(vm_name))
@@ -36,10 +34,9 @@ def get_vm(stub_config, vm_name):
     return vm
 
 
-def get_vms(stub_config, vm_names):
+def get_vms(client, vm_names):
     """Return identifiers of a list of vms"""
-    vm_svc = VM(stub_config)
-    vms = vm_svc.list(VM.FilterSpec(names=vm_names))
+    vms = client.vcenter.VM.list(VM.FilterSpec(names=vm_names))
 
     if len(vms) == 0:
         print('No vm found')

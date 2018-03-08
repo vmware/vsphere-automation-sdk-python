@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,22 +12,18 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 from com.vmware.vcenter_client import (Datacenter, Folder)
 
 
 def folder_list_datacenter_folder(context):
-    folder_svc = Folder(context.stub_config)
-    return folder_svc.list(Folder.FilterSpec(type=Folder.Type.DATACENTER))
+    return context.client.vcenter.Folder.list(Folder.FilterSpec(type=Folder.Type.DATACENTER))
 
 
 def detect_datacenter(context, datacenter_name):
     """Find the datacenter with the given name"""
-    datacenter_svc = Datacenter(context.stub_config)
-
     names = set([datacenter_name])
-    datacenter_summaries = datacenter_svc.list(
+    datacenter_summaries = context.client.vcenter.Datacenter.list(
         Datacenter.FilterSpec(names=names))
     if len(datacenter_summaries) > 0:
         datacenter = datacenter_summaries[0].datacenter
@@ -54,14 +50,13 @@ def detect_datacenters(context):
 
 def cleanup_datacenters(context):
     """Cleanup datacenters after sample run"""
-    datacenter_svc = Datacenter(context.stub_config)
 
     # Look for the two datacenters
     datacenter1_name = context.testbed.config['DATACENTER1_NAME']
     datacenter2_name = context.testbed.config['DATACENTER2_NAME']
     names = set([datacenter1_name, datacenter2_name])
 
-    datacenter_summaries = datacenter_svc.list(
+    datacenter_summaries = context.client.vcenter.Datacenter.list(
         Datacenter.FilterSpec(names=names))
     print("Found {} Datacenters matching names {}".
           format(len(datacenter_summaries), ", ".
@@ -71,7 +66,7 @@ def cleanup_datacenters(context):
         datacenter = datacenter_summary.datacenter
         print("Deleting Datacenter '{}' ({})".
               format(datacenter, datacenter_summary.name))
-        datacenter_svc.delete(datacenter, force=True)
+        context.client.vcenter.Datacenter.delete(datacenter, force=True)
 
 
 def setup_datacenters(context):
@@ -82,18 +77,16 @@ def setup_datacenters(context):
     print("Creating datacenters in Folder '{}' ({})".
           format(folder, folder_summaries[0].name))
 
-    datacenter_svc = Datacenter(context.stub_config)
-
     # Create first datacenter
     datacenter1_name = context.testbed.config['DATACENTER1_NAME']
-    datacenter1 = datacenter_svc.create(
+    datacenter1 = context.client.vcenter.Datacenter.create(
         Datacenter.CreateSpec(name=datacenter1_name, folder=folder)
     )
     print("Created Datacenter '{}' ({})".format(datacenter1, datacenter1_name))
 
     # Create second datacenter
     datacenter2_name = context.testbed.config['DATACENTER2_NAME']
-    datacenter2 = datacenter_svc.create(
+    datacenter2 = context.client.vcenter.Datacenter.create(
         Datacenter.CreateSpec(name=datacenter2_name, folder=folder)
     )
     print("Created Datacenter '{}' ({})".format(datacenter2, datacenter2_name))

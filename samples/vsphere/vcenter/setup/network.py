@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 import pyVim.task
 from com.vmware.vcenter_client import Host
@@ -235,8 +234,8 @@ def detect_stdportgroup(context, host_name, network_name):
     names = set([host_name])
 
     # Use vAPI find the Host managed identities
-    host_svc = Host(context.stub_config)
-    host_summaries = host_svc.list(Host.FilterSpec(names=names))
+    host_summaries = context.client.vcenter.Host.list(
+        Host.FilterSpec(names=names))
 
     for host_summary in host_summaries:
         # Convert the host identifier into a ManagedObject

@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,11 +12,9 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
-
 
 import pyVim.task
-from com.vmware.vcenter_client import Cluster
+from com.vmware.vcenter_client import Cluster, Folder
 from pyVmomi import vim
 
 from samples.vsphere.vcenter.helper import cluster_helper
@@ -27,7 +25,7 @@ def detect_cluster(context):
     cluster1_name = context.testbed.config['CLUSTER1_NAME']
     datacenter_name = context.testbed.config['VM_DATACENTER_NAME']
 
-    cluster = cluster_helper.get_cluster(context.stub_config, datacenter_name,
+    cluster = cluster_helper.get_cluster(context.client, datacenter_name,
                                          cluster1_name)
 
     if cluster:
@@ -43,8 +41,8 @@ def cleanup_cluster(context):
     cluster1_name = context.testbed.config['CLUSTER1_NAME']
     names = set([cluster1_name])
 
-    cluster_svc = Cluster(context.stub_config)
-    cluster_summaries = cluster_svc.list(Cluster.FilterSpec(names=names))
+    cluster_summaries = context.client.vcenter.Cluster.list(
+        Cluster.FilterSpec(names=names))
     print("Found '{}' Clusters matching names {}".
           format(len(cluster_summaries), ", ".join(["'{}'".
                                                    format(n) for n in names])))
@@ -92,8 +90,7 @@ def setup_cluster_vapi2(context):
     datacenter_name = context.testbed.config['DATACENTER2_NAME']
     datacenter = context.testbed.entities['DATACENTER_IDS'][datacenter_name]
 
-    folder_svc = Folder(context.stub_config)
-    folder_summaries = folder_svc.list(
+    folder_summaries = context.client.vcenter.Folder.list(
         Folder.FilterSpec(type=Folder.Type.HOST, datacenters=set([datacenter])))
     folder = folder_summaries[0].folder
 

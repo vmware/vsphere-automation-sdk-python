@@ -48,17 +48,19 @@ class CreateDeleteSDDC(object):
     def option(self):
         parser = argparse.ArgumentParser()
 
-        parser.add_argument('refresh_token',
+        parser.add_argument('-r', '--refresh-token',
+                            required=True,
                             help='VMware Cloud API refresh token')
 
-        parser.add_argument('org_id',
-                            help='Organization identifier')
+        parser.add_argument('-o', '--org-id',
+                            required=True,
+                            help='Organization identifier.')
 
-        parser.add_argument('-sn', '--sddc_name',
+        parser.add_argument('-sn', '--sddc-name',
                             help="Name of the SDDC to be created. "
                                  "Default is 'Sample SDDC xx'")
 
-        parser.add_argument('-i', '--interval_sec',
+        parser.add_argument('-i', '--interval-sec',
                             default=60,
                             help='Task pulling interval in sec')
 

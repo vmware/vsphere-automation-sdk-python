@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2017. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2017, 2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,18 +14,16 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
-import atexit
+from vmware.vapi.vsphere.client import create_vsphere_client
 
 from com.vmware.vcenter.vm_client import Power
-from com.vmware.vcenter_client import VM
 
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
-from samples.vsphere.common.service_manager import ServiceManager
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
+from samples.vsphere.common.ssl_helper import get_unverified_session
 
 
 class DeleteVM(object):
@@ -36,10 +34,6 @@ class DeleteVM(object):
     """
 
     def __init__(self):
-        self.service_manager = None
-        self.vm_name = None
-
-    def setup(self):
         parser = sample_cli.build_arg_parser()
         parser.add_argument('-n', '--vm_name',
                             action='store',
@@ -48,37 +42,35 @@ class DeleteVM(object):
         args = sample_util.process_cli_args(parser.parse_args())
         self.vm_name = args.vm_name
 
-        self.service_manager = ServiceManager(args.server,
-                                              args.username,
-                                              args.password,
-                                              args.skipverification)
-        self.service_manager.connect()
-        atexit.register(self.service_manager.disconnect)
+        session = get_unverified_session() if args.skipverification else None
+
+        # Connect to vSphere client
+        self.client = create_vsphere_client(server=args.server,
+                                            username=args.username,
+                                            password=args.password,
+                                            session=session)
 
     def run(self):
         """
         Delete User specified VM from Server
         """
-        vm_svc = VM(self.service_manager.stub_config)
-        power_svc = Power(self.service_manager.stub_config)
-        vm = get_vm(self.service_manager.stub_config, self.vm_name)
+        vm = get_vm(self.client, self.vm_name)
         if not vm:
             raise Exception('Sample requires an existing vm with name ({}).'
-                            'Please create the vm first.'.format(vm_name))
+                            'Please create the vm first.'.format(self.vm_name))
         print("Deleting VM -- '{}-({})')".format(self.vm_name, vm))
-        state = power_svc.get(vm)
+        state = self.client.vcenter.vm.Power.get(vm)
         if state == Power.Info(state=Power.State.POWERED_ON):
-            power_svc.stop(vm)
+            self.client.vcenter.vm.Power.stop(vm)
         elif state == Power.Info(state=Power.State.SUSPENDED):
-            power_svc.start(vm)
-            power_svc.stop(vm)
-        vm_svc.delete(vm)
+            self.client.vcenter.vm.Power.start(vm)
+            self.client.vcenter.vm.Power.stop(vm)
+        self.client.vcenter.VM.delete(vm)
         print("Deleted VM -- '{}-({})".format(self.vm_name, vm))
 
 
 def main():
     delete_vm = DeleteVM()
-    delete_vm.setup()
     delete_vm.run()
 
 

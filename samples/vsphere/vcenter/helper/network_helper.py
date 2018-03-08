@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
 from com.vmware.vcenter_client import Network
@@ -20,7 +19,7 @@ from com.vmware.vcenter_client import Network
 from samples.vsphere.vcenter.helper import datacenter_helper
 
 
-def get_standard_network_backing(stub_config,
+def get_standard_network_backing(client,
                                  std_porggroup_name,
                                  datacenter_name):
     """
@@ -28,18 +27,16 @@ def get_standard_network_backing(stub_config,
     Note: The method assumes that there is only one standard portgroup
     and datacenter with the mentioned names.
     """
-    datacenter = datacenter_helper.get_datacenter(stub_config, datacenter_name)
+    datacenter = datacenter_helper.get_datacenter(client, datacenter_name)
     if not datacenter:
         print("Datacenter '{}' not found".format(datacenter_name))
         return None
 
-    network_svc = Network(stub_config)
     filter = Network.FilterSpec(datacenters=set([datacenter]),
                                 names=set([std_porggroup_name]),
                                 types=set([Network.Type.STANDARD_PORTGROUP]))
-    network_summaries = network_svc.list(filter=filter)
+    network_summaries = client.vcenter.Network.list(filter=filter)
 
-    network = None
     if len(network_summaries) > 0:
         network = network_summaries[0].network
         print("Selecting Standard Portgroup Network '{}' ({})".
@@ -51,7 +48,7 @@ def get_standard_network_backing(stub_config,
         return None
 
 
-def get_distributed_network_backing(stub_config,
+def get_distributed_network_backing(client,
                                     dv_portgroup_name,
                                     datacenter_name):
     """
@@ -59,18 +56,16 @@ def get_distributed_network_backing(stub_config,
     Note: The method assumes that there is only one distributed portgroup
     and datacenter with the mentioned names.
     """
-    datacenter = datacenter_helper.get_datacenter(stub_config, datacenter_name)
+    datacenter = datacenter_helper.get_datacenter(client, datacenter_name)
     if not datacenter:
         print("Datacenter '{}' not found".format(datacenter_name))
         return None
 
-    network_svc = Network(stub_config)
     filter = Network.FilterSpec(datacenters=set([datacenter]),
                                 names=set([dv_portgroup_name]),
                                 types=set([Network.Type.DISTRIBUTED_PORTGROUP]))
-    network_summaries = network_svc.list(filter=filter)
+    network_summaries = client.vcenter.Network.list(filter=filter)
 
-    network = None
     if len(network_summaries) > 0:
         network = network_summaries[0].network
         print("Selecting Distributed Portgroup Network '{}' ({})".
