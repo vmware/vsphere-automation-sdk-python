@@ -41,8 +41,10 @@ class OperationsOnOrganizations(object):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-        parser.add_argument('refresh_token',
+        parser.add_argument('-r', '--refresh-token',
+                            required=True,
                             help='VMware Cloud API refresh token')
+
         self.refresh_token = parser.parse_args().refresh_token
 
     def setup(self):

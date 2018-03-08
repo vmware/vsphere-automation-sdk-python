@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,21 +14,22 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
+__vcenter_version__ = '6.5+'
 
 import atexit
 
+from vmware.vapi.vsphere.client import create_vsphere_client
+
 from com.vmware.vcenter.vm.hardware_client import Serial
-from com.vmware.vcenter.vm_client import Power
 from pyVim.connect import SmartConnect, Disconnect
 
-from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args_vm
 from samples.vsphere.common.sample_util import pp
 from samples.vsphere.common.ssl_helper import get_unverified_context
 from samples.vsphere.common.vim.file import delete_file
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 from samples.vsphere.vcenter.setup import testbed
+from samples.vsphere.common.ssl_helper import get_unverified_session
 
 """
 Demonstrates how to configure Serial ports for a VM.
@@ -48,30 +49,31 @@ delete them after running the sample.
 
 vm = None
 vm_name = None
-stub_config = None
+client = None
 service_instance = None
-serial_svc = None
 cleardata = False
 serials_to_delete = []
 orig_serial_summaries = None
 
 
 def setup(context=None):
-    global vm_name, stub_config, service_instance, cleardata
+    global vm_name, client, service_instance, cleardata
     if context:
         # Run sample suite via setup script
-        stub_config = context.stub_config
+        client = context.client
         vm_name = testbed.config['VM_NAME_DEFAULT']
         service_instance = context.service_instance
     else:
         # Run sample in standalone mode
         server, username, password, cleardata, skip_verification, vm_name = \
             parse_cli_args_vm(testbed.config['VM_NAME_DEFAULT'])
-        stub_config = vapiconnect.connect(server,
-                                          username,
-                                          password,
-                                          skip_verification)
-        atexit.register(vapiconnect.logout, stub_config)
+        session = get_unverified_session() if skip_verification else None
+
+        # Connect to vSphere client
+        client = create_vsphere_client(server=server,
+                                       username=username,
+                                       password=password,
+                                       session=session)
 
         context = None
         if skip_verification:
@@ -92,19 +94,15 @@ def run():
     #   * Proxy: https://www.vmware.com/support/developer/vc-sdk/visdk41pubs
     # /vsp41_usingproxy_virtual_serial_ports.pdf
 
-    global vm, serial_svc
-    vm = get_vm(stub_config, vm_name)
+    global vm
+    vm = get_vm(client, vm_name)
     if not vm:
         raise Exception('Sample requires an existing vm with name ({}). '
                         'Please create the vm first.'.format(vm_name))
     print("Using VM '{}' ({}) for Serial Sample".format(vm_name, vm))
 
-    # Create Serial port stub used for making requests
-    serial_svc = Serial(stub_config)
-    vm_power_svc = Power(stub_config)
-
     print('\n# Example: List all Serial ports for a VM')
-    serial_summaries = serial_svc.list(vm=vm)
+    serial_summaries = client.vcenter.vm.hardware.Serial.list(vm=vm)
     print('vm.hardware.Serial.list({}) -> {}'.format(vm, serial_summaries))
 
     # Save current list of Serial ports to verify that we have cleaned up
@@ -115,7 +113,7 @@ def run():
     # Get information for each Serial port on the VM
     for serial_summary in serial_summaries:
         serial = serial_summary.port
-        serial_info = serial_svc.get(vm=vm, port=serial)
+        serial_info = client.vcenter.vm.hardware.Serial.get(vm=vm, port=serial)
         print('vm.hardware.Serial.get({}, {}) -> {}'.format(vm, serial,
                                                             pp(serial_info)))
 
@@ -123,11 +121,11 @@ def run():
 
     print('\n# Example: Create Serial port with defaults')
     serial_create_spec = Serial.CreateSpec()
-    serial = serial_svc.create(vm, serial_create_spec)
+    serial = client.vcenter.vm.hardware.Serial.create(vm, serial_create_spec)
     print('vm.hardware.Serial.create({}, {}) -> {}'.
           format(vm, serial_create_spec, serial))
     serials_to_delete.append(serial)
-    serial_info = serial_svc.get(vm, serial)
+    serial_info = client.vcenter.vm.hardware.Serial.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
 
@@ -141,11 +139,11 @@ def run():
         allow_guest_control=True,
         backing=Serial.BackingSpec(type=Serial.BackingType.FILE,
                                    file=serial_port_datastore_path))
-    serial = serial_svc.create(vm, serial_create_spec)
+    serial = client.vcenter.vm.hardware.Serial.create(vm, serial_create_spec)
     print('vm.hardware.Serial.create({}, {}) -> {}'.
           format(vm, serial_create_spec, serial))
     serials_to_delete.append(serial)
-    serial_info = serial_svc.get(vm, serial)
+    serial_info = client.vcenter.vm.hardware.Serial.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
 
@@ -157,11 +155,11 @@ def run():
         allow_guest_control=True,
         backing=Serial.BackingSpec(type=Serial.BackingType.NETWORK_SERVER,
                                    network_location=serial_port_network_server_location))
-    serial = serial_svc.create(vm, serial_create_spec)
+    serial = client.vcenter.vm.hardware.Serial.create(vm, serial_create_spec)
     print('vm.hardware.Serial.create({}, {}) -> {}'.
           format(vm, serial_create_spec, serial))
     serials_to_delete.append(serial)
-    serial_info = serial_svc.get(vm, serial)
+    serial_info = client.vcenter.vm.hardware.Serial.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
 
@@ -175,43 +173,43 @@ def run():
         backing=Serial.BackingSpec(type=Serial.BackingType.NETWORK_CLIENT,
                                    network_location=serial_port_network_client_location,
                                    proxy=serial_port_network_proxy))
-    serial_svc.update(vm, serial, serial_update_spec)
+    client.vcenter.vm.hardware.Serial.update(vm, serial, serial_update_spec)
     print('vm.hardware.Serial.update({}, {}) -> {}'.
           format(vm, serial_update_spec, serial))
-    serial_info = serial_svc.get(vm, serial)
+    serial_info = client.vcenter.vm.hardware.Serial.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
 
     print('\n# Starting VM to run connect/disconnect sample')
     print('vm.Power.start({})'.format(vm))
-    vm_power_svc.start(vm)
-    serial_info = serial_svc.get(vm, serial)
+    client.vcenter.vm.Power.start(vm)
+    serial_info = client.vcenter.vm.hardware.Serial.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
 
     print('\n# Example: Connect Serial port after powering on VM')
-    serial_svc.connect(vm, serial)
+    client.vcenter.vm.hardware.Serial.connect(vm, serial)
     print('vm.hardware.Serial.connect({}, {})'.format(vm, serial))
-    serial_info = serial_svc.get(vm, serial)
+    serial_info = client.vcenter.vm.hardware.Serial.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
 
     print('\n# Example: Disconnect Serial port while VM is powered on')
-    serial_svc.disconnect(vm, serial)
+    client.vcenter.vm.hardware.Serial.disconnect(vm, serial)
     print('vm.hardware.Serial.disconnect({}, {})'.format(vm, serial))
-    serial_info = serial_svc.get(vm, serial)
+    serial_info = client.vcenter.vm.hardware.Serial.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
 
     print('\n# Stopping VM after connect/disconnect sample')
     print('vm.Power.start({})'.format(vm))
-    vm_power_svc.stop(vm)
-    serial_info = serial_svc.get(vm, serial)
+    client.vcenter.vm.Power.stop(vm)
+    serial_info = client.vcenter.vm.hardware.Serial.get(vm, serial)
     print('vm.hardware.Serial.get({}, {}) -> {}'.
           format(vm, serial, pp(serial_info)))
 
     # List all Serial ports for a VM
-    serial_summaries = serial_svc.list(vm=vm)
+    serial_summaries = client.vcenter.vm.hardware.Serial.list(vm=vm)
     print('vm.hardware.Serial.list({}) -> {}'.format(vm, serial_summaries))
 
     # Always cleanup output file so the VM can be powered on next time
@@ -221,10 +219,10 @@ def run():
 def cleanup():
     print('\n# Delete VM Serial ports that were added')
     for serial in serials_to_delete:
-        serial_svc.delete(vm, serial)
+        client.vcenter.vm.hardware.Serial.delete(vm, serial)
         print('vm.hardware.Serial.delete({}, {})'.format(vm, serial))
 
-    serial_summaries = serial_svc.list(vm)
+    serial_summaries = client.vcenter.vm.hardware.Serial.list(vm)
     print('vm.hardware.Serial.list({}) -> {}'.format(vm, serial_summaries))
     if set(orig_serial_summaries) != set(serial_summaries):
         print('vm.hardware.Serial WARNING: '
@@ -243,7 +241,7 @@ def cleanup_backends():
     """
     datacenter_name = testbed.config['SERIAL_PORT_DATACENTER_NAME']
     datastore_path = testbed.config['SERIAL_PORT_DATASTORE_PATH']
-    delete_file(stub_config,
+    delete_file(client,
                 service_instance,
                 'Serial Port',
                 datacenter_name,

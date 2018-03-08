@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
 import samples.vsphere.vcenter.helper.network_helper
@@ -57,24 +56,24 @@ class VMSetup(object):
         ###########################################################################
         standard_network = samples.vsphere.vcenter.helper \
             .network_helper.get_standard_network_backing(
-            context.stub_config,
+            context.client,
             context.testbed.config['STDPORTGROUP_NAME'],
             context.testbed.config['VM_DATACENTER_NAME'])
         print('standard_network={}'.format(standard_network))
 
         distributed_network = samples.vsphere.vcenter.helper \
             .network_helper.get_distributed_network_backing(
-            context.stub_config,
+            context.client,
             context.testbed.config['VDPORTGROUP1_NAME'],
             context.testbed.config['VM_DATACENTER_NAME'])
         print('distributed_network={}'.format(distributed_network))
 
         print('=' * 79)
 
-        self.default_vm = CreateDefaultVM(context.stub_config,
+        self.default_vm = CreateDefaultVM(context.client,
                                           placement_spec)
-        self.basic_vm = CreateBasicVM(context.stub_config, placement_spec)
-        self.exhaustive_vm = CreateExhaustiveVM(context.stub_config,
+        self.basic_vm = CreateBasicVM(context.client, placement_spec)
+        self.exhaustive_vm = CreateExhaustiveVM(context.client,
                                                 placement_spec,
                                                 standard_network,
                                                 distributed_network)
@@ -84,9 +83,9 @@ class VMSetup(object):
     def cleanup(self):
 
         print('Cleanup Samples Started')
-        CreateDefaultVM(self.context.stub_config).cleanup()
-        CreateBasicVM(self.context.stub_config).cleanup()
-        CreateExhaustiveVM(self.context.stub_config).cleanup()
+        CreateDefaultVM(self.context.client).cleanup()
+        CreateBasicVM(self.context.client).cleanup()
+        CreateExhaustiveVM(self.context.client).cleanup()
         print('Cleanup Samples Complete\n')
 
     def validate(self):

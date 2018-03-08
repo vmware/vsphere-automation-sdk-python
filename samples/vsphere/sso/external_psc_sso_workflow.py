@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2017. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2017, 2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,28 +14,20 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.0+'
 
 import os
 import argparse
-import requests
-from pprint import pprint
 
 from six.moves.urllib import request, parse
 
-from com.vmware.cis_client import Session
-
-from vmware.vapi.lib.connect import get_requests_connector
-from vmware.vapi.security.session import create_session_security_context
-from vmware.vapi.security.sso import create_saml_bearer_security_context
-from vmware.vapi.stdlib.client.factories import StubConfigurationFactory
-from com.vmware.cis.tagging_client import (Category, CategoryModel)
+from vmware.vapi.vsphere.client import create_vsphere_client
+from com.vmware.cis.tagging_client import CategoryModel
 
 from samples.vsphere.common import sso
 from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
 from samples.vsphere.common.ssl_helper import get_unverified_context
-from samples.vsphere.common.vapiconnect import create_unverified_session
+from samples.vsphere.common.ssl_helper import get_unverified_session
 
 
 class ExternalPscSsoWorkflow(object):
@@ -45,21 +37,6 @@ class ExternalPscSsoWorkflow(object):
     """
 
     def __init__(self):
-        self.lswsdl = None
-        self.lsurl = None
-        self.mgmtinstancename = None
-        self.username = None
-        self.password = None
-        self.session = None
-        self.session_id = None
-        self.args = None
-        self.argparser = None
-        self.mgmtinstancename = None
-        self.skip_verification = False
-        self.category_svc = None
-        self.category_id = None
-
-    def options(self):
         self.argparser = argparse.ArgumentParser(description=self.__doc__)
         # setup the argument parser
         self.argparser.add_argument('-w', '--lswsdl',
@@ -83,7 +60,6 @@ class ExternalPscSsoWorkflow(object):
                                     help='Do not verify server certificate')
         self.args = self.argparser.parse_args()
 
-    def setup(self):
         if self.args.lswsdl:
             self.lswsdl = os.path.abspath(self.args.lswsdl)
         else:
@@ -145,66 +121,33 @@ class ExternalPscSsoWorkflow(object):
             delegatable=True,
             ssl_context=context)
 
-        # Creating SAML Bearer Security Context
-        sec_ctx = create_saml_bearer_security_context(bearer_token)
-
         print('\nStep 4. Discover the vAPI service URL from lookup service.')
         vapi_url = lookupservicehelper.find_vapi_url(self.mgmtnodeid)
         print('vAPI URL: {0}'.format(vapi_url))
 
         print('\nStep 5. Login to vAPI service using the SAML bearer token.')
-
-        # Create an authenticated stub configuration object that can be used to
-        # issue requests against vCenter.
-        session = requests.Session()
-        if self.skip_verification:
-            session = create_unverified_session(session)
-        connector = get_requests_connector(session=session, url=vapi_url)
-        connector.set_security_context(sec_ctx)
-        stub_config = StubConfigurationFactory.new_std_configuration(
-            connector)
-        self.session = Session(stub_config)
-
-        # Login to VAPI endpoint and get the session_id
-        self.session_id = self.session.create()
-
-        # Update the VAPI connection with session_id
-        session_sec_ctx = create_session_security_context(self.session_id)
-        connector.set_security_context(session_sec_ctx)
+        session = get_unverified_session() if self.skip_verification else None
+        client = create_vsphere_client(server=parse.urlparse(vapi_url).hostname,
+                                       bearer_token=bearer_token,
+                                       session=session)
 
         # Create and Delete TagCategory to Verify connection is successful
-        print('\nStep 6: Creating and Deleting Tag Category...\n')
-        self.category_svc = Category(stub_config)
-
-        self.category_id = self.create_tag_category('TestTagCat', 'TestTagDesc',
-                                                    CategoryModel.Cardinality.MULTIPLE)
-        assert self.category_id is not None
-        print('Tag category created; Id: {0}\n'.format(self.category_id))
+        print('\nStep 3: Creating and Deleting Tag Category...\n')
+        create_spec = client.tagging.Category.CreateSpec()
+        create_spec.name = 'TestTag_embeded_psc_sso_workflow'
+        create_spec.description = 'TestTagDesc'
+        create_spec.cardinality = CategoryModel.Cardinality.MULTIPLE
+        create_spec.associable_types = set()
+        category_id = client.tagging.Category.create(create_spec)
+        assert category_id is not None
+        print('Tag category created; Id: {0}\n'.format(category_id))
 
         # Delete TagCategory
-        self.category_svc.delete(self.category_id)
-
-        self.session.delete()
-        print('VAPI session disconnected successfully...')
-
-    def create_tag_category(self, name, description, cardinality):
-        """create a category. User who invokes this needs create category privilege."""
-        create_spec = self.category_svc.CreateSpec()
-        create_spec.name = name
-        create_spec.description = description
-        create_spec.cardinality = cardinality
-        associableTypes = set()
-        create_spec.associable_types = associableTypes
-        return self.category_svc.create(create_spec)
-
-        self.session.delete()
-        print('VAPI session disconnected successfully...')
+        client.tagging.Category.delete(category_id)
 
 
 def main():
     external_psc_sso_workflow = ExternalPscSsoWorkflow()
-    external_psc_sso_workflow.options()
-    external_psc_sso_workflow.setup()
     external_psc_sso_workflow.run()
 
 

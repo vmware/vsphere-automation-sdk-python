@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,18 +14,16 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
-import atexit
-
-from com.vmware.vcenter.vm_client import (Power)
+from com.vmware.vcenter.vm_client import Power
 from com.vmware.vcenter_client import VM
+from vmware.vapi.vsphere.client import create_vsphere_client
 
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
+from samples.vsphere.common.ssl_helper import get_unverified_session
 from samples.vsphere.common.sample_util import pp
-from samples.vsphere.common.service_manager import ServiceManager
 from samples.vsphere.vcenter.helper import vm_placement_helper
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
 from samples.vsphere.vcenter.setup import testbed
@@ -41,32 +39,29 @@ class CreateDefaultVM(object):
         - datastore
     """
 
-    def __init__(self, stub_config=None, placement_spec=None):
-        self.context = None
-        self.service_manager = None
-        self.stub_config = stub_config
+    def __init__(self, client=None, placement_spec=None):
+        self.client = client
         self.placement_spec = placement_spec
         self.vm_name = testbed.config['VM_NAME_DEFAULT']
         self.cleardata = None
 
-    def setup(self):
-        parser = sample_cli.build_arg_parser()
-        parser.add_argument('-n', '--vm_name',
-                            action='store',
-                            help='Name of the testing vm')
-        args = sample_util.process_cli_args(parser.parse_args())
-        if args.vm_name:
-            self.vm_name = args.vm_name
-        self.cleardata = args.cleardata
+        # Execute the sample in standalone mode.
+        if not self.client:
+            parser = sample_cli.build_arg_parser()
+            parser.add_argument('-n', '--vm_name',
+                                action='store',
+                                help='Name of the testing vm')
+            args = sample_util.process_cli_args(parser.parse_args())
 
-        self.service_manager = ServiceManager(args.server,
-                                              args.username,
-                                              args.password,
-                                              args.skipverification)
-        self.service_manager.connect()
-        atexit.register(self.service_manager.disconnect)
+            if args.vm_name:
+                self.vm_name = args.vm_name
+            self.cleardata = args.cleardata
 
-        self.stub_config = self.service_manager.stub_config
+            session = get_unverified_session() if args.skipverification else None
+            self.client = create_vsphere_client(server=args.server,
+                                                username=args.username,
+                                                password=args.password,
+                                                session=session)
 
     def run(self):
         # Get a placement spec
@@ -76,7 +71,7 @@ class CreateDefaultVM(object):
 
         if not self.placement_spec:
             self.placement_spec = vm_placement_helper.get_placement_spec_for_resource_pool(
-                self.stub_config,
+                self.client,
                 datacenter_name,
                 vm_folder_name,
                 datastore_name)
@@ -95,32 +90,28 @@ class CreateDefaultVM(object):
         print(pp(vm_create_spec))
         print('-----')
 
-        vm_svc = VM(self.stub_config)
-        vm = vm_svc.create(vm_create_spec)
+        vm = self.client.vcenter.VM.create(vm_create_spec)
         print("create_default_vm: Created VM '{}' ({})".format(self.vm_name, vm))
 
-        vm_info = vm_svc.get(vm)
+        vm_info = self.client.vcenter.VM.get(vm)
         print('vm.get({}) -> {}'.format(vm, pp(vm_info)))
         return vm
 
     def cleanup(self):
-        vm = get_vm(self.stub_config, self.vm_name)
+        vm = get_vm(self.client, self.vm_name)
         if vm:
-            power_svc = Power(self.stub_config)
-            vm_svc = VM(self.stub_config)
-            state = power_svc.get(vm)
+            state = self.client.vcenter.vm.Power.get(vm)
             if state == Power.Info(state=Power.State.POWERED_ON):
-                power_svc.stop(vm)
+                self.client.vcenter.vm.Power.stop(vm)
             elif state == Power.Info(state=Power.State.SUSPENDED):
-                power_svc.start(vm)
-                power_svc.stop(vm)
+                self.client.vcenter.vm.Power.start(vm)
+                self.client.vcenter.vm.Power.stop(vm)
             print("Deleting VM '{}' ({})".format(self.vm_name, vm))
-            vm_svc.delete(vm)
+            self.client.vcenter.VM.delete(vm)
 
 
 def main():
     create_default_vm = CreateDefaultVM()
-    create_default_vm.setup()
     create_default_vm.cleanup()
     create_default_vm.run()
     if create_default_vm.cleardata:

@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
 from com.vmware.vcenter_client import ResourcePool
@@ -20,12 +19,12 @@ from com.vmware.vcenter_client import ResourcePool
 from samples.vsphere.vcenter.helper import datacenter_helper
 
 
-def get_resource_pool(stub_config, datacenter_name, resource_pool_name=None):
+def get_resource_pool(client, datacenter_name, resource_pool_name=None):
     """
     Returns the identifier of the resource pool with the given name or the
     first resource pool in the datacenter if the name is not provided.
     """
-    datacenter = datacenter_helper.get_datacenter(stub_config, datacenter_name)
+    datacenter = datacenter_helper.get_datacenter(client, datacenter_name)
     if not datacenter:
         print("Datacenter '{}' not found".format(datacenter_name))
         return None
@@ -34,8 +33,7 @@ def get_resource_pool(stub_config, datacenter_name, resource_pool_name=None):
     filter_spec = ResourcePool.FilterSpec(datacenters=set([datacenter]),
                                           names=names)
 
-    resource_pool_svc = ResourcePool(stub_config)
-    resource_pool_summaries = resource_pool_svc.list(filter_spec)
+    resource_pool_summaries = client.vcenter.ResourcePool.list(filter_spec)
     if len(resource_pool_summaries) > 0:
         resource_pool = resource_pool_summaries[0].resource_pool
         print("Selecting ResourcePool '{}'".format(resource_pool))

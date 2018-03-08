@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,13 +12,12 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
 from com.vmware.vcenter_client import Datacenter
 
 
-def get_datacenter(stub_config, datacenter_name):
+def get_datacenter(client, datacenter_name):
     """
     Returns the identifier of a datacenter
     Note: The method assumes only one datacenter with the mentioned name.
@@ -26,8 +25,7 @@ def get_datacenter(stub_config, datacenter_name):
 
     filter_spec = Datacenter.FilterSpec(names=set([datacenter_name]))
 
-    datacenter_svc = Datacenter(stub_config)
-    datacenter_summaries = datacenter_svc.list(filter_spec)
+    datacenter_summaries = client.vcenter.Datacenter.list(filter_spec)
     if len(datacenter_summaries) > 0:
         datacenter = datacenter_summaries[0].datacenter
         return datacenter

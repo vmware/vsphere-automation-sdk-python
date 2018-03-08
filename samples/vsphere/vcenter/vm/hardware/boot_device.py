@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,18 +14,16 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
-import atexit
+from vmware.vapi.vsphere.client import create_vsphere_client
 
 from com.vmware.vcenter.vm.hardware.boot_client import Device as BootDevice
-from com.vmware.vcenter.vm.hardware_client import (Disk, Ethernet)
-from samples.vsphere.common import vapiconnect
 from samples.vsphere.common.sample_util import parse_cli_args_vm
 from samples.vsphere.common.sample_util import pp
 from samples.vsphere.vcenter.setup import testbed
 from samples.vsphere.vcenter.helper.vm_helper import get_vm
+from samples.vsphere.common.ssl_helper import get_unverified_session
 
 """
 Demonstrates how to modify the boot devices used by a virtual machine, and in
@@ -41,43 +39,39 @@ The sample needs an existing VM with the following configuration:
 
 vm = None
 vm_name = None
-stub_config = None
-boot_device_svc = None
+client = None
 cleardata = False
 orig_boot_device_entries = None
 
 
 def setup(context=None):
-    global vm, vm_name, stub_config, cleardata
+    global vm, vm_name, client, cleardata
     if context:
         # Run sample suite via setup script
-        stub_config = context.stub_config
+        client = context.client
         vm_name = testbed.config['VM_NAME_EXHAUSTIVE']
     else:
         # Run sample in standalone mode
         server, username, password, cleardata, skip_verification, vm_name = \
             parse_cli_args_vm(testbed.config['VM_NAME_EXHAUSTIVE'])
-        stub_config = vapiconnect.connect(server,
-                                          username,
-                                          password,
-                                          skip_verification)
-        atexit.register(vapiconnect.logout, stub_config)
+        session = get_unverified_session() if skip_verification else None
 
+        # Connect to vSphere client
+        client = create_vsphere_client(server=server,
+                                       username=username,
+                                       password=password,
+                                       session=session)
 
 def run():
     global vm
-    vm = get_vm(stub_config, vm_name)
+    vm = get_vm(client, vm_name)
     if not vm:
         raise Exception('Sample requires an existing vm with name ({}). '
                         'Please create the vm first.'.format(vm_name))
     print("Using VM '{}' ({}) for BootDevice Sample".format(vm_name, vm))
 
-    # Create BootDevice stub used for making requests
-    global boot_device_svc
-    boot_device_svc = BootDevice(stub_config)
-
     print('\n# Example: Get current BootDevice configuration')
-    boot_device_entries = boot_device_svc.get(vm)
+    boot_device_entries = client.vcenter.vm.hardware.boot.Device.get(vm)
     print('vm.hardware.boot.Device.get({}) -> {}'.
           format(vm, pp(boot_device_entries)))
 
@@ -86,14 +80,12 @@ def run():
     orig_boot_device_entries = boot_device_entries
 
     # Get device identifiers for Disks
-    disk_svc = Disk(stub_config)
-    disk_summaries = disk_svc.list(vm)
+    disk_summaries = client.vcenter.vm.hardware.Disk.list(vm)
     print('vm.hardware.Disk.list({}) -> {}'.format(vm, pp(disk_summaries)))
     disks = [disk_summary.disk for disk_summary in disk_summaries]
 
     # Get device identifiers for Ethernet nics
-    ethernet_svc = Ethernet(stub_config)
-    nic_summaries = ethernet_svc.list(vm)
+    nic_summaries = client.vcenter.vm.hardware.Ethernet.list(vm)
     print('vm.hardware.Ethernet.list({}) -> {}'.format(vm, pp(nic_summaries)))
     nics = [nic_summary.nic for nic_summary in nic_summaries]
 
@@ -108,8 +100,8 @@ def run():
         boot_device_entries.append(
             BootDevice.Entry(BootDevice.Type.ETHERNET, nic=nic))
     print('vm.hardware.boot.Device.set({}, {})'.format(vm, boot_device_entries))
-    boot_device_svc.set(vm, boot_device_entries)
-    boot_device_entries = boot_device_svc.get(vm)
+    client.vcenter.vm.hardware.boot.Device.set(vm, boot_device_entries)
+    boot_device_entries = client.vcenter.vm.hardware.boot.Device.get(vm)
     print('vm.hardware.boot.Device.get({}) -> {}'.
           format(vm, pp(boot_device_entries)))
 
@@ -118,8 +110,8 @@ def cleanup():
     print('\n# Cleanup: Revert BootDevice configuration')
     boot_device_entries = orig_boot_device_entries
     print('vm.hardware.boot.Device.set({}, {})'.format(vm, boot_device_entries))
-    boot_device_svc.set(vm, boot_device_entries)
-    boot_device_entries = boot_device_svc.get(vm)
+    client.vcenter.vm.hardware.boot.Device.set(vm, boot_device_entries)
+    boot_device_entries = client.vcenter.vm.hardware.boot.Device.get(vm)
     print('vm.hardware.boot.Device.get({}) -> {}'.
           format(vm, pp(boot_device_entries)))
 

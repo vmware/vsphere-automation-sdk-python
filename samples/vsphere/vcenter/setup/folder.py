@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 
 import pyVim.task
@@ -24,14 +23,13 @@ from samples.vsphere.vcenter.helper import datacenter_helper
 
 def detect_vm_folder(context, datacenter_name, folder_name):
     """Find vm folder based on datacenter and folder name"""
-    datacenter = datacenter_helper.get_datacenter(context.stub_config,
+    datacenter = datacenter_helper.get_datacenter(context.client,
                                                   datacenter_name)
     if not datacenter:
         print("Datacenter '{}' not found".format(datacenter_name))
         return None
 
-    folder_svc = Folder(context.stub_config)
-    folder_summaries = folder_svc.list(
+    folder_summaries = context.client.vcenter.Folder.list(
         Folder.FilterSpec(type=Folder.Type.VIRTUAL_MACHINE,
                           names=set([folder_name]),
                           datacenters=set([datacenter])))

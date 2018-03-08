@@ -2,7 +2,7 @@
 
 """
 * *******************************************************
-* Copyright VMware, Inc. 2017. All Rights Reserved.
+* Copyright VMware, Inc. 2017-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -15,15 +15,17 @@
 
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2017 VMware, Inc.  All rights reserved.'
 __vcenter_version__ = '6.6.2+'
 
 from pyVmomi import vim
 from com.vmware.vcenter.vm_template_client import (
     LibraryItems as VmtxLibraryItem)
 
+from vmware.vapi.vsphere.client import create_vsphere_client
+
 from samples.vsphere.common.id_generator import rand
 from samples.vsphere.common.sample_base import SampleBase
+from samples.vsphere.common.ssl_helper import get_unverified_session
 from samples.vsphere.common.vim.helpers.get_datastore_by_name import (
     get_datastore_id)
 from samples.vsphere.common.vim.helpers.vim_utils import (
@@ -38,12 +40,13 @@ from samples.vsphere.vcenter.helper.resource_pool_helper import (
 class DeployVmTemplate(SampleBase):
     """
     Demonstrates how to deploy a virtual machine from a library item containing
-    a native VMware virtual machine template.
+    a virtual machine template.
 
     Prerequisites:
-        - A library item containing a native VMware virtual machine template
+        - A library item containing a virtual machine template
         - A datacenter
         - A VM folder
+        - A resource pool
         - A datastore
     """
 
@@ -65,8 +68,8 @@ class DeployVmTemplate(SampleBase):
         self.argparser.add_argument('-itemname', '--itemname',
                                     required=True,
                                     help='The name of the library item '
-                                         'containing a native VM template to '
-                                         'be deployed')
+                                         'containing a VM template to be '
+                                         'deployed')
         self.argparser.add_argument('-datacentername', '--datacentername',
                                     required=True,
                                     help='The name of the datacenter in which '
@@ -103,15 +106,21 @@ class DeployVmTemplate(SampleBase):
         self.client = ClsApiClient(self.servicemanager)
         self.helper = ClsApiHelper(self.client, self.skip_verification)
 
+        session = get_unverified_session() if self.skip_verification else None
+        self.vsphere_client = create_vsphere_client(server=self.server,
+                                                    username=self.username,
+                                                    password=self.password,
+                                                    session=session)
+
     def _execute(self):
         # Get the identifiers of the resources used for deployment
         item_id = self.helper.get_item_id_by_name(self.item_name)
         assert item_id
-        folder_id = get_folder(self.servicemanager.stub_config,
+        folder_id = get_folder(self.vsphere_client,
                                self.datacenter_name,
                                self.folder_name)
         assert folder_id
-        resource_pool_id = get_resource_pool(self.servicemanager.stub_config,
+        resource_pool_id = get_resource_pool(self.vsphere_client,
                                              self.datacenter_name,
                                              self.resource_pool_name)
         assert resource_pool_id
@@ -120,7 +129,7 @@ class DeployVmTemplate(SampleBase):
         assert datastore_id
 
         # Build the deployment specification
-        placement_spec = VmtxLibraryItem.PlacementSpec(
+        placement_spec = VmtxLibraryItem.DeployPlacementSpec(
             folder=folder_id,
             resource_pool=resource_pool_id)
         vm_home_storage_spec = VmtxLibraryItem.DeploySpecVmHomeStorage(

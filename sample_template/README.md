@@ -7,6 +7,4 @@ The steps included in the template code are:
  
  * Cmd line argument parser.
  * Login to vAPI services using vSphere Automation API.
- * Login to Vim service using [pyVmomi](https://github.com/vmware/pyvmomi). 
  * Cleanup after sample execution.
- * Logout from both services.

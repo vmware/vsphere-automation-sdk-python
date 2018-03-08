@@ -12,9 +12,9 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 import ssl
+import requests
 
 
 def get_unverified_context():
@@ -27,3 +27,16 @@ def get_unverified_context():
     if hasattr(ssl, '_create_unverified_context'):
         context = ssl._create_unverified_context()
     return context
+
+
+def get_unverified_session():
+    """
+    Get a requests session with cert verification disabled.
+    Also disable the insecure warnings message.
+    Note this is not recommended in production code.
+    @return: a requests session with verification disabled.
+    """
+    session = requests.session()
+    session.verify = False
+    requests.packages.urllib3.disable_warnings()
+    return session

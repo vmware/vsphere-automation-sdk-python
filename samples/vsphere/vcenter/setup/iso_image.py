@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 
 from samples.vsphere.common.vim.file import (detect_file, delete_file,
@@ -28,7 +27,7 @@ def setup_iso_image(context):
     datacenter_name = context.testbed.config['ISO_DATACENTER_NAME']
     datastore_path = context.testbed.config['ISO_DATASTORE_PATH']
     (datastore_name, path) = parse_datastore_path(datastore_path)
-    datastore_mo = get_datastore_mo(context.stub_config,
+    datastore_mo = get_datastore_mo(context.client,
                                     context.service_instance._stub,
                                     datacenter_name,
                                     datastore_name)
@@ -47,7 +46,7 @@ def cleanup_iso_image(context):
     """Cleanup iso image after sample run"""
     datacenter_name = context.testbed.config['ISO_DATACENTER_NAME']
     datastore_path = context.testbed.config['ISO_DATASTORE_PATH']
-    delete_file(context.stub_config,
+    delete_file(context.client,
                 context.service_instance,
                 "ISO Image",
                 datacenter_name,

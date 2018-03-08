@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 import pyVim.task
 from com.vmware.vcenter_client import Host
@@ -25,8 +24,8 @@ def detect_nfs_datastore_on_host(context, host_name):
     datastore_name = context.testbed.config['NFS_DATASTORE_NAME']
 
     # Use vAPI find the Host managed identities
-    host_svc = Host(context.stub_config)
-    host_summaries = host_svc.list(Host.FilterSpec(names=names))
+    host_summaries = context.client.vcenter.Host.list(
+        Host.FilterSpec(names=names))
 
     for host_summary in host_summaries:
         # Convert the host identifier into a ManagedObject
@@ -67,8 +66,8 @@ def cleanup_nfs_datastore(context):
     datastore_name = context.testbed.config['NFS_DATASTORE_NAME']
 
     # Use vAPI find the Host managed identities
-    host_svc = Host(context.stub_config)
-    host_summaries = host_svc.list(Host.FilterSpec(names=names))
+    host_summaries = context.client.vcenter.Host.list(
+        Host.FilterSpec(names=names))
 
     for host_summary in host_summaries:
         # Convert the host identifier into a ManagedObject
@@ -154,8 +153,8 @@ def detect_vmfs_datastore(context, host_name, datastore_name):
     names = set([host_name])
 
     # Use vAPI find the Host managed identities
-    host_svc = Host(context.stub_config)
-    host_summaries = host_svc.list(Host.FilterSpec(names=names))
+    host_summaries = context.client.vcenter.Host.list(
+        Host.FilterSpec(names=names))
 
     for host_summary in host_summaries:
         # Convert the host identifier into a ManagedObject
@@ -199,8 +198,8 @@ def setup_vmfs_datastore(context, host_name, datastore_name):
     names = set([host_name])
 
     # Use vAPI find the Host managed identities
-    host_svc = Host(context.stub_config)
-    host_summaries = host_svc.list(Host.FilterSpec(names=names))
+    host_summaries = context.client.vcenter.Host.list(
+        Host.FilterSpec(names=names))
 
     host_summary = host_summaries[0]
     # Convert the host identifier into a ManagedObject

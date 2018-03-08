@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
 import samples.vsphere.vcenter.vm.hardware.adapter.sata
@@ -73,7 +72,7 @@ def validate(context):
                  testbed.config['VM_NAME_EXHAUSTIVE']])
     valid = True
     for name in names:
-        if not get_vm(context.stub_config, name):
+        if not get_vm(context.client, name):
             valid = False
     if not valid:
         raise Exception('==> Samples Setup validation failed: '

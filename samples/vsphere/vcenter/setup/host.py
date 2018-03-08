@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016-2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -12,7 +12,6 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2016 VMware, Inc. All rights reserved.'
 
 
 import pyVim.task
@@ -22,10 +21,10 @@ from pyVmomi import vim
 
 def detect_host(context, host_name):
     """Find host based on host name"""
-    host_svc = Host(context.stub_config)
     names = set([host_name])
 
-    host_summaries = host_svc.list(Host.FilterSpec(names=names))
+    host_summaries = context.client.vcenter.Host.list(
+        Host.FilterSpec(names=names))
     if len(host_summaries) > 0:
         host = host_summaries[0].host
         print("Detected Host '{}' as {}".format(host_name, host))
@@ -47,13 +46,12 @@ def detect_hosts(context):
 
 def cleanup_hosts(context):
     """Delete hosts after sample run"""
-    host_svc = Host(context.stub_config)
-
     host1_name = context.testbed.config['ESX_HOST1']
     host2_name = context.testbed.config['ESX_HOST2']
     names = set([host1_name, host2_name])
 
-    host_summaries = host_svc.list(Host.FilterSpec(names=names))
+    host_summaries = context.client.vcenter.Host.list(
+        Host.FilterSpec(names=names))
     print('Found {} Hosts matching names {}'.
           format(len(host_summaries), ', '.
                  join(["'{}'".format(n) for n in names])))
@@ -61,7 +59,7 @@ def cleanup_hosts(context):
     for host_summary in host_summaries:
         host = host_summary.host
         print("Deleting Host '{}' ({})".format(host_summary.name, host))
-        host_svc.delete(host)
+        context.client.vcenter.Host.delete(host)
 
 
 def create_host_vapi(context, host_name, datacenter_name):
@@ -69,16 +67,12 @@ def create_host_vapi(context, host_name, datacenter_name):
     Adds a single Host to the vCenter inventory under the named Datacenter
     using vAPI.
     """
-    host_svc = Host(context.stub_config)
-
     user = context.testbed.config['ESX_USER']
     pwd = context.testbed.config['ESX_PASS']
 
     # Get the host folder for the Datacenter1 using the folder query
     datacenter = context.testbed.entities['DATACENTER_IDS'][datacenter_name]
-
-    folder_svc = Folder(context.stub_config)
-    folder_summaries = folder_svc.list(
+    folder_summaries = context.client.vcenter.Folder.list(
         Folder.FilterSpec(type=Folder.Type.HOST, datacenters=set([datacenter])))
     folder = folder_summaries[0].folder
 
@@ -88,7 +82,7 @@ def create_host_vapi(context, host_name, datacenter_name):
         password=pwd,
         folder=folder,
         thumbprint_verification=Host.CreateSpec.ThumbprintVerification.NONE)
-    host = host_svc.create(create_spec)
+    host = context.client.vcenter.Host.create(create_spec)
     print("Created Host '{}' ({})".format(host, host_name))
 
     return host

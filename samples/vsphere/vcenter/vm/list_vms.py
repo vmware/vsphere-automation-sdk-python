@@ -17,14 +17,13 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.5+'
 
-import atexit
+from pprint import pprint
 
-from com.vmware.vcenter_client import VM
+from vmware.vapi.vsphere.client import create_vsphere_client
 
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
-from samples.vsphere.common.service_manager import ServiceManager
-from pprint import pprint
+from samples.vsphere.common.ssl_helper import get_unverified_session
 
 
 class ListVM(object):
@@ -33,27 +32,20 @@ class ListVM(object):
     Sample Prerequisites:
     vCenter/ESX
     """
-
     def __init__(self):
-        self.service_manager = None
-
-    def setup(self):
         parser = sample_cli.build_arg_parser()
         args = sample_util.process_cli_args(parser.parse_args())
-
-        self.service_manager = ServiceManager(args.server,
-                                              args.username,
-                                              args.password,
-                                              args.skipverification)
-        self.service_manager.connect()
-        atexit.register(self.service_manager.disconnect)
+        session = get_unverified_session() if args.skipverification else None
+        self.client = create_vsphere_client(server=args.server,
+                                            username=args.username,
+                                            password=args.password,
+                                            session=session)
 
     def run(self):
         """
         List VMs present in server
         """
-        vm_svc = VM(self.service_manager.stub_config)
-        list_of_vms = vm_svc.list()
+        list_of_vms = self.client.vcenter.VM.list()
         print("----------------------------")
         print("List Of VMs")
         print("----------------------------")
@@ -63,7 +55,6 @@ class ListVM(object):
 
 def main():
     list_vm = ListVM()
-    list_vm.setup()
     list_vm.run()
 
 
