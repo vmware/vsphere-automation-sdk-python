@@ -19,7 +19,8 @@ import argparse
 import atexit
 import requests
 
-from com.vmware.vmc.model_client import EsxConfig
+from com.vmware.vmc.model_client import EsxConfig, ErrorResponse
+from com.vmware.vapi.std.errors_client import InvalidRequest
 from vmware.vapi.vmc.client import create_vmc_client
 
 from samples.vmc.helpers.vmc_task_helper import wait_for_task
@@ -89,9 +90,16 @@ class AddRemoveHosts(object):
     def add_host(self):
         print('\n# Example: Add 1 ESX hosts to SDDC {}:'.format(self.sddc_id))
         esx_config = EsxConfig(1)
-        task = self.vmc_client.orgs.sddcs.Esxs.create(org=self.org_id,
-                                                      sddc=self.sddc_id,
-                                                      esx_config=esx_config)
+
+        try:
+            task = self.vmc_client.orgs.sddcs.Esxs.create(org=self.org_id,
+                                                          sddc=self.sddc_id,
+                                                          esx_config=esx_config)
+        except InvalidRequest as e:
+            # Convert InvalidRequest to ErrorResponse to get error message
+            error_response = e.data.convert_to(ErrorResponse)
+            raise Exception(error_response.error_messages)
+
         wait_for_task(task_client=self.vmc_client.orgs.Tasks,
                       org_id=self.org_id,
                       task_id=task.id,
@@ -101,10 +109,17 @@ class AddRemoveHosts(object):
         print('\n# Example: Remove 1 ESX host from SDDC {}:'.
               format(self.sddc_id))
         esx_config = EsxConfig(1)
-        task = self.vmc_client.orgs.sddcs.Esxs.create(org=self.org_id,
-                                                      sddc=self.sddc_id,
-                                                      esx_config=esx_config,
-                                                      action='remove')
+
+        try:
+            task = self.vmc_client.orgs.sddcs.Esxs.create(org=self.org_id,
+                                                          sddc=self.sddc_id,
+                                                          esx_config=esx_config,
+                                                          action='remove')
+        except InvalidRequest as e:
+            # Convert InvalidRequest to ErrorResponse to get error message
+            error_response = e.data.convert_to(ErrorResponse)
+            raise Exception(error_response.error_messages)
+
         wait_for_task(task_client=self.vmc_client.orgs.Tasks,
                       org_id=self.org_id,
                       task_id=task.id,

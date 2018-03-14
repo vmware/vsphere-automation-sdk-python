@@ -22,7 +22,8 @@ import requests
 from random import randrange
 from tabulate import tabulate
 
-from com.vmware.vmc.model_client import AwsSddcConfig
+from com.vmware.vmc.model_client import AwsSddcConfig, ErrorResponse
+from com.vmware.vapi.std.errors_client import InvalidRequest
 from vmware.vapi.vmc.client import create_vmc_client
 
 from samples.vmc.helpers.vmc_task_helper import wait_for_task
@@ -98,8 +99,15 @@ class CreateDeleteSDDC(object):
         sddc_config = AwsSddcConfig(
             region='US_WEST_2', num_hosts=1, name=self.sddc_name,
             provider=provider)
-        task = self.vmc_client.orgs.Sddcs.create(org=self.org_id,
-                                                 sddc_config=sddc_config)
+
+        try:
+            task = self.vmc_client.orgs.Sddcs.create(org=self.org_id,
+                                                     sddc_config=sddc_config)
+        except InvalidRequest as e:
+            # Convert InvalidRequest to ErrorResponse to get error message
+            error_response = e.data.convert_to(ErrorResponse)
+            raise Exception(error_response.error_messages)
+
         wait_for_task(task_client=self.vmc_client.orgs.Tasks,
                       org_id=self.org_id,
                       task_id=task.id,
@@ -113,8 +121,15 @@ class CreateDeleteSDDC(object):
     def delete_sddc(self):
         print('\n# Example: Delete SDDC {} from org {}'.format(self.sddc_id,
                                                                 self.org_id))
-        task = self.vmc_client.orgs.Sddcs.delete(org=self.org_id,
-                                                 sddc=self.sddc_id)
+
+        try:
+            task = self.vmc_client.orgs.Sddcs.delete(org=self.org_id,
+                                                     sddc=self.sddc_id)
+        except InvalidRequest as e:
+            # Convert InvalidRequest to ErrorResponse to get error message
+            error_response = e.data.convert_to(ErrorResponse)
+            raise Exception(error_response.error_messages)
+
         wait_for_task(task_client=self.vmc_client.orgs.Tasks,
                       org_id=self.org_id,
                       task_id=task.id,
