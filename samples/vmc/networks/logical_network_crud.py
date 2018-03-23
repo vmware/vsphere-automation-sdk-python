@@ -188,10 +188,9 @@ class LogicalNetworkCrud(object):
             table.append([network.cgw_name, network.id, network.name,
                           '{}/{}'.format(
                               network.subnets.address_groups[0].primary_address,
-                              network.subnets.address_groups[0].prefix_length),
-                          network.dhcp_configs.ip_pools[0].ip_range])
+                              network.subnets.address_groups[0].prefix_length)])
         print(tabulate(table, ['Gateway', 'Network ID', 'Network Name',
-                               'Subnets', 'DHCP']))
+                               'Subnets']))
 
 
 def main():

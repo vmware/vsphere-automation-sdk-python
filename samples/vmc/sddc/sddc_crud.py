@@ -42,6 +42,9 @@ class CreateDeleteSDDC(object):
         self.vmc_client = None
         self.sddc_id = None
         self.sddc_name = None
+        self.listsddc = None
+        self.createsddc = None
+        self.deletesddc = None
         self.cleanup = None
         self.refresh_token = None
         self.interval_sec = None
@@ -65,6 +68,18 @@ class CreateDeleteSDDC(object):
                             default=60,
                             help='Task pulling interval in sec')
 
+        parser.add_argument('-ls', '--listsddc',
+                            action='store_true',
+                            help='List SDDCs in the specified Org')
+
+        parser.add_argument('-cs', '--createsddc',
+                            action='store_true',
+                            help='Create an SDDC in the specified Org')
+
+        parser.add_argument('-ds', '--deletesddc',
+                            action='store_true',
+                            help='Deletes the SDDC in the specified Org ')                                                        
+
         parser.add_argument('-c', '--cleardata',
                             action='store_true',
                             help='Clean up after sample run')
@@ -73,6 +88,9 @@ class CreateDeleteSDDC(object):
 
         self.refresh_token = args.refresh_token
         self.org_id = args.org_id
+        self.listsddc = args.listsddc
+        self.createsddc = args.createsddc
+        self.deletesddc = args.deletesddc
         self.cleanup = args.cleardata
 
         self.sddc_name = args.sddc_name or \
@@ -116,7 +134,7 @@ class CreateDeleteSDDC(object):
         print('\n# Example: SDDC created:')
         self.sddc_id = task.resource_id
         sddc = self.vmc_client.orgs.Sddcs.get(self.org_id, self.sddc_id)
-        print(tabulate([[sddc.id, sddc.name]], ["ID", "Name"]))
+        self.print_output([sddc])
 
     def delete_sddc(self):
         print('\n# Example: Delete SDDC {} from org {}'.format(self.sddc_id,
@@ -137,22 +155,35 @@ class CreateDeleteSDDC(object):
 
         print('\n# Example: Remaining SDDCs:'.
               format(self.org_id))
-        sddcs_list = self.vmc_client.orgs.Sddcs.list(self.org_id)
+        sddcs = self.vmc_client.orgs.Sddcs.list(self.org_id)
+        self.print_output(sddcs)
 
-        headers = ["ID", "Name"]
+    def list_sddc(self):
+        sddcs = self.vmc_client.orgs.Sddcs.list(self.org_id)
+        if not sddcs:
+            raise ValueError('The sample requires at least one SDDC associated'
+                             'with the calling user')
+        print("\n# Example: List SDDCs")
+        self.print_output(sddcs)
+
+    def print_output(self, sddcs):
         table = []
-        for sddc in sddcs_list:
-            table.append([sddc.id, sddc.name])
-        print(tabulate(table, headers))
-
+        for sddc in sddcs:
+            table.append([sddc.id, sddc.name, sddc.resource_config.region])
+        print(tabulate(table, ['ID', 'Name', 'AWS Region']))        
 
 def main():
-    esx_operations = CreateDeleteSDDC()
-    esx_operations.option()
-    esx_operations.setup()
-    esx_operations.create_sddc()
-    if esx_operations.cleanup:
-        esx_operations.delete_sddc()
+    sddc_operations = CreateDeleteSDDC()
+    sddc_operations.option()
+    sddc_operations.setup()
+    if sddc_operations.listsddc:
+        sddc_operations.list_sddc()
+    if sddc_operations.createsddc:
+        sddc_operations.create_sddc()
+    if sddc_operations.deletesddc:
+        sddc_operations.delete_sddc()
+    if sddc_operations.cleanup:
+        sddc_operations.delete_sddc()
 
 
 if __name__ == '__main__':
