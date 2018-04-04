@@ -1,5 +1,6 @@
 # VMware vSphere Automation SDK for Python  
 [![Build Status](https://travis-ci.com/vmware/vsphere-automation-sdk-python.svg?token=v9mEJjcpDiQ9DrYbzyaQ&branch=master)](https://travis-ci.com/vmware/vsphere-automation-sdk-python)
+
 ## Table of Contents
 - [Abstract](#abstract)
 - [Supported vCenter Releases](#supported-vcenter-releases)
@@ -11,6 +12,7 @@
 - [Resource Maintenance](#resource-maintenance)
 - [Repository Administrator Resources](#repository-administrator-resources)
 - [VMware Resources](#vmware-resources)
+
 ## Abstract
 This document describes the vSphere Automation Python SDK samples that use the vSphere Automation
 python client library. Additionally, some of the samples demonstrate the combined use of the
