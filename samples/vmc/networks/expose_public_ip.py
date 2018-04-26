@@ -161,7 +161,7 @@ class ExposePublicIP(object):
             edge_id=self.edge_id,
             firewall_rules=FirewallRules([self.nfwr]))
 
-        print(' # New firewall rule "{}" is added'.format(self.fw_rule_name))
+        print('# New firewall rule "{}" is added'.format(self.fw_rule_name))
 
     def create_net_rule(self):
 
@@ -185,7 +185,7 @@ class ExposePublicIP(object):
             edge_id=self.edge_id,
             nat_rules=NatRules([rule]))
 
-        print(' # New NAT rule "{}" is added'.format(self.nat_rule_description))
+        print('# New NAT rule "{}" is added'.format(self.nat_rule_description))
 
     def cleanup(self):
         if self.cleardata:
