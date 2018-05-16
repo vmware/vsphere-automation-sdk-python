@@ -4,6 +4,7 @@
 ## Table of Contents
 - [Abstract](#abstract)
 - [Supported vCenter Releases](#supported-vcenter-releases)
+- [Supported NSX-T Releases](#supported-nsx-t-releases)
 - [VMware Cloud on AWS Support](#vmware-cloud-on-aws-support)
 - [Quick Start Guide](#quick-start-guide)
 - [Run SDK Samples](#run-sdk-samples)
@@ -21,6 +22,9 @@ The samples have been developed to work with python 2.7.x and 3.3+
 ## Supported vCenter Releases
 vCenter 6.0 and 6.5. 
 Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
+
+## Supported NSX-T Releases
+NSX-T 2.2
 
 ## VMware Cloud on AWS Support
 The VMware Cloud on AWS API and samples are currently available as a preview and are subject to change in the future.
