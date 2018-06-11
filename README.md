@@ -225,5 +225,5 @@ Members:
 * [VMware Sample Exchange](https://code.vmware.com/samples) It is highly recommended to add any and all submitted samples to the VMware Sample Exchange
 * [VMware Code](https://code.vmware.com/home)
 * [VMware Developer Community](https://communities.vmware.com/community/vmtn/developer)
-* VMware vSphere [REST API Reference documentation](https://code.vmware.com/web/dp/doc/preview?id=4644).
+* VMware vSphere [REST API Reference documentation](https://code.vmware.com/apis/366/vsphere-automation).
 * [VMware Python forum](https://code.vmware.com/forums/7508/vsphere-automation-sdk-for-python)
