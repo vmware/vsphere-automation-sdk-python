@@ -1,4 +1,4 @@
-# Samples for VMware Cloud on AWS APIs (currently in preview)
+# Samples for VMware Cloud on AWS APIs
 
 The following table shows the sample sub-directories and their contents.
 
