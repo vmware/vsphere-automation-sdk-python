@@ -56,7 +56,7 @@ class BackupJobList(object):
         job_list = details_client.list()
 
         table = []
-        for info in job_list.itervalues():
+        for info in job_list.values():
             row = [info.start_time.strftime("%b %d %Y %H:%M"),
                    info.duration,
                    info.type,
