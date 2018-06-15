@@ -16,14 +16,12 @@
 __author__ = 'VMware, Inc.'
 
 import argparse
-import atexit
 import os
-import requests
 from random import randrange
-from tabulate import tabulate
 
-from com.vmware.vmc.model_client import AwsSddcConfig, ErrorResponse
 from com.vmware.vapi.std.errors_client import InvalidRequest
+from com.vmware.vmc.model_client import AwsSddcConfig, ErrorResponse, AccountLinkSddcConfig, SddcConfig
+from tabulate import tabulate
 from vmware.vapi.vmc.client import create_vmc_client
 
 from samples.vmc.helpers.vmc_task_helper import wait_for_task
@@ -38,18 +36,6 @@ class CreateDeleteSDDC(object):
     """
 
     def __init__(self):
-        self.org_id = None
-        self.vmc_client = None
-        self.sddc_id = None
-        self.sddc_name = None
-        self.listsddc = None
-        self.createsddc = None
-        self.deletesddc = None
-        self.cleanup = None
-        self.refresh_token = None
-        self.interval_sec = None
-
-    def option(self):
         parser = argparse.ArgumentParser()
 
         parser.add_argument('-r', '--refresh-token',
@@ -63,6 +49,10 @@ class CreateDeleteSDDC(object):
         parser.add_argument('-sn', '--sddc-name',
                             help="Name of the SDDC to be created. "
                                  "Default is 'Sample SDDC xx'")
+
+        parser.add_argument('--region',
+                            default='us-west-2',
+                            help='AWS Region')
 
         parser.add_argument('-i', '--interval-sec',
                             default=60,
@@ -78,7 +68,7 @@ class CreateDeleteSDDC(object):
 
         parser.add_argument('-ds', '--deletesddc',
                             action='store_true',
-                            help='Deletes the SDDC in the specified Org ')                                                        
+                            help='Deletes the SDDC in the specified Org ')
 
         parser.add_argument('-c', '--cleardata',
                             action='store_true',
@@ -88,21 +78,19 @@ class CreateDeleteSDDC(object):
 
         self.refresh_token = args.refresh_token
         self.org_id = args.org_id
+        self.region = args.region
         self.listsddc = args.listsddc
         self.createsddc = args.createsddc
         self.deletesddc = args.deletesddc
         self.cleanup = args.cleardata
-
-        self.sddc_name = args.sddc_name or \
-                         'Sample SDDC {}'.format(randrange(100))
+        self.sddc_id = None
+        self.sddc_name = args.sddc_name or 'Sample SDDC {}'.format(randrange(100))
         self.interval_sec = int(args.interval_sec)
 
-    def setup(self):
-
         # Login to VMware Cloud on AWS
-        session = requests.Session()
-        self.vmc_client = create_vmc_client(self.refresh_token, session)
-        atexit.register(session.close)
+        self.vmc_client = create_vmc_client(self.refresh_token)
+
+    def setup(self):
 
         # Check if the organization exists
         orgs = self.vmc_client.Orgs.list()
@@ -113,10 +101,26 @@ class CreateDeleteSDDC(object):
         print('\n# Example: Create a SDDC ({}) in org {}:'.
               format(self.sddc_name, self.org_id))
 
-        provider = os.environ.get('VMC_PROVIDER', 'AWS')
+        account_id = self.vmc_client.orgs.account_link.ConnectedAccounts.get(
+            self.org_id)[0].id
+
+        vpc_map = self.vmc_client.orgs.account_link.CompatibleSubnets.get(
+            org=self.org_id,
+            linked_account_id=account_id).vpc_map
+
+        customer_subnet_id = self.get_subnet_id(vpc_map)
+        if not customer_subnet_id:
+            raise ValueError('No available subnet for region {}'.format(self.region))
+
         sddc_config = AwsSddcConfig(
-            region='US_WEST_2', num_hosts=1, name=self.sddc_name,
-            provider=provider)
+            region=self.region,
+            name=self.sddc_name,
+            account_link_sddc_config=[AccountLinkSddcConfig(
+                customer_subnet_ids=[customer_subnet_id],
+                connected_account_id=account_id)],
+            provider=os.environ.get('VMC_PROVIDER', SddcConfig.PROVIDER_AWS),
+            num_hosts=1,
+            deployment_type=SddcConfig.DEPLOYMENT_TYPE_SINGLEAZ)
 
         try:
             task = self.vmc_client.orgs.Sddcs.create(org=self.org_id,
@@ -138,7 +142,7 @@ class CreateDeleteSDDC(object):
 
     def delete_sddc(self):
         print('\n# Example: Delete SDDC {} from org {}'.format(self.sddc_id,
-                                                                self.org_id))
+                                                               self.org_id))
 
         try:
             task = self.vmc_client.orgs.Sddcs.delete(org=self.org_id,
@@ -153,8 +157,7 @@ class CreateDeleteSDDC(object):
                       task_id=task.id,
                       interval_sec=self.interval_sec)
 
-        print('\n# Example: Remaining SDDCs:'.
-              format(self.org_id))
+        print('\n# Example: Remaining SDDCs:'.format(self.org_id))
         sddcs = self.vmc_client.orgs.Sddcs.list(self.org_id)
         self.print_output(sddcs)
 
@@ -170,11 +173,17 @@ class CreateDeleteSDDC(object):
         table = []
         for sddc in sddcs:
             table.append([sddc.id, sddc.name, sddc.resource_config.region])
-        print(tabulate(table, ['ID', 'Name', 'AWS Region']))        
+        print(tabulate(table, ['ID', 'Name', 'AWS Region']))
+
+    def get_subnet_id(self, vpc_map):
+        for v in vpc_map.values():
+            for subnet in v.subnets:
+                if subnet.region_name.lower() == self.region.lower():
+                    return subnet.subnet_id
+
 
 def main():
     sddc_operations = CreateDeleteSDDC()
-    sddc_operations.option()
     sddc_operations.setup()
     if sddc_operations.listsddc:
         sddc_operations.list_sddc()
