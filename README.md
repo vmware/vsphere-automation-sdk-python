@@ -45,9 +45,15 @@ A Python virtual environment is also highly recommended.
 ```cmd
 git clone https://github.com/vmware/vsphere-automation-sdk-python.git
 cd vsphere-automation-sdk-python
+```
+* Linux/Mac:
+```cmd
 pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file://`pwd`/lib
 ```
-
+* Windows:
+```cmd
+pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file:\\%CD%\lib
+```
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2
 
 ### Connect to a vCenter Server
