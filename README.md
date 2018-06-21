@@ -213,7 +213,20 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 ## API Documentation
 
-The API documentation can be found [here](doc/client.zip)
+### vSphere API Documentation
+
+* [vSphere Cloud](https://tianhao64.github.io/vsphere-automation-sdk-python/vsphere/cloud/index.html)
+* [vSphere 6.7.0](https://tianhao64.github.io/vsphere-automation-sdk-python/vsphere/6.7.0/index.html)
+* [Previous Releases](https://tianhao64.github.io/vsphere-automation-sdk-python/vsphere/)
+
+### VMware Cloud on AWS Console API Documentation
+
+* [VMware Cloud on AWS Console API](https://tianhao64.github.io/vsphere-automation-sdk-python/vmc/index.html)
+
+### NSX API Documentation
+
+* [NSX Policy](https://tianhao64.github.io/vsphere-automation-sdk-python/nsx/nsx_policy/index.html)
+* [VMC App](https://tianhao64.github.io/vsphere-automation-sdk-python/nsx/vmc_app/index.html)
 
 ## Repository Administrator Resources
 
