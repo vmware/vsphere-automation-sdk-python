@@ -18,6 +18,8 @@
 
 - vSphere version:
 
+- Operating System/Shell (used to run SDK-based apps):
+
 ## Steps or code snippet to reproduce
 
 ## Actual behavior
