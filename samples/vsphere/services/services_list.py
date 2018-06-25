@@ -19,8 +19,9 @@ __vcenter_version__ = '6.7+'
 
 from tabulate import tabulate
 
-from com.vmware.vcenter.services_client import Service
-from samples.vsphere.common import vapiconnect
+from vmware.vapi.vsphere.client import create_vsphere_client
+from samples.vsphere.common.ssl_helper import get_unverified_session
+
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
 
@@ -36,23 +37,22 @@ class ListServices(object):
 
 
     def  __init__(self):
-        self.stub_config = None
-
-    def setup(self):
         # Create argument parser for standard inputs:
-        # server, username, password, cleanup and skipverification
+        # server, username, password and skipverification
         parser = sample_cli.build_arg_parser()
         args = sample_util.process_cli_args(parser.parse_args())
 
-        # Connect to vSphere client
-        self.stub_config = vapiconnect.connect(host=args.server,
-                                               user=args.username,
-                                               pwd=args.password,
-                                               skip_verification=args.skipverification)
-    def run(self):
-        services_client = Service(self.stub_config)
-        services_list = services_client.list_details()
+        # Skip server cert verification if needed.
+        # This is not recommended in production code.
+        session = get_unverified_session() if args.skipverification else None
 
+        # Connect to vSphere client
+        self.client = create_vsphere_client(server=args.server,
+                                            username=args.username,
+                                            password=args.password,
+                                            session=session)
+    def run(self):
+        services_list = self.client.vcenter.services.Service.list_details()
         table = []
         for key,value in services_list.items():
             row = [key,
@@ -64,11 +64,8 @@ class ListServices(object):
         headers = ["Service Name", "Service Name Key", "Service Health", "Service Status", "Service Startup Type"]
         print(tabulate(table,headers))
 
-
-
 def main():
     list_services = ListServices()
-    list_services.setup()
     list_services.run()
 
 if __name__ == '__main__':
