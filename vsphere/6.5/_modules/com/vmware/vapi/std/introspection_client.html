@@ -1,0 +1,736 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vapi.std.introspection_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vapi.std.introspection_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vapi.std.introspection.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The :mod:`com.vmware.vapi.std.introspection_client` module provides classes</span>
+<span class="sd">that expose basic information about the vAPI classes registered with a vAPI</span>
+<span class="sd">provider.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Operation">[docs]</a><span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The :class:`Operation` service provides operations to retrieve information</span>
+<span class="sd">    about the operations present in a vAPI service.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_OperationStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Operation.DataDefinition"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Operation.DataDefinition">[docs]</a>    <span class="k">class</span> <span class="nc">DataDefinition</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The :class:`Operation.DataDefinition` structure describes a vAPI data type.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;type&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;OPTIONAL&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;element_definition&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;LIST&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;element_definition&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;STRUCTURE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;STRUCTURE_REF&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;ERROR&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;BINARY&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;BOOLEAN&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;DOUBLE&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;DYNAMIC_STRUCTURE&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;ANY_ERROR&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;LONG&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;OPAQUE&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;SECRET&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;STRING&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;VOID&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">element_definition</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">fields</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  type: :class:`Operation.DataDefinition.DataType`</span>
+<span class="sd">            :param type: Data type of the value.</span>
+<span class="sd">            :type  element_definition: :class:`Operation.DataDefinition`</span>
+<span class="sd">            :param element_definition: Contains the element definition for generic data types like List</span>
+<span class="sd">                and Optional.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is one of</span>
+<span class="sd">                :attr:`Operation.DataDefinition.DataType.OPTIONAL` or</span>
+<span class="sd">                :attr:`Operation.DataDefinition.DataType.LIST`.</span>
+<span class="sd">            :type  name: :class:`str`</span>
+<span class="sd">            :param name: Fully qualified name of the structure.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is one of</span>
+<span class="sd">                :attr:`Operation.DataDefinition.DataType.STRUCTURE`,</span>
+<span class="sd">                :attr:`Operation.DataDefinition.DataType.STRUCTURE_REF`, or</span>
+<span class="sd">                :attr:`Operation.DataDefinition.DataType.ERROR`.</span>
+<span class="sd">            :type  fields: :class:`dict` of :class:`str` and :class:`Operation.DataDefinition`</span>
+<span class="sd">            :param fields: Fields of the structure type. The key of the map is the canonical</span>
+<span class="sd">                name of the field and the value is the</span>
+<span class="sd">                :class:`Operation.DataDefinition` for the field. The order of the</span>
+<span class="sd">                structure fields defined in IDL is not maintained by the</span>
+<span class="sd">                :class:`Operation` service.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is one of</span>
+<span class="sd">                :attr:`Operation.DataDefinition.DataType.STRUCTURE` or</span>
+<span class="sd">                :attr:`Operation.DataDefinition.DataType.ERROR`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">element_definition</span> <span class="o">=</span> <span class="n">element_definition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">=</span> <span class="n">fields</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Operation.DataDefinition.DataType"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Operation.DataDefinition.DataType">[docs]</a>        <span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The :class:`Operation.DataDefinition.DataType` enumeration provides values</span>
+<span class="sd">            representing the data types supported by the vAPI infrastructure.</span>
+
+<span class="sd">            .. note::</span>
+<span class="sd">                This class represents an enumerated type in the interface language</span>
+<span class="sd">                definition. The class contains class attributes which represent the</span>
+<span class="sd">                values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">                the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">                enumerated type in communication with a server that supports the newer</span>
+<span class="sd">                version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">                type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">BINARY</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a binary type.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">BOOLEAN</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a boolean type. The possible values are True and</span>
+<span class="sd">            False equivalent of the language used to invoke this operation.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">DOUBLE</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a double type. It is a 64 bit floating point number.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">DYNAMIC_STRUCTURE</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a dynamic structure. This means, any data of type</span>
+<span class="sd">            :attr:`Operation.DataDefinition.DataType.STRUCTURE` can be used.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">ERROR</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a specific error type.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">ANY_ERROR</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is arbitrary error type. This means, any data of type</span>
+<span class="sd">            :attr:`Operation.DataDefinition.DataType.ERROR` can be used.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">LIST</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a list data type. Any value of this type can have</span>
+<span class="sd">            zero or more elements in the list.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">LONG</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a long data type. It is a 64 bit signed integer</span>
+<span class="sd">            number.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">OPAQUE</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is an opaque type. This means, data of any</span>
+<span class="sd">            :class:`Operation.DataDefinition.DataType` can be used.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">OPTIONAL</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is an optional data type. Any value of this type can be</span>
+<span class="sd">            null.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">SECRET</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a secret data type. This is used for sensitive</span>
+<span class="sd">            information. The server will not log any data of this type and if possible</span>
+<span class="sd">            wipe the data from the memory after usage.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">STRING</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a string data type. This is a unicode string.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">STRUCTURE</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a structure data type. A structure has string</span>
+<span class="sd">            identifier and a set of fields with corresponding values.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">STRUCTURE_REF</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a structure reference. This is used to break</span>
+<span class="sd">            circular dependencies in the type references. This just has a string</span>
+<span class="sd">            identifier of the structure. Clients have to maintain a list of structures</span>
+<span class="sd">            already visited and use that to resolve this reference.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">VOID</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Indicates the value is a void data type.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+                <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                :type  string: :class:`str`</span>
+<span class="sd">                :param string: String value for the :class:`DataType` instance.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+        <span class="n">DataType</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;BINARY&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;BOOLEAN&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;DOUBLE&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;DYNAMIC_STRUCTURE&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;ERROR&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;ANY_ERROR&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;LIST&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;LONG&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;OPAQUE&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;OPTIONAL&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;SECRET&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;STRING&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;STRUCTURE&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;STRUCTURE_REF&#39;</span><span class="p">),</span>
+            <span class="n">DataType</span><span class="p">(</span><span class="s">&#39;VOID&#39;</span><span class="p">),</span>
+        <span class="p">])</span>
+        <span class="n">DataType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.operation.data_definition.data_type&#39;</span><span class="p">,</span>
+            <span class="n">DataType</span><span class="p">))</span>
+</div>
+    <span class="n">DataDefinition</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.introspection.operation.data_definition&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Operation.DataDefinition.DataType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;element_definition&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Operation.DataDefinition&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Operation.DataDefinition&#39;</span><span class="p">))),</span>
+        <span class="p">},</span>
+        <span class="n">DataDefinition</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Operation.Info"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Operation.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Information about a vAPI operation.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">input_definition</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">output_definition</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">error_definitions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  input_definition: :class:`Operation.DataDefinition`</span>
+<span class="sd">            :param input_definition: :class:`Operation.DataDefinition` describing the operation input. </span>
+<span class="sd">                </span>
+<span class="sd">                The :attr:`Operation.DataDefinition.type` of this field will be</span>
+<span class="sd">                :attr:`Operation.DataDefinition.DataType.STRUCTURE`. The keys of</span>
+<span class="sd">                :attr:`Operation.DataDefinition.fields` are the names of the</span>
+<span class="sd">                operation parameters, and the values of</span>
+<span class="sd">                :attr:`Operation.DataDefinition.fields` describe the type of the</span>
+<span class="sd">                operation parameters.</span>
+<span class="sd">            :type  output_definition: :class:`Operation.DataDefinition`</span>
+<span class="sd">            :param output_definition: :class:`Operation.DataDefinition` describing the operation output.</span>
+<span class="sd">            :type  error_definitions: :class:`list` of :class:`Operation.DataDefinition`</span>
+<span class="sd">            :param error_definitions: List of :class:`Operation.DataDefinition` describing the errors</span>
+<span class="sd">                that the operation might report. </span>
+<span class="sd">                </span>
+<span class="sd">                The :attr:`Operation.DataDefinition.type` of every element in this</span>
+<span class="sd">                list will be :attr:`Operation.DataDefinition.DataType.ERROR`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_definition</span> <span class="o">=</span> <span class="n">input_definition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_definition</span> <span class="o">=</span> <span class="n">output_definition</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_definitions</span> <span class="o">=</span> <span class="n">error_definitions</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.introspection.operation.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;input_definition&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Operation.DataDefinition&#39;</span><span class="p">),</span>
+            <span class="s">&#39;output_definition&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Operation.DataDefinition&#39;</span><span class="p">),</span>
+            <span class="s">&#39;error_definitions&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Operation.DataDefinition&#39;</span><span class="p">)),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Operation.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Operation.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">service_id</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the set of operation identifiers for a given vAPI service.</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: service identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        :rtype: :class:`set` of :class:`str`</span>
+<span class="sd">        :return: set of operation identifiers for a given vAPI service.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.operation``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If the service identifier does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="n">service_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Operation.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Operation.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">service_id</span><span class="p">,</span>
+            <span class="n">operation_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the :class:`Operation.Info` for a given vAPI operation.</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: service identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: operation identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.operation``.</span>
+<span class="sd">        :rtype: :class:`Operation.Info`</span>
+<span class="sd">        :return: :class:`Operation.Info` for a given vAPI operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If the operation identifier does not exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If the service identifier does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="n">service_id</span><span class="p">,</span>
+                            <span class="s">&#39;operation_id&#39;</span><span class="p">:</span> <span class="n">operation_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Provider"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Provider">[docs]</a><span class="k">class</span> <span class="nc">Provider</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The :class:`Provider` service provides operations to retrieve information</span>
+<span class="sd">    about a vAPI Provider. A provider is a container that exposes one or more</span>
+<span class="sd">    vAPI services.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ProviderStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Provider.Info"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Provider.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Information about a vAPI provider</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">checksum</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  id: :class:`str`</span>
+<span class="sd">            :param id: Identifier of the provider</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.vapi.provider``. When methods return a value of this</span>
+<span class="sd">                class as a return value, the attribute will be an identifier for</span>
+<span class="sd">                the resource type: ``com.vmware.vapi.provider``.</span>
+<span class="sd">            :type  checksum: :class:`str`</span>
+<span class="sd">            :param checksum: Checksum of the information present in the provider. </span>
+<span class="sd">                </span>
+<span class="sd">                Clients can use this information to check if the service</span>
+<span class="sd">                information has changed. When a new service is added or removed</span>
+<span class="sd">                (or) one of the existing service information is modified, the value</span>
+<span class="sd">                of the checksum changes. </span>
+<span class="sd">                </span>
+<span class="sd">                 The information used to calculate the checksum includes: </span>
+<span class="sd">                </span>
+<span class="sd">                * service identifiers</span>
+<span class="sd">                * operation identifiers inside the service</span>
+<span class="sd">                * input, output and error definitions of an operation</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">=</span> <span class="n">checksum</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.introspection.provider.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.provider&#39;</span><span class="p">),</span>
+            <span class="s">&#39;checksum&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Provider.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Provider.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a :class:`Provider.Info` describing the vAPI provider on which</span>
+<span class="sd">        the operation is invoked</span>
+
+
+<span class="sd">        :rtype: :class:`Provider.Info`</span>
+<span class="sd">        :return: :class:`Provider.Info` describing the vAPI provider on which the</span>
+<span class="sd">            operation is invoked</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="Service"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Service">[docs]</a><span class="k">class</span> <span class="nc">Service</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The :class:`Service` service provides operations to retrieve information</span>
+<span class="sd">    about the services exposed by a vAPI provider. A provider is a container</span>
+<span class="sd">    that exposes one or more vAPI services.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ServiceStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Service.Info"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Service.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Information about a vAPI service</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">operations</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  operations: :class:`set` of :class:`str`</span>
+<span class="sd">            :param operations: Set of identifiers of operations present in the service</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must contain identifiers for the resource type:</span>
+<span class="sd">                ``com.vmware.vapi.operation``. When methods return a value of this</span>
+<span class="sd">                class as a return value, the attribute will contain identifiers for</span>
+<span class="sd">                the resource type: ``com.vmware.vapi.operation``.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="n">operations</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.introspection.service.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;operations&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Service.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Service.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the set of service identifiers.</span>
+
+
+<span class="sd">        :rtype: :class:`set` of :class:`str`</span>
+<span class="sd">        :return: set of service identifiers</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Service.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.introspection_client.Service.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="nb">id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the :class:`Service.Info` for the specified service</span>
+
+<span class="sd">        :type  id: :class:`str`</span>
+<span class="sd">        :param id: service identifier</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        :rtype: :class:`Service.Info`</span>
+<span class="sd">        :return: :class:`Service.Info` for the specified service</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If the service identifier does not exist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_OperationStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.service&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.service&#39;</span><span class="p">),</span>
+            <span class="s">&#39;operation_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.operation&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Operation.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.std.introspection.operation&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_ProviderStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Provider.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.std.introspection.provider&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_ServiceStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.service&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Service.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.std.introspection.service&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

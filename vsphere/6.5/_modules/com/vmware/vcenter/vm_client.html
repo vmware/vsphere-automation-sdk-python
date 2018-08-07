@@ -1,0 +1,2095 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vcenter.vm_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vcenter.vm_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vcenter.vm.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vcenter.vm_client`` module provides classes for managing</span>
+<span class="sd">virtual machines.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+<div class="viewcode-block" id="GuestOS"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.GuestOS">[docs]</a><span class="k">class</span> <span class="nc">GuestOS</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``GuestOS`` class defines the valid guest operating system types used</span>
+<span class="sd">    for configuring a virtual machine.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This class represents an enumerated type in the interface language</span>
+<span class="sd">        definition. The class contains class attributes which represent the</span>
+<span class="sd">        values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">        the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">        enumerated type in communication with a server that supports the newer</span>
+<span class="sd">        version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">        type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DOS</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MS-DOS.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_31</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 3.1</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_95</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 95</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_98</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 98</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_ME</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Millennium Edition</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NT</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows NT 4</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_2000_PRO</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 2000 Professional</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_2000_SERV</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 2000 Server</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_2000_ADV_SERV</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 2000 Advanced Server</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_XP_HOME</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows XP Home Edition</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_XP_PRO</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows XP Professional</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_XP_PRO_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows XP Professional Edition (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NET_WEB</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Server 2003, Web Edition</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NET_STANDARD</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Server 2003, Standard Edition</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NET_ENTERPRISE</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Server 2003, Enterprise Edition</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NET_DATACENTER</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Server 2003, Datacenter Edition</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NET_BUSINESS</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Small Business Server 2003</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NET_STANDARD_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Server 2003, Standard Edition (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NET_ENTERPRISE_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Server 2003, Enterprise Edition (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_LONGHORN</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Longhorn (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_LONGHORN_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Longhorn (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_NET_DATACENTER_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Server 2003, Datacenter Edition (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_VISTA</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Vista</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WIN_VISTA_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Vista (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_7</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 7</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_7_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 7 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_7_SERVER_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Server 2008 R2 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_8</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 8</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_8_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 8 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_8_SERVER_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 8 Server (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_9</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 10</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_9_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 10 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_9_SERVER_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows 10 Server (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WINDOWS_HYPERV</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Windows Hyper-V</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FREEBSD</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FreeBSD</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FREEBSD_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FreeBSD x64</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">REDHAT</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Linux 2.1</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_2</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 2</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_3</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 3</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_3_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 3 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_4</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 4</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_4_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 4 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_5</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 5</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_5_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 5 (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_6</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_6_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 6 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_7</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 7</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RHEL_7_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Red Hat Enterprise Linux 7 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CENTOS</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CentOS 4/5</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CENTOS_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CentOS 4/5 (64-bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CENTOS_6</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CentOS 6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CENTOS_6_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CentOS 6 (64-bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CENTOS_7</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CentOS 7</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CENTOS_7_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CentOS 7 (64-bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ORACLE_LINUX</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Oracle Linux 4/5</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ORACLE_LINUX_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Oracle Linux 4/5 (64-bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ORACLE_LINUX_6</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Oracle Linux 6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ORACLE_LINUX_6_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Oracle Linux 6 (64-bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ORACLE_LINUX_7</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Oracle Linux 7</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ORACLE_LINUX_7_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Oracle Linux 7 (64-bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SUSE</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse Linux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SUSE_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse Linux (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SLES</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse Linux Enterprise Server 9</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SLES_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse Linux Enterprise Server 9 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SLES_10</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse linux Enterprise Server 10</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SLES_10_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse Linux Enterprise Server 10 (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SLES_11</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse linux Enterprise Server 11</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SLES_11_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse Linux Enterprise Server 11 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SLES_12</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse linux Enterprise Server 12</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SLES_12_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suse Linux Enterprise Server 12 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NLD_9</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Novell Linux Desktop 9</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OES</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open Enterprise Server</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SJDS</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sun Java Desktop System</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MANDRAKE</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mandrake Linux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MANDRIVA</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mandriva Linux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MANDRIVA_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mandriva Linux (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">TURBO_LINUX</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Turbolinux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">TURBO_LINUX_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Turbolinux (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">UBUNTU</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ubuntu Linux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">UBUNTU_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ubuntu Linux (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_4</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 4</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_4_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 4 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_5</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 5</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_5_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 5 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_6</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_6_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 6 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_7</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 7</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_7_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 7 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_8</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 8</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_8_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 8 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_9</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 9</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_9_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 9 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_10</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 10</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEBIAN_10_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Debian GNU/Linux 10 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ASIANUX_3</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asianux Server 3</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ASIANUX_3_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asianux Server 3 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ASIANUX_4</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asianux Server 4</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ASIANUX_4_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asianux Server 4 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ASIANUX_5_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asianux Server 5 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ASIANUX_7_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asianux Server 7 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OPENSUSE</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    OpenSUSE Linux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OPENSUSE_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    OpenSUSE Linux (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FEDORA</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fedora Linux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FEDORA_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fedora Linux (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">COREOS_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CoreOS Linux (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">VMWARE_PHOTON_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VMware Photon (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_24X_LINUX</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linux 2.4x Kernel</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_24X_LINUX_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linux 2.4x Kernel (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_26X_LINUX</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linux 2.6x Kernel</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_26X_LINUX_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linux 2.6x Kernel (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_3X_LINUX</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linux 3.x Kernel</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_3X_LINUX_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linux 3.x Kernel (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_LINUX</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linux 2.2x Kernel</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">GENERIC_LINUX</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Other Linux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_LINUX_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Linux (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SOLARIS_6</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solaris 6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SOLARIS_7</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solaris 7</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SOLARIS_8</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solaris 8</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SOLARIS_9</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solaris 9</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SOLARIS_10</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solaris 10 (32 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SOLARIS_10_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solaris 10 (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SOLARIS_11_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solaris 11 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OS2</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    OS/2</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ECOMSTATION</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    eComStation 1.x</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ECOMSTATION_2</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    eComStation 2.0</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NETWARE_4</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Novell NetWare 4</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NETWARE_5</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Novell NetWare 5.1</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NETWARE_6</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Novell NetWare 6.x</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OPENSERVER_5</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SCO OpenServer 5</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OPENSERVER_6</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SCO OpenServer 6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">UNIXWARE_7</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SCO UnixWare 7</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.5</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.5 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_10</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_10_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.6 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_11</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.7</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_11_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.7 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_12_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.8 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_13_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.9 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_14_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.10 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_15_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.11 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DARWIN_16_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mac OS 10.12 (64 bit)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">VMKERNEL</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VMware ESX 4</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">VMKERNEL_5</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VMware ESX 5</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">VMKERNEL_6</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VMware ESX 6</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">VMKERNEL_65</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VMware ESX 6.5</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Other Operating System</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OTHER_64</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Other Operating System (64 bit) (experimental)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  string: :class:`str`</span>
+<span class="sd">        :param string: String value for the :class:`GuestOS` instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+<span class="n">GuestOS</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DOS&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_31&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_95&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_98&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_ME&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NT&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_2000_PRO&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_2000_SERV&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_2000_ADV_SERV&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_XP_HOME&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_XP_PRO&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_XP_PRO_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NET_WEB&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NET_STANDARD&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NET_ENTERPRISE&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NET_DATACENTER&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NET_BUSINESS&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NET_STANDARD_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NET_ENTERPRISE_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_LONGHORN&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_LONGHORN_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_NET_DATACENTER_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_VISTA&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WIN_VISTA_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_7&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_7_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_7_SERVER_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_8&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_8_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_8_SERVER_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_9&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_9_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_9_SERVER_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;WINDOWS_HYPERV&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;FREEBSD&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;FREEBSD_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;REDHAT&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_2&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_3&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_3_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_4&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_4_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_5&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_5_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_6&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_6_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_7&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;RHEL_7_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;CENTOS&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;CENTOS_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;CENTOS_6&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;CENTOS_6_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;CENTOS_7&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;CENTOS_7_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ORACLE_LINUX&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ORACLE_LINUX_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ORACLE_LINUX_6&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ORACLE_LINUX_6_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ORACLE_LINUX_7&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ORACLE_LINUX_7_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SUSE&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SUSE_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SLES&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SLES_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SLES_10&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SLES_10_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SLES_11&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SLES_11_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SLES_12&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SLES_12_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;NLD_9&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OES&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SJDS&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;MANDRAKE&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;MANDRIVA&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;MANDRIVA_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;TURBO_LINUX&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;TURBO_LINUX_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;UBUNTU&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;UBUNTU_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_4&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_4_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_5&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_5_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_6&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_6_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_7&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_7_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_8&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_8_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_9&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_9_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_10&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DEBIAN_10_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ASIANUX_3&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ASIANUX_3_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ASIANUX_4&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ASIANUX_4_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ASIANUX_5_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ASIANUX_7_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OPENSUSE&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OPENSUSE_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;FEDORA&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;FEDORA_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;COREOS_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;VMWARE_PHOTON_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_24X_LINUX&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_24X_LINUX_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_26X_LINUX&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_26X_LINUX_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_3X_LINUX&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_3X_LINUX_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_LINUX&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;GENERIC_LINUX&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_LINUX_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SOLARIS_6&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SOLARIS_7&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SOLARIS_8&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SOLARIS_9&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SOLARIS_10&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SOLARIS_10_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;SOLARIS_11_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OS2&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ECOMSTATION&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;ECOMSTATION_2&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;NETWARE_4&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;NETWARE_5&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;NETWARE_6&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OPENSERVER_5&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OPENSERVER_6&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;UNIXWARE_7&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_10&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_10_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_11&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_11_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_12_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_13_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_14_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_15_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;DARWIN_16_64&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;VMKERNEL&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;VMKERNEL_5&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;VMKERNEL_6&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;VMKERNEL_65&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER&#39;</span><span class="p">),</span>
+    <span class="n">GuestOS</span><span class="p">(</span><span class="s">&#39;OTHER_64&#39;</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="n">GuestOS</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vcenter.vm.guest_OS&#39;</span><span class="p">,</span>
+    <span class="n">GuestOS</span><span class="p">))</span>
+
+
+
+
+<div class="viewcode-block" id="Hardware"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware">[docs]</a><span class="k">class</span> <span class="nc">Hardware</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Hardware`` class provides methods for configuring the virtual</span>
+<span class="sd">    hardware of a virtual machine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_HardwareStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Hardware.Version"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware.Version">[docs]</a>    <span class="k">class</span> <span class="nc">Version</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Hardware.Version`` class defines the valid virtual hardware versions</span>
+<span class="sd">        for a virtual machine.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_03</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 3.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_04</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 4.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_06</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 6.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_07</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 7.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_08</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 8.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_09</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 9.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_10</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 10.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_11</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 11.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_12</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 12.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VMX_13</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hardware version 13.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`Version` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">Version</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_03&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_04&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_06&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_07&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_08&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_09&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_10&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_11&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_12&#39;</span><span class="p">),</span>
+        <span class="n">Version</span><span class="p">(</span><span class="s">&#39;VMX_13&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">Version</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.version&#39;</span><span class="p">,</span>
+        <span class="n">Version</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Hardware.UpgradePolicy"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware.UpgradePolicy">[docs]</a>    <span class="k">class</span> <span class="nc">UpgradePolicy</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Hardware.UpgradePolicy`` class defines the valid virtual hardware</span>
+<span class="sd">        upgrade policies for a virtual machine.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">NEVER</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Do not upgrade the virtual machine when it is powered on.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">AFTER_CLEAN_SHUTDOWN</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run scheduled upgrade when the virtual machine is powered on after a clean</span>
+<span class="sd">        shutdown of the guest operating system.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ALWAYS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run scheduled upgrade when the virtual machine is powered on.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`UpgradePolicy` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">UpgradePolicy</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">UpgradePolicy</span><span class="p">(</span><span class="s">&#39;NEVER&#39;</span><span class="p">),</span>
+        <span class="n">UpgradePolicy</span><span class="p">(</span><span class="s">&#39;AFTER_CLEAN_SHUTDOWN&#39;</span><span class="p">),</span>
+        <span class="n">UpgradePolicy</span><span class="p">(</span><span class="s">&#39;ALWAYS&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">UpgradePolicy</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.upgrade_policy&#39;</span><span class="p">,</span>
+        <span class="n">UpgradePolicy</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Hardware.UpgradeStatus"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware.UpgradeStatus">[docs]</a>    <span class="k">class</span> <span class="nc">UpgradeStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Hardware.UpgradeStatus`` class defines the valid virtual hardware</span>
+<span class="sd">        upgrade statuses for a virtual machine.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">NONE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        No scheduled upgrade has been attempted.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PENDING</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upgrade is scheduled but has not yet been run.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SUCCESS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The most recent scheduled upgrade was successful.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">FAILED</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The most recent scheduled upgrade was not successful.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`UpgradeStatus` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">UpgradeStatus</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">UpgradeStatus</span><span class="p">(</span><span class="s">&#39;NONE&#39;</span><span class="p">),</span>
+        <span class="n">UpgradeStatus</span><span class="p">(</span><span class="s">&#39;PENDING&#39;</span><span class="p">),</span>
+        <span class="n">UpgradeStatus</span><span class="p">(</span><span class="s">&#39;SUCCESS&#39;</span><span class="p">),</span>
+        <span class="n">UpgradeStatus</span><span class="p">(</span><span class="s">&#39;FAILED&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">UpgradeStatus</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.upgrade_status&#39;</span><span class="p">,</span>
+        <span class="n">UpgradeStatus</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Hardware.Info"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Hardware.Info`` class contains information related to the virtual</span>
+<span class="sd">        hardware of a virtual machine.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;upgrade_policy&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;AFTER_CLEAN_SHUTDOWN&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;upgrade_version&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;ALWAYS&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;upgrade_version&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;NEVER&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;upgrade_status&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;FAILED&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;upgrade_error&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;NONE&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;PENDING&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;SUCCESS&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">upgrade_policy</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">upgrade_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">upgrade_status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">upgrade_error</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  version: :class:`Hardware.Version`</span>
+<span class="sd">            :param version: Virtual hardware version.</span>
+<span class="sd">            :type  upgrade_policy: :class:`Hardware.UpgradePolicy`</span>
+<span class="sd">            :param upgrade_policy: Scheduled upgrade policy.</span>
+<span class="sd">            :type  upgrade_version: :class:`Hardware.Version`</span>
+<span class="sd">            :param upgrade_version: Target hardware version to be used on the next scheduled virtual</span>
+<span class="sd">                hardware upgrade.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``upgradePolicy`` is one of</span>
+<span class="sd">                :attr:`Hardware.UpgradePolicy.AFTER_CLEAN_SHUTDOWN` or</span>
+<span class="sd">                :attr:`Hardware.UpgradePolicy.ALWAYS`.</span>
+<span class="sd">            :type  upgrade_status: :class:`Hardware.UpgradeStatus`</span>
+<span class="sd">            :param upgrade_status: Scheduled upgrade status.</span>
+<span class="sd">            :type  upgrade_error: :class:`Exception`</span>
+<span class="sd">            :param upgrade_error: Reason for the scheduled upgrade failure.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``upgradeStatus`` is :attr:`Hardware.UpgradeStatus.FAILED`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upgrade_policy</span> <span class="o">=</span> <span class="n">upgrade_policy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upgrade_version</span> <span class="o">=</span> <span class="n">upgrade_version</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upgrade_status</span> <span class="o">=</span> <span class="n">upgrade_status</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upgrade_error</span> <span class="o">=</span> <span class="n">upgrade_error</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;version&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.Version&#39;</span><span class="p">),</span>
+            <span class="s">&#39;upgrade_policy&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.UpgradePolicy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;upgrade_version&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.Version&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;upgrade_status&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.UpgradeStatus&#39;</span><span class="p">),</span>
+            <span class="s">&#39;upgrade_error&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">AnyErrorType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Hardware.UpdateSpec"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware.UpdateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">UpdateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Hardware.UpdateSpec`` class describes the updates to virtual hardware</span>
+<span class="sd">        settings of a virtual machine.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;upgrade_policy&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;AFTER_CLEAN_SHUTDOWN&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;upgrade_version&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)],</span>
+                    <span class="s">&#39;ALWAYS&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;upgrade_version&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)],</span>
+                    <span class="s">&#39;NEVER&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">upgrade_policy</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">upgrade_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  upgrade_policy: :class:`Hardware.UpgradePolicy` or ``None``</span>
+<span class="sd">            :param upgrade_policy: Scheduled upgrade policy. </span>
+<span class="sd">                </span>
+<span class="sd">                If set to :attr:`Hardware.UpgradePolicy.NEVER`, the</span>
+<span class="sd">                :attr:`Hardware.Info.upgrade_version` attribute will be reset to</span>
+<span class="sd">                None.</span>
+<span class="sd">                If None, the value is unchanged.</span>
+<span class="sd">            :type  upgrade_version: :class:`Hardware.Version` or ``None``</span>
+<span class="sd">            :param upgrade_version: Target hardware version to be used on the next scheduled virtual</span>
+<span class="sd">                hardware upgrade. </span>
+<span class="sd">                </span>
+<span class="sd">                If specified, this attribute must represent a newer virtual</span>
+<span class="sd">                hardware version than the current virtual hardware version reported</span>
+<span class="sd">                in :attr:`Hardware.Info.version`.</span>
+<span class="sd">                If :attr:`Hardware.UpdateSpec.upgrade_policy` is set to</span>
+<span class="sd">                :attr:`Hardware.UpgradePolicy.NEVER`, this attribute must be None.</span>
+<span class="sd">                Otherwise, if this attribute is None, default to the most recent</span>
+<span class="sd">                virtual hardware version supported by the server.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upgrade_policy</span> <span class="o">=</span> <span class="n">upgrade_policy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upgrade_version</span> <span class="o">=</span> <span class="n">upgrade_version</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">UpdateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.update_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;upgrade_policy&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.UpgradePolicy&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;upgrade_version&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.Version&#39;</span><span class="p">)),</span>
+        <span class="p">},</span>
+        <span class="n">UpdateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Hardware.get"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">vm</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the virtual hardware settings of a virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :rtype: :class:`Hardware.Info`</span>
+<span class="sd">        :return: Virtual hardware settings of the virtual machine.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Hardware.update"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">vm</span><span class="p">,</span>
+               <span class="n">spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the virtual hardware settings of a virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  spec: :class:`Hardware.UpdateSpec`</span>
+<span class="sd">        :param spec: Specification for updating the virtual hardware settings of the</span>
+<span class="sd">            virtual machine.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyInDesiredState` </span>
+<span class="sd">            if the virtual machine is already configured for the desired</span>
+<span class="sd">            hardware version.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if the requested virtual hardware version is not newer than the</span>
+<span class="sd">            current version.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unsupported` </span>
+<span class="sd">            if the requested virtual hardware version is not supported by the</span>
+<span class="sd">            server.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is busy performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;update&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Hardware.upgrade"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Hardware.upgrade">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">vm</span><span class="p">,</span>
+                <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upgrades the virtual machine to a newer virtual hardware version.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  version: :class:`Hardware.Version` or ``None``</span>
+<span class="sd">        :param version: New virtual machine version.</span>
+<span class="sd">            If None, defaults to the most recent virtual hardware version</span>
+<span class="sd">            supported by the server.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            if the virtual machine is not powered off.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyInDesiredState` </span>
+<span class="sd">            if the virtual machine is already configured for the desired</span>
+<span class="sd">            hardware version.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if ``version`` is older than the current virtual hardware version.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unsupported` </span>
+<span class="sd">            if ``version`` is not supported by the server.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is busy performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;upgrade&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;version&#39;</span><span class="p">:</span> <span class="n">version</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Power"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Power">[docs]</a><span class="k">class</span> <span class="nc">Power</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Power`` class provides methods for managing the power state of a</span>
+<span class="sd">    virtual machine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_PowerStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Power.State"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Power.State">[docs]</a>    <span class="k">class</span> <span class="nc">State</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Power.State`` class defines the valid power states for a virtual</span>
+<span class="sd">        machine.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">POWERED_OFF</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The virtual machine is powered off.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">POWERED_ON</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The virtual machine is powered on.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SUSPENDED</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The virtual machine is suspended.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`State` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">State</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">State</span><span class="p">(</span><span class="s">&#39;POWERED_OFF&#39;</span><span class="p">),</span>
+        <span class="n">State</span><span class="p">(</span><span class="s">&#39;POWERED_ON&#39;</span><span class="p">),</span>
+        <span class="n">State</span><span class="p">(</span><span class="s">&#39;SUSPENDED&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">State</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.power.state&#39;</span><span class="p">,</span>
+        <span class="n">State</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Power.Info"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Power.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Power.Info`` class contains information about the power state of a</span>
+<span class="sd">        virtual machine.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;state&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;POWERED_OFF&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;clean_power_off&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;POWERED_ON&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;SUSPENDED&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">clean_power_off</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  state: :class:`Power.State`</span>
+<span class="sd">            :param state: Power state of the virtual machine.</span>
+<span class="sd">            :type  clean_power_off: :class:`bool`</span>
+<span class="sd">            :param clean_power_off: Flag indicating whether the virtual machine was powered off</span>
+<span class="sd">                cleanly. This attribute may be used to detect that the virtual</span>
+<span class="sd">                machine crashed unexpectedly and should be restarted.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``state`` is :attr:`Power.State.POWERED_OFF`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clean_power_off</span> <span class="o">=</span> <span class="n">clean_power_off</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.power.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;state&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Power.State&#39;</span><span class="p">),</span>
+            <span class="s">&#39;clean_power_off&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Power.get"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Power.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">vm</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the power state information of a virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :rtype: :class:`Power.Info`</span>
+<span class="sd">        :return: Power state information for the specified virtual machine.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration or execution state cannot be</span>
+<span class="sd">            accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Power.start"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Power.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">vm</span><span class="p">,</span>
+              <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Powers on a powered-off or suspended virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyInDesiredState` </span>
+<span class="sd">            if the virtual machine is already powered on.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unsupported` </span>
+<span class="sd">            if the virtual machine does not support being powered on (e.g.</span>
+<span class="sd">            marked as a template, serving as a fault-tolerance secondary</span>
+<span class="sd">            virtual machine).</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.UnableToAllocateResource` </span>
+<span class="sd">            if resources cannot be allocated for the virtual machine (e.g.</span>
+<span class="sd">            physical resource allocation policy cannot be satisfied,</span>
+<span class="sd">            insufficient licenses are available to run the virtual machine).</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if resources required by the virtual machine are not accessible</span>
+<span class="sd">            (e.g. virtual machine configuration files or virtual disks are on</span>
+<span class="sd">            inaccessible storage, no hosts are available to run the virtual</span>
+<span class="sd">            machine).</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInUse` </span>
+<span class="sd">            if resources required by the virtual machine are in use (e.g.</span>
+<span class="sd">            virtual machine configuration files or virtual disks are locked,</span>
+<span class="sd">            host containing the virtual machine is an HA failover host).</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;start&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Power.stop"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Power.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">vm</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Powers off a powered-on or suspended virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyInDesiredState` </span>
+<span class="sd">            if the virtual machine is already powered off.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;stop&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Power.suspend"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Power.suspend">[docs]</a>    <span class="k">def</span> <span class="nf">suspend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">vm</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Suspends a powered-on virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyInDesiredState` </span>
+<span class="sd">            if the virtual machine is already suspended.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            if the virtual machine is powered off.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;suspend&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Power.reset"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Power.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">vm</span><span class="p">,</span>
+              <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets a powered-on virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            if the virtual machine is powered off or suspended.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is performing another operation</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;reset&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_HardwareStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for update operation</span>
+        <span class="n">update_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.UpdateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">update_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_in_desired_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyInDesiredState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unsupported&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unsupported&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">update_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">update_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for upgrade operation</span>
+        <span class="n">upgrade_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;version&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.Version&#39;</span><span class="p">)),</span>
+        <span class="p">})</span>
+        <span class="n">upgrade_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_in_desired_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyInDesiredState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unsupported&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unsupported&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">upgrade_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">upgrade_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Hardware.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;update&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">update_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">update_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">update_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">update_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;upgrade&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">upgrade_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">upgrade_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">upgrade_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">upgrade_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_PowerStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for start operation</span>
+        <span class="n">start_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">start_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_in_desired_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyInDesiredState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unsupported&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unsupported&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unable_to_allocate_resource&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;UnableToAllocateResource&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_in_use&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInUse&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">start_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">start_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for stop operation</span>
+        <span class="n">stop_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">stop_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_in_desired_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyInDesiredState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">stop_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">stop_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for suspend operation</span>
+        <span class="n">suspend_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">suspend_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_in_desired_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyInDesiredState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">suspend_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">suspend_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for reset operation</span>
+        <span class="n">reset_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">reset_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">reset_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">reset_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Power.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;start&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">start_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">start_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">start_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">start_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;stop&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">stop_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">stop_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">stop_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">stop_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;suspend&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">suspend_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">suspend_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">suspend_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">suspend_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;reset&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">reset_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">reset_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">reset_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">reset_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.power&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

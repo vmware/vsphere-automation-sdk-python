@@ -1,0 +1,191 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.protocol.client.rpc.requests_provider &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.protocol.client.rpc.requests_provider</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">RPC Provider using Requests Library</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.protocol.client.rpc.provider</span> <span class="kn">import</span> <span class="n">RpcProvider</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RequestsRpcProvider"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.requests_provider.RequestsRpcProvider">[docs]</a><span class="k">class</span> <span class="nc">RequestsRpcProvider</span><span class="p">(</span><span class="n">RpcProvider</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vAPI RPC provider using requests library</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">pool_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize RequestsRpcProvider</span>
+
+<span class="sd">        :type  session: :class:`requests.Session`</span>
+<span class="sd">        :param session: Session object</span>
+<span class="sd">        :type  msg_protocol: :class:`str`</span>
+<span class="sd">        :param msg_protocol: Message protocol to be used for the connection. Valid</span>
+<span class="sd">            values are &#39;json&#39;.</span>
+<span class="sd">        :type  url: :class:`str`</span>
+<span class="sd">        :param url: HTTP(S) URL to be used</span>
+<span class="sd">        :type  timeout: :class:`int`</span>
+<span class="sd">        :param timeout: Request timeout</span>
+<span class="sd">        :type  pool_size: :class:`int`</span>
+<span class="sd">        :param pool_size: Connection pool size to be used</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">RpcProvider</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pool_size</span> <span class="o">=</span> <span class="n">pool_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Requests rpc provider on delete &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+<div class="viewcode-block" id="RequestsRpcProvider.connect"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.requests_provider.RequestsRpcProvider.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        connect</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.protocol.client.rpc.provider.RpcProvider`</span>
+<span class="sd">        :return: http rpc provider</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">adapters</span><span class="o">.</span><span class="n">HTTPAdapter</span><span class="p">(</span>
+            <span class="n">pool_connections</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool_size</span><span class="p">,</span>
+            <span class="n">pool_maxsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s">&#39;http://&#39;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+</div>
+<div class="viewcode-block" id="RequestsRpcProvider.disconnect"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.requests_provider.RequestsRpcProvider.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; disconnect &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="RequestsRpcProvider.do_request"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.requests_provider.RequestsRpcProvider.do_request">[docs]</a>    <span class="k">def</span> <span class="nf">do_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Do rpc request</span>
+
+<span class="sd">        :type  request_ctx: :class:`dict` of :class:`str`, :class:`str`</span>
+<span class="sd">        :param request_ctx: Request context dictionary. The valid key/value pairs are:</span>
+<span class="sd">                content-type, {as in http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html 14.17}</span>
+<span class="sd">        :type  request: :class:`str`</span>
+<span class="sd">        :param request: The request body</span>
+
+<span class="sd">        :rtype: :class:`tuple` of (:class:`dict` of :class:`str`, :class:`str`),</span>
+<span class="sd">            :class:`str`</span>
+<span class="sd">        :return: Tuple of (response_ctx, response_body) where</span>
+<span class="sd">            response_ctx: Response context dictionary. The valid key/value pairs are:</span>
+<span class="sd">                    content-type, {as in http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html 14.17}</span>
+<span class="sd">            response: The response body</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">request_ctx</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Content-length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">,</span>
+                                    <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+                                    <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                                    <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">)</span>
+        <span class="c"># Raise an error if status is 4XX or 5XX</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">response_ctx</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="p">{},</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>  <span class="c"># pylint: disable=E1101</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">content</span>
+            <span class="n">content_type</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;content-type&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">content_type</span><span class="p">:</span>
+                <span class="n">response_ctx</span><span class="p">[</span><span class="s">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_type</span>
+        <span class="k">return</span> <span class="n">response_ctx</span><span class="p">,</span> <span class="n">response</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

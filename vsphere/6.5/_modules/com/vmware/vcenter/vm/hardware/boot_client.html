@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vcenter.vm.hardware.boot_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vcenter.vm.hardware.boot_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vcenter.vm.hardware.boot.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vcenter.vm.hardware.boot_client`` module provides classes for</span>
+<span class="sd">managing the virtual devices used to boot a virtual machine.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.boot_client.Device">[docs]</a><span class="k">class</span> <span class="nc">Device</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Device`` class provides methods for configuring the device order used</span>
+<span class="sd">    when booting a virtual machine. </span>
+<span class="sd">    </span>
+<span class="sd">    The boot order may be specified using a mixture of device classes and</span>
+<span class="sd">    device instances, chosen from among the following: </span>
+<span class="sd">    </span>
+<span class="sd">    * :attr:`Device.Type.CDROM`: Boot from a virtual CD-ROM drive; the device</span>
+<span class="sd">      instance(s) will be chosen by the BIOS subsystem.</span>
+<span class="sd">    * :attr:`Device.Type.FLOPPY`: Boot from a virtual floppy drive; the device</span>
+<span class="sd">      instance(s) will be chosen by the BIOS subsystem.</span>
+<span class="sd">    * :attr:`Device.Type.DISK`: Boot from a virtual disk device; the device</span>
+<span class="sd">      instance is specified explicitly in :attr:`Device.Entry.disks` list, and</span>
+<span class="sd">      multiple instances may be specified in the list.</span>
+<span class="sd">    * :attr:`Device.Type.ETHERNET`: Boot from a virtual Ethernet adapter; the</span>
+<span class="sd">      device instance is specified explicitly as :attr:`Device.Entry.nic`, and</span>
+<span class="sd">      multiple adapters may be specified in the boot order list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_DeviceStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Device.Type"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.boot_client.Device.Type">[docs]</a>    <span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Device.Type`` class defines the valid device types that may be used</span>
+<span class="sd">        as bootable devices.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">CDROM</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Virtual CD-ROM device.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DISK</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Virtual disk device.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ETHERNET</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Virtual Ethernet adapter.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">FLOPPY</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Virtual floppy drive.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`Type` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">Type</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;CDROM&#39;</span><span class="p">),</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;DISK&#39;</span><span class="p">),</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;ETHERNET&#39;</span><span class="p">),</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;FLOPPY&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.boot.device.type&#39;</span><span class="p">,</span>
+        <span class="n">Type</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Device.EntryCreateSpec"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.boot_client.Device.EntryCreateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">EntryCreateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The class ``Device.EntryCreateSpec`` specifies a list of bootable virtual</span>
+<span class="sd">        device classes. When a VM is being created and a :class:`list` of</span>
+<span class="sd">        ``Device.EntryCreateSpec`` is specified, the boot order of the specific</span>
+<span class="sd">        device instances are not specified in this class. The boot order of the</span>
+<span class="sd">        specific device instance will be the order in which the Ethernet and Disk</span>
+<span class="sd">        devices appear in the ``nics`` and ``disks`` respectively.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  type: :class:`Device.Type`</span>
+<span class="sd">            :param type: Virtual Boot device type.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">EntryCreateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.boot.device.entry_create_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Device.Type&#39;</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">EntryCreateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Device.Entry"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.boot_client.Device.Entry">[docs]</a>    <span class="k">class</span> <span class="nc">Entry</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Device.Entry`` class specifies a bootable virtual device class or</span>
+<span class="sd">        specific bootable virtual device(s).</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;type&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;ETHERNET&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;nic&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;DISK&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;disks&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;CDROM&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                    <span class="s">&#39;FLOPPY&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">nic</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">disks</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  type: :class:`Device.Type`</span>
+<span class="sd">            :param type: Virtual device type.</span>
+<span class="sd">            :type  nic: :class:`str`</span>
+<span class="sd">            :param nic: Virtual Ethernet device. Ethernet device to use as boot device for</span>
+<span class="sd">                this entry.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.vcenter.vm.hardware.Ethernet``. When methods return a</span>
+<span class="sd">                value of this class as a return value, the attribute will be an</span>
+<span class="sd">                identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.vcenter.vm.hardware.Ethernet``.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is :attr:`Device.Type.ETHERNET`.</span>
+<span class="sd">            :type  disks: :class:`list` of :class:`str`</span>
+<span class="sd">            :param disks: Virtual disk device. List of virtual disks in boot order.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must contain identifiers for the resource type:</span>
+<span class="sd">                ``com.vmware.vcenter.vm.hardware.Disk``. When methods return a</span>
+<span class="sd">                value of this class as a return value, the attribute will contain</span>
+<span class="sd">                identifiers for the resource type:</span>
+<span class="sd">                ``com.vmware.vcenter.vm.hardware.Disk``.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is :attr:`Device.Type.DISK`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nic</span> <span class="o">=</span> <span class="n">nic</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disks</span> <span class="o">=</span> <span class="n">disks</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Entry</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.boot.device.entry&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Device.Type&#39;</span><span class="p">),</span>
+            <span class="s">&#39;nic&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+            <span class="s">&#39;disks&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">())),</span>
+        <span class="p">},</span>
+        <span class="n">Entry</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Device.get"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.boot_client.Device.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">vm</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an ordered list of boot devices for the virtual machine. If the</span>
+<span class="sd">        :class:`list` is empty, the virtual machine uses a default boot</span>
+<span class="sd">        sequence.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`Device.Entry`</span>
+<span class="sd">        :return: Ordered list of configured boot devices.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Device.set"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.boot_client.Device.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">vm</span><span class="p">,</span>
+            <span class="n">devices</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the virtual devices that will be used to boot the virtual machine.</span>
+<span class="sd">        The virtual machine will check the devices in order, attempting to boot</span>
+<span class="sd">        from each, until the virtual machine boots successfully. If the</span>
+<span class="sd">        :class:`list` is empty, the virtual machine will use a default boot</span>
+<span class="sd">        sequence. There should be no more than one instance of</span>
+<span class="sd">        :class:`Device.Entry` for a given device type except</span>
+<span class="sd">        :attr:`Device.Type.ETHERNET` in the :class:`list`.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  devices: :class:`list` of :class:`Device.Entry`</span>
+<span class="sd">        :param devices: Ordered list of boot devices.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found, or if any of the specified</span>
+<span class="sd">            virtual devices is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if a any of the CDROM, DISK, ETHERNET, FLOPPY values appears in</span>
+<span class="sd">            more than one ``Device.Entry`` with the exception of</span>
+<span class="sd">            :attr:`Device.Type.ETHERNET`, which may appear multiple times if</span>
+<span class="sd">            the virtual machine has been configured with multiple Ethernet</span>
+<span class="sd">            adapters.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is busy performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;set&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;devices&#39;</span><span class="p">:</span> <span class="n">devices</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_DeviceStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for set operation</span>
+        <span class="n">set_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;devices&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Device.Entry&#39;</span><span class="p">)),</span>
+        <span class="p">})</span>
+        <span class="n">set_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">set_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">set_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Device.Entry&#39;</span><span class="p">)),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">set_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">set_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">set_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">set_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.boot.device&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

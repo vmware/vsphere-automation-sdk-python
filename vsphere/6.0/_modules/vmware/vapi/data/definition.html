@@ -1,0 +1,1170 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.data.definition &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.data.definition</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">DataDefinition classes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.type</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.value</span> <span class="kn">import</span> <span class="n">data_value_factory</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.visitor</span> <span class="kn">import</span> <span class="n">VapiVisitor</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.constants</span> <span class="kn">import</span> <span class="p">(</span><span class="n">MAP_ENTRY</span><span class="p">,</span> <span class="n">OPERATION_INPUT</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DataDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DataDefinition">[docs]</a><span class="k">class</span> <span class="nc">DataDefinition</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all types in the vAPI run-time type system</span>
+
+<span class="sd">    :type type: :class:`str`</span>
+<span class="sd">    :ivar type: String representation of the type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the data definition instance</span>
+
+<span class="sd">        :type  data_type: :class:`str`</span>
+<span class="sd">        :param data_type: String representation of the type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">data_type</span>
+
+<div class="viewcode-block" id="DataDefinition.valid_instance_of"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DataDefinition.valid_instance_of">[docs]</a>    <span class="k">def</span> <span class="nf">valid_instance_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates that the specified :class:`vmware.vapi.data.value.DataValue` is an instance of</span>
+<span class="sd">        this data-definition</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: the data value to validate</span>
+
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: true if the value is an instance of this data-definition,</span>
+<span class="sd">                 false, otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataDefinition.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DataDefinition.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates that the specified :class:`vmware.vapi.data.value.DataValue` is an instance of</span>
+<span class="sd">        this data-definition</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: the data value to validate</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return: a stack of messages indicating why the value is not an instance</span>
+<span class="sd">                 of this data-definition, or None if the value is an instance of</span>
+<span class="sd">                 this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&#39;vapi.data.validate.mismatch&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="s">&#39;None&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&#39;vapi.data.validate.mismatch&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="n">value</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="DataDefinition.complete_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DataDefinition.complete_value">[docs]</a>    <span class="k">def</span> <span class="nf">complete_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill the optional fields of StructValues. Also</span>
+<span class="sd">        includes the StructValues present in other generic types: List</span>
+<span class="sd">        and Optional.</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="DataDefinition.accept"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DataDefinition.accept">[docs]</a>    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visitor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies a visitor to this data-definition.</span>
+
+<span class="sd">        :type  visitor: :class:`SimpleDefinitionVisitor`</span>
+<span class="sd">        :param visitor: the visitor operating on this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DataDefinition</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">type</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DataDefinition</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span> <span class="o">==</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="c"># Classes that override __eq__ should define __hash__ to make</span>
+    <span class="c"># its instances usable in hashed collections</span>
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__hash__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">()&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+
+</div>
+<div class="viewcode-block" id="SingletonDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SingletonDefinition">[docs]</a><span class="k">class</span> <span class="nc">SingletonDefinition</span><span class="p">(</span><span class="n">DataDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all the primitive data definition classes. All the derived</span>
+<span class="sd">    classes of this class will have only one instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_instance</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize SingletonDefinition</span>
+
+<span class="sd">        :type  data_type: :class:`vmware.vapi.data.type.Type`</span>
+<span class="sd">        :param data_type: Type of the DataDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cls</span><span class="o">.</span><span class="n">_instance</span><span class="p">:</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span>
+                <span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_instance</span>
+
+</div>
+<div class="viewcode-block" id="VoidDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.VoidDefinition">[docs]</a><span class="k">class</span> <span class="nc">VoidDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition class for void</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize VoidDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VoidDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.VoidDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new VoidValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.VoidValue`</span>
+<span class="sd">        :return: Newly created VoidValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="IntegerDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.IntegerDefinition">[docs]</a><span class="k">class</span> <span class="nc">IntegerDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for long values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize IntegerDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IntegerDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.IntegerDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new IntegerValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.IntegerValue`</span>
+<span class="sd">        :return: Newly created IntegerValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="DoubleDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DoubleDefinition">[docs]</a><span class="k">class</span> <span class="nc">DoubleDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for floats</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DoubleDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DoubleDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DoubleDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new DoubleValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DoubleValue`</span>
+<span class="sd">        :return: Newly created DoubleValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="StringDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StringDefinition">[docs]</a><span class="k">class</span> <span class="nc">StringDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for strings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize StringDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StringDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StringDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new StringValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.StringValue`</span>
+<span class="sd">        :return: Newly created StringValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="OpaqueDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.OpaqueDefinition">[docs]</a><span class="k">class</span> <span class="nc">OpaqueDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for opaque</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize OpaqueDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">OPAQUE</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OpaqueDefinition.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.OpaqueDefinition.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The validation for OpaqueDefinition will succeed against</span>
+<span class="sd">        any DataValue. Only validates that supplied value is not None</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: DataValue to be validated</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return: a stack of messages indicating why the value is not an instance</span>
+<span class="sd">                 of this data-definition, or None if the value is an instance of</span>
+<span class="sd">                 this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&#39;vapi.data.validate.mismatch&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="s">&#39;None&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+</div></div>
+<div class="viewcode-block" id="DynamicStructDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DynamicStructDefinition">[docs]</a><span class="k">class</span> <span class="nc">DynamicStructDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for dynamic structs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_valid_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DynamicStructDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">DYNAMIC_STRUCTURE</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DynamicStructDefinition.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.DynamicStructDefinition.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The validation for DynamicStructDefinition will succeed against</span>
+<span class="sd">        any StructValue.</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: the data value to validate</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return: a stack of messages indicating why the value is not an instance</span>
+<span class="sd">                 of this data-definition, or None if the value is an instance of</span>
+<span class="sd">                 this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.data.dynamicstruct.validate.mismatch&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_valid_types</span><span class="p">,</span>
+                <span class="s">&#39;None&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_types</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.data.dynamicstruct.validate.mismatch&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_valid_types</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">None</span>
+
+</div></div>
+<div class="viewcode-block" id="AnyErrorDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.AnyErrorDefinition">[docs]</a><span class="k">class</span> <span class="nc">AnyErrorDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for &#39;Exception&#39; type in IDL</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize AnyErrorDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">ANY_ERROR</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AnyErrorDefinition.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.AnyErrorDefinition.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The validation for AnyErrorDefinition will succeed against</span>
+<span class="sd">        any ErrorValue.</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: the data value to validate</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return: a stack of messages indicating why the value is not an instance</span>
+<span class="sd">                 of this data-definition, or None if the value is an instance of</span>
+<span class="sd">                 this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&#39;vapi.data.validate.mismatch&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="s">&#39;None&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&#39;vapi.data.validate.mismatch&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="n">value</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">None</span>
+
+</div></div>
+<div class="viewcode-block" id="BlobDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.BlobDefinition">[docs]</a><span class="k">class</span> <span class="nc">BlobDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for binary values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize BlobDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">BLOB</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BlobDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.BlobDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new BlobValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.BlobValue`</span>
+<span class="sd">        :return: Newly created BlobValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="BooleanDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.BooleanDefinition">[docs]</a><span class="k">class</span> <span class="nc">BooleanDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for bool values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize BooleanDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BooleanDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.BooleanDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new BooleanValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.BooleanValue`</span>
+<span class="sd">        :return: Newly created BooleanValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ListDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ListDefinition">[docs]</a><span class="k">class</span> <span class="nc">ListDefinition</span><span class="p">(</span><span class="n">DataDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for lists</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ListDefinition</span>
+
+<span class="sd">        :type  element_type: :class:`DataDefinition`</span>
+<span class="sd">        :param element_type: DataDefinition of the elements inside ListDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">element_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;ListDefinition requires element definition&#39;</span><span class="p">)</span>
+        <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="o">=</span> <span class="n">element_type</span>
+
+<div class="viewcode-block" id="ListDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ListDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new ListValue</span>
+
+<span class="sd">        :type  values: :class:`list` of :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param values: List of elements</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.ListValue`</span>
+<span class="sd">        :return: Newly created ListValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ListDefinition.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ListDefinition.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apart from the validation checks specified in the validate</span>
+<span class="sd">        method of DataDefinition class, this method does some additional checks</span>
+
+<span class="sd">        Validation will fail if any element in the ListValue does not validate</span>
+<span class="sd">        against the DataDefinition of the elementType of this ListDefinition</span>
+
+<span class="sd">        :type  other: :class:`vmware.vapi.data.value.ListValue`</span>
+<span class="sd">        :param other: ListValue to be validated</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return: a stack of messages indicating why the value is not an instance</span>
+<span class="sd">                 of this data-definition, or None if the value is an instance of</span>
+<span class="sd">                 this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="n">DataDefinition</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">errors</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_value</span><span class="p">):</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.data.list.invalid.entry&#39;</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">index</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span> <span class="o">+</span> <span class="n">errors</span>
+
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="ListDefinition.complete_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ListDefinition.complete_value">[docs]</a>    <span class="k">def</span> <span class="nf">complete_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill the optional values inside StructValues</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">complete_value</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ListDefinition</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">DataDefinition</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+
+    <span class="c"># Classes that override __eq__ should define __hash__ to make</span>
+    <span class="c"># its instances usable in hashed collections</span>
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;ListDefinition(element_type=</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="StructDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructDefinition">[docs]</a><span class="k">class</span> <span class="nc">StructDefinition</span><span class="p">(</span><span class="n">DataDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for structures</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize StructDefinition</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the Structure</span>
+<span class="sd">        :type  fields: :class:`tuple` of (:class:`str`, :class:`DataDefinition`)</span>
+<span class="sd">        :param fields: A tuple consisting of the field name and the field</span>
+<span class="sd">                       definition for all the fields inside this StructDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Struct name may not be None or empty string&#39;</span><span class="p">)</span>
+        <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StructDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new StructValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :return: Newly created StructValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StructDefinition.get_field_names"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructDefinition.get_field_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of field names in this struct definition. The ordering</span>
+<span class="sd">        of fields is not preserved.</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: List of field names in this struct definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span>
+</div>
+<div class="viewcode-block" id="StructDefinition.get_field"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructDefinition.get_field">[docs]</a>    <span class="k">def</span> <span class="nf">get_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the field definition of the specified field</span>
+
+<span class="sd">        :rtype: :class:`DataDefinition`</span>
+<span class="sd">        :return: field definition of the specified field</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StructDefinition.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructDefinition.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apart from the validation checks specified in the validate</span>
+<span class="sd">        method of DataDefinition class, this method does some additional checks</span>
+
+<span class="sd">        Validation will fail if</span>
+<span class="sd">        - the name of the input StructValue does not match the name of this</span>
+<span class="sd">        StructDefinition.</span>
+<span class="sd">        - any of the fields (either required or optional) in this StructDefinition</span>
+<span class="sd">        are not present in the input StructValue</span>
+<span class="sd">        - the validation fails for any field value in the input StructValue with</span>
+<span class="sd">        its corresponding definition in this StructDefinition</span>
+
+<span class="sd">        The method performs inclusive validation. i.e. If there are any extra</span>
+<span class="sd">        fields in the input StructValue which are not present in the</span>
+<span class="sd">        StructDefinition, validation will not fail.</span>
+
+<span class="sd">        :type  other: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param other: StructValue to be validated</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` of ``None``</span>
+<span class="sd">        :return: a stack of messages indicating why the value is not an instance</span>
+<span class="sd">                 of this data-definition, or None if the value is an instance of</span>
+<span class="sd">                 this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="n">DataDefinition</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">errors</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="c"># Remove the following if condition in R28</span>
+            <span class="c"># To handle old client talking to new server</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="n">MAP_ENTRY</span><span class="p">,</span> <span class="n">OPERATION_INPUT</span><span class="p">]:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.data.structure.name.mismatch&#39;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">other</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="ow">and</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.data.structure.field.missing&#39;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+            <span class="n">field_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+            <span class="n">field_val</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="n">field_def</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">field_val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.data.structure.field.invalid&#39;</span><span class="p">,</span>
+                    <span class="n">field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span> <span class="o">+</span> <span class="n">errors</span>
+
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="StructDefinition.complete_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructDefinition.complete_value">[docs]</a>    <span class="k">def</span> <span class="nf">complete_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill out all the unset optional fields in a structure</span>
+<span class="sd">        based on the StructDefinition</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param value: Input Struct Value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">:</span>
+            <span class="n">field_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+                <span class="c"># Complete the optional values in elements as well</span>
+                <span class="n">field_def</span><span class="o">.</span><span class="n">complete_value</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">field_def</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">:</span>
+                <span class="c"># If field is not present and it is optional, fill it</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">field_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">())</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">StructDefinition</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">DataDefinition</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">:</span>
+            <span class="n">other_field_def</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">other_field_def</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="n">field_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">field_def</span> <span class="o">!=</span> <span class="n">other_field_def</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="c"># Classes that override __eq__ should define __hash__ to make</span>
+    <span class="c"># its instances usable in hashed collections</span>
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)))</span>
+                           <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">(name=</span><span class="si">%s</span><span class="s">, fields={</span><span class="si">%s</span><span class="s">})&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span>
+                                             <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                                             <span class="n">fields</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="StructRefDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructRefDefinition">[docs]</a><span class="k">class</span> <span class="nc">StructRefDefinition</span><span class="p">(</span><span class="n">DataDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reference to a StructDefinition. If the reference is resolved, it is</span>
+<span class="sd">    bound to a specific StructDefinition target. If the reference is</span>
+<span class="sd">    unresolved, its target is None.</span>
+
+<span class="sd">    :type name: :class:`str`</span>
+<span class="sd">    :ivar name: Structure name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize StructRefDefinition</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Structure name</span>
+<span class="sd">        :type  definition: :class:`DataDefinition`</span>
+<span class="sd">        :param definition: If definition is passed, it creates a resolved</span>
+<span class="sd">                           reference</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Struct name may not be None or empty string&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span> <span class="o">=</span> <span class="n">definition</span>
+        <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE_REF</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the target structure definition of this reference.</span>
+
+<span class="sd">        :rtype: :class:`DataDefinition` or ``None``</span>
+<span class="sd">        :return: The target of this reference. The value will be None for</span>
+<span class="sd">                 unresolved reference</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span>
+
+    <span class="nd">@target.setter</span>
+<div class="viewcode-block" id="StructRefDefinition.target"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructRefDefinition.target">[docs]</a>    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resolves the reference. An unresolved reference can be resolved exactly</span>
+<span class="sd">        once. A resolved reference cannot be re-resolved.</span>
+
+<span class="sd">        :type  definition: :class:`DataDefinition`</span>
+<span class="sd">        :param definition: structure definition</span>
+<span class="sd">        :raise: :class:`vmware.vapi.exception.CoreException`: if the reference is</span>
+<span class="sd">            already resolved (already has) a target) or if the name of the</span>
+<span class="sd">            reference does not match the name of the definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;StructDefinition may not be None&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.data.structref.already.resolved&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.data.structref.resolve.type.mismatch&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span> <span class="o">=</span> <span class="n">definition</span>
+</div>
+<div class="viewcode-block" id="StructRefDefinition.check_resolved"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructRefDefinition.check_resolved">[docs]</a>    <span class="k">def</span> <span class="nf">check_resolved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the reference is resolved or not</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.data.structref.not.resolved&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StructRefDefinition.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.StructRefDefinition.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate using the target if the reference is resolved</span>
+
+<span class="sd">        :type  other: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param other: StructValue to be validated</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` of ``None``</span>
+<span class="sd">        :return: a stack of messages indicating that the reference is not</span>
+<span class="sd">                 resolved or why the value is not an instance of this</span>
+<span class="sd">                 data-definition, or None if the value is an instance of</span>
+<span class="sd">                 this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_resolved</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">CoreException</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">err</span><span class="o">.</span><span class="n">messages</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">StructRefDefinition</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">DataDefinition</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="c"># Classes that override __eq__ should define __hash__ to make</span>
+    <span class="c"># its instances usable in hashed collections</span>
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;StructRefDefinition(name=</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+</div>
+<div class="viewcode-block" id="ErrorDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ErrorDefinition">[docs]</a><span class="k">class</span> <span class="nc">ErrorDefinition</span><span class="p">(</span><span class="n">StructDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for errors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ErrorDefinition</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the Error</span>
+<span class="sd">        :type  fields: :class:`tuple` of (:class:`str`, :class:`DataDefinition`)</span>
+<span class="sd">        :param fields: A tuple consisting of the field name and the field</span>
+<span class="sd">                       definition for all the fields inside this</span>
+<span class="sd">                       StructDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">StructDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ErrorDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ErrorDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new ErrorValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.ErrorValue`</span>
+<span class="sd">        :return: Newly created ErrorValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="OptionalDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.OptionalDefinition">[docs]</a><span class="k">class</span> <span class="nc">OptionalDefinition</span><span class="p">(</span><span class="n">DataDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An OptionalDefinition instance defines an optional type with a specified</span>
+<span class="sd">    element type</span>
+
+<span class="sd">    :type data_type: :class:`str`</span>
+<span class="sd">    :ivar type: String representation of the type</span>
+<span class="sd">    :type element_type: :class:`DataDefinition`</span>
+<span class="sd">    :ivar element_type: The type of the element that is optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize OptionalDefinition</span>
+
+<span class="sd">        :type  element_type: :class:`vmware.vapi.data.type.Type`</span>
+<span class="sd">        :param element_type: Type of the DataDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">element_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Optional definition requires element definition&#39;</span><span class="p">)</span>
+        <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="o">=</span> <span class="n">element_type</span>
+
+<div class="viewcode-block" id="OptionalDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.OptionalDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create and return a new :class:`OptionalValue` using this</span>
+<span class="sd">        optional-definition.</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: The element value</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.OptionalValue`</span>
+<span class="sd">        :return: A new optional value using the given data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OptionalDefinition.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.OptionalDefinition.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apart from the validation checks specified in the validate</span>
+<span class="sd">        method of DataDefinition class, this method does some additional checks.</span>
+
+<span class="sd">        Since this is an OptionalValue, validation will succeed if the</span>
+<span class="sd">        element value is None. If the element value is not None, validation</span>
+<span class="sd">        will fail if element in the OptionalValue does not validate against</span>
+<span class="sd">        the DataDefinition of the element_type of this OptionalDefinition.</span>
+
+<span class="sd">        :type  other: :class:`vmware.vapi.data.value.OptionalValue`</span>
+<span class="sd">        :param other: OptionalValue to be validated</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message`</span>
+<span class="sd">        :return: a stack of messages indicating why the value is not an instance</span>
+<span class="sd">                 of this data-definition, or None if the value is an instance of</span>
+<span class="sd">                 this data-definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="n">DataDefinition</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">errors</span>
+
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># None is a valid value for optional</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&#39;vapi.data.optional.validate&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span> <span class="o">+</span> <span class="n">errors</span>
+
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="OptionalDefinition.complete_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.OptionalDefinition.complete_value">[docs]</a>    <span class="k">def</span> <span class="nf">complete_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill the optional values inside StructValues</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.OptionalValue`</span>
+<span class="sd">        :param value: DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">complete_value</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">OptionalDefinition</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">DataDefinition</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">element_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+
+    <span class="c"># Classes that override __eq__ should define __hash__ to make</span>
+    <span class="c"># its instances usable in hashed collections</span>
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DataDefinition</span><span class="o">.</span><span class="n">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;OptionalDefinition(element_type=</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="SecretDefinition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SecretDefinition">[docs]</a><span class="k">class</span> <span class="nc">SecretDefinition</span><span class="p">(</span><span class="n">SingletonDefinition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataDefinition for Secrets. Only strings are allowed to be secrets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize SecretDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SingletonDefinition</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SecretDefinition.new_value"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SecretDefinition.new_value">[docs]</a>    <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new SecretValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.SecretValue`</span>
+<span class="sd">        :return: Newly created SecretValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor">[docs]</a><span class="k">class</span> <span class="nc">SimpleDefinitionVisitor</span><span class="p">(</span><span class="n">VapiVisitor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base no-op implementation of a definition visitor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">VapiVisitor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Definition&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a VoidDefinition</span>
+
+<span class="sd">        :type  defn: :class:`VoidDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_integer"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_integer">[docs]</a>    <span class="k">def</span> <span class="nf">visit_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a IntegerDefinition</span>
+
+<span class="sd">        :type  defn: :class:`IntegerDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_double"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_double">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DoubleDefinition</span>
+
+<span class="sd">        :type  defn: :class:`DoubleDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a StringDefinition</span>
+
+<span class="sd">        :type  defn: :class:`StringDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_opaque"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_opaque">[docs]</a>    <span class="k">def</span> <span class="nf">visit_opaque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a OpaqueDefinition</span>
+
+<span class="sd">        :type  defn: :class:`OpaqueDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_blob"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_blob">[docs]</a>    <span class="k">def</span> <span class="nf">visit_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a BlobDefinition</span>
+
+<span class="sd">        :type  defn: :class:`BlobDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_boolean"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_boolean">[docs]</a>    <span class="k">def</span> <span class="nf">visit_boolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a BooleanDefinition</span>
+
+<span class="sd">        :type  defn: :class:`BooleanDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a ListDefinition</span>
+
+<span class="sd">        :type  defn: :class:`ListDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_struct"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a StructDefinition</span>
+
+<span class="sd">        :type  defn: :class:`StructDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an ErrorDefinition</span>
+
+<span class="sd">        :type  defn: :class:`ErrorDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a OptionalDefinition</span>
+
+<span class="sd">        :type  defn: :class:`OptionalDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_secret"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_secret">[docs]</a>    <span class="k">def</span> <span class="nf">visit_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a SecretDefinition</span>
+
+<span class="sd">        :type  defn: :class:`SecretDefinition`</span>
+<span class="sd">        :param defn: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="SimpleDefinitionVisitor.visit_struct_ref"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.SimpleDefinitionVisitor.visit_struct_ref">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a StructRefDefinition</span>
+
+<span class="sd">        :type  defn: :class:`StructRefDefinition`</span>
+<span class="sd">        :param defn: StructRefDefinition object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<span class="c"># vapi type name to vapi type definition map</span></div></div>
+<span class="n">data_type_to_definition_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="n">IntegerDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="n">DoubleDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">:</span> <span class="n">BooleanDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span> <span class="n">StringDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">BLOB</span><span class="p">:</span> <span class="n">BlobDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">:</span> <span class="n">ListDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">:</span> <span class="n">StructDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">:</span> <span class="n">OptionalDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">:</span> <span class="n">VoidDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">OPAQUE</span><span class="p">:</span> <span class="n">OpaqueDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">:</span> <span class="n">SecretDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span> <span class="n">ErrorDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE_REF</span><span class="p">:</span> <span class="n">StructRefDefinition</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">DYNAMIC_STRUCTURE</span><span class="p">:</span> <span class="n">DynamicStructDefinition</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="data_definition_factory"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.data_definition_factory">[docs]</a><span class="k">def</span> <span class="nf">data_definition_factory</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    data definition factory</span>
+
+<span class="sd">    :type  data_type: :class:`str`</span>
+<span class="sd">    :param data_type: Type name defined in vmware.vapi.data.type</span>
+<span class="sd">    :type  args: :class:`set`</span>
+<span class="sd">    :param args: Positional arguments to data definition constructor</span>
+<span class="sd">    :type  kwargs: :class:`dict`</span>
+<span class="sd">    :param kwargs: Dict arguments to data definition constructor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">constructor</span> <span class="o">=</span> <span class="n">data_type_to_definition_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">constructor</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ReferenceResolver"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ReferenceResolver">[docs]</a><span class="k">class</span> <span class="nc">ReferenceResolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resolves all the StructRefDefinition objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ReferenceResolver</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_definitions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_references</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="ReferenceResolver.add_definition"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ReferenceResolver.add_definition">[docs]</a>    <span class="k">def</span> <span class="nf">add_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new structure definition to the context</span>
+
+<span class="sd">        :type  definition: :class:`StructDefinition`</span>
+<span class="sd">        :param definition: StructDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_definitions</span><span class="p">[</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span>
+</div>
+<div class="viewcode-block" id="ReferenceResolver.add_reference"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ReferenceResolver.add_reference">[docs]</a>    <span class="k">def</span> <span class="nf">add_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new structure refernce to the context</span>
+
+<span class="sd">        :type  refernce: :class:`StructRefDefinition`</span>
+<span class="sd">        :param refernce: StructRefDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_references</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ReferenceResolver.is_defined"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ReferenceResolver.is_defined">[docs]</a>    <span class="k">def</span> <span class="nf">is_defined</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determines whether the context contains a definition for the specified</span>
+<span class="sd">        structure</span>
+
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: True if the structure is already defined, false otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definitions</span>
+</div>
+<div class="viewcode-block" id="ReferenceResolver.resolve"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.definition.ReferenceResolver.resolve">[docs]</a>    <span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Traverses all references and resolves the unresolved ones.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_references</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">reference</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">definition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definitions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reference</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">definition</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                        <span class="s">&#39;vapi.data.structref.structure.not.defined&#39;</span><span class="p">,</span>
+                        <span class="n">reference</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="n">reference</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">definition</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

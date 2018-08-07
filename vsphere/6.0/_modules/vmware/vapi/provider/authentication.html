@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.provider.authentication &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.provider.authentication</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Authentication API Provider filter</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">MethodResult</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.std</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_std_error_def</span><span class="p">,</span> <span class="n">make_error_value_from_msg_id</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.constants</span> <span class="kn">import</span> <span class="n">SCHEME_ID</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.provider.filter</span> <span class="kn">import</span> <span class="n">ApiProviderFilter</span>
+
+
+<span class="c"># Configure logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">NO_AUTH</span> <span class="o">=</span> <span class="s">&#39;com.vmware.vapi.std.security.no_authentication&#39;</span>
+
+
+<div class="viewcode-block" id="load_metadata"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.authentication.load_metadata">[docs]</a><span class="k">def</span> <span class="nf">load_metadata</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load the metadata from the json file</span>
+
+<span class="sd">    :rtype: :class:`dict`</span>
+<span class="sd">    :return: Authentication metadata</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">vmware.vapi.settings</span> <span class="kn">import</span> <span class="n">config</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">cfg</span>
+    <span class="k">if</span> <span class="n">cfg</span> <span class="ow">and</span> <span class="n">cfg</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">__name__</span><span class="p">):</span>
+        <span class="n">metadata_file</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">__name__</span><span class="p">,</span> <span class="s">&#39;file&#39;</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">metadata_file</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">authn_metadata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;authentication&#39;</span><span class="p">,</span> <span class="p">{})</span>  <span class="c"># pylint: disable=E1103</span>
+        <span class="k">return</span> <span class="n">authn_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;product&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+</div>
+<div class="viewcode-block" id="AuthenticationFilter"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.authentication.AuthenticationFilter">[docs]</a><span class="k">class</span> <span class="nc">AuthenticationFilter</span><span class="p">(</span><span class="n">ApiProviderFilter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    AuthenticationFilter in API Provider chain enforces the authentication</span>
+<span class="sd">    schemes specified in the authentication metadata file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_provider</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize AuthenticationFilter</span>
+
+<span class="sd">        :type  next_provider: :class:`vmware.vapi.core.ApiProvider` or ``None``</span>
+<span class="sd">        :param next_provider: API Provider to invoke the requests</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">load_metadata</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.internal_server_error&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unauthenticated_error_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">)</span>
+        <span class="n">ApiProviderFilter</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">next_provider</span><span class="p">,</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unauthenticated_error_def</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_get_scheme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scheme_rules</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract the scheme identifier</span>
+
+<span class="sd">        :type  scheme_rules: :class:`dict`</span>
+<span class="sd">        :param scheme_rules: Scheme rules</span>
+<span class="sd">        :type  key: :class:`str`</span>
+<span class="sd">        :param key: Key to retrieve the scheme name from scheme rules</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Scheme identifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">scheme_ids</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">scheme_names</span> <span class="o">=</span> <span class="n">scheme_rules</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scheme_names</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheme_names</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">scheme_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">scheme_names</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">scheme_names</span><span class="p">:</span>
+                <span class="c"># Scheme name is present, get the scheme id</span>
+                <span class="n">scheme_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;schemes&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">scheme_name</span> <span class="ow">in</span> <span class="n">scheme_names</span><span class="p">:</span>
+                    <span class="n">scheme_info</span> <span class="o">=</span> <span class="n">scheme_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">scheme_name</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">scheme_info</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="c"># Scheme info is not present</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">scheme_name</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">scheme_id</span> <span class="o">=</span> <span class="n">scheme_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;authenticationScheme&#39;</span><span class="p">)</span>
+                        <span class="n">scheme_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scheme_id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># Scheme rule is present but there is no authn scheme</span>
+                <span class="n">scheme_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NO_AUTH</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">scheme_ids</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_get_package_specific_scheme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the package specific scheme for the input operation</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Authentication scheme identifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">package_name</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">service_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">package_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;packages&#39;</span><span class="p">)</span>
+        <span class="n">packages_match</span> <span class="o">=</span> <span class="p">[</span><span class="n">package</span> <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="n">package_data</span><span class="p">)</span>
+                          <span class="k">if</span> <span class="n">package</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">package_name</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">packages_match</span><span class="p">:</span>
+            <span class="n">closest_package</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">packages_match</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scheme</span><span class="p">(</span><span class="n">package_data</span><span class="p">,</span> <span class="n">closest_package</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_service_specific_scheme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the service specific scheme for the input operation</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Authentication scheme identifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">service_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;services&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scheme</span><span class="p">(</span><span class="n">service_data</span><span class="p">,</span>
+                                <span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">service_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_operation_specific_scheme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the operation specific scheme for the input operation</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Authentication scheme identifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">operation_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;operations&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scheme</span><span class="p">(</span><span class="n">operation_data</span><span class="p">,</span>
+                                <span class="s">&#39;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_validate_scheme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate the authentication scheme present in</span>
+<span class="sd">        the security context</span>
+
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context for this method</span>
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: MethodResult object with unauthenticated error</span>
+<span class="sd">            in case of a scheme mismatch, else None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_scheme</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">security_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">SCHEME_ID</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">scheme_fn</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_operation_specific_scheme</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">_get_service_specific_scheme</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">_get_package_specific_scheme</span><span class="p">]:</span>
+            <span class="n">schemes</span> <span class="o">=</span> <span class="n">scheme_fn</span><span class="p">(</span><span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">schemes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">request_scheme</span> <span class="ow">in</span> <span class="n">schemes</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">elif</span> <span class="n">NO_AUTH</span> <span class="ow">in</span> <span class="n">schemes</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msg_id</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_unauthenticated_error_def</span><span class="p">,</span>
+                        <span class="s">&#39;vapi.security.authentication.scheme&#39;</span><span class="p">,</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">schemes</span><span class="p">),</span> <span class="n">request_scheme</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AuthenticationFilter.invoke"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.authentication.AuthenticationFilter.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invoke an API request</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Method input parameters</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context for this method</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Result of the method invocation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">method_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_scheme</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">scheme_rule_key</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msg_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span>
+                <span class="s">&#39;vapi.security.authentication.scheme.invalid&#39;</span><span class="p">,</span>
+                <span class="n">scheme_rule_key</span><span class="p">)</span>
+            <span class="n">method_result</span> <span class="o">=</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">method_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">method_result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ApiProviderFilter</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+
+
+<span class="c"># Single AuthenticationFilter instance</span></div></div>
+<span class="n">_authn_filter</span> <span class="o">=</span> <span class="n">AuthenticationFilter</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_provider"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.authentication.get_provider">[docs]</a><span class="k">def</span> <span class="nf">get_provider</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the singleton AuthenticationFilter instance</span>
+
+<span class="sd">    :rtype: :class:`vmware.vapi.provider.authentication.AuthenticationFilter`</span>
+<span class="sd">    :return: AuthenticationFilter instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_authn_filter</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

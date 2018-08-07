@@ -1,0 +1,1484 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.content.library_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.content.library_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2015 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.content.library.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The Content Library module provides classes and classes for defining and</span>
+<span class="sd">managing the library&#39;s items, subscription, publication, and storage.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="ItemModel"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.ItemModel">[docs]</a><span class="k">class</span> <span class="nc">ItemModel</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ItemModel`` class represents a library item that has been stored in a</span>
+<span class="sd">    library. </span>
+<span class="sd">    </span>
+<span class="sd">    A ``ItemModel`` represents a single logical unit to be managed within a</span>
+<span class="sd">    :class:`com.vmware.content_client.LibraryModel`. Items contain the actual</span>
+<span class="sd">    content of a library, and their placement within a library determines</span>
+<span class="sd">    policies that affect that content such as publishing. </span>
+<span class="sd">    </span>
+<span class="sd">    A library item can have a specified type, indicated with the</span>
+<span class="sd">    :attr:`ItemModel.type` attribute. This property is associated with a</span>
+<span class="sd">    Content Library Service plugin that supports specific types and provides</span>
+<span class="sd">    additional services. The types available in a specific Content Library</span>
+<span class="sd">    Service can be queried using the :class:`com.vmware.content_client.Type`</span>
+<span class="sd">    class. Items of an unknown or unspecified type are treated generically.</span>
+<span class="sd">    Because subscribed library catalogs are synchronized as is, subscribing to</span>
+<span class="sd">    a remote Content Library Service effectively gives you a library with the</span>
+<span class="sd">    functionality of the remote service&#39;s type adapter plugins, even if they</span>
+<span class="sd">    are not installed locally. </span>
+<span class="sd">    </span>
+<span class="sd">    Items can be managed using the :class:`Item` class and, for items in</span>
+<span class="sd">    subscribed libraries, the :class:`SubscribedItem` class.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">library_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">content_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">creation_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">last_modified_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">last_sync_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">metadata_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">cached</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">source_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  id: :class:`str`</span>
+<span class="sd">        :param id: A unique identifier for this library item.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the</span>
+<span class="sd">            attribute must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the attribute will be an identifier</span>
+<span class="sd">            for the resource type: ``com.vmware.content.library.Item``.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It will not</span>
+<span class="sd">            be present in the return value of the ``get`` or ``list`` methods.</span>
+<span class="sd">            It is not used for the ``update`` method.</span>
+<span class="sd">        :type  library_id: :class:`str`</span>
+<span class="sd">        :param library_id: The identifier of the</span>
+<span class="sd">            :class:`com.vmware.content_client.LibraryModel` to which this item</span>
+<span class="sd">            belongs.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the</span>
+<span class="sd">            attribute must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.Library``. When methods return a value of this</span>
+<span class="sd">            class as a return value, the attribute will be an identifier for</span>
+<span class="sd">            the resource type: ``com.vmware.content.Library``.</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is not used for the ``update`` method.</span>
+<span class="sd">        :type  content_version: :class:`str`</span>
+<span class="sd">        :param content_version: The version of the file content list of this library item.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is not used for the ``update`` method.</span>
+<span class="sd">        :type  creation_time: :class:`datetime.datetime`</span>
+<span class="sd">        :param creation_time: The date and time when this library item was created.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is not used for the ``update`` method.</span>
+<span class="sd">        :type  description: :class:`str`</span>
+<span class="sd">        :param description: A human-readable description for this library item.</span>
+<span class="sd">            This attribute is optional for the ``create`` method. Leaving it</span>
+<span class="sd">            None during creation will result in an empty string value. It will</span>
+<span class="sd">            always be present in the result of a ``get`` or ``list`` method. It</span>
+<span class="sd">            is optional for the ``update`` method. Leaving it None during</span>
+<span class="sd">            update indicates that the description remains unchanged.</span>
+<span class="sd">        :type  last_modified_time: :class:`datetime.datetime`</span>
+<span class="sd">        :param last_modified_time: The date and time when the metadata for this library item was last</span>
+<span class="sd">            changed. </span>
+<span class="sd">            </span>
+<span class="sd">            This attribute is affected by changes to the properties or file</span>
+<span class="sd">            content of this item. It is not modified by changes to the tags of</span>
+<span class="sd">            the item, or by changes to the library which owns this item.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is not used for the ``update`` method.</span>
+<span class="sd">        :type  last_sync_time: :class:`datetime.datetime`</span>
+<span class="sd">        :param last_sync_time: The date and time when this library item was last synchronized. </span>
+<span class="sd">            </span>
+<span class="sd">            This attribute is updated every time a synchronization is triggered</span>
+<span class="sd">            on the library item, including when a synchronization is triggered</span>
+<span class="sd">            on the library to which this item belongs. The value is None for a</span>
+<span class="sd">            library item that belongs to a local library.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It is</span>
+<span class="sd">            optional in the return value of the ``get`` or ``list`` methods. It</span>
+<span class="sd">            is not used for the ``update`` method.</span>
+<span class="sd">        :type  metadata_version: :class:`str`</span>
+<span class="sd">        :param metadata_version: A version number for the metadata of this library item. </span>
+<span class="sd">            </span>
+<span class="sd">            This value is incremented with each change to the metadata of this</span>
+<span class="sd">            item. Changes to name, description, and so on will increment this</span>
+<span class="sd">            value. The value is not incremented by changes to the content or</span>
+<span class="sd">            tags of the item or the library which owns it.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is not used for the ``update`` method.</span>
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: A human-readable name for this library item. </span>
+<span class="sd">            </span>
+<span class="sd">            The name may not be None or an empty string. The name does not have</span>
+<span class="sd">            to be unique, even within the same library.</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is optional for the ``update`` method.</span>
+<span class="sd">        :type  cached: :class:`bool`</span>
+<span class="sd">        :param cached: The status that indicates whether the library item is on disk or</span>
+<span class="sd">            not. The library item is cached when all its files are on disk.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is not used for the ``update`` method.</span>
+<span class="sd">        :type  size: :class:`long`</span>
+<span class="sd">        :param size: The library item size, in bytes. The size is the sum of the size</span>
+<span class="sd">            used on the storage backing for all the files in the item. When the</span>
+<span class="sd">            library item is not cached, the size is 0.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It is</span>
+<span class="sd">            optional in the return value of the ``get`` or ``list`` methods. It</span>
+<span class="sd">            is not used for the ``update`` method.</span>
+<span class="sd">        :type  type: :class:`str`</span>
+<span class="sd">        :param type: An optional type identifier which indicates the type adapter plugin</span>
+<span class="sd">            to use. </span>
+<span class="sd">            </span>
+<span class="sd">            This attribute may be set to a non-empty string value that</span>
+<span class="sd">            corresponds to an identifier supported by a type adapter plugin</span>
+<span class="sd">            present in the Content Library Service. A type adapter plugin, if</span>
+<span class="sd">            present for the specified type, can provide additional information</span>
+<span class="sd">            and services around the item content. A type adapter can guide the</span>
+<span class="sd">            upload process by creating file entries that are in need of being</span>
+<span class="sd">            uploaded to complete an item. </span>
+<span class="sd">            </span>
+<span class="sd">            The types and plugins supported by the Content Library Service can</span>
+<span class="sd">            be queried using the :class:`com.vmware.content_client.Type` class.</span>
+<span class="sd">            This attribute is optional for the ``create`` and ``update``</span>
+<span class="sd">            methods. During creation, if the type is left unspecified, or if</span>
+<span class="sd">            the type is specified but does not have a corresponding type</span>
+<span class="sd">            support plugin, then the type of the library item is considered to</span>
+<span class="sd">            be generic and all data is treated as generic files. During update,</span>
+<span class="sd">            if the type is not specified, then it is not updated.</span>
+<span class="sd">        :type  version: :class:`str`</span>
+<span class="sd">        :param version: A version number that is updated on metadata changes. This value is</span>
+<span class="sd">            used to validate update requests to provide optimistic concurrency</span>
+<span class="sd">            of changes. </span>
+<span class="sd">            </span>
+<span class="sd">            This value represents a number that is incremented every time</span>
+<span class="sd">            library item properties, such as name or description, are changed.</span>
+<span class="sd">            It is not incremented by changes to the file content of the library</span>
+<span class="sd">            item, including adding or removing files. It is also not affected</span>
+<span class="sd">            by tagging the library item.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It will</span>
+<span class="sd">            always be present in the result of a ``get`` or ``list`` method. It</span>
+<span class="sd">            is optional for the ``update`` method. Leaving it None during</span>
+<span class="sd">            update indicates that you do not need to detect concurrent updates.</span>
+<span class="sd">        :type  source_id: :class:`str`</span>
+<span class="sd">        :param source_id: The identifier of the :class:`ItemModel` to which this item is</span>
+<span class="sd">            synchronized to if the item belongs to a subscribed library. The</span>
+<span class="sd">            value is None for a library item that belongs to a local library.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the</span>
+<span class="sd">            attribute must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the attribute will be an identifier</span>
+<span class="sd">            for the resource type: ``com.vmware.content.library.Item``.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It is</span>
+<span class="sd">            optional in the return value of the ``get`` or ``list`` methods. It</span>
+<span class="sd">            is not used for the ``update`` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">library_id</span> <span class="o">=</span> <span class="n">library_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content_version</span> <span class="o">=</span> <span class="n">content_version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">creation_time</span> <span class="o">=</span> <span class="n">creation_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_modified_time</span> <span class="o">=</span> <span class="n">last_modified_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_sync_time</span> <span class="o">=</span> <span class="n">last_sync_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_version</span> <span class="o">=</span> <span class="n">metadata_version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="n">cached</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_id</span> <span class="o">=</span> <span class="n">source_id</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">ItemModel</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.content.library.item_model&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="s">&#39;library_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="s">&#39;content_version&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;creation_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">()),</span>
+        <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;last_modified_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">()),</span>
+        <span class="s">&#39;last_sync_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">()),</span>
+        <span class="s">&#39;metadata_version&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;cached&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">()),</span>
+        <span class="s">&#39;size&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;version&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">ItemModel</span><span class="p">,</span>
+    <span class="bp">True</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]))</span>
+
+
+
+<div class="viewcode-block" id="PublishInfo"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.PublishInfo">[docs]</a><span class="k">class</span> <span class="nc">PublishInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``PublishInfo`` class defines how a local library is published publicly</span>
+<span class="sd">    for synchronization to other libraries.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">authentication_method</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">published</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">publish_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">user_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">persist_json_enabled</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  authentication_method: :class:`PublishInfo.AuthenticationMethod`</span>
+<span class="sd">        :param authentication_method: Indicates how a subscribed library should authenticate (BASIC,</span>
+<span class="sd">            NONE) to the published library endpoint.</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is optional for the ``update`` method.</span>
+<span class="sd">        :type  published: :class:`bool`</span>
+<span class="sd">        :param published: Whether the local library is published.</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is optional for the ``update`` method.</span>
+<span class="sd">        :type  publish_url: :class:`str`</span>
+<span class="sd">        :param publish_url: The URL to which the library metadata is published by the Content</span>
+<span class="sd">            Library Service. </span>
+<span class="sd">            </span>
+<span class="sd">            This value can be used to set the</span>
+<span class="sd">            :attr:`SubscriptionInfo.subscription_url` property when creating a</span>
+<span class="sd">            subscribed library.</span>
+<span class="sd">            This attribute is not used for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is not used for the ``update`` method.</span>
+<span class="sd">        :type  user_name: :class:`str`</span>
+<span class="sd">        :param user_name: The username to require for authentication.</span>
+<span class="sd">            This attribute is optional for the ``create`` and ``update``</span>
+<span class="sd">            method. When the authentication is not required, the username can</span>
+<span class="sd">            be left None. When the authentication method is basic, the username</span>
+<span class="sd">            is ignored in the current release. It defaults to &quot;vcsp&quot;. It is</span>
+<span class="sd">            preferable to leave this unset. If specified, it must be set to</span>
+<span class="sd">            &quot;vcsp&quot;.</span>
+<span class="sd">        :type  password: :class:`str`</span>
+<span class="sd">        :param password: The password to require for authentication.</span>
+<span class="sd">            This attribute is optional for the ``create`` method. When the</span>
+<span class="sd">            authentication method is</span>
+<span class="sd">            :attr:`PublishInfo.AuthenticationMethod.NONE`, the password can be</span>
+<span class="sd">            left None. When the authentication method is</span>
+<span class="sd">            :attr:`PublishInfo.AuthenticationMethod.BASIC`, the password should</span>
+<span class="sd">            be a non-empty string. This attribute is optional for the</span>
+<span class="sd">            ``update`` method. Leaving it None during update indicates that the</span>
+<span class="sd">            password is not changed. This attribute is not used for the ``get``</span>
+<span class="sd">            or ``list`` method.</span>
+<span class="sd">        :type  persist_json_enabled: :class:`bool`</span>
+<span class="sd">        :param persist_json_enabled: Whether library and library item metadata are persisted in storage</span>
+<span class="sd">            backing as json files. This flag only applies if the local library</span>
+<span class="sd">            is published and its storage backing type is</span>
+<span class="sd">            :attr:`StorageBacking.Type.OTHER`. </span>
+<span class="sd">            </span>
+<span class="sd">            Enabling json persistance allows you to synchronize a subscribed</span>
+<span class="sd">            library manually instead of over HTTP. You copy the local library</span>
+<span class="sd">            content and metadata to another storage backing manually and then</span>
+<span class="sd">            create a subscribed library referencing the location of the library</span>
+<span class="sd">            json file in the :attr:`SubscriptionInfo.subscription_url`. When</span>
+<span class="sd">            the subscribed library&#39;s :attr:`StorageBacking.storage_uri` matches</span>
+<span class="sd">            the subscription URL, files do not need to be copied to the</span>
+<span class="sd">            subscribed library.</span>
+<span class="sd">            This attribute is optional for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is optional for the ``update`` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authentication_method</span> <span class="o">=</span> <span class="n">authentication_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">published</span> <span class="o">=</span> <span class="n">published</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publish_url</span> <span class="o">=</span> <span class="n">publish_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_name</span> <span class="o">=</span> <span class="n">user_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">persist_json_enabled</span> <span class="o">=</span> <span class="n">persist_json_enabled</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PublishInfo.AuthenticationMethod"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.PublishInfo.AuthenticationMethod">[docs]</a>    <span class="k">class</span> <span class="nc">AuthenticationMethod</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``PublishInfo.AuthenticationMethod`` class indicates how a subscribed</span>
+<span class="sd">        library should authenticate to the published library endpoint.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BASIC</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Require HTTP Basic authentication matching a specified username and</span>
+<span class="sd">        password.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">NONE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Require no authentication.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`AuthenticationMethod` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">AuthenticationMethod</span><span class="o">.</span><span class="n">BASIC</span> <span class="o">=</span> <span class="n">AuthenticationMethod</span><span class="p">(</span><span class="s">&#39;BASIC&#39;</span><span class="p">)</span>
+    <span class="n">AuthenticationMethod</span><span class="o">.</span><span class="n">NONE</span> <span class="o">=</span> <span class="n">AuthenticationMethod</span><span class="p">(</span><span class="s">&#39;NONE&#39;</span><span class="p">)</span>
+    <span class="n">AuthenticationMethod</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.content.library.publish_info.authentication_method&#39;</span><span class="p">,</span>
+        <span class="n">AuthenticationMethod</span><span class="p">))</span></div>
+<span class="n">PublishInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.content.library.publish_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;authentication_method&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;PublishInfo.AuthenticationMethod&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;published&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">()),</span>
+        <span class="s">&#39;publish_url&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">URIType</span><span class="p">()),</span>
+        <span class="s">&#39;user_name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">SecretType</span><span class="p">()),</span>
+        <span class="s">&#39;persist_json_enabled&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">PublishInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="StorageBacking"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.StorageBacking">[docs]</a><span class="k">class</span> <span class="nc">StorageBacking</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``StorageBacking`` class defines a storage location where content in a</span>
+<span class="sd">    library will be stored. The storage location can either be a Datastore or</span>
+<span class="sd">    Other type.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">UnionValidator</span><span class="p">(</span>
+            <span class="s">&#39;type&#39;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s">&#39;DATASTORE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;datastore_id&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)],</span>
+                <span class="s">&#39;OTHER&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;storage_uri&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)],</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">datastore_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">storage_uri</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  type: :class:`StorageBacking.Type`</span>
+<span class="sd">        :param type: Type (DATASTORE, OTHER) of :class:`StorageBacking`.</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is not used for the ``update`` method.</span>
+<span class="sd">        :type  datastore_id: :class:`str`</span>
+<span class="sd">        :param datastore_id: Identifier for a :attr:`StorageBacking.Type.DATASTORE` type.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the</span>
+<span class="sd">            attribute must be an identifier for the resource type:</span>
+<span class="sd">            ``Datastore``. When methods return a value of this class as a</span>
+<span class="sd">            return value, the attribute will be an identifier for the resource</span>
+<span class="sd">            type: ``Datastore``.</span>
+<span class="sd">            This attribute is optional and it is only relevant when the value</span>
+<span class="sd">            of ``type`` is :attr:`StorageBacking.Type.DATASTORE`.</span>
+<span class="sd">        :type  storage_uri: :class:`str`</span>
+<span class="sd">        :param storage_uri: URI for :attr:`StorageBacking.Type.OTHER` type. </span>
+<span class="sd">            </span>
+<span class="sd">             Some examples of accepted URI formats are: </span>
+<span class="sd">            </span>
+<span class="sd">            * file:///path</span>
+<span class="sd">            * file:///C:/path</span>
+<span class="sd">            * file://unc-server/path</span>
+<span class="sd">            This attribute is optional and it is only relevant when the value</span>
+<span class="sd">            of ``type`` is :attr:`StorageBacking.Type.OTHER`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datastore_id</span> <span class="o">=</span> <span class="n">datastore_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_uri</span> <span class="o">=</span> <span class="n">storage_uri</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StorageBacking.Type"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.StorageBacking.Type">[docs]</a>    <span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``StorageBacking.Type`` class specifies the type of the</span>
+<span class="sd">        :class:`StorageBacking`.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DATASTORE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Datastore type.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">OTHER</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        File system path or NFS URL.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`Type` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">Type</span><span class="o">.</span><span class="n">DATASTORE</span> <span class="o">=</span> <span class="n">Type</span><span class="p">(</span><span class="s">&#39;DATASTORE&#39;</span><span class="p">)</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">OTHER</span> <span class="o">=</span> <span class="n">Type</span><span class="p">(</span><span class="s">&#39;OTHER&#39;</span><span class="p">)</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.content.library.storage_backing.type&#39;</span><span class="p">,</span>
+        <span class="n">Type</span><span class="p">))</span></div>
+<span class="n">StorageBacking</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.content.library.storage_backing&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;StorageBacking.Type&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;datastore_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="s">&#39;storage_uri&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">URIType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">StorageBacking</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="SubscriptionInfo"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.SubscriptionInfo">[docs]</a><span class="k">class</span> <span class="nc">SubscriptionInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``SubscriptionInfo`` class defines the subscription behavior for a</span>
+<span class="sd">    subscribed library.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">authentication_method</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">automatic_sync_enabled</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">on_demand</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">ssl_thumbprint</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">subscription_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">user_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  authentication_method: :class:`SubscriptionInfo.AuthenticationMethod`</span>
+<span class="sd">        :param authentication_method: Indicate how the subscribed library should authenticate (BASIC,</span>
+<span class="sd">            NONE) with the published library endpoint.</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is optional for the ``update`` method.</span>
+<span class="sd">        :type  automatic_sync_enabled: :class:`bool`</span>
+<span class="sd">        :param automatic_sync_enabled: Whether the library should participate in automatic library</span>
+<span class="sd">            synchronization. In order for automatic synchronization to happen,</span>
+<span class="sd">            the global</span>
+<span class="sd">            :attr:`com.vmware.content_client.ConfigurationModel.automatic_sync_enabled`</span>
+<span class="sd">            option must also be true. The subscription is still active even</span>
+<span class="sd">            when automatic synchronization is turned off, but synchronization</span>
+<span class="sd">            is only activated with an explicit call to</span>
+<span class="sd">            :func:`com.vmware.content_client.SubscribedLibrary.sync` or</span>
+<span class="sd">            :func:`SubscribedItem.sync`. In other words, manual synchronization</span>
+<span class="sd">            is still available even when automatic synchronization is disabled.</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is optional for the ``update`` method.</span>
+<span class="sd">        :type  on_demand: :class:`bool`</span>
+<span class="sd">        :param on_demand: Indicates whether a library item&#39;s content will be synchronized</span>
+<span class="sd">            only on demand. </span>
+<span class="sd">            </span>
+<span class="sd">            If this is set to ``true``, then the library item&#39;s metadata will</span>
+<span class="sd">            be synchronized but the item&#39;s content (its files) will not be</span>
+<span class="sd">            synchronized. The Content Library Service will synchronize the</span>
+<span class="sd">            content upon request only. This can cause the first use of the</span>
+<span class="sd">            content to have a noticeable delay. </span>
+<span class="sd">            </span>
+<span class="sd">            Items without synchronized content can be forcefully synchronized</span>
+<span class="sd">            in advance using the :func:`SubscribedItem.sync` call with</span>
+<span class="sd">            ``forceSyncContent`` set to true. Once content has been</span>
+<span class="sd">            synchronized, the content can removed with the</span>
+<span class="sd">            :func:`SubscribedItem.evict` call. </span>
+<span class="sd">            </span>
+<span class="sd">            If this value is set to ``false``, all content will be synchronized</span>
+<span class="sd">            in advance.</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is optional for the ``update`` method.</span>
+<span class="sd">        :type  password: :class:`str`</span>
+<span class="sd">        :param password: The password to use when authenticating. </span>
+<span class="sd">            </span>
+<span class="sd">            The password must be set when using a password-based authentication</span>
+<span class="sd">            method; empty strings are not allowed.</span>
+<span class="sd">            This attribute is optional for the ``create`` method. It will not</span>
+<span class="sd">            be present in the return value of the ``get`` or ``list`` methods.</span>
+<span class="sd">            It is optional for the ``update`` method.</span>
+<span class="sd">        :type  ssl_thumbprint: :class:`str`</span>
+<span class="sd">        :param ssl_thumbprint: An optional SHA-1 hash of the SSL certificate for the remote</span>
+<span class="sd">            endpoint. </span>
+<span class="sd">            </span>
+<span class="sd">            If this value is defined the SSL certificate will be verified by</span>
+<span class="sd">            comparing it to the SSL thumbprint. The SSL certificate must verify</span>
+<span class="sd">            against the thumbprint. When specified, the standard certificate</span>
+<span class="sd">            chain validation behavior is not used. The certificate chain is</span>
+<span class="sd">            validated normally if this value is None.</span>
+<span class="sd">            This attribute is optional for the ``create`` method. It will not</span>
+<span class="sd">            be present in the return value of the ``get`` or ``list`` methods.</span>
+<span class="sd">            It is optional for the ``update`` method.</span>
+<span class="sd">        :type  subscription_url: :class:`str`</span>
+<span class="sd">        :param subscription_url: The URL of the endpoint where the metadata for the remotely</span>
+<span class="sd">            published library is being served. The supported schemes are</span>
+<span class="sd">            ``http``, ``https``, and ``file``. This value can be the</span>
+<span class="sd">            :attr:`PublishInfo.publish_url` of the published library (for</span>
+<span class="sd">            example, https://server/path/lib.json). If the published library</span>
+<span class="sd">            has :attr:`PublishInfo.persist_json_enabled` turned on, this value</span>
+<span class="sd">            can be the file-based URL of the published library&#39;s json file (for</span>
+<span class="sd">            example, file:///path/lib.json).</span>
+<span class="sd">            This attribute must be provided for the ``create`` method. It will</span>
+<span class="sd">            always be present in the return value of the ``get`` or ``list``</span>
+<span class="sd">            methods. It is optional for the ``update`` method.</span>
+<span class="sd">        :type  user_name: :class:`str`</span>
+<span class="sd">        :param user_name: The username to use when authenticating. </span>
+<span class="sd">            </span>
+<span class="sd">            The username must be set when using a password-based authentication</span>
+<span class="sd">            method. Empty strings are allowed for usernames.</span>
+<span class="sd">            This attribute is optional for the ``create`` method. It is</span>
+<span class="sd">            optional in the return value of the ``get`` or ``list`` methods. It</span>
+<span class="sd">            is optional for the ``update`` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authentication_method</span> <span class="o">=</span> <span class="n">authentication_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">automatic_sync_enabled</span> <span class="o">=</span> <span class="n">automatic_sync_enabled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_demand</span> <span class="o">=</span> <span class="n">on_demand</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_thumbprint</span> <span class="o">=</span> <span class="n">ssl_thumbprint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subscription_url</span> <span class="o">=</span> <span class="n">subscription_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_name</span> <span class="o">=</span> <span class="n">user_name</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SubscriptionInfo.AuthenticationMethod"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.SubscriptionInfo.AuthenticationMethod">[docs]</a>    <span class="k">class</span> <span class="nc">AuthenticationMethod</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Indicate how the subscribed library should authenticate with the published</span>
+<span class="sd">        library endpoint.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BASIC</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Require HTTP Basic authentication matching a specified username and</span>
+<span class="sd">        password.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">NONE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Require no authentication.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`AuthenticationMethod` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">AuthenticationMethod</span><span class="o">.</span><span class="n">BASIC</span> <span class="o">=</span> <span class="n">AuthenticationMethod</span><span class="p">(</span><span class="s">&#39;BASIC&#39;</span><span class="p">)</span>
+    <span class="n">AuthenticationMethod</span><span class="o">.</span><span class="n">NONE</span> <span class="o">=</span> <span class="n">AuthenticationMethod</span><span class="p">(</span><span class="s">&#39;NONE&#39;</span><span class="p">)</span>
+    <span class="n">AuthenticationMethod</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.content.library.subscription_info.authentication_method&#39;</span><span class="p">,</span>
+        <span class="n">AuthenticationMethod</span><span class="p">))</span></div>
+<span class="n">SubscriptionInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.content.library.subscription_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;authentication_method&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;SubscriptionInfo.AuthenticationMethod&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;automatic_sync_enabled&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">()),</span>
+        <span class="s">&#39;on_demand&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">()),</span>
+        <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">SecretType</span><span class="p">()),</span>
+        <span class="s">&#39;ssl_thumbprint&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;subscription_url&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">URIType</span><span class="p">()),</span>
+        <span class="s">&#39;user_name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">SubscriptionInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item">[docs]</a><span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Item`` class provides methods for managing library items.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.content.library.Item&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for item.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ItemStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Item.FindSpec"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item.FindSpec">[docs]</a>    <span class="k">class</span> <span class="nc">FindSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Item.FindSpec`` class specifies the properties that can be used as a</span>
+<span class="sd">        filter to find library items. When multiple attributes are specified, all</span>
+<span class="sd">        properties of the item must match the specification.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">library_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">source_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">cached</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  name: :class:`str` or ``None``</span>
+<span class="sd">            :param name: The name of the library item. The name is case-insensitive. See</span>
+<span class="sd">                :attr:`ItemModel.name`.</span>
+<span class="sd">                If not specified all library item names are searched.</span>
+<span class="sd">            :type  library_id: :class:`str` or ``None``</span>
+<span class="sd">            :param library_id: The identifier of the library containing the item. See</span>
+<span class="sd">                :attr:`ItemModel.library_id`.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.content.Library``. When methods return a value of this</span>
+<span class="sd">                class as a return value, the attribute will be an identifier for</span>
+<span class="sd">                the resource type: ``com.vmware.content.Library``.</span>
+<span class="sd">                If not specified all libraries are searched.</span>
+<span class="sd">            :type  source_id: :class:`str` or ``None``</span>
+<span class="sd">            :param source_id: The identifier of the library item as reported by the publisher.</span>
+<span class="sd">                See :attr:`ItemModel.source_id`.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.content.library.Item``. When methods return a value of</span>
+<span class="sd">                this class as a return value, the attribute will be an identifier</span>
+<span class="sd">                for the resource type: ``com.vmware.content.library.Item``.</span>
+<span class="sd">                If not specified all library items are searched.</span>
+<span class="sd">            :type  type: :class:`str` or ``None``</span>
+<span class="sd">            :param type: The type of the library item. The type is case-insensitive. See</span>
+<span class="sd">                :attr:`ItemModel.type`.</span>
+<span class="sd">                If not specified all types are searched.</span>
+<span class="sd">            :type  cached: :class:`bool` or ``None``</span>
+<span class="sd">            :param cached: Whether the item is cached. Possible values are &#39;true&#39; or &#39;false&#39;.</span>
+<span class="sd">                See :attr:`ItemModel.cached`.</span>
+<span class="sd">                If not specified all library items are searched.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">library_id</span> <span class="o">=</span> <span class="n">library_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">source_id</span> <span class="o">=</span> <span class="n">source_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cached</span> <span class="o">=</span> <span class="n">cached</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">FindSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.content.library.item.find_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;library_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;cached&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">FindSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Item.copy"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">source_library_item_id</span><span class="p">,</span>
+             <span class="n">destination_create_spec</span><span class="p">,</span>
+             <span class="n">client_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copies a library item. </span>
+<span class="sd">        </span>
+<span class="sd">        Copying a library item allows a duplicate to be made within the same or</span>
+<span class="sd">        different library. The copy occurs by first creating a new library</span>
+<span class="sd">        item, whose identifier is returned. The content of the library item is</span>
+<span class="sd">        then copied asynchronously. This copy can be tracked as a task. </span>
+<span class="sd">        </span>
+<span class="sd">        If the copy fails, Content Library Service will roll back the copy by</span>
+<span class="sd">        deleting any content that was already copied, and removing the new</span>
+<span class="sd">        library item. A failure during rollback may require manual cleanup by</span>
+<span class="sd">        an administrator. </span>
+<span class="sd">        </span>
+<span class="sd">         A library item cannot be copied into a subscribed library.</span>
+
+<span class="sd">        :type  client_token: :class:`str` or ``None``</span>
+<span class="sd">        :param client_token: A unique token generated on the client for each copy request. The</span>
+<span class="sd">            token should be a universally unique identifier (UUID), for</span>
+<span class="sd">            example: ``b8a2a2e3-2314-43cd-a871-6ede0f429751``. This token can</span>
+<span class="sd">            be used to guarantee idempotent copy.</span>
+<span class="sd">            If not specified copy is not idempotent.</span>
+<span class="sd">        :type  source_library_item_id: :class:`str`</span>
+<span class="sd">        :param source_library_item_id: Identifier of the existing library item from which the content will</span>
+<span class="sd">            be copied.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :type  destination_create_spec: :class:`ItemModel`</span>
+<span class="sd">        :param destination_create_spec:  Specification for the new library item to be created.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: The identifier of the new library item into which the content is</span>
+<span class="sd">            being copied.</span>
+<span class="sd">            The return value will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the library item with ``source_library_item_id`` does not exist,</span>
+<span class="sd">            or if the library referenced by the :attr:`ItemModel.library_id`</span>
+<span class="sd">            property of ``destination_create_spec`` does not exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if one of the following is true for the new library item: </span>
+<span class="sd">            </span>
+<span class="sd">            * name is empty</span>
+<span class="sd">            * name exceeds 80 characters</span>
+<span class="sd">            * description exceeds 1024 characters</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if the ``client_token`` does not conform to the UUID format.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidElementType` </span>
+<span class="sd">            if the :attr:`ItemModel.library_id` property of</span>
+<span class="sd">            ``destination_create_spec`` refers to a subscribed library.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the copy operation failed because the source or destination</span>
+<span class="sd">            library item is not accessible.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.library.Item`` referenced by</span>
+<span class="sd">              the parameter ``source_library_item_id`` requires ``System.Read``.</span>
+<span class="sd">            * The resource ``com.vmware.content.Library`` referenced by the</span>
+<span class="sd">              attribute :attr:`ItemModel.library_id` requires</span>
+<span class="sd">              ``ContentLibrary.AddLibraryItem``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;copy&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;client_token&#39;</span><span class="p">:</span> <span class="n">client_token</span><span class="p">,</span>
+                            <span class="s">&#39;source_library_item_id&#39;</span><span class="p">:</span> <span class="n">source_library_item_id</span><span class="p">,</span>
+                            <span class="s">&#39;destination_create_spec&#39;</span><span class="p">:</span> <span class="n">destination_create_spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Item.create"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">create_spec</span><span class="p">,</span>
+               <span class="n">client_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new library item. </span>
+<span class="sd">        </span>
+<span class="sd">        A new library item is created without any content. After creation,</span>
+<span class="sd">        content can be added through the</span>
+<span class="sd">        :class:`com.vmware.content.library.item_client.UpdateSession` and</span>
+<span class="sd">        :class:`com.vmware.content.library.item.updatesession_client.File`</span>
+<span class="sd">        classes. </span>
+<span class="sd">        </span>
+<span class="sd">         A library item cannot be created in a subscribed library.</span>
+
+<span class="sd">        :type  client_token: :class:`str` or ``None``</span>
+<span class="sd">        :param client_token: A unique token generated on the client for each creation request.</span>
+<span class="sd">            The token should be a universally unique identifier (UUID), for</span>
+<span class="sd">            example: ``b8a2a2e3-2314-43cd-a871-6ede0f429751``. This token can</span>
+<span class="sd">            be used to guarantee idempotent creation.</span>
+<span class="sd">            If not specified creation is not idempotent.</span>
+<span class="sd">        :type  create_spec: :class:`ItemModel`</span>
+<span class="sd">        :param create_spec:  Specification that defines the properties of the new library item.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Identifier of the new library item.</span>
+<span class="sd">            The return value will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the :attr:`ItemModel.library_id` property of ``create_spec``</span>
+<span class="sd">            refers to a library that does not exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if one of the following is true for the new library item: </span>
+<span class="sd">            </span>
+<span class="sd">            * name is empty</span>
+<span class="sd">            * name exceeds 80 characters</span>
+<span class="sd">            * description exceeds 1024 characters</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if the ``client_token`` does not conform to the UUID format.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidElementType` </span>
+<span class="sd">            if the :attr:`ItemModel.library_id` property of</span>
+<span class="sd">            ``destinationCreateSpec`` refers to a subscribed library.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.Library`` referenced by the</span>
+<span class="sd">              attribute :attr:`ItemModel.library_id` requires</span>
+<span class="sd">              ``ContentLibrary.AddLibraryItem``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;client_token&#39;</span><span class="p">:</span> <span class="n">client_token</span><span class="p">,</span>
+                            <span class="s">&#39;create_spec&#39;</span><span class="p">:</span> <span class="n">create_spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Item.delete"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">library_item_id</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes a library item. </span>
+<span class="sd">        </span>
+<span class="sd">        This method will immediately remove the item from the library that owns</span>
+<span class="sd">        it. The content of the item will be asynchronously removed from the</span>
+<span class="sd">        storage backings. The content deletion can be tracked with a task. In</span>
+<span class="sd">        the event that the task fails, an administrator may need to manually</span>
+<span class="sd">        remove the files from the storage backing. </span>
+<span class="sd">        </span>
+<span class="sd">        This method cannot be used to delete a library item that is a member of</span>
+<span class="sd">        a subscribed library. Removing an item from a subscribed library</span>
+<span class="sd">        requires deleting the item from the original published local library</span>
+<span class="sd">        and syncing the subscribed library.</span>
+
+<span class="sd">        :type  library_item_id: :class:`str`</span>
+<span class="sd">        :param library_item_id:  Identifier of the library item to delete.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidElementType` </span>
+<span class="sd">            if the library item with the given ``library_item_id`` is a member</span>
+<span class="sd">            of a subscribed library.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the library item with the specified ``library_item_id`` does not</span>
+<span class="sd">            exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.library.Item`` referenced by</span>
+<span class="sd">              the parameter ``library_item_id`` requires</span>
+<span class="sd">              ``ContentLibrary.DeleteLibraryItem``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="n">library_item_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Item.get"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">library_item_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the :class:`ItemModel` with the given identifier.</span>
+
+<span class="sd">        :type  library_item_id: :class:`str`</span>
+<span class="sd">        :param library_item_id:  Identifier of the library item to return.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :rtype: :class:`ItemModel`</span>
+<span class="sd">        :return: The :class:`ItemModel` instance with the given ``library_item_id``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if no item with the given ``library_item_id`` exists.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.library.Item`` referenced by</span>
+<span class="sd">              the parameter ``library_item_id`` requires ``System.Read``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="n">library_item_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Item.list"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">library_id</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the identifiers of all items in the given library.</span>
+
+<span class="sd">        :type  library_id: :class:`str`</span>
+<span class="sd">        :param library_id:  Identifier of the library whose items should be returned.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.Library``.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of identifiers of the items in the library</span>
+<span class="sd">            specified by ``library_id``.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the library associated with ``library_id`` does not exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.Library`` referenced by the</span>
+<span class="sd">              parameter ``library_id`` requires ``System.Read``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;library_id&#39;</span><span class="p">:</span> <span class="n">library_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Item.find"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">spec</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns identifiers of all the visible (as determined by authorization</span>
+<span class="sd">        policy) library items matching the requested :class:`Item.FindSpec`.</span>
+
+<span class="sd">        :type  spec: :class:`Item.FindSpec`</span>
+<span class="sd">        :param spec:  Specification describing what properties to filter on.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of identifiers of all the visible library items</span>
+<span class="sd">            matching the given ``spec``.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if no properties are specified in the ``spec``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * Method execution requires ``System.Read``.</span>
+<span class="sd">            * The resource ``com.vmware.content.Library`` referenced by the</span>
+<span class="sd">              attribute :attr:`Item.FindSpec.library_id` requires</span>
+<span class="sd">              ``System.Read``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;find&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Item.update"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.Item.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">library_item_id</span><span class="p">,</span>
+               <span class="n">update_spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the specified properties of a library item. </span>
+<span class="sd">        </span>
+<span class="sd">        This is an incremental update to the library item. Attributes that are</span>
+<span class="sd">        None in the update specification are left unchanged. </span>
+<span class="sd">        </span>
+<span class="sd">        This method cannot update a library item that is a member of a</span>
+<span class="sd">        subscribed library. Those items must be updated in the source published</span>
+<span class="sd">        library and synchronized to the subscribed library.</span>
+
+<span class="sd">        :type  library_item_id: :class:`str`</span>
+<span class="sd">        :param library_item_id:  Identifier of the library item to update.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :type  update_spec: :class:`ItemModel`</span>
+<span class="sd">        :param update_spec:  Specification of the properties to set.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the library item specified by ``library_item_id`` does not</span>
+<span class="sd">            exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidElementType` </span>
+<span class="sd">            if the library item corresponding to ``library_item_id`` is a</span>
+<span class="sd">            member of a subscribed library.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if one of the following is true for the ``update_spec``: </span>
+<span class="sd">            </span>
+<span class="sd">            * name is empty</span>
+<span class="sd">            * name exceeds 80 characters</span>
+<span class="sd">            * description exceeds 1024 characters</span>
+<span class="sd">            * version is not equal to the current version of the library item</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.library.Item`` referenced by</span>
+<span class="sd">              the parameter ``library_item_id`` requires</span>
+<span class="sd">              ``ContentLibrary.UpdateLibraryItem``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;update&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="n">library_item_id</span><span class="p">,</span>
+                            <span class="s">&#39;update_spec&#39;</span><span class="p">:</span> <span class="n">update_spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="SubscribedItem"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.SubscribedItem">[docs]</a><span class="k">class</span> <span class="nc">SubscribedItem</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``SubscribedItem`` class manages the unique features of library items</span>
+<span class="sd">    that are members of a subscribed library.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_SubscribedItemStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SubscribedItem.evict"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.SubscribedItem.evict">[docs]</a>    <span class="k">def</span> <span class="nf">evict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">library_item_id</span><span class="p">,</span>
+              <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evicts the cached content of a library item in a subscribed library. </span>
+<span class="sd">        </span>
+<span class="sd">        This method allows the cached content of a library item to be removed</span>
+<span class="sd">        to free up storage capacity. This method will only work when a library</span>
+<span class="sd">        item is synchronized on-demand. When a library is not synchronized</span>
+<span class="sd">        on-demand, it always attempts to keep its cache up-to-date with the</span>
+<span class="sd">        published source. Evicting the library item will set</span>
+<span class="sd">        :attr:`ItemModel.cached` to false.</span>
+
+<span class="sd">        :type  library_item_id: :class:`str`</span>
+<span class="sd">        :param library_item_id:  Identifier of the library item whose content should be evicted.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the library item specified by ``library_item_id`` does not</span>
+<span class="sd">            exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidElementType` </span>
+<span class="sd">            if the library item specified by ``library_item_id`` is not a</span>
+<span class="sd">            member of a subscribed library.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidElementConfiguration` </span>
+<span class="sd">            if the library item specified by ``library_item_id`` is a member of</span>
+<span class="sd">            a subscribed library that does not synchronize on-demand.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.library.Item`` referenced by</span>
+<span class="sd">              the parameter ``library_item_id`` requires</span>
+<span class="sd">              ``ContentLibrary.EvictLibraryItem``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;evict&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="n">library_item_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="SubscribedItem.sync"><a class="viewcode-back" href="../../../../com.vmware.content.html#com.vmware.content.library_client.SubscribedItem.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">library_item_id</span><span class="p">,</span>
+             <span class="n">force_sync_content</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Forces the synchronization of an individual library item in a</span>
+<span class="sd">        subscribed library. </span>
+<span class="sd">        </span>
+<span class="sd">        Synchronizing an individual item will update that item&#39;s metadata from</span>
+<span class="sd">        the remote source. If the source library item on the remote library has</span>
+<span class="sd">        been deleted, this method will delete the library item from the</span>
+<span class="sd">        subscribed library as well. </span>
+<span class="sd">        </span>
+<span class="sd">        The default behavior of the synchronization is determined by the</span>
+<span class="sd">        :class:`SubscriptionInfo` of the library which owns the library item. </span>
+<span class="sd">        </span>
+<span class="sd">        * If :attr:`SubscriptionInfo.on_demand` is true, then the file content</span>
+<span class="sd">          is not synchronized by default. In this case, only the library item</span>
+<span class="sd">          metadata is synchronized. The file content may still be forcefully</span>
+<span class="sd">          synchronized by passing true for the ``force_sync_content`` parameter.</span>
+<span class="sd">        * If :attr:`SubscriptionInfo.on_demand` is false, then this call will</span>
+<span class="sd">          always synchronize the file content. The ``force_sync_content``</span>
+<span class="sd">          parameter is ignored when the subscription is not on-demand.</span>
+<span class="sd">        </span>
+<span class="sd">        When the file content has been synchronized, the</span>
+<span class="sd">        :attr:`ItemModel.cached` attribute will be true. </span>
+<span class="sd">        </span>
+<span class="sd">        This method will return immediately and create an asynchronous task to</span>
+<span class="sd">        perform the synchronization.</span>
+
+<span class="sd">        :type  library_item_id: :class:`str`</span>
+<span class="sd">        :param library_item_id:  Identifier of the library item to synchronize.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :type  force_sync_content: :class:`bool`</span>
+<span class="sd">        :param force_sync_content: Whether to synchronize file content as well as metadata. This</span>
+<span class="sd">            parameter applies only if the subscription is on-demand.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the library item specified by ``library_item_id`` could not be</span>
+<span class="sd">            found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidElementType` </span>
+<span class="sd">            if the library item specified by ``library_item_id`` is not a</span>
+<span class="sd">            member of a subscribed library.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.library.Item`` referenced by</span>
+<span class="sd">              the parameter ``library_item_id`` requires</span>
+<span class="sd">              ``ContentLibrary.SyncLibraryItem``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;sync&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="n">library_item_id</span><span class="p">,</span>
+                            <span class="s">&#39;force_sync_content&#39;</span><span class="p">:</span> <span class="n">force_sync_content</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_ItemStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for copy operation</span>
+        <span class="n">copy_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;client_token&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;source_library_item_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+            <span class="s">&#39;destination_create_spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ItemModel&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">copy_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_type&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidElementType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">copy_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">copy_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for create operation</span>
+        <span class="n">create_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;client_token&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;create_spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ItemModel&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">create_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_type&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidElementType&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">create_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">create_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_type&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidElementType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;library_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.Library&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for find operation</span>
+        <span class="n">find_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Item.FindSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">find_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">find_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">find_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for update operation</span>
+        <span class="n">update_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+            <span class="s">&#39;update_spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ItemModel&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">update_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_type&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidElementType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">update_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">update_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;copy&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">copy_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">copy_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">copy_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">copy_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;create&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">create_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">create_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">create_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">create_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ItemModel&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;find&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">find_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">find_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">find_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">find_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;update&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">update_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">update_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">update_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">update_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.item&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_SubscribedItemStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for evict operation</span>
+        <span class="n">evict_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">evict_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_type&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidElementType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_configuration&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidElementConfiguration&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">evict_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">evict_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for sync operation</span>
+        <span class="n">sync_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;library_item_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+            <span class="s">&#39;force_sync_content&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">sync_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_type&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidElementType&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">sync_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">sync_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;evict&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">evict_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">evict_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">evict_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">evict_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;sync&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">sync_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">sync_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">sync_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">sync_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.subscribed_item&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

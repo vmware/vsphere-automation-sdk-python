@@ -1,0 +1,934 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.bindings.value &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.bindings.value</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Convenient libraries for DynamicValue</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2013-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.value</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SimpleValueVisitor</span><span class="p">,</span> <span class="n">VoidValue</span><span class="p">,</span> <span class="n">BooleanValue</span><span class="p">,</span> <span class="n">IntegerValue</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">,</span>
+    <span class="n">StringValue</span><span class="p">,</span> <span class="n">BlobValue</span><span class="p">,</span> <span class="n">SecretValue</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">,</span> <span class="n">ListValue</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.datetime_helper</span> <span class="kn">import</span> <span class="n">DateTimeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.constants</span> <span class="kn">import</span> <span class="n">MAP_ENTRY</span>
+
+<span class="c"># pylint: disable=E1102</span>
+
+
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor">[docs]</a><span class="k">class</span> <span class="nc">DataValueToDynamicValueVisitor</span><span class="p">(</span><span class="n">SimpleValueVisitor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visitor to convert DataValue to DynamicValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value_class</span><span class="p">,</span> <span class="n">optional_dynamic_value_class</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DataValueToDynamicValueVisitor</span>
+
+<span class="sd">        :type  dynamic_value_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value_class: DynamicValue class reference</span>
+<span class="sd">        :type  optional_dynamic_value_class:</span>
+<span class="sd">            :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param optional_dynamic_value_class: OptionalDynamicValue class reference</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span> <span class="o">=</span> <span class="n">dynamic_value_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span> <span class="o">=</span> <span class="n">optional_dynamic_value_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">SimpleValueVisitor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.get_out_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.get_out_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_out_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the output value</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :return: DynamicValue generated from DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_integer"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_integer">[docs]</a>    <span class="k">def</span> <span class="nf">visit_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LONG</span><span class="p">,</span>
+            <span class="n">long_value</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_double"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_double">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
+            <span class="n">double_value</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="n">string_value</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_boolean"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_boolean">[docs]</a>    <span class="k">def</span> <span class="nf">visit_boolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">,</span>
+            <span class="n">boolean_value</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_blob"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_blob">[docs]</a>    <span class="k">def</span> <span class="nf">visit_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span>
+            <span class="n">binary_value</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_secret"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_secret">[docs]</a>    <span class="k">def</span> <span class="nf">visit_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">,</span>
+            <span class="n">secret_value</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">,</span>
+            <span class="n">structure_value</span><span class="o">=</span><span class="n">VapiStruct</span><span class="p">(</span><span class="n">struct_value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
+            <span class="n">error_value</span><span class="o">=</span><span class="n">VapiError</span><span class="p">({},</span> <span class="n">value</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">element_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">element_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span><span class="p">(</span>
+                <span class="n">optional_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">element_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span><span class="p">()</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+            <span class="n">optional_value</span><span class="o">=</span><span class="n">element_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+</div>
+<div class="viewcode-block" id="DataValueToDynamicValueVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DataValueToDynamicValueVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="n">list_value</span><span class="o">=</span><span class="p">[])</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">out_value</span><span class="o">.</span><span class="n">list_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+
+</div></div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor">[docs]</a><span class="k">class</span> <span class="nc">DynamicValueToDataValueVisitor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visitor to convert DynamicValue to DataValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value_class</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DynamicValueToDataValueVisitor</span>
+
+<span class="sd">        :type  dynamic_value_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value_class: DynamicValue class reference</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span> <span class="o">=</span> <span class="n">dynamic_value_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_void</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_boolean</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_double</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_long</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_string</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_binary</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_secret</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_structure</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_error</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_optional</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.get_out_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.get_out_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_out_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the DataValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: DataValue generated from DynamicValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit">[docs]</a>    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visit_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="n">visit_method</span><span class="p">(</span><span class="n">dynamic_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is VOID</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">VoidValue</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_boolean"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_boolean">[docs]</a>    <span class="k">def</span> <span class="nf">visit_boolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is BOOLEAN</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">BooleanValue</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">boolean_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_double"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_double">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is DOUBLE</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">DoubleValue</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">double_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_long"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_long">[docs]</a>    <span class="k">def</span> <span class="nf">visit_long</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is LONG</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">IntegerValue</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">long_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is STRING</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">StringValue</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">string_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_binary"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_binary">[docs]</a>    <span class="k">def</span> <span class="nf">visit_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is BINARY</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">BlobValue</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">binary_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_secret"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_secret">[docs]</a>    <span class="k">def</span> <span class="nf">visit_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is SECRET</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">SecretValue</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">secret_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_structure"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_structure">[docs]</a>    <span class="k">def</span> <span class="nf">visit_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is STRUCTURE</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">structure_value</span><span class="o">.</span><span class="n">get_struct_value</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is ERROR</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">error_value</span><span class="o">.</span><span class="n">get_error_value</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is OPTIONAL</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">element_value</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">optional_value</span><span class="o">.</span><span class="n">optional_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">optional_value</span><span class="o">.</span><span class="n">optional_value</span><span class="p">)</span>
+            <span class="n">element_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">OptionalValue</span><span class="p">(</span><span class="n">element_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToDataValueVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToDataValueVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is LIST</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">list_value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">ListValue</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="BaseDataValueConverter"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.BaseDataValueConverter">[docs]</a><span class="k">class</span> <span class="nc">BaseDataValueConverter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to convert DataValue &lt;-&gt; DynamicValue</span>
+
+<span class="sd">    Note: This is an internal helper class for supporting this</span>
+<span class="sd">    functionality in client and provider standard libraries. This</span>
+<span class="sd">    class should be derived and the derived class should initialize</span>
+<span class="sd">    dynamic_value_class and optional_dynamic_value_class with the</span>
+<span class="sd">    appropriate class references.</span>
+
+<span class="sd">    :type dynamic_value_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">    :cvar dynamic_value_class: Dynamic value class reference</span>
+<span class="sd">    :type optional_dynamic_value_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">    :cvar optional_dynamic_value_class: Optional dynamic value class reference</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dynamic_value_class</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">optional_dynamic_value_class</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseDataValueConverter.to_dynamic_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.BaseDataValueConverter.to_dynamic_value">[docs]</a>    <span class="k">def</span> <span class="nf">to_dynamic_value</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">data_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a given DataValue to DynamicValue</span>
+
+<span class="sd">        :type  data_value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param data_value: DataValue to be converted</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :return: DynamicValue generated from DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span> <span class="o">=</span> <span class="n">DataValueToDynamicValueVisitor</span><span class="p">(</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">dynamic_value_class</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">optional_dynamic_value_class</span><span class="p">)</span>
+        <span class="n">data_value</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">visitor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseDataValueConverter.to_data_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.BaseDataValueConverter.to_data_value">[docs]</a>    <span class="k">def</span> <span class="nf">to_data_value</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a given DynamicValue to DataValue</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be converted</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: DataValue generated from DynamicValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span> <span class="o">=</span> <span class="n">DynamicValueToDataValueVisitor</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">dynamic_value_class</span><span class="p">)</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">dynamic_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor">[docs]</a><span class="k">class</span> <span class="nc">NativeValueToDynamicValueVisitor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visitor to convert Native value to Dynamic value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value_class</span><span class="p">,</span> <span class="n">optional_dynamic_value_class</span><span class="p">,</span>
+                 <span class="n">is_optional</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">is_secret</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">is_binary</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DynamicValueToDataValueVisitor</span>
+
+<span class="sd">        :type  dynamic_value_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value_class: DynamicValue class reference</span>
+<span class="sd">        :type  optional_dynamic_value_class:</span>
+<span class="sd">            :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param optional_dynamic_value_class: OptionalDynamicValue class reference</span>
+<span class="sd">        :type  is_optional: :class:`bool`</span>
+<span class="sd">        :param is_optional: If true, after conversion of native</span>
+<span class="sd">            value to dynamic value, the output is wrapped in an</span>
+<span class="sd">            dynamic value whose type is OPTIONAL.</span>
+<span class="sd">        :type  is_secret: :class:`bool`</span>
+<span class="sd">        :param is_secret: If true, and the native value is a string, the type of</span>
+<span class="sd">            the dynamic value returned will be secret. This boolean option, is</span>
+<span class="sd">            also passed to the elements of generic types such as List and</span>
+<span class="sd">            Set.</span>
+<span class="sd">        :type  is_binary: :class:`bool`</span>
+<span class="sd">        :param is_binary: If true, and the native value is a string, the type of</span>
+<span class="sd">            the dynamic value returned will be binary. This boolean option, is</span>
+<span class="sd">            also passed to the elements of generic types such as List and</span>
+<span class="sd">            Set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span> <span class="o">=</span> <span class="n">dynamic_value_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span> <span class="o">=</span> <span class="n">optional_dynamic_value_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_optional</span> <span class="o">=</span> <span class="n">is_optional</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_secret</span> <span class="o">=</span> <span class="n">is_secret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_binary</span> <span class="o">=</span> <span class="n">is_binary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nb">type</span><span class="p">(</span><span class="bp">None</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_void</span><span class="p">,</span>
+            <span class="n">datetime</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_datetime</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_double</span><span class="p">,</span>
+            <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_double</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_boolean</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+            <span class="nb">set</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.get_out_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.get_out_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_out_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the DataValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: DataValue generated from DynamicValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_optional</span><span class="p">:</span>
+            <span class="n">optional_dynamic_value</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">:</span>
+                <span class="n">optional_dynamic_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">optional_dynamic_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span><span class="p">(</span>
+                    <span class="n">optional_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+                <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+                <span class="n">optional_value</span><span class="o">=</span><span class="n">optional_dynamic_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit">[docs]</a>    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a native value</span>
+
+<span class="sd">        :type  native_value: :class:`object`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">native_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">native_value</span><span class="p">)</span>
+        <span class="n">visit_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">native_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">visit_method</span><span class="p">:</span>
+            <span class="c"># Handle the string and integer types explicitly</span>
+            <span class="c"># as they are different in Py2 and Py3</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">native_value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+                <span class="n">visit_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_string</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">native_value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
+                <span class="n">visit_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_long</span>
+            <span class="c"># Handle user defined types</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">native_value</span><span class="p">,</span> <span class="n">VapiError</span><span class="p">):</span>
+                <span class="n">visit_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_error</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">native_value</span><span class="p">,</span> <span class="n">VapiStruct</span><span class="p">):</span>
+                <span class="n">visit_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_structure</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">native_value</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+                <span class="n">visit_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_enumeration</span>
+        <span class="n">visit_method</span><span class="p">(</span><span class="n">native_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is None type</span>
+
+<span class="sd">        :type  native_value: :class:`None`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is string type</span>
+
+<span class="sd">        :type  native_value: :class:`str`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+                <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span>
+                <span class="n">binary_value</span><span class="o">=</span><span class="n">native_value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_secret</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+                <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">,</span>
+                <span class="n">secret_value</span><span class="o">=</span><span class="n">native_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+                <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+                <span class="n">string_value</span><span class="o">=</span><span class="n">native_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_datetime"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">visit_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is datetime type</span>
+
+<span class="sd">        :type  native_value: :class:`datetime.datetime`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">string_value</span> <span class="o">=</span> <span class="n">DateTimeConverter</span><span class="o">.</span><span class="n">convert_from_datetime</span><span class="p">(</span><span class="n">native_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="n">string_value</span><span class="o">=</span><span class="n">string_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_double"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_double">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is double type</span>
+
+<span class="sd">        :type  native_value: :class:`double` or :class:`decimal.Decimal`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
+            <span class="n">double_value</span><span class="o">=</span><span class="n">native_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_boolean"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_boolean">[docs]</a>    <span class="k">def</span> <span class="nf">visit_boolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is bool type</span>
+
+<span class="sd">        :type  native_value: :class:`bool`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">,</span>
+            <span class="n">boolean_value</span><span class="o">=</span><span class="n">native_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_long"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_long">[docs]</a>    <span class="k">def</span> <span class="nf">visit_long</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is long type</span>
+
+<span class="sd">        :type  native_value: :class:`int` or :class:`long`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LONG</span><span class="p">,</span>
+            <span class="n">long_value</span><span class="o">=</span><span class="n">native_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is list or set type</span>
+
+<span class="sd">        :type  native_value: :class:`list` or :class:`set`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">native_value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="n">list_value</span><span class="o">=</span><span class="n">elements</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_structure"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_structure">[docs]</a>    <span class="k">def</span> <span class="nf">visit_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is vAPI structure type</span>
+
+<span class="sd">        :type  native_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">,</span>
+            <span class="n">structure_value</span><span class="o">=</span><span class="n">VapiStruct</span><span class="p">(</span>
+                <span class="n">struct_value</span><span class="o">=</span><span class="n">native_value</span><span class="o">.</span><span class="n">get_struct_value</span><span class="p">()))</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is vAPI error type</span>
+
+<span class="sd">        :type  native_value: :class:`vmware.vapi.bindings.error.VapiError`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
+            <span class="n">error_value</span><span class="o">=</span><span class="n">VapiError</span><span class="p">(</span>
+                <span class="n">error_value</span><span class="o">=</span><span class="n">native_value</span><span class="o">.</span><span class="n">get_error_value</span><span class="p">()))</span>
+</div>
+<div class="viewcode-block" id="NativeValueToDynamicValueVisitor.visit_enumeration"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.NativeValueToDynamicValueVisitor.visit_enumeration">[docs]</a>    <span class="k">def</span> <span class="nf">visit_enumeration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        visit a native value whose value is vAPI enumeration type</span>
+
+<span class="sd">        :type  native_value: :class:`vmware.vapi.bindings.enum.Enum`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="p">(</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="n">string_value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">native_value</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor">[docs]</a><span class="k">class</span> <span class="nc">DynamicValueToNativeValueVisitor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visitor to convert DynamicValue to python native value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value_class</span><span class="p">,</span> <span class="n">optional_dynamic_value_class</span><span class="p">,</span>
+                 <span class="n">is_set</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">is_datetime</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">user_defined_class_reference</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DynamicValueToDataValueVisitor</span>
+
+<span class="sd">        :type  dynamic_value_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value_class: DynamicValue class reference</span>
+<span class="sd">        :type  optional_dynamic_value_class:</span>
+<span class="sd">            :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param optional_dynamic_value_class: OptionalDynamicValue class reference</span>
+<span class="sd">        :type  is_set: :class:`bool`</span>
+<span class="sd">        :param is_set: If true, and the dynamic value is a list, the type of</span>
+<span class="sd">            the native value returned will be a set. This boolean option, is</span>
+<span class="sd">            also passed to the elements of generic types such as List and</span>
+<span class="sd">            Optional. If the dynamic value represents a Map, this option is</span>
+<span class="sd">            used only for the conversion of values of the Map.</span>
+<span class="sd">        :type  is_datetime: :class:`bool`</span>
+<span class="sd">        :param is_datetime: If true, and the dynamic value is a string, the type of</span>
+<span class="sd">            the native value returned will be a datetime. This boolean option, is</span>
+<span class="sd">            also passed to the elements of generic types such as List and</span>
+<span class="sd">            Optional. If the dynamic value represents a Map, this option is</span>
+<span class="sd">            used only for the conversion of values of the Map.</span>
+<span class="sd">        :type  user_defined_class_reference:</span>
+<span class="sd">            :class:`vmware.vapi.bindings.struct.VapiStruct` or</span>
+<span class="sd">            :class:`vmware.vapi.bindings.error.VapiError` or</span>
+<span class="sd">            :class:`vmware.vapi.bindings.enum.Enum`</span>
+<span class="sd">        :param user_defined_class_reference: This class reference is used to</span>
+<span class="sd">            create native instances of user defined types (structures, errors</span>
+<span class="sd">            and enumerations). If the dynamic value is a Structure, instead of</span>
+<span class="sd">            returning VapiStruct, an instance of this class is returned. If the</span>
+<span class="sd">            dynamic value is an Error, instead of returning VapiError, an instance</span>
+<span class="sd">            of this class is returned. If the dynamic value is String, instead of</span>
+<span class="sd">            returning a string, an instance of this class is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span> <span class="o">=</span> <span class="n">dynamic_value_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span> <span class="o">=</span> <span class="n">optional_dynamic_value_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_set</span> <span class="o">=</span> <span class="n">is_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_datetime</span> <span class="o">=</span> <span class="n">is_datetime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_class_reference</span> <span class="o">=</span> <span class="n">user_defined_class_reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_void</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_boolean</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_double</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_long</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_string</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_binary</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_secret</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_structure</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_error</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_optional</span><span class="p">,</span>
+            <span class="n">dynamic_value_class</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.get_out_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.get_out_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_out_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the DataValue</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: DataValue generated from DynamicValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit">[docs]</a>    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visit_method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dynamic_value</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="n">visit_method</span><span class="p">(</span><span class="n">dynamic_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is VOID</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_boolean"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_boolean">[docs]</a>    <span class="k">def</span> <span class="nf">visit_boolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is BOOLEAN</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">boolean_value</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_double"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_double">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is DOUBLE</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">double_value</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_long"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_long">[docs]</a>    <span class="k">def</span> <span class="nf">visit_long</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is LONG</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">long_value</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is STRING</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">string_value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_datetime</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">DateTimeConverter</span><span class="o">.</span><span class="n">convert_to_datetime</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_class_reference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># Create enumeration type instance</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_class_reference</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_binary"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_binary">[docs]</a>    <span class="k">def</span> <span class="nf">visit_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is BINARY</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">binary_value</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_secret"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_secret">[docs]</a>    <span class="k">def</span> <span class="nf">visit_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is SECRET</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">secret_value</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_structure"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_structure">[docs]</a>    <span class="k">def</span> <span class="nf">visit_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is STRUCTURE</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">structure_value</span>
+        <span class="n">struct_value</span> <span class="o">=</span> <span class="n">out_value</span><span class="o">.</span><span class="n">get_struct_value</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">struct_value</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">MAP_ENTRY</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">struct_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">map_value_as_data_value</span> <span class="o">=</span> <span class="n">struct_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">)</span>
+            <span class="n">BaseDataValueConverter</span><span class="o">.</span><span class="n">dynamic_value_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_value_class</span>
+            <span class="n">BaseDataValueConverter</span><span class="o">.</span><span class="n">optional_dynamic_value_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optional_dynamic_value_class</span>
+            <span class="n">map_value_as_dynamic_value</span> <span class="o">=</span> <span class="n">BaseDataValueConverter</span><span class="o">.</span><span class="n">to_dynamic_value</span><span class="p">(</span>
+                <span class="n">map_value_as_data_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">map_value_as_dynamic_value</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span>
+            <span class="n">out_value</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_class_reference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">out_value</span> <span class="o">=</span> <span class="n">out_value</span><span class="o">.</span><span class="n">convert_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_class_reference</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is ERROR</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">error_value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_class_reference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="o">.</span><span class="n">convert_to</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_class_reference</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is OPTIONAL</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">optional_value</span> <span class="o">=</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">optional_value</span><span class="o">.</span><span class="n">optional_value</span>
+        <span class="k">if</span> <span class="n">optional_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">optional_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DynamicValueToNativeValueVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.DynamicValueToNativeValueVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DynamicValue whose type is LIST</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be visited</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dynamic_value</span><span class="o">.</span><span class="n">list_value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">out_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">out_value</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out_value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">map_value</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c"># Its a map</span>
+            <span class="k">for</span> <span class="n">dict_item</span> <span class="ow">in</span> <span class="n">out_value</span><span class="p">:</span>
+                <span class="n">map_value</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dict_item</span><span class="p">)</span>
+            <span class="n">out_value</span> <span class="o">=</span> <span class="n">map_value</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_set</span><span class="p">:</span>
+            <span class="n">out_value</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">out_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+
+</div></div>
+<div class="viewcode-block" id="BaseNativeValueConverter"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.BaseNativeValueConverter">[docs]</a><span class="k">class</span> <span class="nc">BaseNativeValueConverter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    class to convert Native value &lt;-&gt; DynamicValue.</span>
+
+<span class="sd">    Note: This is an internal helper class for supporting this</span>
+<span class="sd">    functionality in client and provider standard libraries. This</span>
+<span class="sd">    class should be derived and the derived class should initialize</span>
+<span class="sd">    dynamic_value_class and optional_dynamic_value_class with the</span>
+<span class="sd">    appropriate class references.</span>
+
+<span class="sd">    :type dynamic_value_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">    :cvar dynamic_value_class: Dynamic value class reference</span>
+<span class="sd">    :type optional_dynamic_value_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">    :cvar optional_dynamic_value_class: Optional dynamic value class reference</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dynamic_value_class</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">optional_dynamic_value_class</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseNativeValueConverter.to_dynamic_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.BaseNativeValueConverter.to_dynamic_value">[docs]</a>    <span class="k">def</span> <span class="nf">to_dynamic_value</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">native_value</span><span class="p">,</span> <span class="n">is_optional</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">is_secret</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">is_binary</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a given native value to DynamicValue</span>
+
+<span class="sd">        :type  native_value: :class:`object`</span>
+<span class="sd">        :param native_value: Native value to be converted</span>
+<span class="sd">        :type  is_optional: :class:`bool`</span>
+<span class="sd">        :param is_optional: If true, after conversion of native</span>
+<span class="sd">            value to dynamic value, the output is wrapped in an</span>
+<span class="sd">            dynamic value whose type is OPTIONAL.</span>
+<span class="sd">        :type  is_secret: :class:`bool`</span>
+<span class="sd">        :param is_secret: If true, and the native value is a string, the type of</span>
+<span class="sd">            the dynamic value returned will be secret. This boolean option, is</span>
+<span class="sd">            also passed to the elements of generic types such as List and</span>
+<span class="sd">            Set.</span>
+<span class="sd">        :type  is_binary: :class:`bool`</span>
+<span class="sd">        :param is_binary: If true, and the native value is a string, the type of</span>
+<span class="sd">            the dynamic value returned will be binary. This boolean option, is</span>
+<span class="sd">            also passed to the elements of generic types such as List and</span>
+<span class="sd">            Set.</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :return: DynamicValue generated from DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span> <span class="o">=</span> <span class="n">NativeValueToDynamicValueVisitor</span><span class="p">(</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">dynamic_value_class</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">optional_dynamic_value_class</span><span class="p">,</span>
+            <span class="n">is_optional</span><span class="p">,</span> <span class="n">is_secret</span><span class="p">,</span> <span class="n">is_binary</span><span class="p">)</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">native_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseNativeValueConverter.to_native_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.value.BaseNativeValueConverter.to_native_value">[docs]</a>    <span class="k">def</span> <span class="nf">to_native_value</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">dynamic_value</span><span class="p">,</span> <span class="n">is_set</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">is_datetime</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">user_defined_class_reference</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a given DynamicValue to native value</span>
+
+<span class="sd">        :type  dynamic_value: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :param dynamic_value: DynamicValue to be converted</span>
+<span class="sd">        :type  is_set: :class:`bool`</span>
+<span class="sd">        :param is_set: If true, and the dynamic value is a list, the type of</span>
+<span class="sd">            the native value returned will be a set. This boolean option, is</span>
+<span class="sd">            also passed to the elements of generic types such as List and</span>
+<span class="sd">            Optional. If the dynamic value represents a Map, this option is</span>
+<span class="sd">            used only for the conversion of values of the Map.</span>
+<span class="sd">        :type  is_datetime: :class:`bool`</span>
+<span class="sd">        :param is_datetime: If true, and the dynamic value is a string, the type of</span>
+<span class="sd">            the native value returned will be a datetime. This boolean option, is</span>
+<span class="sd">            also passed to the elements of generic types such as List and</span>
+<span class="sd">            Optional. If the dynamic value represents a Map, this option is</span>
+<span class="sd">            used only for the conversion of values of the Map.</span>
+<span class="sd">        :type  user_defined_class_reference:</span>
+<span class="sd">            :class:`vmware.vapi.bindings.struct.VapiStruct` or</span>
+<span class="sd">            :class:`vmware.vapi.bindings.error.VapiError` or</span>
+<span class="sd">            :class:`vmware.vapi.bindings.enum.Enum`</span>
+<span class="sd">        :param user_defined_class_reference: This class reference is used to</span>
+<span class="sd">            create native instances of user defined types (structures, errors</span>
+<span class="sd">            and enumerations). If the dynamic value is a Structure, instead of</span>
+<span class="sd">            returning VapiStruct, an instance of this class is returned. If the</span>
+<span class="sd">            dynamic value is an Error, instead of returning VapiError, an instance</span>
+<span class="sd">            of this class is returned. If the dynamic value is String, instead of</span>
+<span class="sd">            returning a string, an instance of this class is returned.</span>
+<span class="sd">        :rtype: :class:`object`</span>
+<span class="sd">        :return: Native value generated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span> <span class="o">=</span> <span class="n">DynamicValueToNativeValueVisitor</span><span class="p">(</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">dynamic_value_class</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">optional_dynamic_value_class</span><span class="p">,</span>
+            <span class="n">is_set</span><span class="p">,</span> <span class="n">is_datetime</span><span class="p">,</span> <span class="n">user_defined_class_reference</span><span class="p">)</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">dynamic_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interface definition language to python mapping for enumerated types &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="interface-definition-language-to-python-mapping-for-enumerated-types">
+<span id="enumeration-description"></span><h1>Interface definition language to python mapping for enumerated types<a class="headerlink" href="#interface-definition-language-to-python-mapping-for-enumerated-types" title="Permalink to this headline">¶</a></h1>
+<p>The interface language definition type system includes enumerated types. Python
+SDK supports both 2.x and 3.x versions of Python. Since Python 2.x does
+not have first class support for enumerations, special classes are
+generated to represent enumerated types from the interface definition
+language. The special class contains class attributes which represent
+the values of the enumerated type.</p>
+<p>This documentation explains the following:</p>
+<ul class="simple">
+<li>How the class variables are defined in the module. This specifies the names that you can use in your program.</li>
+<li>How you instantiate a class to use it for communication with future versions of the service.</li>
+</ul>
+<div class="section" id="example-of-an-enumerated-type-documentation">
+<h2>Example of an enumerated type documentation<a class="headerlink" href="#example-of-an-enumerated-type-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><em>class</em> com.vmware.vapi.metadata_client. <strong>SourceType</strong> (string)</dt>
+<dd><p class="first">Bases: vmware.vapi.bindings.enum.Enum</p>
+<p>Metadata source type</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class represents an enumerated type in the interface language definition type system. The class contains class attributes which represent the values in the current version of the enumerated type. Newer versions of the enumerated type may contain new values. To use new values of the enumerated type in communication with a server that supports a newer version of the API, you instantiate this class. See <a class="reference internal" href="#enumeration-description"><em>enumerated type description page</em></a>.</p>
+</div>
+<p><strong>Parameters</strong> : <strong>string</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) – String value for the SourceType instance.</p>
+<dl class="last docutils">
+<dt><strong>FILE</strong> = <em>SourceType(string=&#8217;FILE&#8217;)</em></dt>
+<dd>If the source is backed by a file.</dd>
+<dt><strong>REMOTE</strong> = <em>SourceType(string=&#8217;REMOTE&#8217;)</em></dt>
+<dd>If the source is backed by a remote service.</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="code-examples">
+<h2>Code Examples<a class="headerlink" href="#code-examples" title="Permalink to this headline">¶</a></h2>
+<p>The enumerated type classes are defined in python modules that your code
+imports. You can use these in your code.</p>
+<ol class="arabic simple">
+<li>If you want to pass an enumerated type value in a method to a server, specify the class variable of the enumerated type class.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># SourceType is an enumerated type</span>
+<span class="kn">from</span> <span class="nn">com.vmware.vapi.metadata_client</span> <span class="kn">import</span> <span class="n">SourceType</span>
+
+<span class="c"># SourceType has two class attrites, SourceType.FILE and SourceType.REMOTE</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">CreateSpec</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">SourceType</span><span class="o">.</span><span class="n">FILE</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s">&#39;entity_metadata.json&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">&#39;Entity service&#39;</span><span class="p">)</span>
+<span class="n">source_svc</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s">&#39;entity&#39;</span><span class="p">,</span> <span class="n">spec</span><span class="o">=</span><span class="n">spec</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>When you receive an enumerated type value in the response from a server, allow for unknown enumerated type values.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># SourceType is an enumerated type</span>
+<span class="kn">from</span> <span class="nn">com.vmware.vapi.metadata_client</span> <span class="kn">import</span> <span class="n">SourceType</span>
+
+<span class="n">source_info</span> <span class="o">=</span> <span class="n">source_svc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s">&#39;entity&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">source_info</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">FILE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">print</span> <span class="s">&#39;Source is a file&#39;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">source_info</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">REMOTE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">print</span> <span class="s">&#39;Source is a remote provider&#39;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">print</span> <span class="s">&#39;Unknown source type: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">source_info</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Sending a new enumerated type value to a server that has a newer version of the enumerated type.</li>
+</ol>
+<p>To use new values of the enumerated type in communication with a server that supports a newer version of the API, you instantiate the
+enumerated type class.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># If a newer version of SourceType has a new value FOLDER, FOLDER would be one</span>
+<span class="c"># of the class attributes for SourceType. In the older version, SourceType has</span>
+<span class="c"># only two class attributes, FILE and REMOTE</span>
+<span class="kn">from</span> <span class="nn">com.vmware.vapi.metadata_client</span> <span class="kn">import</span> <span class="n">SourceType</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">CreateSpec</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">SourceType</span><span class="p">(</span><span class="s">&#39;FOLDER&#39;</span><span class="p">),</span> <span class="n">filepath</span><span class="o">=</span><span class="s">&#39;entity_metadata&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">&#39;Entity service&#39;</span><span class="p">)</span>
+<span class="n">source_svc</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s">&#39;entity&#39;</span><span class="p">,</span> <span class="n">spec</span><span class="o">=</span><span class="n">spec</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface definition language to python mapping for enumerated types</a><ul>
+<li><a class="reference internal" href="#example-of-an-enumerated-type-documentation">Example of an enumerated type documentation</a></li>
+<li><a class="reference internal" href="#code-examples">Code Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/custom/rst/enumeration.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

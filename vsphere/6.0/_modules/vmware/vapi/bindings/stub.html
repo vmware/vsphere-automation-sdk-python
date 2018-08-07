@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.bindings.stub &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.bindings.stub</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Stub helper classes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">MethodIdentifier</span><span class="p">,</span> <span class="n">InterfaceDefinition</span><span class="p">,</span> <span class="n">MethodDefinition</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">InterfaceIdentifier</span><span class="p">,</span> <span class="n">ApiInterface</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">UnresolvedError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">raise_core_exception</span><span class="p">,</span> <span class="n">NameToTypeResolver</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.converter</span> <span class="kn">import</span> <span class="n">Converter</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="StubConfiguration"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration">[docs]</a><span class="k">class</span> <span class="nc">StubConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration data for vAPI stub classes</span>
+
+<span class="sd">    :type connector: :class:`vmware.vapi.protocol.client.connector.Connector`</span>
+<span class="sd">    :ivar connector: Connection to be used to talk to the remote ApiProvider</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connector</span><span class="p">,</span> <span class="o">*</span><span class="n">error_types</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the stub configuration</span>
+
+<span class="sd">        :type  connector: :class:`vmware.vapi.protocol.client.connector.Connector`</span>
+<span class="sd">        :param connector: Connection to be used to talk to the remote</span>
+<span class="sd">                          ApiProvider</span>
+<span class="sd">        :type  error_types: :class:`list` of :class:`vmware.vapi.bindings.type.ErrorType`</span>
+<span class="sd">        :param error_types: error types to be registered in this configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">connector</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Input parameter connector is None&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span> <span class="o">=</span> <span class="n">connector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolver</span> <span class="o">=</span> <span class="n">NameToTypeResolver</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">([(</span><span class="n">e</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">error_types</span><span class="p">]))</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="StubConfiguration.connector"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration.connector">[docs]</a>    <span class="k">def</span> <span class="nf">connector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.protocol.client.connector.Connector`</span>
+<span class="sd">        :return: Connection to be used to talk to the remote ApiProvider</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="StubConfiguration.resolver"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration.resolver">[docs]</a>    <span class="k">def</span> <span class="nf">resolver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Type resolver that can resolve canonical names to its binding types</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.bindings.common.NameToTypeResolver`</span>
+<span class="sd">        :return: Type resolver</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolver</span>
+
+
+<span class="c"># We don&#39;t need all the methods in ApiMethod in the stub.</span>
+<span class="c"># So disabling method not implemented pylint error</span></div></div>
+<div class="viewcode-block" id="ApiInterfaceStub"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.ApiInterfaceStub">[docs]</a><span class="k">class</span> <span class="nc">ApiInterfaceStub</span><span class="p">(</span><span class="n">ApiInterface</span><span class="p">):</span>  <span class="c"># pylint: disable=W0223</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stub class for Api Interface</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">operations</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the ApiMethod skeleton object</span>
+
+<span class="sd">        :type  iface_name: :class:`str`</span>
+<span class="sd">        :param iface_name: Interface name</span>
+<span class="sd">        :type  config: :class:`StubConfiguration`</span>
+<span class="sd">        :param config: Configuration data for vAPI stubs</span>
+<span class="sd">        :type  operations: :class:`dict`</span>
+<span class="sd">        :param operations: Dictionary of operation name to operation information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span> <span class="o">=</span> <span class="n">InterfaceIdentifier</span><span class="p">(</span><span class="n">iface_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span> <span class="o">=</span> <span class="n">operations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api_provider</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">get_api_provider</span><span class="p">()</span>
+        <span class="n">ApiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ApiInterfaceStub.get_identifier"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.ApiInterfaceStub.get_identifier">[docs]</a>    <span class="k">def</span> <span class="nf">get_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns interface identifier</span>
+
+<span class="sd">        :rtype: :class:`InterfaceIdentifier`</span>
+<span class="sd">        :return: Interface identifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span>
+</div>
+<div class="viewcode-block" id="ApiInterfaceStub.get_definition"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.ApiInterfaceStub.get_definition">[docs]</a>    <span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns interface definition</span>
+
+<span class="sd">        :rtype: :class:`InterfaceDefinition`</span>
+<span class="sd">        :return: Interface definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span><span class="n">MethodIdentifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="n">operation_name</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">InterfaceDefinition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span><span class="p">,</span> <span class="n">operations</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ApiInterfaceStub.get_method_definition"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.ApiInterfaceStub.get_method_definition">[docs]</a>    <span class="k">def</span> <span class="nf">get_method_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_id</span><span class="p">):</span>
+        <span class="n">opInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+        <span class="n">errors_defs</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">definition</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">itervalues</span><span class="p">(</span><span class="n">opInfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;errors&#39;</span><span class="p">))]</span>
+        <span class="k">return</span> <span class="n">MethodDefinition</span><span class="p">(</span><span class="n">method_id</span><span class="p">,</span>
+                                <span class="n">opInfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;input_type&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span>
+                                <span class="n">opInfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;output_type&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span>
+                                <span class="n">errors_defs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ApiInterfaceStub.invoke"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.ApiInterfaceStub.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">method_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invokes the specified method using the execution context and</span>
+<span class="sd">        the input provided</span>
+
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context for this method</span>
+<span class="sd">        :type  method_id: :class:`vmware.vapi.core.MethodIdentifier`</span>
+<span class="sd">        :param method_id: Method identifier</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Method input parameters</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Result of the method invocation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api_provider</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span>
+                                         <span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span>
+                                         <span class="n">input_value</span><span class="p">,</span>
+                                         <span class="n">ctx</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ApiInterfaceStub.native_invoke"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.ApiInterfaceStub.native_invoke">[docs]</a>    <span class="k">def</span> <span class="nf">native_invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invokes the method corresponding to the given method name</span>
+<span class="sd">        with the kwargs.</span>
+
+<span class="sd">        In this method, python native values are converted to vAPI runtime values,</span>
+<span class="sd">        operation is invoked and the result are converted back to python native</span>
+<span class="sd">        values</span>
+
+<span class="sd">        :type  method_name: :class:`str`</span>
+<span class="sd">        :param method_name: Method name</span>
+<span class="sd">        :type  kwargs: :class:`dict`</span>
+<span class="sd">        :param kwargs: arguments to be passed to the method</span>
+<span class="sd">        :rtype: :class:`object`</span>
+<span class="sd">        :return: Method result</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">opInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">opInfo</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Could not find </span><span class="si">%s</span><span class="s"> method in </span><span class="si">%s</span><span class="s"> interface&#39;</span> <span class="o">%</span>
+                            <span class="p">(</span><span class="n">method_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span><span class="p">)))</span>
+
+        <span class="c"># Convert input</span>
+        <span class="n">input_type</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;input_type&#39;</span><span class="p">]</span>
+        <span class="n">data_val</span> <span class="o">=</span> <span class="n">TypeConverter</span><span class="o">.</span><span class="n">convert_to_vapi</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">input_type</span><span class="p">)</span>
+
+        <span class="c"># Validate input</span>
+        <span class="n">validators</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;input_validator_list&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="n">validators</span><span class="p">:</span>
+            <span class="n">msg_list</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">data_val</span><span class="p">,</span> <span class="n">input_type</span><span class="p">)</span>
+            <span class="n">raise_core_exception</span><span class="p">(</span><span class="n">msg_list</span><span class="p">)</span>
+
+        <span class="c"># Invoke</span>
+        <span class="n">method_id</span> <span class="o">=</span> <span class="n">MethodIdentifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
+        <span class="n">method_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">method_id</span><span class="p">,</span> <span class="n">data_val</span><span class="p">)</span>
+
+        <span class="c"># Validate output</span>
+        <span class="k">if</span> <span class="n">method_result</span><span class="o">.</span><span class="n">success</span><span class="p">():</span>
+            <span class="n">validators</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;output_validator_list&#39;</span><span class="p">]</span>
+            <span class="n">output_type</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;output_type&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="n">validators</span><span class="p">:</span>
+                <span class="n">msg_list</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">method_result</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">output_type</span><span class="p">)</span>
+                <span class="n">raise_core_exception</span><span class="p">(</span><span class="n">msg_list</span><span class="p">)</span>
+
+            <span class="c"># Convert output</span>
+            <span class="k">return</span> <span class="n">TypeConverter</span><span class="o">.</span><span class="n">convert_to_python</span><span class="p">(</span><span class="n">method_result</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                                                   <span class="n">output_type</span><span class="p">,</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">resolver</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Convert error</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;errors&#39;</span><span class="p">]</span>
+            <span class="n">error_type</span> <span class="o">=</span> <span class="n">errors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_result</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">error_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">error_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">method_result</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">error_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Unable to convert unexpected vAPI error </span><span class="si">%s</span><span class="s"> &#39;</span> <span class="o">+</span>
+                               <span class="s">&#39;to native Python exception&#39;</span><span class="p">,</span>
+                               <span class="n">method_result</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">vapi_error</span> <span class="o">=</span> <span class="n">UnresolvedError</span><span class="p">({},</span> <span class="n">method_result</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">vapi_error</span>
+            <span class="k">raise</span> <span class="n">TypeConverter</span><span class="o">.</span><span class="n">convert_to_python</span><span class="p">(</span><span class="n">method_result</span><span class="o">.</span><span class="n">error</span><span class="p">,</span>  <span class="c"># pylint: disable=E0702</span>
+                                                  <span class="n">error_type</span><span class="p">,</span>
+                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">resolver</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="VapiInterface"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.VapiInterface">[docs]</a><span class="k">class</span> <span class="nc">VapiInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vAPI Interface class is used by the python client side bindings. This</span>
+<span class="sd">    encapsulates the ApiInterfaceStub instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">api_interface</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize VapiInterface object</span>
+
+<span class="sd">        :type  config: :class:`StubConfiguration`</span>
+<span class="sd">        :param config: Configuration data for vAPI stubs</span>
+<span class="sd">        :type  api_interface: :class:`ApiInterfaceStub`</span>
+<span class="sd">        :param api_interface: Instance of ApiInterfaceStub class that can</span>
+<span class="sd">                              execute the ApiMethods</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Input parameter config is None&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">StubConfiguration</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Input parameter config is not a StubConfiguration&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api_interface</span> <span class="o">=</span> <span class="n">api_interface</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_method_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invokes the ApiMethod corresponding to the given method name</span>
+<span class="sd">        with the kwargs</span>
+
+<span class="sd">        :type  _method_name: :class:`str`</span>
+<span class="sd">        :param _method_name: Method name</span>
+<span class="sd">        :type  kwargs: :class:`dict` of :class:`str` and :class:`object` or :class:`None`</span>
+<span class="sd">        :param kwargs: arguments to be passed to the method</span>
+<span class="sd">        :return: Method result</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="c"># Argument name is _method_name to make sure it doesn&#39;t collide</span>
+        <span class="c"># with actual parameter names of the method</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">new_context</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api_interface</span><span class="o">.</span><span class="n">native_invoke</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">_method_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="StubFactory"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubFactory">[docs]</a><span class="k">class</span> <span class="nc">StubFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory for client-side vAPI stubs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the stub factory</span>
+
+<span class="sd">        :type  config: :class:`StubConfiguration`</span>
+<span class="sd">        :param config: Configuration data for vAPI stubs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Input parameter config is None&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">StubConfiguration</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Input parameter config is not a StubConfiguration&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+<div class="viewcode-block" id="StubFactory.create_stub"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubFactory.create_stub">[docs]</a>    <span class="k">def</span> <span class="nf">create_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a stub corresponding to the specified service name</span>
+
+<span class="sd">        :type  service_name: :class:`str`</span>
+<span class="sd">        :param service_name: Name of the service</span>
+
+<span class="sd">        :rtype: :class:`VapiInterface`</span>
+<span class="sd">        :return: The stub correspoding to the specified service name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path_split</span> <span class="o">=</span> <span class="n">service_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">module_name</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">_client&#39;</span> <span class="o">%</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_split</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="n">Converter</span><span class="o">.</span><span class="n">underscore_to_capwords</span><span class="p">(</span><span class="n">path_split</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">locals</span><span class="p">(),</span> <span class="n">class_name</span><span class="p">)</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

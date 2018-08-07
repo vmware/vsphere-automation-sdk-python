@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.lib.jsonlib &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.lib.jsonlib</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">JSON encoder for double values</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright (c) 2015 VMware, Inc.  All rights reserved.&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="canonicalize_double"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.jsonlib.canonicalize_double">[docs]</a><span class="k">def</span> <span class="nf">canonicalize_double</span><span class="p">(</span><span class="n">o</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Canonicalize double based on XML schema double canonical format</span>
+
+<span class="sd">    The exponent must be indicated by &quot;E&quot;. Leading zeroes and the</span>
+<span class="sd">    preceding optional &quot;+&quot; sign are prohibited in the exponent. If the</span>
+<span class="sd">    exponent is zero, it must be indicated by &quot;E0&quot;. For the mantissa, the</span>
+<span class="sd">    preceding optional &quot;+&quot; sign is prohibited and the decimal point is</span>
+<span class="sd">    required. Leading and trailing zeroes are prohibited subject to the</span>
+<span class="sd">    following: number representations must be normalized such that there</span>
+<span class="sd">    is a single digit which is non-zero to the left of the decimal point</span>
+<span class="sd">    and at least a single digit to the right of the decimal point unless</span>
+<span class="sd">    the value being represented is zero. The canonical representation</span>
+<span class="sd">    for zero is 0.0E0</span>
+<span class="sd">    http://www.w3.org/TR/xmlschema-2/#double</span>
+
+<span class="sd">    :type  o: :class:`decimal.Decimal`</span>
+<span class="sd">    :param o: Decimal object to be canonicalized</span>
+<span class="sd">    :rtype: :class:`str`</span>
+<span class="sd">    :return: Canonical string representation of the decimal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># NaN and INF must not be used</span>
+    <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">is_infinite</span><span class="p">()</span> <span class="ow">or</span> <span class="n">o</span><span class="o">.</span><span class="n">is_nan</span><span class="p">():</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+            <span class="s">&#39;vapi.decimal.canonicalization&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">str_val</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+
+    <span class="c"># Extract sign of mantissa</span>
+    <span class="n">neg_sign</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">str_val</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">):</span>
+        <span class="n">neg_sign</span> <span class="o">=</span> <span class="s">&#39;-&#39;</span>
+        <span class="n">str_val</span> <span class="o">=</span> <span class="n">str_val</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="c"># Extract mantissa and exponent</span>
+    <span class="n">mantissa</span><span class="p">,</span> <span class="n">exponent</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="s">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">str_val</span><span class="p">:</span>
+        <span class="n">mantissa</span><span class="p">,</span> <span class="n">exponent</span> <span class="o">=</span> <span class="n">str_val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;E&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mantissa</span> <span class="o">=</span> <span class="n">str_val</span>
+
+    <span class="c"># decimal class uses context objects that governs precision</span>
+    <span class="c"># for arithmetic operations. Setting the precision to the</span>
+    <span class="c"># length of mantissa string. To canonicalize the mantissa,</span>
+    <span class="c"># we do a division operation, precision maybe lost if we</span>
+    <span class="c"># don&#39;t set .prec</span>
+    <span class="n">decimal</span><span class="o">.</span><span class="n">getcontext</span><span class="p">()</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mantissa</span><span class="p">)</span>
+
+    <span class="n">mantissa</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="n">mantissa</span><span class="p">)</span>
+    <span class="n">exponent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">exponent</span><span class="p">)</span> <span class="k">if</span> <span class="n">exponent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c"># There MUST be a single non zero digit on the left of the decimal point</span>
+    <span class="c"># (unless a zero is represented)</span>
+    <span class="n">num_digits</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">mantissa</span><span class="p">:</span>
+        <span class="n">num_digits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">mantissa</span><span class="p">))</span>
+        <span class="n">exponent</span> <span class="o">=</span> <span class="n">exponent</span> <span class="o">+</span> <span class="n">num_digits</span>
+
+        <span class="k">if</span> <span class="n">num_digits</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># If the number is of the form 0.[0]+[1-9]+</span>
+            <span class="n">num_digits</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="c"># since there MUST be a single non zero digit on the left of decimal</span>
+            <span class="c"># point, we have to multiple by an extra 10</span>
+            <span class="n">num_digits</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">exponent</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">mantissa</span> <span class="o">=</span> <span class="n">mantissa</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_digits</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># If the number is of the form [1-9]+.[0-9]+</span>
+            <span class="n">mantissa</span> <span class="o">=</span> <span class="n">mantissa</span> <span class="o">/</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_digits</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">mantissa</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c"># If the original number is of the form 0.[1-9]+ then, num_digits</span>
+            <span class="c"># would have been 0, multile by extra 10 to get it to</span>
+            <span class="c"># canonical form</span>
+            <span class="n">mantissa</span> <span class="o">*=</span> <span class="mi">10</span>
+            <span class="n">exponent</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="c"># There MUST be at least single digit on the right of the decimal point</span>
+    <span class="n">mantissa</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">mantissa</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mantissa</span><span class="p">:</span>
+        <span class="n">mantissa</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.0&#39;</span> <span class="o">%</span> <span class="n">mantissa</span>
+
+    <span class="c"># If there are any trailing zeros, strip them off</span>
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">mantissa</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">right</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">remaining</span> <span class="o">=</span> <span class="n">right</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">mantissa</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">remaining</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s%s</span><span class="s">E</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">neg_sign</span><span class="p">,</span> <span class="n">mantissa</span><span class="p">,</span> <span class="n">exponent</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DecimalEncoder"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.jsonlib.DecimalEncoder">[docs]</a><span class="k">class</span> <span class="nc">DecimalEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class that adds capability of encoding decimal</span>
+<span class="sd">    in JSON</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># In 2.x version of json library, _iterencode should be overriden</span>
+    <span class="c"># to have special encoding for objects</span>
+    <span class="k">def</span> <span class="nf">_iterencode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overriding the decimal encoding for the default encoder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">[</span><span class="n">o</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">DecimalEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_iterencode</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">markers</span><span class="p">)</span>  <span class="c"># pylint: disable=W0212</span>
+
+    <span class="c"># In 3.x version of json library, default() should be overrriden</span>
+    <span class="c"># to have special encoding for objects</span>
+<div class="viewcode-block" id="DecimalEncoder.default"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.jsonlib.DecimalEncoder.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>  <span class="c"># pylint: disable=E0202</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">[</span><span class="n">o</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

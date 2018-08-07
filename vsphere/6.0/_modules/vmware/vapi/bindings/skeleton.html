@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.bindings.skeleton &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.bindings.skeleton</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Skeleton helper classes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">ApiInterface</span><span class="p">,</span> <span class="n">MethodIdentifier</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">InterfaceDefinition</span><span class="p">,</span> <span class="n">MethodResult</span><span class="p">,</span> <span class="n">MethodDefinition</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">InterfaceIdentifier</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">NameToTypeResolver</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.type</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ListType</span><span class="p">,</span> <span class="n">OptionalType</span><span class="p">,</span> <span class="n">ReferenceType</span><span class="p">,</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">DynamicStructType</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.converter</span> <span class="kn">import</span> <span class="n">Converter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.std</span> <span class="kn">import</span> <span class="n">make_error_value_from_msgs</span><span class="p">,</span> <span class="n">make_std_error_def</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+
+<span class="c"># TLS object to store the execution context of a request</span>
+<span class="n">TLS</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>
+<span class="n">TLS</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ApiInterfaceSkeleton"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton">[docs]</a><span class="k">class</span> <span class="nc">ApiInterfaceSkeleton</span><span class="p">(</span><span class="n">ApiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Skeleton class for :class:`ApiInterface`. This class implements the</span>
+<span class="sd">    :class:`ApiInterface` interface.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># XXX These error definitions should be eliminated when we figure out</span>
+    <span class="c">#     where/how to get the error definitions used by the local provider</span>
+    <span class="n">_internal_server_error_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.errors.internal_server_error&#39;</span><span class="p">)</span>
+    <span class="n">_invalid_argument_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">)</span>
+    <span class="n">_unexpected_input_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.errors.unexpected_input&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="p">,</span> <span class="n">impl</span><span class="p">,</span> <span class="n">operations</span><span class="p">,</span> <span class="n">error_types</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the ApiInterface skeleton class</span>
+
+<span class="sd">        :type  iface_name: :class:`str`</span>
+<span class="sd">        :param iface_name: Interface name</span>
+<span class="sd">        :type  impl: :class:`VapiInterface`</span>
+<span class="sd">        :param impl: Class that implements this interface</span>
+<span class="sd">        :type  operations: :class:`dict`</span>
+<span class="sd">        :param operations: Description of the operations in this service</span>
+<span class="sd">        :type  error_types: :class:`list` of :class:`vmware.vapi.bindings.type.ErrorType`</span>
+<span class="sd">        :param error_types: error types to be registered in this configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span> <span class="o">=</span> <span class="n">operations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span> <span class="o">=</span> <span class="n">InterfaceIdentifier</span><span class="p">(</span><span class="n">iface_name</span><span class="p">)</span>
+        <span class="n">operation_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">MethodIdentifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">operation_name</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iface_def</span> <span class="o">=</span> <span class="n">InterfaceDefinition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span><span class="p">,</span>
+                                              <span class="n">operation_ids</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_impl</span> <span class="o">=</span> <span class="n">impl</span>
+        <span class="n">error_types</span> <span class="o">=</span> <span class="n">error_types</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolver</span> <span class="o">=</span> <span class="n">NameToTypeResolver</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">([(</span><span class="n">e</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">error_types</span><span class="p">]))</span>
+        <span class="n">ApiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_pepify_args</span><span class="p">(</span><span class="n">meth_args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts all the keys of given keyword arguments into PEP8 standard</span>
+<span class="sd">        names</span>
+
+<span class="sd">        :type  meth_args: :class:`dict`</span>
+<span class="sd">        :param meth_args: The keyword arguments to be converted</span>
+<span class="sd">        :rtype:  :class:`dict`</span>
+<span class="sd">        :return: The converted keyword arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">meth_args</span><span class="p">):</span>
+            <span class="n">new_args</span><span class="p">[</span><span class="n">Converter</span><span class="o">.</span><span class="n">canonical_to_pep</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">new_args</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ApiInterfaceSkeleton.check_for_unknown_fields"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton.check_for_unknown_fields">[docs]</a>    <span class="k">def</span> <span class="nf">check_for_unknown_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the StructValues inside the input DataValue has any</span>
+<span class="sd">        unknown fields</span>
+
+<span class="sd">        :type  value_type: :class:`vmware.vapi.bindings.type.BindingType`</span>
+<span class="sd">        :param value_type: Binding Type</span>
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: DataValue</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.ErrorValue` or ``None``</span>
+<span class="sd">        :return: ErrorValue describing the unknown fields or None if no</span>
+<span class="sd">                 unknown fields were found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_type</span><span class="p">,</span> <span class="n">ReferenceType</span><span class="p">):</span>
+            <span class="n">value_type</span> <span class="o">=</span> <span class="n">value_type</span><span class="o">.</span><span class="n">resolved_type</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_type</span><span class="p">,</span> <span class="n">DynamicStructType</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_type</span><span class="p">,</span> <span class="n">StructType</span><span class="p">):</span>
+            <span class="n">expected_field_names</span> <span class="o">=</span> <span class="n">value_type</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">()</span>
+            <span class="n">actual_field_names</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">()</span>
+            <span class="n">unexpected_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">actual_field_names</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">expected_field_names</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">unexpected_fields</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.data.structure.field.unexpected&#39;</span><span class="p">,</span>
+                    <span class="nb">repr</span><span class="p">(</span><span class="n">unexpected_fields</span><span class="p">),</span> <span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_unexpected_input_def</span><span class="p">,</span>
+                                                  <span class="n">msg</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">expected_field_names</span><span class="p">:</span>
+                <span class="n">field_value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="n">field_type</span> <span class="o">=</span> <span class="n">value_type</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">ApiInterfaceSkeleton</span><span class="o">.</span><span class="n">check_for_unknown_fields</span><span class="p">(</span>
+                    <span class="n">field_type</span><span class="p">,</span> <span class="n">field_value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_type</span><span class="p">,</span> <span class="n">ListType</span><span class="p">):</span>
+            <span class="n">element_type</span> <span class="o">=</span> <span class="n">value_type</span><span class="o">.</span><span class="n">element_type</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">ListType</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">OptionalType</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">StructType</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">ReferenceType</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">ApiInterfaceSkeleton</span><span class="o">.</span><span class="n">check_for_unknown_fields</span><span class="p">(</span>
+                        <span class="n">element_type</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_type</span><span class="p">,</span> <span class="n">OptionalType</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">ApiInterfaceSkeleton</span><span class="o">.</span><span class="n">check_for_unknown_fields</span><span class="p">(</span>
+                    <span class="n">value_type</span><span class="o">.</span><span class="n">element_type</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="ApiInterfaceSkeleton.get_identifier"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton.get_identifier">[docs]</a>    <span class="k">def</span> <span class="nf">get_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iface_id</span>
+</div>
+<div class="viewcode-block" id="ApiInterfaceSkeleton.get_definition"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton.get_definition">[docs]</a>    <span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iface_def</span>
+</div>
+<div class="viewcode-block" id="ApiInterfaceSkeleton.get_method_definition"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton.get_method_definition">[docs]</a>    <span class="k">def</span> <span class="nf">get_method_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_id</span><span class="p">):</span>
+        <span class="n">opInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+        <span class="n">errors_defs</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">definition</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;errors&#39;</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">errors_defs</span><span class="p">:</span>
+            <span class="n">errors_defs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_argument_def</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">errors_defs</span><span class="p">:</span>
+            <span class="n">errors_defs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_invalid_argument_def</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unexpected_input_def</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">errors_defs</span><span class="p">:</span>
+            <span class="n">errors_defs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unexpected_input_def</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MethodDefinition</span><span class="p">(</span><span class="n">method_id</span><span class="p">,</span>
+                                <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;input_type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span>
+                                <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;output_type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span>
+                                <span class="n">errors_defs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ApiInterfaceSkeleton.invoke"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">method_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invokes the specified method using the execution context and</span>
+<span class="sd">        the input provided</span>
+
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context for this method</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Method input parameters</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Result of the method invocation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">opInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+
+        <span class="c"># Set execution context in the TLS object of the impl</span>
+        <span class="n">TLS</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctx</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># input validators</span>
+            <span class="n">validators</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;input_validator_list&#39;</span><span class="p">]</span>
+            <span class="n">input_type</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;input_type&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="n">validators</span><span class="p">:</span>
+                <span class="n">msg_list</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="n">input_type</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">msg_list</span><span class="p">:</span>
+                    <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_argument_def</span><span class="p">,</span> <span class="o">*</span><span class="n">msg_list</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">ApiInterfaceSkeleton</span><span class="o">.</span><span class="n">check_for_unknown_fields</span><span class="p">(</span>
+                <span class="n">input_type</span><span class="p">,</span> <span class="n">input_value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">error_value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">meth_args</span> <span class="o">=</span> <span class="n">TypeConverter</span><span class="o">.</span><span class="n">convert_to_python</span><span class="p">(</span>
+                    <span class="n">input_value</span><span class="p">,</span> <span class="n">binding_type</span><span class="o">=</span><span class="n">input_type</span><span class="p">,</span>
+                    <span class="n">resolver</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolver</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">CoreException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_argument_def</span><span class="p">,</span> <span class="o">*</span><span class="n">e</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+            <span class="n">meth_args</span> <span class="o">=</span> <span class="n">ApiInterfaceSkeleton</span><span class="o">.</span><span class="n">_pepify_args</span><span class="p">(</span><span class="n">meth_args</span><span class="p">)</span>
+            <span class="n">method_name</span> <span class="o">=</span> <span class="n">Converter</span><span class="o">.</span><span class="n">canonical_to_pep</span><span class="p">(</span><span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_impl</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
+            <span class="n">meth_output</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="o">**</span><span class="n">meth_args</span><span class="p">)</span>
+
+            <span class="n">output_type</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;output_type&#39;</span><span class="p">]</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">TypeConverter</span><span class="o">.</span><span class="n">convert_to_vapi</span><span class="p">(</span><span class="n">meth_output</span><span class="p">,</span>
+                                                   <span class="n">output_type</span><span class="p">)</span>
+            <span class="c"># output validators</span>
+            <span class="n">validators</span> <span class="o">=</span> <span class="n">opInfo</span><span class="p">[</span><span class="s">&#39;output_validator_list&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="n">validators</span><span class="p">:</span>
+                <span class="n">msg_list</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">output_type</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">msg_list</span><span class="p">:</span>
+                    <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span> <span class="o">*</span><span class="n">msg_list</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">CoreException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;Error in invoking </span><span class="si">%s</span><span class="s"> - </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                             <span class="nb">str</span><span class="p">(</span><span class="n">method_id</span><span class="p">),</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">e</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">VapiError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">exc_info</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+            <span class="n">error_type</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">get_binding_type</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="n">TypeConverter</span><span class="o">.</span><span class="n">convert_to_vapi</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">error_type</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">CoreException</span> <span class="k">as</span> <span class="n">ce</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Failed to convert </span><span class="si">%s</span><span class="s"> to error type </span><span class="si">%s</span><span class="s"> because </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span>
+                             <span class="n">e</span><span class="p">,</span> <span class="n">error_type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                             <span class="s">&#39; because &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">def_msg</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ce</span><span class="o">.</span><span class="n">messages</span><span class="p">)),</span>
+                             <span class="n">exc_info</span><span class="o">=</span><span class="n">exc_info</span><span class="p">)</span>
+                <span class="k">raise</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="c"># Reset the execution context after the operation</span>
+            <span class="n">TLS</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+</div></div>
+<div class="viewcode-block" id="VapiInterface"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.VapiInterface">[docs]</a><span class="k">class</span> <span class="nc">VapiInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vAPI Interface class is used by the python server side bindings. This</span>
+<span class="sd">    encapsulates the :class:`vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton` class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_interface</span><span class="p">,</span> <span class="n">error_types</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the VapiInterface class</span>
+
+<span class="sd">        :type  api_interface: :class:`vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton`</span>
+<span class="sd">        :param api_interface: Api Interface skeleton class for this interface</span>
+<span class="sd">        :type  error_types: :class:`list` of :class:`vmware.vapi.bindings.type.ErrorType`</span>
+<span class="sd">        :param error_types: error types to be registered in this configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api_interface</span> <span class="o">=</span> <span class="n">api_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_types</span><span class="o">=</span><span class="n">error_types</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="VapiInterface.api_interface"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.VapiInterface.api_interface">[docs]</a>    <span class="k">def</span> <span class="nf">api_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the ApiInterfaceSkeleton instance. Local Provider uses this</span>
+<span class="sd">        method to discover the ApiInterface so that it can route method calls</span>
+<span class="sd">        for the methods implemented by this interface.</span>
+
+<span class="sd">        :rtype:  :class:`vmware.vapi.bindings.skeleton.ApiInterfaceSkeleton`</span>
+<span class="sd">        :return: Api Interface skeleton class for this interface</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api_interface</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="VapiInterface.execution_context"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.VapiInterface.execution_context">[docs]</a>    <span class="k">def</span> <span class="nf">execution_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the execution context of a method invocation</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :return: Execution context of a method invocation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">TLS</span><span class="o">.</span><span class="n">ctx</span>
+
+</div></div>
+<div class="viewcode-block" id="VapiFilter"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.VapiFilter">[docs]</a><span class="k">class</span> <span class="nc">VapiFilter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Filter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a filter that injects request context into the log</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="VapiFilter.filter"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.skeleton.VapiFilter.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">TLS</span><span class="o">.</span><span class="n">ctx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">op_id</span> <span class="o">=</span> <span class="n">TLS</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">application_context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;opId&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">op_id</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="bp">True</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

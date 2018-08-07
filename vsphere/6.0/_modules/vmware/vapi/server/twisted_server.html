@@ -1,0 +1,638 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.server.twisted_server &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.server.twisted_server</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Twisted server</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+    <span class="c"># Disable DeprecationWarning as twisted uses md5 instead of hashlib</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
+    <span class="c"># Disable SyntaxWarning as twisted uses assert (oldChild.parentNode is self)</span>
+    <span class="c"># which is always true</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">SyntaxWarning</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">twisted</span>
+    <span class="c"># Without adding this explicit import, the ssl part of twisted</span>
+    <span class="c"># doesn&#39;t get initialized</span>
+    <span class="kn">import</span> <span class="nn">twisted.internet.ssl</span>
+    <span class="kn">from</span> <span class="nn">twisted.internet</span> <span class="kn">import</span> <span class="n">defer</span>
+    <span class="kn">from</span> <span class="nn">twisted.internet.protocol</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">Factory</span>
+    <span class="kn">from</span> <span class="nn">twisted.web.resource</span> <span class="kn">import</span> <span class="n">Resource</span>
+    <span class="kn">from</span> <span class="nn">twisted.web.server</span> <span class="kn">import</span> <span class="n">Site</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.server.server_interface</span> <span class="kn">import</span> <span class="n">ServerInterface</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.addr_url_parser</span> <span class="kn">import</span> <span class="n">parse_addr_url</span>
+
+<span class="c"># Try to use epoll if available</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">twisted</span><span class="o">.</span><span class="n">internet</span><span class="o">.</span><span class="n">epollreactor</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="c"># Twisted log</span>
+<span class="c">#import sys</span>
+<span class="c">#twisted.python.log.startLogging(sys.stdout, setStdout=False)</span>
+
+<span class="c"># NYI: Debug</span>
+<span class="c"># import time</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="c"># Singleton twisted server</span>
+<span class="n">_server_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+<span class="n">_twisted_server</span> <span class="o">=</span> <span class="bp">None</span>
+
+
+<div class="viewcode-block" id="TwistedConnectionAdapter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedConnectionAdapter">[docs]</a><span class="k">class</span> <span class="nc">TwistedConnectionAdapter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Twisted connection adapter &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Twisted connection adapter init</span>
+
+<span class="sd">        :type  transport: :class:`twisted.internet.interfaces.ITransport`</span>
+<span class="sd">        :param transport: Twisted transport</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">transport</span>
+
+<div class="viewcode-block" id="TwistedConnectionAdapter.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedConnectionAdapter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Only need to do this for async protocol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">reactor</span><span class="o">.</span><span class="n">callFromThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TwistedConnectionAdapter.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedConnectionAdapter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="c"># Only need to do this for async protocol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">reactor</span><span class="o">.</span><span class="n">callFromThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal write</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Internal close &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">loseConnection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="TwistedAsyncProtocolHandlerAdapter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedAsyncProtocolHandlerAdapter">[docs]</a><span class="k">class</span> <span class="nc">TwistedAsyncProtocolHandlerAdapter</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>  <span class="c"># pylint: disable=W0232</span>
+    <span class="sd">&quot;&quot;&quot; Twisted async protocol handler adapter &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TwistedAsyncProtocolHandlerAdapter.connectionMade"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedAsyncProtocolHandlerAdapter.connectionMade">[docs]</a>    <span class="k">def</span> <span class="nf">connectionMade</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; connection established callback &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">TwistedConnectionAdapter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">protocol_handler</span><span class="o">.</span><span class="n">get_data_handler</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>  <span class="c"># pylint: disable=E1101</span>
+</div>
+<div class="viewcode-block" id="TwistedAsyncProtocolHandlerAdapter.dataReceived"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedAsyncProtocolHandlerAdapter.dataReceived">[docs]</a>    <span class="k">def</span> <span class="nf">dataReceived</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        data received</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">data_ready</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TwistedAsyncProtocolHandlerAdapter.connectionLost"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedAsyncProtocolHandlerAdapter.connectionLost">[docs]</a>    <span class="k">def</span> <span class="nf">connectionLost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reason</span><span class="p">):</span>  <span class="c"># pylint: disable=W0222</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Twisted connection lost</span>
+
+<span class="sd">        :type  reason: :class:`str`</span>
+<span class="sd">        :param reason: Connection lost reason</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">twisted</span><span class="o">.</span><span class="n">internet</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">ConnectionDone</span><span class="p">,</span> <span class="n">reason</span><span class="o">.</span><span class="n">type</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;connectionLost: reason </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">data_end</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;connectionLost: reason </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">data_abort</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># pylint: disable=W0201</span>
+
+</div></div>
+<div class="viewcode-block" id="TwistedVmwareProtocolFactory"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedVmwareProtocolFactory">[docs]</a><span class="k">class</span> <span class="nc">TwistedVmwareProtocolFactory</span><span class="p">(</span><span class="n">Factory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Twisted vmacre protocol factory &quot;&quot;&quot;</span>
+    <span class="n">protocol</span> <span class="o">=</span> <span class="n">TwistedAsyncProtocolHandlerAdapter</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Twisted vmacre protocol factory init</span>
+
+<span class="sd">        :type  protocol_handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param protocol_handler: protocol handler for this addr</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol_handler</span> <span class="o">=</span> <span class="n">protocol_handler</span>
+
+</div>
+<div class="viewcode-block" id="TwistedHttpConnectionAdapter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedHttpConnectionAdapter">[docs]</a><span class="k">class</span> <span class="nc">TwistedHttpConnectionAdapter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Twisted http connection adapter &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Twisted http connection init</span>
+
+<span class="sd">        :type  request: :class:`twisted.web.http.Request`</span>
+<span class="sd">        :param request: Twisted http request object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span> <span class="o">=</span> <span class="n">request</span>
+
+<div class="viewcode-block" id="TwistedHttpConnectionAdapter.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedHttpConnectionAdapter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">reactor</span><span class="o">.</span><span class="n">callFromThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TwistedHttpConnectionAdapter.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedHttpConnectionAdapter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">reactor</span><span class="o">.</span><span class="n">callFromThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">)</span>
+
+    <span class="c"># Connection interface</span></div>
+    <span class="k">def</span> <span class="nf">_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Internal write &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+            <span class="c"># NYI: Debug only</span>
+            <span class="c"># logger.debug(&#39;%f: write data %d&#39;, time.time(), len(data))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Internal close &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+            <span class="c"># NYI: Debug only</span>
+            <span class="c"># logger.debug(&#39;%f: request.finish()&#39;, time.time())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">setResponseCode</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="TwistedVapiResource"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedVapiResource">[docs]</a><span class="k">class</span> <span class="nc">TwistedVapiResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Twisted vapi resource &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Twisted vapi resource init &quot;&quot;&quot;</span>
+        <span class="n">Resource</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handler_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="TwistedVapiResource.add_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedVapiResource.add_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        add content handler</span>
+
+<span class="sd">        :type  content_type: :class:`str`</span>
+<span class="sd">        :param content_type: MIME content type</span>
+<span class="sd">        :type  protocol_handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param protocol_handler: protocol handler for this path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">curr_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">curr_handler</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">curr_handler</span> <span class="o">!=</span> <span class="n">protocol_handler</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Already registered. Failed to add handler for content type </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handler_map</span><span class="p">[</span><span class="n">content_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">protocol_handler</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="TwistedVapiResource.render_POST"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedVapiResource.render_POST">[docs]</a>    <span class="k">def</span> <span class="nf">render_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle POST</span>
+
+<span class="sd">        :type  request: :class:`twisted.web.http.Request`</span>
+<span class="sd">        :param request: Twisted http request object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># NYI: Debug only</span>
+        <span class="c"># logger.debug(&#39;%f: render_POST: get request&#39;, time.time())</span>
+
+        <span class="c"># Multiplex depends on content-type</span>
+        <span class="n">header_content_type</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">header_content_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tokens</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content_type</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">handler</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_error</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s">&#39;Unsupported content&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">request</span><span class="o">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">&#39;Server&#39;</span><span class="p">,</span> <span class="s">&#39;Twisted/1.0&#39;</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">defer</span><span class="o">.</span><span class="n">Deferred</span><span class="p">()</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">addCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_read</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">addCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_request</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">addErrback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_error</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s">&#39;Request failed&#39;</span><span class="p">)</span>
+        <span class="c"># NYI: Add timeout for this connection</span>
+        <span class="c"># NYI: Add blacklist to protect from DoS attack</span>
+
+        <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">twisted</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">NOT_DONE_YET</span>
+</div>
+<div class="viewcode-block" id="TwistedVapiResource.render_GET"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedVapiResource.render_GET">[docs]</a>    <span class="k">def</span> <span class="nf">render_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle HTTP GET</span>
+
+<span class="sd">        :type  request: :class:`twisted.web.http.Request`</span>
+<span class="sd">        :param request: Twisted http request object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">header_content_type</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">header_content_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">content_type</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">header_content_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tokens</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">content_type</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+
+        <span class="n">request</span><span class="o">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">&#39;Server&#39;</span><span class="p">,</span> <span class="s">&#39;Twisted/1.0&#39;</span><span class="p">)</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">handler</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_error</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s">&#39;Unsupported content&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">defer</span><span class="o">.</span><span class="n">Deferred</span><span class="p">()</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">addCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_read</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">addCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_request</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">addErrback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_error</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s">&#39;Request failed&#39;</span><span class="p">)</span>
+        <span class="c"># NYI: Add timeout for this connection</span>
+        <span class="c"># NYI: Add blacklist to protect from DoS attack</span>
+
+        <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">twisted</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">NOT_DONE_YET</span>
+</div>
+<div class="viewcode-block" id="TwistedVapiResource.handle_error"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedVapiResource.handle_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">failure</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response_code</span><span class="p">,</span> <span class="n">text_msg</span><span class="p">):</span>  <span class="c"># pylint: disable=R0201</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle error</span>
+
+<span class="sd">        :type  failure: :class:`twisted.python.failure.Failure`</span>
+<span class="sd">        :param failure: Twisted failure instance</span>
+<span class="sd">        :type  request: :class:`twisted.web.http.Request`</span>
+<span class="sd">        :param request: Twisted http request object</span>
+<span class="sd">        :type  response_code: :class:`int`</span>
+<span class="sd">        :param response_code: Http response code</span>
+<span class="sd">        :type  text_msg: :class:`int`</span>
+<span class="sd">        :param text_msg: Http error code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;handle_error: </span><span class="si">%s</span><span class="s"> </span><span class="si">%d</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">failure</span><span class="p">,</span> <span class="n">response_code</span><span class="p">,</span> <span class="n">text_msg</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">setResponseCode</span><span class="p">(</span><span class="n">response_code</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s">&#39;text&#39;</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text_msg</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="TwistedVapiResource.handle_read"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedVapiResource.handle_read">[docs]</a>    <span class="k">def</span> <span class="nf">handle_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>  <span class="c"># pylint: disable=R0201</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle read</span>
+
+<span class="sd">        :type  request: :class:`twisted.web.http.Request`</span>
+<span class="sd">        :param request: Twisted http request object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># logger.debug(&#39;handle_read:&#39;)</span>
+        <span class="c"># NYI: Chunking read, and send data one chunk at a time</span>
+        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="TwistedVapiResource.handle_request"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedVapiResource.handle_request">[docs]</a>    <span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_msg</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>  <span class="c"># pylint: disable=R0201</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle request</span>
+
+<span class="sd">        :type  request_msg: :class:`str`</span>
+<span class="sd">        :param request_msg: Request msg</span>
+<span class="sd">        :type  request: :class:`twisted.web.http.Request`</span>
+<span class="sd">        :param request: Twisted http request object</span>
+<span class="sd">        :type  handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param handler: protocol handler for this addr</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># logger.debug(&#39;handle_request: %s&#39;, request_msg)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">TwistedHttpConnectionAdapter</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">data_handler</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get_data_handler</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">data_handler</span><span class="o">.</span><span class="n">data_ready</span><span class="p">(</span><span class="n">request_msg</span><span class="p">)</span>
+        <span class="n">data_handler</span><span class="o">.</span><span class="n">data_end</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="TwistedHttpSite"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedHttpSite">[docs]</a><span class="k">class</span> <span class="nc">TwistedHttpSite</span><span class="p">(</span><span class="n">Site</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Twisted http site &quot;&quot;&quot;</span>
+    <span class="n">HTTP_CONTENT_MAPPING</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;json&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;xml&#39;</span><span class="p">:</span> <span class="s">&#39;text/xml&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Http site site init &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_resource</span> <span class="o">=</span> <span class="n">twisted</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">Resource</span><span class="p">()</span>
+        <span class="n">twisted</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">Site</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_resource</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TwistedHttpSite.add_res_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedHttpSite.add_res_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_res_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add resource handler for a path</span>
+
+<span class="sd">        :type  path: :class:`str`</span>
+<span class="sd">        :param path: url path</span>
+<span class="sd">        :type  msg_type: :class:`str`</span>
+<span class="sd">        :param msg_type: transport msg type</span>
+<span class="sd">        :type  protocol_handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param protocol_handler: protocol handler for this path</span>
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: True if added. False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">HTTP_CONTENT_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">msg_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">content_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Unsupported msg type: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">token</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Cannot register root resource: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="n">curr_resources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_resource</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">node_entity</span> <span class="o">=</span> <span class="n">curr_resources</span><span class="o">.</span><span class="n">getStaticEntity</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node_entity</span><span class="p">:</span>
+                <span class="n">curr_resources</span> <span class="o">=</span> <span class="n">node_entity</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Adding child node </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+                <span class="n">node_entity</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">()</span>
+                <span class="n">curr_resources</span><span class="o">.</span><span class="n">putChild</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">node_entity</span><span class="p">)</span>
+                <span class="n">curr_resources</span> <span class="o">=</span> <span class="n">node_entity</span>
+
+        <span class="n">node</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">leave_entity</span> <span class="o">=</span> <span class="n">curr_resources</span><span class="o">.</span><span class="n">getStaticEntity</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">leave_entity</span><span class="p">,</span> <span class="n">TwistedVapiResource</span><span class="p">):</span>
+            <span class="n">vapi_resource</span> <span class="o">=</span> <span class="n">leave_entity</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">vapi_resource</span> <span class="o">=</span> <span class="n">TwistedVapiResource</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">vapi_resource</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">content_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Cannot re-register resource @ </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Adding child node </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+        <span class="n">curr_resources</span><span class="o">.</span><span class="n">putChild</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">vapi_resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+</div></div>
+<div class="viewcode-block" id="TwistedServer"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedServer">[docs]</a><span class="k">class</span> <span class="nc">TwistedServer</span><span class="p">(</span><span class="n">ServerInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Twisted server &quot;&quot;&quot;</span>
+
+    <span class="n">SUPPORTED_SCHEMES</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;vmware&#39;</span><span class="p">,</span> <span class="s">&#39;vmwares&#39;</span><span class="p">,</span> <span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="s">&#39;https&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Twisted server init &quot;&quot;&quot;</span>
+        <span class="n">ServerInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handlers_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c"># Protocol factories</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factories</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_thread_only</span> <span class="o">=</span> <span class="bp">True</span>
+
+<div class="viewcode-block" id="TwistedServer.register_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedServer.register_handler">[docs]</a>    <span class="k">def</span> <span class="nf">register_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">,</span> <span class="n">ssl_args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register protocol handler</span>
+
+<span class="sd">        :type  addr: :class:`str`</span>
+<span class="sd">        :param addr: addr url</span>
+<span class="sd">        :type  msg_type: :class:`str`</span>
+<span class="sd">        :param msg_type: protocol message type</span>
+<span class="sd">        :type  protocol_handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param protocol_handler: protocol handler for this addr</span>
+<span class="sd">        :type  ssl_args: :class:`dict`</span>
+<span class="sd">        :param ssl_args: ssl arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span><span class="p">(</span><span class="n">protocol_handler</span><span class="p">)</span>
+        <span class="c"># addr is url</span>
+        <span class="n">scheme</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">parse_addr_url</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="c"># https / vmwares</span>
+        <span class="k">if</span> <span class="n">scheme</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPORTED_SCHEMES</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Unsupported url scheme: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c"># Get ssl context</span>
+        <span class="n">ssl_context</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;https&#39;</span> <span class="ow">or</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;vmwares&#39;</span><span class="p">:</span>
+            <span class="n">ssl_context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ssl_context</span><span class="p">(</span><span class="n">ssl_args</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;http&#39;</span> <span class="ow">or</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;https&#39;</span><span class="p">:</span>
+                <span class="n">protocol_factory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factories</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">protocol_factory</span><span class="p">:</span>
+                    <span class="n">protocol_factory</span> <span class="o">=</span> <span class="n">TwistedHttpSite</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factories</span><span class="p">[(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)]</span> <span class="o">=</span> <span class="n">protocol_factory</span>  <span class="c"># Singleton</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">protocol_factory</span><span class="o">.</span><span class="n">add_res_handler</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Failed to add resource handler: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+                    <span class="k">return</span>
+            <span class="k">elif</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;vmware&#39;</span> <span class="ow">or</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;vmwares&#39;</span><span class="p">:</span>
+                <span class="n">protocol_factory</span> <span class="o">=</span> <span class="n">TwistedVmwareProtocolFactory</span><span class="p">(</span><span class="n">protocol_handler</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Scheme </span><span class="si">%s</span><span class="s"> is not supported&quot;</span> <span class="o">%</span> <span class="n">scheme</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">handlers_map</span><span class="p">[(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">protocol_factory</span><span class="p">,</span> <span class="n">ssl_context</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TwistedServer.get_ssl_context"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedServer.get_ssl_context">[docs]</a>    <span class="k">def</span> <span class="nf">get_ssl_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ssl_args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get ssl context</span>
+
+<span class="sd">        :type  ssl_args: :class:`dict`</span>
+<span class="sd">        :param ssl_args: ssl arguments</span>
+<span class="sd">        :rtype: :class:`twisted.internet.ssl.DefaultOpenSSLContextFactory`</span>
+<span class="sd">        :return: twisted ssl context factory instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ssl_context</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">ssl_ctx_args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">ssl_args</span><span class="p">:</span>
+            <span class="c"># Twisted don&#39;t support ca certs</span>
+            <span class="k">if</span> <span class="n">ssl_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;keyfile&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+                <span class="n">ssl_ctx_args</span><span class="p">[</span><span class="s">&#39;privateKeyFileName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ssl_args</span><span class="p">[</span><span class="s">&#39;keyfile&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">ssl_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;certfile&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+                <span class="n">ssl_ctx_args</span><span class="p">[</span><span class="s">&#39;certificateFileName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ssl_args</span><span class="p">[</span><span class="s">&#39;certfile&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ssl_ctx_args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;ssl_ctx_args: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">ssl_ctx_args</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ssl_context</span> <span class="o">=</span> <span class="n">twisted</span><span class="o">.</span><span class="n">internet</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">DefaultOpenSSLContextFactory</span><span class="p">(</span>
+                    <span class="o">**</span><span class="n">ssl_ctx_args</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="c"># Twisted without ssl support. Missing pyOpenSSL?</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Twisted without ssl support. Missing pyOpenSSL?&#39;</span><span class="p">)</span>
+                <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Missing SSL context!&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ssl_context</span>
+</div>
+<div class="viewcode-block" id="TwistedServer.serve_forever"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedServer.serve_forever">[docs]</a>    <span class="k">def</span> <span class="nf">serve_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Server loop</span>
+
+<span class="sd">        Note: Twisted limitation: Must be running from main thread</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handlers_map</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;No handler registered. Server stopped&#39;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="k">for</span> <span class="n">info</span><span class="p">,</span> <span class="p">(</span><span class="n">protocol_factory</span><span class="p">,</span> <span class="n">ssl_context</span><span class="p">)</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handlers_map</span><span class="p">):</span>
+                <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">info</span>
+                <span class="n">host</span> <span class="o">=</span> <span class="n">host</span> <span class="k">if</span> <span class="n">host</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
+                <span class="c"># isIPv6Address in twisted returns False if the addr has []</span>
+                <span class="c"># So, removing it from the addr.</span>
+                <span class="k">if</span> <span class="n">host</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;[&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">host</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;]&#39;</span><span class="p">):</span>
+                    <span class="n">host</span> <span class="o">=</span> <span class="n">host</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Listening on: </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">ssl_context</span><span class="p">)</span>
+
+                <span class="c"># interface=&#39;&#39;, listens on only IPv4 address</span>
+                <span class="c"># interface=&#39;::&#39;, listens on both IPv4 and IPv6 address</span>
+                <span class="c"># interface=&#39;&lt;IPv4_addr&gt;&#39;, listen on only IPv4 address</span>
+                <span class="c"># interface=&#39;&lt;IPv6_addr&gt;&#39;, listen on only IPv6 address</span>
+                <span class="k">if</span> <span class="n">ssl_context</span><span class="p">:</span>
+                    <span class="n">twisted</span><span class="o">.</span><span class="n">internet</span><span class="o">.</span><span class="n">reactor</span><span class="o">.</span><span class="n">listenSSL</span><span class="p">(</span><span class="n">port</span><span class="p">,</span>  <span class="c"># pylint: disable=E1101</span>
+                                                       <span class="n">protocol_factory</span><span class="p">,</span>
+                                                       <span class="n">ssl_context</span><span class="p">,</span>
+                                                       <span class="n">interface</span><span class="o">=</span><span class="n">host</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">twisted</span><span class="o">.</span><span class="n">internet</span><span class="o">.</span><span class="n">reactor</span><span class="o">.</span><span class="n">listenTCP</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">protocol_factory</span><span class="p">,</span>  <span class="c"># pylint: disable=E1101</span>
+                                                       <span class="n">interface</span><span class="o">=</span><span class="n">host</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;twisted internet reactor started...&#39;</span><span class="p">)</span>
+        <span class="n">twisted</span><span class="o">.</span><span class="n">internet</span><span class="o">.</span><span class="n">reactor</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>  <span class="c"># pylint: disable=E1101</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;twisted internet reactor stopped&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TwistedServer.shutdown"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.TwistedServer.shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Server shutdown &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">twisted</span><span class="o">.</span><span class="n">internet</span><span class="o">.</span><span class="n">reactor</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>  <span class="c"># pylint: disable=E1101</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c"># Ignore all shutdown exceptions</span>
+            <span class="k">pass</span>
+
+</div></div>
+<div class="viewcode-block" id="get_server"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.twisted_server.get_server">[docs]</a><span class="k">def</span> <span class="nf">get_server</span><span class="p">(</span><span class="n">cfg</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get twisted server</span>
+
+<span class="sd">    :type  cfg: :class:`ConfigParser.SafeConfigParser`</span>
+<span class="sd">    :param cfg: Config parser</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.server.server_interface.ServerInterface`</span>
+<span class="sd">    :return: subclass of ServerInterface</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c"># Twisted server MUST be singleton</span>
+    <span class="k">global</span> <span class="n">_twisted_server</span>  <span class="c"># pylint: disable=W0603</span>
+    <span class="k">with</span> <span class="n">_server_lock</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_twisted_server</span><span class="p">:</span>
+            <span class="n">_twisted_server</span> <span class="o">=</span> <span class="n">TwistedServer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Twisted server is singleton. This might not be what u wanted&#39;</span><span class="p">)</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">_twisted_server</span>
+    <span class="k">return</span> <span class="n">server</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

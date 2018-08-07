@@ -1,0 +1,1205 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.data.serializers.jsonrpc &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.data.serializers.jsonrpc</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Json rpc de/serializer</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">MethodResult</span><span class="p">,</span> <span class="n">ExecutionContext</span><span class="p">,</span> <span class="n">ApplicationContext</span><span class="p">,</span> <span class="n">SecurityContext</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.type</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.value</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">data_value_factory</span><span class="p">,</span> <span class="n">StructValue</span><span class="p">,</span> <span class="n">ErrorValue</span><span class="p">,</span> <span class="n">ListValue</span><span class="p">,</span>
+    <span class="n">OptionalValue</span><span class="p">,</span> <span class="n">VoidValue</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">,</span> <span class="n">BooleanValue</span><span class="p">,</span> <span class="n">IntegerValue</span><span class="p">,</span>
+    <span class="n">DoubleValue</span><span class="p">,</span> <span class="n">BlobValue</span><span class="p">,</span> <span class="n">SecretValue</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="c"># Vapi json rpc version</span>
+<span class="n">VAPI_JSONRPC_VERSION</span> <span class="o">=</span> <span class="s">&#39;2.0&#39;</span>
+
+<span class="c"># Vapi json rpc method names</span>
+<span class="n">VAPI_INVOKE</span> <span class="o">=</span> <span class="s">&#39;invoke&#39;</span>
+
+<span class="n">vapi_to_json_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">BLOB</span><span class="p">:</span> <span class="s">&#39;BINARY&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">:</span> <span class="s">&#39;SECRET&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">:</span> <span class="s">&#39;STRUCTURE&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">:</span> <span class="s">&#39;OPTIONAL&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">json_to_vapi_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">vapi_to_json_map</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="canonicalize_double"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.canonicalize_double">[docs]</a><span class="k">def</span> <span class="nf">canonicalize_double</span><span class="p">(</span><span class="n">o</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Canonicalize double based on XML schema double canonical format</span>
+
+<span class="sd">    The exponent must be indicated by &quot;E&quot;. Leading zeroes and the</span>
+<span class="sd">    preceding optional &quot;+&quot; sign are prohibited in the exponent. If the</span>
+<span class="sd">    exponent is zero, it must be indicated by &quot;E0&quot;. For the mantissa, the</span>
+<span class="sd">    preceding optional &quot;+&quot; sign is prohibited and the decimal point is</span>
+<span class="sd">    required. Leading and trailing zeroes are prohibited subject to the</span>
+<span class="sd">    following: number representations must be normalized such that there</span>
+<span class="sd">    is a single digit which is non-zero to the left of the decimal point</span>
+<span class="sd">    and at least a single digit to the right of the decimal point unless</span>
+<span class="sd">    the value being represented is zero. The canonical representation</span>
+<span class="sd">    for zero is 0.0E0</span>
+<span class="sd">    http://www.w3.org/TR/xmlschema-2/#double</span>
+
+<span class="sd">    :type  o: :class:`decimal.Decimal`</span>
+<span class="sd">    :param o: Decimal object to be canonicalized</span>
+<span class="sd">    :rtype: :class:`str`</span>
+<span class="sd">    :return: Canonical string representation of the decimal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># NaN and INF must not be used</span>
+    <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">is_infinite</span><span class="p">()</span> <span class="ow">or</span> <span class="n">o</span><span class="o">.</span><span class="n">is_nan</span><span class="p">():</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+            <span class="s">&#39;vapi.decimal.canonicalization&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">str_val</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+
+    <span class="c"># Extract sign of mantissa</span>
+    <span class="n">neg_sign</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">str_val</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">):</span>
+        <span class="n">neg_sign</span> <span class="o">=</span> <span class="s">&#39;-&#39;</span>
+        <span class="n">str_val</span> <span class="o">=</span> <span class="n">str_val</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="c"># Extract mantissa and exponent</span>
+    <span class="n">mantissa</span><span class="p">,</span> <span class="n">exponent</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="s">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">str_val</span><span class="p">:</span>
+        <span class="n">mantissa</span><span class="p">,</span> <span class="n">exponent</span> <span class="o">=</span> <span class="n">str_val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;E&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mantissa</span> <span class="o">=</span> <span class="n">str_val</span>
+
+    <span class="c"># decimal class uses context objects that governs precision</span>
+    <span class="c"># for arithmetic operations. Setting the precision to the</span>
+    <span class="c"># length of mantissa string. To canonicalize the mantissa,</span>
+    <span class="c"># we do a division operation, precision maybe lost if we</span>
+    <span class="c"># don&#39;t set .prec</span>
+    <span class="n">decimal</span><span class="o">.</span><span class="n">getcontext</span><span class="p">()</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mantissa</span><span class="p">)</span>
+
+    <span class="n">mantissa</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="n">mantissa</span><span class="p">)</span>
+    <span class="n">exponent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">exponent</span><span class="p">)</span> <span class="k">if</span> <span class="n">exponent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c"># There MUST be a single non zero digit on the left of the decimal point</span>
+    <span class="c"># (unless a zero is represented)</span>
+    <span class="n">num_digits</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">mantissa</span><span class="p">:</span>
+        <span class="n">num_digits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">mantissa</span><span class="p">))</span>
+        <span class="n">exponent</span> <span class="o">=</span> <span class="n">exponent</span> <span class="o">+</span> <span class="n">num_digits</span>
+
+        <span class="k">if</span> <span class="n">num_digits</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># If the number is of the form 0.[0]+[1-9]+</span>
+            <span class="n">num_digits</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="c"># since there MUST be a single non zero digit on the left of decimal</span>
+            <span class="c"># point, we have to multiple by an extra 10</span>
+            <span class="n">num_digits</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">exponent</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">mantissa</span> <span class="o">=</span> <span class="n">mantissa</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_digits</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># If the number is of the form [1-9]+.[0-9]+</span>
+            <span class="n">mantissa</span> <span class="o">=</span> <span class="n">mantissa</span> <span class="o">/</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_digits</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">mantissa</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c"># If the original number is of the form 0.[1-9]+ then, num_digits</span>
+            <span class="c"># would have been 0, multile by extra 10 to get it to</span>
+            <span class="c"># canonical form</span>
+            <span class="n">mantissa</span> <span class="o">*=</span> <span class="mi">10</span>
+            <span class="n">exponent</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="c"># There MUST be at least single digit on the right of the decimal point</span>
+    <span class="n">mantissa</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">mantissa</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mantissa</span><span class="p">:</span>
+        <span class="n">mantissa</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.0&#39;</span> <span class="o">%</span> <span class="n">mantissa</span>
+
+    <span class="c"># If there are any trailing zeros, strip them off</span>
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">mantissa</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">right</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">remaining</span> <span class="o">=</span> <span class="n">right</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;0&#39;</span><span class="p">)</span>
+    <span class="n">mantissa</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">remaining</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s%s</span><span class="s">E</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">neg_sign</span><span class="p">,</span> <span class="n">mantissa</span><span class="p">,</span> <span class="n">exponent</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DecimalEncoder"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.DecimalEncoder">[docs]</a><span class="k">class</span> <span class="nc">DecimalEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class that adds capability of encoding decimal</span>
+<span class="sd">    in JSON</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># In 2.x version of json library, _iterencode should be overriden</span>
+    <span class="c"># to have special encoding for objects</span>
+    <span class="k">def</span> <span class="nf">_iterencode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overriding the decimal encoding for the default encoder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">[</span><span class="n">o</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">DecimalEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_iterencode</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">markers</span><span class="p">)</span>  <span class="c"># pylint: disable=W0212</span>
+
+    <span class="c"># In 3.x version of json library, default() should be overrriden</span>
+    <span class="c"># to have special encoding for objects</span>
+<div class="viewcode-block" id="DecimalEncoder.default"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.DecimalEncoder.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">[</span><span class="n">o</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="VAPIJsonEncoder"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder">[docs]</a><span class="k">class</span> <span class="nc">VAPIJsonEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custon JSON encoder that converts vAPI runtime types directly</span>
+<span class="sd">    into JSON string representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">MethodResult</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_method_result</span><span class="p">,</span>
+            <span class="n">ExecutionContext</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_execution_context</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_dict</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+            <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">:</span> <span class="n">canonicalize_double</span><span class="p">,</span>
+            <span class="n">StructValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_struct_value</span><span class="p">,</span>
+            <span class="n">ErrorValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_struct_value</span><span class="p">,</span>
+            <span class="n">ListValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+            <span class="n">OptionalValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_optional_value</span><span class="p">,</span>
+            <span class="n">DoubleValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_double_value</span><span class="p">,</span>
+            <span class="n">IntegerValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+            <span class="n">BooleanValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+            <span class="n">StringValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+            <span class="n">VoidValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+            <span class="n">BlobValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value_with_type_name</span><span class="p">,</span>
+            <span class="n">SecretValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value_with_type_name</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c">#</span>
+    <span class="c"># Even though the recommended way to subclass JSONEncoder is by overriding</span>
+    <span class="c"># &quot;default&quot;, encode is being used as it will preserve the computed JSON</span>
+    <span class="c"># string literal for decimals. If we use default, the value returned by</span>
+    <span class="c"># canonicalize_double will be wrapped inside double quotes in the final</span>
+    <span class="c"># JSON message.</span>
+    <span class="c">#</span>
+<div class="viewcode-block" id="VAPIJsonEncoder.encode"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.encode">[docs]</a>    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encode a given vAPI runtime object</span>
+
+<span class="sd">        :type  value: :class:`object`</span>
+<span class="sd">        :param value: vAPI runtime object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_default</span><span class="p">)(</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_struct_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_struct_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a StructValue object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param value: Struct value object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">type_name</span> <span class="o">=</span> <span class="n">vapi_to_json_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">get_fields</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="s">&#39;{&quot;</span><span class="si">%s</span><span class="s">&quot;:{&quot;</span><span class="si">%s</span><span class="s">&quot;:{</span><span class="si">%s</span><span class="s">}}}&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">type_name</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_list"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a ListValue object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.ListValue`</span>
+<span class="sd">        :param value: List value object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s">&#39;[</span><span class="si">%s</span><span class="s">]&#39;</span> <span class="o">%</span> <span class="n">string</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_optional_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_optional_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a OptionalValue object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.OptionalValue`</span>
+<span class="sd">        :param value: Optional value object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">type_name</span> <span class="o">=</span> <span class="n">vapi_to_json_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s">&#39;{&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;{&quot;</span><span class="si">%s</span><span class="s">&quot;:null}&#39;</span> <span class="o">%</span> <span class="n">type_name</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_double_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_double_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DoubleValue object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DoubleValue`</span>
+<span class="sd">        :param value: Double value object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">canonicalize_double</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_primitive_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_primitive_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_primitive_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit one of StringValue, IntegerValue, BooleanValue or VoidValue</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.StringValue` (or)</span>
+<span class="sd">            :class:`vmware.vapi.data.value.IntegerValue` (or)</span>
+<span class="sd">            :class:`vmware.vapi.data.value.BooleanValue` (or)</span>
+<span class="sd">            :class:`vmware.vapi.data.value.VoidValue` (or)</span>
+<span class="sd">        :param value: StringValue, IntegerValue, BooleanValue or VoidValue object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_primitive_value_with_type_name"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_primitive_value_with_type_name">[docs]</a>    <span class="k">def</span> <span class="nf">visit_primitive_value_with_type_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit one of BlobValue or SecretValue</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.BlobValue` (or)</span>
+<span class="sd">            :class:`vmware.vapi.data.value.SecretValue`</span>
+<span class="sd">        :param value: BlobValue or SecretValue object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">type_name</span> <span class="o">=</span> <span class="n">vapi_to_json_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&#39;{&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_method_result"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_method_result">[docs]</a>    <span class="k">def</span> <span class="nf">visit_method_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a MethodResult object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :param value: MethodResult object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;{&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">error</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;{&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s">&#39;output&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_execution_context"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_execution_context">[docs]</a>    <span class="k">def</span> <span class="nf">visit_execution_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an ExecutionContext object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param value: ExecutionContext object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">security_context</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;{&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">,&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="s">&#39;appCtx&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">application_context</span><span class="p">),</span>
+                <span class="s">&#39;securityCtx&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">security_context</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;{&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s">&#39;appCtx&#39;</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">application_context</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_dict"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_dict">[docs]</a>    <span class="k">def</span> <span class="nf">visit_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a dictionary. Application context and Security Context</span>
+<span class="sd">        in vAPI is a free form object, so it can contain a dictionary.</span>
+
+<span class="sd">        :type  value: :class:`dict`</span>
+<span class="sd">        :param value: Dictionary value</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="s">&#39;{</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VAPIJsonEncoder.visit_default"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.VAPIJsonEncoder.visit_default">[docs]</a>    <span class="k">def</span> <span class="nf">visit_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the default visit method if the type of the input value</span>
+<span class="sd">        does not match any type in the keys present in dispatch map.</span>
+
+<span class="sd">        :type  value: :class:`object`</span>
+<span class="sd">        :param value: Python object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="JsonRpcDictToVapi"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcDictToVapi">[docs]</a><span class="k">class</span> <span class="nc">JsonRpcDictToVapi</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Json rpc dict to vapi type &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Json rpc dict to vapi type init &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonRpcDictToVapi.data_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcDictToVapi.data_value">[docs]</a>    <span class="k">def</span> <span class="nf">data_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get data value from new jsonrpc dict</span>
+
+<span class="sd">        # TODO: Structure names and its fields are converted from</span>
+<span class="sd">        # u&#39;&#39; format to str format. This will break if we allow non</span>
+<span class="sd">        # ASCII characters in the IDL</span>
+
+<span class="sd">        :type  value: :class:`dict`</span>
+<span class="sd">        :param value: json data value</span>
+<span class="sd">        :rtype:  subclass of :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: subclass of data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c"># Optional, Secret, Blob, Error, Structure</span>
+            <span class="c"># types are inside object</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+            <span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">json_value</span><span class="p">)</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+            <span class="n">typ</span> <span class="o">=</span> <span class="n">json_to_vapi_map</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">typ</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">BLOB</span><span class="p">]:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">json_value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">typ</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">json_value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+                <span class="n">struct_name</span><span class="p">,</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">json_value</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">struct_name</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+                    <span class="n">field_data_value</span> <span class="o">=</span> <span class="n">JsonRpcDictToVapi</span><span class="o">.</span><span class="n">data_value</span><span class="p">(</span>
+                        <span class="n">field_value</span><span class="p">)</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">field_name</span><span class="p">),</span> <span class="n">field_data_value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">json_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">JsonRpcDictToVapi</span><span class="o">.</span><span class="n">data_value</span><span class="p">(</span><span class="n">json_value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="c"># ListValue is json list</span>
+            <span class="n">list_data_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">JsonRpcDictToVapi</span><span class="o">.</span><span class="n">data_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span> <span class="n">list_data_values</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">Type</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># For Double</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">data_value_factory</span><span class="p">(</span><span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonRpcDictToVapi.error_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcDictToVapi.error_value">[docs]</a>    <span class="k">def</span> <span class="nf">error_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get error value from jsonrpc dict</span>
+
+<span class="sd">        :type  msg: :class:`dict`</span>
+<span class="sd">        :param msg: json error value</span>
+<span class="sd">        :rtype:  :class:`vmware.vapi.data.value.ErrorValue`</span>
+<span class="sd">        :return: error value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">JsonRpcDictToVapi</span><span class="o">.</span><span class="n">data_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonRpcDictToVapi.method_result"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcDictToVapi.method_result">[docs]</a>    <span class="k">def</span> <span class="nf">method_result</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get method result from jsonrpc dict</span>
+
+<span class="sd">        :type  result: :class:`dict`</span>
+<span class="sd">        :param result: json method result</span>
+<span class="sd">        :rtype:  :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: method result</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="s">&#39;output&#39;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">JsonRpcDictToVapi</span><span class="o">.</span><span class="n">data_value</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">&#39;output&#39;</span><span class="p">])</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="s">&#39;error&#39;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">JsonRpcDictToVapi</span><span class="o">.</span><span class="n">error_value</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonRpcDictToVapi.security_ctx"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcDictToVapi.security_ctx">[docs]</a>    <span class="k">def</span> <span class="nf">security_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get security context from jsonrpc dict</span>
+
+<span class="sd">        :type  ctx: :class:`dict`</span>
+<span class="sd">        :param ctx: json security context</span>
+<span class="sd">        :rtype:  :class:`vmware.vapi.core.SecurityContext`</span>
+<span class="sd">        :return: json user session</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ctx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SecurityContext</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonRpcDictToVapi.app_ctx"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcDictToVapi.app_ctx">[docs]</a>    <span class="k">def</span> <span class="nf">app_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get application context from jsonrpc dict</span>
+
+<span class="sd">        :type  ctx: :class:`dict`</span>
+<span class="sd">        :param ctx: json application context</span>
+<span class="sd">        :rtype:  :class:`str`</span>
+<span class="sd">        :return: operation identifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApplicationContext</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonRpcDictToVapi.execution_context"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcDictToVapi.execution_context">[docs]</a>    <span class="k">def</span> <span class="nf">execution_context</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get execution context from jsonrpc dict</span>
+
+<span class="sd">        :type  ctx: :class:`dict`</span>
+<span class="sd">        :param ctx: json execution context</span>
+<span class="sd">        :rtype:  :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :return: execution context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">app_ctx</span> <span class="o">=</span> <span class="n">JsonRpcDictToVapi</span><span class="o">.</span><span class="n">app_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;appCtx&#39;</span><span class="p">))</span>
+        <span class="n">security_ctx</span> <span class="o">=</span> <span class="n">JsonRpcDictToVapi</span><span class="o">.</span><span class="n">security_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;securityCtx&#39;</span><span class="p">))</span>
+        <span class="n">execution_context</span> <span class="o">=</span> <span class="n">ExecutionContext</span><span class="p">(</span><span class="n">app_ctx</span><span class="p">,</span> <span class="n">security_ctx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">execution_context</span>
+
+</div></div>
+<div class="viewcode-block" id="JsonRpcError"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcError">[docs]</a><span class="k">class</span> <span class="nc">JsonRpcError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; json rpc error base class &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        json rpc error base class constructor</span>
+
+<span class="sd">        :type  error: :class:`dict`</span>
+<span class="sd">        :param error: json rpc error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+
+</div>
+<div class="viewcode-block" id="JsonRpcRequest"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcRequest">[docs]</a><span class="k">class</span> <span class="nc">JsonRpcRequest</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c"># pylint: disable=R0922</span>
+    <span class="sd">&quot;&quot;&quot; Json rpc request base class &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">notification</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">request_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Json rpc request base class constructor</span>
+
+<span class="sd">        :type  version: :class:`str`</span>
+<span class="sd">        :kwarg version: json rpc request version</span>
+<span class="sd">        :type  method: :class:`str`</span>
+<span class="sd">        :kwarg method: json rpc method</span>
+<span class="sd">        :type  params: :class:`dict` or :class:`list` or None</span>
+<span class="sd">        :kwarg params: json rpc method params</span>
+<span class="sd">        :type  notification: :class:`bool`</span>
+<span class="sd">        :kwarg notification: True for notification</span>
+<span class="sd">        :type  request_id: :class:`long` or :class:`int` or :class:`str` or None</span>
+<span class="sd">        :kwarg request_id: json rpc request id. Do not set for notification</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_request</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notification</span> <span class="o">=</span> <span class="n">notification</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">request_id</span>
+
+<div class="viewcode-block" id="JsonRpcRequest.serialize"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcRequest.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serialize a json rpc request</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: json rpc request str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="JsonRpcRequest.validate_response"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcRequest.validate_response">[docs]</a>    <span class="k">def</span> <span class="nf">validate_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate a json rpc response.</span>
+<span class="sd">        Check for version / id mismatch with request</span>
+
+<span class="sd">        :type  response: :class:`JsonRpcResponse`</span>
+<span class="sd">        :param response: json rpc response object to validate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="JsonRpcResponse"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcResponse">[docs]</a><span class="k">class</span> <span class="nc">JsonRpcResponse</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c"># pylint: disable=R0922</span>
+    <span class="sd">&quot;&quot;&quot; Json rpc response base class &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">response_id</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Json rpc response base class constructor</span>
+
+<span class="sd">        :type  version: :class:`str`</span>
+<span class="sd">        :kwarg version: json rpc response version</span>
+<span class="sd">        :type  response_id: :class:`long` or :class:`int` or :class:`str` or None</span>
+<span class="sd">        :kwarg response_id: json rpc response id</span>
+<span class="sd">        :type  result: :class:`dict`</span>
+<span class="sd">        :kwarg result: json rpc response dict</span>
+<span class="sd">        :type  error: :class:`JsonRpcError`</span>
+<span class="sd">        :kwarg error: json rpc error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">response_id</span>
+        <span class="c"># result or error, but not both</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;JSON RPC response has both result and error&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">result</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">error</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;JSON RPC response has neither result nor error&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">result</span><span class="p">,</span> <span class="n">error</span>
+
+<div class="viewcode-block" id="JsonRpcResponse.serialize"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpcResponse.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serialize a json rpc response</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: json rpc response str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="JsonRpc20Error"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpc20Error">[docs]</a><span class="k">class</span> <span class="nc">JsonRpc20Error</span><span class="p">(</span><span class="n">JsonRpcError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; json rpc 2.0 error &quot;&quot;&quot;</span>
+
+    <span class="n">INVALID_REQUEST</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32600</span>
+    <span class="n">METHOD_NOT_FOUND</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32601</span>
+    <span class="n">INVALID_PARAMS</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32602</span>
+    <span class="n">INTERNAL_ERROR</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32603</span>
+    <span class="n">PARSE_ERROR</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32700</span>
+
+    <span class="c"># TRANSPORT_ERROR is defined in xmlrpc error code</span>
+    <span class="c">#  http://xmlrpc-epi.sourceforge.net/specs/rfc.fault_codes.php</span>
+    <span class="c"># but not JSON RPC 2.0</span>
+    <span class="c"># Need this for server connection error</span>
+    <span class="n">TRANSPORT_ERROR</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32300</span>
+
+    <span class="n">SERVER_ERROR_RANGE_MIN</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32768</span>
+    <span class="n">SERVER_ERROR_RANGE_MAX</span> <span class="o">=</span> <span class="o">-</span><span class="mi">32000</span>
+
+    <span class="n">DEFAULT_MESSAGES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">INVALID_REQUEST</span><span class="p">:</span> <span class="s">&#39;Invalid Request.&#39;</span><span class="p">,</span>
+        <span class="n">METHOD_NOT_FOUND</span><span class="p">:</span> <span class="s">&#39;Method not found.&#39;</span><span class="p">,</span>
+        <span class="n">INVALID_PARAMS</span><span class="p">:</span> <span class="s">&#39;Invalid params.&#39;</span><span class="p">,</span>
+        <span class="n">INTERNAL_ERROR</span><span class="p">:</span> <span class="s">&#39;Internal error.&#39;</span><span class="p">,</span>
+        <span class="n">PARSE_ERROR</span><span class="p">:</span> <span class="s">&#39;Parse error.&#39;</span><span class="p">,</span>
+        <span class="n">TRANSPORT_ERROR</span><span class="p">:</span> <span class="s">&#39;Transport error.&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Json rpc 2.0 error</span>
+
+<span class="sd">        :type  code: :class:`int`</span>
+<span class="sd">        :kwarg code: error type that occurred</span>
+<span class="sd">        :type  message: :class:`str`</span>
+<span class="sd">        :kwarg message: a short description of the error</span>
+<span class="sd">        :type  data: Primitive type / :class:`dict` / None</span>
+<span class="sd">        :kwarg data: more info about the error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;JSON RPC error code type: Expecting &quot;int&quot;. Got &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span><span class="p">,</span>
+                         <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">code</span><span class="p">)))</span>
+            <span class="k">raise</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">code</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SERVER_ERROR_RANGE_MIN</span> <span class="ow">or</span>
+                                <span class="n">code</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SERVER_ERROR_RANGE_MAX</span><span class="p">):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_MESSAGES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s">&#39;Server error.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">json_message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;code&#39;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">error</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">JsonRpcError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">: </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">json_message</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_error_parse_error"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_error_parse_error">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_error_parse_error</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vapi json rpc parse error</span>
+
+<span class="sd">    :type  data: :class:`dict`</span>
+<span class="sd">    :param data: json rpc error object</span>
+<span class="sd">    :rtype: :class:`JsonRpcError`</span>
+<span class="sd">    :return: json rpc error object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">JsonRpc20Error</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">PARSE_ERROR</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_error_invalid_request"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_error_invalid_request">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_error_invalid_request</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vapi json rpc invalid request error</span>
+
+<span class="sd">    :type  data: :class:`dict`</span>
+<span class="sd">    :param data: json rpc error object</span>
+<span class="sd">    :rtype: :class:`JsonRpcError`</span>
+<span class="sd">    :return: json rpc error object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">JsonRpc20Error</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">INVALID_REQUEST</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_error_method_not_found"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_error_method_not_found">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_error_method_not_found</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vapi json rpc method not found error</span>
+
+<span class="sd">    :type  data: :class:`dict`</span>
+<span class="sd">    :param data: json rpc error object</span>
+<span class="sd">    :rtype: :class:`JsonRpcError`</span>
+<span class="sd">    :return: json rpc error object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">JsonRpc20Error</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">METHOD_NOT_FOUND</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_error_invalid_params"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_error_invalid_params">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_error_invalid_params</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vapi json rpc invalid params error</span>
+
+<span class="sd">    :type  data: :class:`dict`</span>
+<span class="sd">    :param data: json rpc error object</span>
+<span class="sd">    :rtype: :class:`JsonRpcError`</span>
+<span class="sd">    :return: json rpc error object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">JsonRpc20Error</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">INVALID_PARAMS</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_error_internal_error"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_error_internal_error">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_error_internal_error</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vapi json rpc internal error</span>
+
+<span class="sd">    :type  data: :class:`dict`</span>
+<span class="sd">    :param data: json rpc error object</span>
+<span class="sd">    :rtype: :class:`JsonRpcError`</span>
+<span class="sd">    :return: json rpc error object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">JsonRpc20Error</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">INTERNAL_ERROR</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_error_transport_error"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_error_transport_error">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_error_transport_error</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vapi json rpc transport error</span>
+
+<span class="sd">    :type  data: :class:`dict`</span>
+<span class="sd">    :param data: json rpc error object</span>
+<span class="sd">    :rtype: :class:`JsonRpcError`</span>
+<span class="sd">    :return: json rpc error object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">JsonRpc20Error</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">TRANSPORT_ERROR</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="JsonRpc20Request"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpc20Request">[docs]</a><span class="k">class</span> <span class="nc">JsonRpc20Request</span><span class="p">(</span><span class="n">JsonRpcRequest</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Json rpc 2.0 request &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Json rpc 2.0 request init</span>
+
+<span class="sd">        :type  jsonrpc: :class:`str` or None</span>
+<span class="sd">        :kwarg jsonrpc: json rpc request version</span>
+<span class="sd">        :type  method: :class:`str`</span>
+<span class="sd">        :kwarg method: json rpc method</span>
+<span class="sd">        :type  params: :class:`dict` or :class:`list` or None</span>
+<span class="sd">        :kwarg params: json rpc method params</span>
+<span class="sd">        :type  id: :class:`long` or :class:`int` or :class:`str` or None</span>
+<span class="sd">        :kwarg id: json rpc request id. Do not set for notification</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">)</span>
+        <span class="n">notification</span><span class="p">,</span> <span class="n">id_</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="s">&#39;id&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">notification</span><span class="p">,</span> <span class="n">id_</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">id_</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">id_</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+                             <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">))):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s">&#39;JSON RPC request id must be None/str/int. Get &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">id_</span><span class="p">)))</span>
+                <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_request</span><span class="p">()</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;method&#39;</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;params&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">params</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_request</span><span class="p">()</span>
+        <span class="n">JsonRpcRequest</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
+                                <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+                                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">,</span>
+                                <span class="n">request_id</span><span class="o">=</span><span class="n">id_</span><span class="p">)</span>
+
+<div class="viewcode-block" id="JsonRpc20Request.serialize"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpc20Request.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serialize a json rpc 2.0 request</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: json rpc request str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                       <span class="s">&#39;method&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+                       <span class="s">&#39;params&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+                       <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result_dict</span><span class="p">,</span>
+                          <span class="n">check_circular</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                          <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">),</span>
+                          <span class="n">cls</span><span class="o">=</span><span class="n">VAPIJsonEncoder</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="JsonRpc20Request.serialize_notification"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpc20Request.serialize_notification">[docs]</a>    <span class="k">def</span> <span class="nf">serialize_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serialize a json rpc 2.0 notification</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: json rpc notification str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                       <span class="s">&#39;method&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+                       <span class="s">&#39;params&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result_dict</span><span class="p">,</span>
+                          <span class="n">check_circular</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                          <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">),</span>
+                          <span class="n">cls</span><span class="o">=</span><span class="n">VAPIJsonEncoder</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="JsonRpc20Request.validate_response"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpc20Request.validate_response">[docs]</a>    <span class="k">def</span> <span class="nf">validate_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate a json rpc 2.0 response.</span>
+<span class="sd">        Check for version / id mismatch with request</span>
+
+<span class="sd">        :type  response: :class:`JsonRpcResponse`</span>
+<span class="sd">        :param response: json rpc response object to validate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notification</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;JSON RPC notification does not have response&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+
+        <span class="c"># Check jsonrpc version</span>
+        <span class="c"># NYI: backward compatible?</span>
+        <span class="n">request_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">version</span> <span class="o">!=</span> <span class="n">request_version</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;JSON RPC incompatible version: &quot;</span><span class="si">%s</span><span class="s">&quot;. Expecting &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span><span class="p">,</span>
+                         <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">version</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">request_version</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+
+        <span class="c"># Note: response_id MUST be Null for PARSE_ERROR / INVALID_REQUEST</span>
+        <span class="c"># NYI: Relax this requirement?</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">error</span> <span class="ow">and</span>
+            <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">PARSE_ERROR</span> <span class="ow">or</span>
+             <span class="n">response</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">INVALID_REQUEST</span><span class="p">)):</span>
+            <span class="n">id_</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">id_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+
+        <span class="c"># Check request / response id</span>
+        <span class="k">if</span> <span class="n">id_</span> <span class="o">!=</span> <span class="n">response</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;JSON RPC response id mismatch: &quot;</span><span class="si">%s</span><span class="s">&quot;. Expecting &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span><span class="p">,</span>
+                         <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">id_</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="JsonRpc20Response"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpc20Response">[docs]</a><span class="k">class</span> <span class="nc">JsonRpc20Response</span><span class="p">(</span><span class="n">JsonRpcResponse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Json rpc 2.0 response &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Json rpc 2.0 response init</span>
+<span class="sd">        Either result or error must be set, but not both</span>
+
+<span class="sd">        :type  jsonrpc: :class:`str` or None</span>
+<span class="sd">        :kwarg jsonrpc: json rpc response version</span>
+<span class="sd">        :type  result: :class:`dict`</span>
+<span class="sd">        :kwarg result: json rpc response dict</span>
+<span class="sd">        :type  error: :class:`JsonRpcError` or dict</span>
+<span class="sd">        :kwarg error: json rpc response error</span>
+<span class="sd">        :type  id: :class:`long` or :class:`int` or :class:`str`</span>
+<span class="sd">        :kwarg id: json rpc response id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">)</span>
+        <span class="n">id_</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+        <span class="c"># result or error</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;result&#39;</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">JsonRpcError</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;code&#39;</span><span class="p">)</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;message&#39;</span><span class="p">)</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="n">JsonRpc20Error</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s">&#39;JSON RPC params type error. Expecting &quot;</span><span class="si">%s</span><span class="s">&quot;. Got &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;JsonRpcError / dict&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)))</span>
+                <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+        <span class="n">JsonRpcResponse</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">response_id</span><span class="o">=</span><span class="n">id_</span><span class="p">,</span>
+                                 <span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">)</span>
+
+<div class="viewcode-block" id="JsonRpc20Response.serialize"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.JsonRpc20Response.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serialize a json rpc 2.0 response</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: json rpc response str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                       <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">result_dict</span><span class="p">[</span><span class="s">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># result is None, error MUST not be None</span>
+            <span class="n">result_dict</span><span class="p">[</span><span class="s">&#39;error&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">error</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">PARSE_ERROR</span> <span class="ow">or</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">JsonRpc20Error</span><span class="o">.</span><span class="n">INVALID_REQUEST</span><span class="p">):</span>
+                <span class="n">result_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result_dict</span><span class="p">,</span>
+                            <span class="n">check_circular</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                            <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">),</span>
+                            <span class="n">cls</span><span class="o">=</span><span class="n">VAPIJsonEncoder</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+</div></div>
+<div class="viewcode-block" id="jsonrpc_request_factory"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.jsonrpc_request_factory">[docs]</a><span class="k">def</span> <span class="nf">jsonrpc_request_factory</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Json rpc request factory</span>
+<span class="sd">    For json 2.0: set jsonrpc to &#39;2.0&#39;</span>
+<span class="sd">    For json 1.1: set version to &#39;1.1&#39;</span>
+<span class="sd">    For json 1.0: set neither jsonrpc / version</span>
+<span class="sd">    The parameters accepted depends on json version</span>
+<span class="sd">    See corresponding json rpc request class for init parameters</span>
+
+<span class="sd">    :type  jsonrpc: :class:`str` or None</span>
+<span class="sd">    :kwarg jsonrpc: json rpc request version (2.0)</span>
+<span class="sd">    :type  version: :class:`str` or None</span>
+<span class="sd">    :kwarg version: json rpc request version (1.1)</span>
+<span class="sd">    :type  method: :class:`str`</span>
+<span class="sd">    :kwarg method: json rpc method</span>
+<span class="sd">    :type  params: :class:`dict` or :class:`list` or None</span>
+<span class="sd">    :kwarg params: json rpc method params</span>
+<span class="sd">    :type  id: :class:`long` or :class:`int` or :class:`str` or None</span>
+<span class="sd">    :kwarg id: json rpc request id. Do not set for notification</span>
+
+<span class="sd">    :rtype: :class:`JsonRpcRequest`</span>
+<span class="sd">    :return: json rpc request object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">jsonrpc_version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">jsonrpc_version</span> <span class="ow">and</span> <span class="n">jsonrpc_version</span> <span class="o">==</span> <span class="s">&#39;2.0&#39;</span><span class="p">:</span>
+        <span class="c"># json rpc 2.0</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">JsonRpc20Request</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jsonrpc_version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;version&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">jsonrpc_version</span> <span class="ow">and</span> <span class="n">jsonrpc_version</span> <span class="o">==</span> <span class="s">&#39;1.1&#39;</span><span class="p">:</span>
+            <span class="c"># NYI: json rpc 1.1</span>
+            <span class="c"># request = JsonRpc11Request(kwargs)</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># NYI: json rpc 1.0</span>
+            <span class="c"># request = JsonRpc10Request(kwargs)</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="n">request</span>
+
+</div>
+<div class="viewcode-block" id="jsonrpc_response_factory"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.jsonrpc_response_factory">[docs]</a><span class="k">def</span> <span class="nf">jsonrpc_response_factory</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Json rpc response factory</span>
+<span class="sd">    For json 2.0: set jsonrpc to &#39;2.0&#39;</span>
+<span class="sd">    For json 1.1: set version to &#39;1.1&#39;</span>
+<span class="sd">    For json 1.0: set neither jsonrpc / version</span>
+<span class="sd">    The parameters accepted depends on json version</span>
+<span class="sd">    See corresponding json rpc response class for init parameters</span>
+
+<span class="sd">    :type  jsonrpc: :class:`str` or None</span>
+<span class="sd">    :kwarg jsonrpc: json rpc response version (2.0)</span>
+<span class="sd">    :type  version: :class:`str` or None</span>
+<span class="sd">    :kwarg version: json rpc response version (1.1)</span>
+<span class="sd">    :type  method: :class:`str`</span>
+<span class="sd">    :kwarg method: json rpc method</span>
+<span class="sd">    :type  params: :class:`dict` or :class:`list` or None</span>
+<span class="sd">    :kwarg params: json rpc method params</span>
+<span class="sd">    :type  id: :class:`long` or :class:`int` or :class:`str`</span>
+<span class="sd">    :kwarg id: json rpc response id</span>
+
+<span class="sd">    :rtype: :class:`JsonRpcResponse`</span>
+<span class="sd">    :return: json rpc response object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">jsonrpc_version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">jsonrpc_version</span> <span class="ow">and</span> <span class="n">jsonrpc_version</span> <span class="o">==</span> <span class="s">&#39;2.0&#39;</span><span class="p">:</span>
+        <span class="c"># json rpc 2.0</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">JsonRpc20Response</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">jsonrpc_version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;version&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">jsonrpc_version</span> <span class="ow">and</span> <span class="n">jsonrpc_version</span> <span class="o">==</span> <span class="s">&#39;1.1&#39;</span><span class="p">:</span>
+            <span class="c"># NYI: json rpc 1.1</span>
+            <span class="c"># response = JsonRpc11Response(kwargs)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># NYI: json rpc 1.0</span>
+            <span class="c"># response = JsonRpc10Response(kwargs)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_request_factory"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_request_factory">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_request_factory</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Json rpc request factory</span>
+
+<span class="sd">    :type  method: :class:`str`</span>
+<span class="sd">    :kwarg method: json rpc method</span>
+<span class="sd">    :type  params: :class:`dict` or :class:`list` or None</span>
+<span class="sd">    :kwarg params: json rpc method params</span>
+<span class="sd">    :type  id: :class:`long` or :class:`int` or :class:`str` or None</span>
+<span class="sd">    :kwarg id: json rpc request id. Do not set for notification</span>
+
+<span class="sd">    :rtype: :class:`JsonRpcRequest`</span>
+<span class="sd">    :return: json rpc request object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">jsonrpc_version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">,</span> <span class="n">VAPI_JSONRPC_VERSION</span><span class="p">)</span>
+    <span class="c"># vapi json rpc supports version 2.0 only</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">jsonrpc_version</span> <span class="o">==</span> <span class="n">VAPI_JSONRPC_VERSION</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">,</span> <span class="n">jsonrpc_version</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">JsonRpc20Request</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_notification_factory"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_notification_factory">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_notification_factory</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vapi json rpc notification factory</span>
+
+<span class="sd">    :type  method: :class:`str`</span>
+<span class="sd">    :kwarg method: json rpc method</span>
+<span class="sd">    :type  params: :class:`dict` or :class:`list` or None</span>
+<span class="sd">    :kwarg params: json rpc method params</span>
+
+<span class="sd">    :rtype: :class:`JsonRpcRequest`</span>
+<span class="sd">    :return: json rpc request object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vapi_jsonrpc_request_factory</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="vapi_jsonrpc_response_factory"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.vapi_jsonrpc_response_factory">[docs]</a><span class="k">def</span> <span class="nf">vapi_jsonrpc_response_factory</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vapi json rpc response factory</span>
+
+<span class="sd">    :type  request: :class:`JsonRpcRequest`</span>
+<span class="sd">    :kwarg request: json rpc request object</span>
+<span class="sd">    :type  kwargs: :class:`dict`</span>
+<span class="sd">    :kwarg kwargs: See JsonRpc20Response for constructor parameters</span>
+<span class="sd">    :rtype: :class:`JsonRpcResponse`</span>
+<span class="sd">    :return: json rpc response object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">notification</span><span class="p">:</span>
+        <span class="c"># Notification do not have response</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;JSON RPC notificaition should not have id&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+
+    <span class="n">jsonrpc_version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">,</span> <span class="n">VAPI_JSONRPC_VERSION</span><span class="p">)</span>
+    <span class="c"># vapi json rpc supports version 2.0 only</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">jsonrpc_version</span> <span class="o">==</span> <span class="n">VAPI_JSONRPC_VERSION</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;jsonrpc&#39;</span><span class="p">,</span> <span class="n">jsonrpc_version</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="bp">None</span> <span class="k">if</span> <span class="n">request</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">request</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">JsonRpc20Response</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="to_strkey_dict"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.to_strkey_dict">[docs]</a><span class="k">def</span> <span class="nf">to_strkey_dict</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a unicode key dict into str key dict</span>
+
+<span class="sd">    :type  dictionary: :class:`dict`</span>
+<span class="sd">    :param dictionary: unicode dictionary</span>
+<span class="sd">    :rtype: :class:`dict`</span>
+<span class="sd">    :return: string key dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
+        <span class="n">result</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="deserialize_request"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.deserialize_request">[docs]</a><span class="k">def</span> <span class="nf">deserialize_request</span><span class="p">(</span><span class="n">request_str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deserialize a json rpc request</span>
+
+<span class="sd">    :type  request_str: :class:`str` or :class:`bytes:` or :class:`file`</span>
+<span class="sd">    :param request_str: json rpc request str or a file like object</span>
+<span class="sd">    :rtype: :class:`JsonRpcRequest`</span>
+<span class="sd">    :return: json rpc request</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># NYI: Vapi object directly from json string? Not easy with standard json</span>
+    <span class="c">#      deserializer</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c"># In 2.x, we get str from underlying layer and in 3.x,</span>
+        <span class="c"># we get bytes</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">request_str</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request_str</span><span class="p">,</span> <span class="n">parse_float</span><span class="o">=</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">request_str</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request_str</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">),</span>
+                             <span class="n">parse_float</span><span class="o">=</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">request_str</span><span class="p">,</span> <span class="n">parse_float</span><span class="o">=</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Deserialize request error </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_parse_error</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">jsonrpc_request_factory</span><span class="p">(</span><span class="o">**</span><span class="n">to_strkey_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">JsonRpcError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="k">raise</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Invalid request </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_request</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">request</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Invalid request&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_request</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">request</span>
+
+</div>
+<div class="viewcode-block" id="deserialize_response"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.jsonrpc.deserialize_response">[docs]</a><span class="k">def</span> <span class="nf">deserialize_response</span><span class="p">(</span><span class="n">response_str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deserialize a json rpc response</span>
+
+<span class="sd">    :type  response_str: :class:`str` or :class:`bytes`</span>
+<span class="sd">    :param response_str: json rpc response str</span>
+<span class="sd">    :rtype: :class:`JsonRpcResponse`</span>
+<span class="sd">    :return: json rpc response</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># NYI: Vapi object directly from json string? Not easy with standard json</span>
+    <span class="c">#      deserializer</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c"># In 2.x, we get str from underlying layer and in 3.x,</span>
+        <span class="c"># we get bytes</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response_str</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
+            <span class="n">response_str</span> <span class="o">=</span> <span class="n">response_str</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_str</span><span class="p">,</span> <span class="n">parse_float</span><span class="o">=</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Deserialize response error </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_parse_error</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">jsonrpc_response_factory</span><span class="p">(</span><span class="o">**</span><span class="n">to_strkey_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">JsonRpcError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="k">raise</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Invalid response </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_request</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Invalid response&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_invalid_params</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

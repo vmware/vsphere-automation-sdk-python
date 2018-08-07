@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.message &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.message</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">vAPI Message class</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+
+<span class="c">#</span>
+<span class="c"># This is a message class that can be used by runtime classes.</span>
+<span class="c">#</span>
+<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../../vmware.vapi.html#vmware.vapi.message.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class encapsulates the concept of a localizable message.</span>
+
+<span class="sd">    :type id_: :class:`string`</span>
+<span class="sd">    :ivar id_: The unique message identifier</span>
+<span class="sd">    :type def_msg: :class:`string`</span>
+<span class="sd">    :ivar def_msg: An english language default</span>
+<span class="sd">    :type args: :class:`list` of :class:`string`</span>
+<span class="sd">    :ivar args: The arguments to be used for the messsage</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="n">def_msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the message object</span>
+
+<span class="sd">        :type  id_: :class:`string`</span>
+<span class="sd">        :param id_: The unique message identifier</span>
+<span class="sd">        :type  def_msg: :class:`string`</span>
+<span class="sd">        :param def_msg: An english language default</span>
+<span class="sd">        :type  args: :class:`list` of :class:`string`</span>
+<span class="sd">        :param args: The arguments to be used for the messsage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">id_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">def_msg</span> <span class="o">=</span> <span class="n">def_msg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Message</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">def_msg</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">def_msg</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span> <span class="o">==</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Message(id_=</span><span class="si">%s</span><span class="s">, def_msg=</span><span class="si">%s</span><span class="s">, args=</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                                                         <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">def_msg</span><span class="p">),</span>
+                                                         <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">def_msg</span>
+
+</div>
+<div class="viewcode-block" id="MessageFormatter"><a class="viewcode-back" href="../../../vmware.vapi.html#vmware.vapi.message.MessageFormatter">[docs]</a><span class="k">class</span> <span class="nc">MessageFormatter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all message formatter classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="MessageFormatter.format_msg"><a class="viewcode-back" href="../../../vmware.vapi.html#vmware.vapi.message.MessageFormatter.format_msg">[docs]</a>    <span class="k">def</span> <span class="nf">format_msg</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the message using the specified arguments</span>
+
+<span class="sd">        :type  msg: :class:`str`</span>
+<span class="sd">        :param msg: Message template</span>
+<span class="sd">        :type  args: :class:`list` of :class:`object`</span>
+<span class="sd">        :param args: Arguments for the message</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Localized message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="MessageBundle"><a class="viewcode-back" href="../../../vmware.vapi.html#vmware.vapi.message.MessageBundle">[docs]</a><span class="k">class</span> <span class="nc">MessageBundle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all message bundle classes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize MessageBundle.</span>
+
+<span class="sd">        :type  messages: :class:`dict` of :class:`str`, :class:`str`</span>
+<span class="sd">        :param messages: Dictionary with message identifiers as keys and</span>
+<span class="sd">            message templates as values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_messages</span> <span class="o">=</span> <span class="n">messages</span>
+
+<div class="viewcode-block" id="MessageBundle.get"><a class="viewcode-back" href="../../../vmware.vapi.html#vmware.vapi.message.MessageBundle.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the message template for the given message identifier</span>
+
+<span class="sd">        :type  msg_id: :class:`str`</span>
+<span class="sd">        :param msg_id: Message identifier</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Message template</span>
+<span class="sd">        :raise KeyError: If the message identifier is not found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_messages</span><span class="p">[</span><span class="n">msg_id</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="MessageFactory"><a class="viewcode-back" href="../../../vmware.vapi.html#vmware.vapi.message.MessageFactory">[docs]</a><span class="k">class</span> <span class="nc">MessageFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A factory class to generate localizable messages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_bundle</span><span class="p">,</span> <span class="n">formatter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the message object</span>
+
+<span class="sd">        :type  msg_bundle: :class:`MessageBundle`</span>
+<span class="sd">        :param messages: The message dictionary for the message factory</span>
+<span class="sd">        :type  formatter: :class:`vmware.vapi.formatter.MessageFormatter`</span>
+<span class="sd">        :param formatter: Formatter for the message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_msg_bundle</span> <span class="o">=</span> <span class="n">msg_bundle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formatter</span> <span class="o">=</span> <span class="n">formatter</span>
+
+<div class="viewcode-block" id="MessageFactory.get_message"><a class="viewcode-back" href="../../../vmware.vapi.html#vmware.vapi.message.MessageFactory.get_message">[docs]</a>    <span class="k">def</span> <span class="nf">get_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a message object for the given id with the given args.</span>
+<span class="sd">        If the message is not found, a default unknown message is returned.</span>
+
+<span class="sd">        :type  id_: string</span>
+<span class="sd">        :param id_: The unique message identifier</span>
+<span class="sd">        :type  args: :class:`list` of :class:`object`</span>
+<span class="sd">        :param args: The arguments to be used for constructing this message</span>
+<span class="sd">        :rtype: :class:`Message`</span>
+<span class="sd">        :return: The message object constructed using the given arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_bundle</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_</span><span class="p">)</span>
+            <span class="n">def_msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formatter</span><span class="o">.</span><span class="n">format_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span>
+                                                 <span class="n">args</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Message</span><span class="p">(</span><span class="n">id_</span><span class="p">,</span> <span class="n">def_msg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.message.unknown&#39;</span><span class="p">,</span>
+                <span class="s">&#39;Unknown message ID </span><span class="si">%s</span><span class="s"> requested with parameters </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">)))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

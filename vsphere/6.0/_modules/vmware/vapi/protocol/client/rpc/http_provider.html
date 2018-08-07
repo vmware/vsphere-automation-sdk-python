@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.protocol.client.rpc.http_provider &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.protocol.client.rpc.http_provider</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Http protocol rpc provider</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">urllib</span>
+
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">http_client</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">select</span> <span class="kn">import</span> <span class="n">poll</span><span class="p">,</span> <span class="n">POLLIN</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">poll</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">select</span> <span class="kn">import</span> <span class="n">select</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">select</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.protocol.client.rpc.provider</span> <span class="kn">import</span> <span class="n">RpcProvider</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.addr_url_parser</span> <span class="kn">import</span> <span class="n">parse_addr_url</span>
+
+<span class="c"># Mostly reusing from pyVmomi/SoapAdapter. No point to reinvent so many wheel</span>
+<span class="c"># for http</span>
+<span class="c"># NYI: Use httplib2</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<span class="c">#</span>
+<span class="c"># Temporary workaround for Bug 1222549</span>
+<span class="c">#</span>
+<span class="c"># When client and server are using HTTP 1.1 with chunked encoding. Once server</span>
+<span class="c"># sends all the data, it should sent a zero length chunk to indicate to the</span>
+<span class="c"># client that server has sent all the data. In this case, if server closes the</span>
+<span class="c"># session without sending a zero length chunk, client throws IncompleteRead</span>
+<span class="c"># error.</span>
+<span class="c">#</span>
+<span class="c"># However, the issue is intermittent and is not reproducable.</span>
+<span class="c">#</span>
+<span class="c"># A possible fix has been suggested here:</span>
+<span class="c"># http://bobrochel.blogspot.com/2010/11/bad-servers-chunked-encoding-and.html</span>
+<span class="c"># i.e. Read the partial data and don&#39;t complain if we don&#39;t receive the zero</span>
+<span class="c"># length chunk.</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<div class="viewcode-block" id="patch_http_response_read"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.patch_http_response_read">[docs]</a><span class="k">def</span> <span class="nf">patch_http_response_read</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wrapper function to patch the http read method to return the partial data</span>
+<span class="sd">    when the server doesn&#39;t send a zero length chunk</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function that implements the patch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">http_client</span><span class="o">.</span><span class="n">IncompleteRead</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;Did not receive zero length chunk from the server&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">partial</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<span class="n">http_client</span><span class="o">.</span><span class="n">HTTPResponse</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="n">patch_http_response_read</span><span class="p">(</span><span class="n">http_client</span><span class="o">.</span><span class="n">HTTPResponse</span><span class="o">.</span><span class="n">read</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="UnixSocketConnection"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.UnixSocketConnection">[docs]</a><span class="k">class</span> <span class="nc">UnixSocketConnection</span><span class="p">(</span><span class="n">http_client</span><span class="o">.</span><span class="n">HTTPConnection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Variant of http_client.HTTPConnection that supports HTTP</span>
+<span class="sd">    connections over Unix domain sockets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a Unix domain socket HTTP connection</span>
+
+<span class="sd">        The HTTPConnection __init__ method expects a single argument,</span>
+<span class="sd">        which it interprets as the host to connect to.  For this</span>
+<span class="sd">        class, we instead interpret the parameter as the filesystem</span>
+<span class="sd">        path of the Unix domain socket.</span>
+
+<span class="sd">        :type    path: :class:`str`</span>
+<span class="sd">        :param   path: Unix domain socket path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c"># Pass &#39;&#39; as the host to HTTPConnection; it doesn&#39;t really matter</span>
+        <span class="c"># what we pass (since we&#39;ve overridden the connect method) as long</span>
+        <span class="c"># as it&#39;s a valid string.</span>
+        <span class="n">http_client</span><span class="o">.</span><span class="n">HTTPConnection</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+
+<div class="viewcode-block" id="UnixSocketConnection.connect"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.UnixSocketConnection.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Override the HTTPConnection connect method to connect to a</span>
+<span class="sd">        Unix domain socket.  Obey the same contract as HTTPConnection.connect</span>
+<span class="sd">        which puts the socket in self.sock.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
+
+</div></div>
+<span class="k">class</span> <span class="nc">_SslSocketWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The http_client module requires its sockets to have a</span>
+<span class="sd">    makefile() method to provide a file-like interface (or rather</span>
+<span class="sd">    file-in-Python-like) to the socket. PyOpenSSL doesn&#39;t implement</span>
+<span class="sd">    makefile() as the semantics require files to call dup(2) on the</span>
+<span class="sd">    underlying file descriptors, something not easily done on SSL sockets.</span>
+
+<span class="sd">    # TODO: This wrapper breaks when the server requests a renegotiation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes this class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span> <span class="o">=</span> <span class="n">sock</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Forward everything to underlying socket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">makefile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">bufsize</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fake makefile method.</span>
+
+<span class="sd">        makefile() on normal file descriptors uses dup2(2), which doesn&#39;t work with</span>
+<span class="sd">        SSL sockets and therefore is not implemented by pyOpenSSL. This fake method</span>
+<span class="sd">        works with the http_client module, but might not work for other modules.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># pylint: disable-msg=W0212</span>
+        <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">_fileobject</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">bufsize</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="HttpsConnection"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.HttpsConnection">[docs]</a><span class="k">class</span> <span class="nc">HttpsConnection</span><span class="p">(</span><span class="n">http_client</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internal version of https connection</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal version of https connection init</span>
+
+<span class="sd">        :type    args: :class:`tuple`</span>
+<span class="sd">        :param   args: position parameters to :class:`http_client.HTTPSConnection`</span>
+<span class="sd">        :type    kwargs: :class:`dict`</span>
+<span class="sd">        :param   kwargs: key parameters to :class:`http_client.HTTPSConnection`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Only if the client requires SSL depend on SSL support</span>
+        <span class="kn">from</span> <span class="nn">vmware.vapi.lib.ssl</span> <span class="kn">import</span> <span class="n">DefaultClientContextFactory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ssl_context_factory</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;ssl_context&#39;</span><span class="p">,</span>
+                                               <span class="n">DefaultClientContextFactory</span><span class="p">())</span>
+        <span class="n">http_client</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c">## Override connect to allow us to use PyOpenSSL sockets</span>
+<div class="viewcode-block" id="HttpsConnection.connect"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.HttpsConnection.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; connect &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ssl_context_factory</span><span class="p">:</span>
+            <span class="c"># Only if client requires SSL depend on SSL import</span>
+            <span class="kn">from</span> <span class="nn">OpenSSL</span> <span class="kn">import</span> <span class="n">SSL</span>
+            <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ssl_context_factory</span><span class="o">.</span><span class="n">get_context</span><span class="p">()</span>
+            <span class="n">ssl_sock</span> <span class="o">=</span> <span class="n">SSL</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">sock</span><span class="p">)</span>
+            <span class="n">ssl_sock</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+            <span class="n">ssl_sock</span><span class="o">.</span><span class="n">do_handshake</span><span class="p">()</span>
+            <span class="c"># Verify the python version</span>
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&lt;</span> <span class="mh">0x2060000</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FakeSocket</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">ssl_sock</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">_SslSocketWrapper</span><span class="p">(</span><span class="n">ssl_sock</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">http_client</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="GzipReader"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.GzipReader">[docs]</a><span class="k">class</span> <span class="nc">GzipReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Gzip reader &quot;&quot;&quot;</span>
+    <span class="n">GZIP</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">DEFLATE</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rfile</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">GZIP</span><span class="p">,</span> <span class="n">read_chunk_size</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gzip reader init</span>
+
+<span class="sd">        :type  rfile: :class:`file`</span>
+<span class="sd">        :param rfile: file object to read from</span>
+<span class="sd">        :type  encoding: :class:`int` (``GzipReader.GZIP`` or ``GzipReader.DEFLATE``)</span>
+<span class="sd">        :param encoding: Zip stream encoding enum</span>
+<span class="sd">        :type  read_chunk_size: :class:`int`</span>
+<span class="sd">        :param read_chunk_size: Read chunk size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rfile</span> <span class="o">=</span> <span class="n">rfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c"># Remaining buffer</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">encoding</span> <span class="ow">in</span> <span class="p">(</span><span class="n">GzipReader</span><span class="o">.</span><span class="n">GZIP</span><span class="p">,</span> <span class="n">GzipReader</span><span class="o">.</span><span class="n">DEFLATE</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unzip</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_chunk_size</span> <span class="o">=</span> <span class="n">read_chunk_size</span>
+
+    <span class="k">def</span> <span class="nf">_create_unzip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_chunk</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        create unzip</span>
+
+<span class="sd">        :type  first_chunk: :class:`str`</span>
+<span class="sd">        :param first_chunk: First chunk of read stream data</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Decompressed data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">zlib</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">==</span> <span class="n">GzipReader</span><span class="o">.</span><span class="n">GZIP</span><span class="p">:</span>
+            <span class="n">wbits</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">MAX_WBITS</span> <span class="o">+</span> <span class="mi">16</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">==</span> <span class="n">GzipReader</span><span class="o">.</span><span class="n">DEFLATE</span><span class="p">:</span>
+            <span class="c"># Sniff out real deflate format</span>
+            <span class="n">chunk_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_chunk</span><span class="p">)</span>
+            <span class="c"># Assume raw deflate</span>
+            <span class="n">wbits</span> <span class="o">=</span> <span class="o">-</span><span class="n">zlib</span><span class="o">.</span><span class="n">MAX_WBITS</span>
+            <span class="k">if</span> <span class="n">first_chunk</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s">&#39;</span><span class="se">\x1f</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\x8b</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\x08</span><span class="s">&#39;</span><span class="p">]:</span>
+                <span class="c"># gzip: Apache mod_deflate will send gzip. Yurk!</span>
+                <span class="n">wbits</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">MAX_WBITS</span> <span class="o">+</span> <span class="mi">16</span>
+            <span class="k">elif</span> <span class="n">chunk_len</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">b0</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">first_chunk</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">b1</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">first_chunk</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">b0</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8</span> <span class="ow">and</span> <span class="p">(((</span><span class="n">b0</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">+</span> <span class="n">b1</span><span class="p">))</span> <span class="o">%</span> <span class="mi">31</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c"># zlib deflate</span>
+                    <span class="n">wbits</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(((</span><span class="n">b0</span> <span class="o">&amp;</span> <span class="mh">0xf0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span><span class="p">,</span> <span class="n">zlib</span><span class="o">.</span><span class="n">MAX_WBITS</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unzip</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompressobj</span><span class="p">(</span><span class="n">wbits</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unzip</span>
+
+<div class="viewcode-block" id="GzipReader.read"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.GzipReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_bytes</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        read</span>
+
+<span class="sd">        :type  num_bytes: :class:`int`</span>
+<span class="sd">        :param num_bytes: Number of decompressed bytes to read</span>
+<span class="sd">        :rtype: :class:`bytes`</span>
+<span class="sd">        :return: Decompressed data (len up to num_bytes)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span>
+        <span class="n">buf_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span>
+
+        <span class="k">while</span> <span class="n">buf_size</span> <span class="o">&lt;</span> <span class="n">num_bytes</span> <span class="ow">or</span> <span class="n">num_bytes</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c"># Read and decompress</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_chunk_size</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unzip</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_create_unzip</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
+                <span class="n">inflated_chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unzip</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="n">buf_size</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inflated_chunk</span><span class="p">)</span>
+                <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inflated_chunk</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># Returns whatever we have</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">buf_size</span> <span class="o">&lt;=</span> <span class="n">num_bytes</span> <span class="ow">or</span> <span class="n">num_bytes</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">leftover_bytes</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">leftover_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">leftover_bytes</span> <span class="o">=</span> <span class="n">buf_size</span> <span class="o">-</span> <span class="n">num_bytes</span>
+            <span class="c"># Adjust last chunk to hold only the left over bytes</span>
+            <span class="n">last_chunk</span> <span class="o">=</span> <span class="n">chunks</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_chunk</span><span class="p">[:</span><span class="o">-</span><span class="n">leftover_bytes</span><span class="p">])</span>
+            <span class="n">leftover_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">last_chunk</span><span class="p">[</span><span class="o">-</span><span class="n">leftover_bytes</span><span class="p">:]]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span> <span class="o">=</span> <span class="n">leftover_chunks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span> <span class="o">=</span> <span class="n">leftover_bytes</span>
+
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">buf</span>
+
+</div></div>
+<div class="viewcode-block" id="HttpRpcProvider"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.HttpRpcProvider">[docs]</a><span class="k">class</span> <span class="nc">HttpRpcProvider</span><span class="p">(</span><span class="n">RpcProvider</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; http rpc provider &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ssl_args</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        http rpc provider init</span>
+
+<span class="sd">        :type  ssl_args: :class:`dict`</span>
+<span class="sd">        :param ssl_args: ssl arguments</span>
+<span class="sd">        :type  url: :class:`str`</span>
+<span class="sd">        :param url: url to connected to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">RpcProvider</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_enabled</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_args</span> <span class="o">=</span> <span class="n">ssl_args</span>
+
+        <span class="n">scheme</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">parse_addr_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;http&#39;</span> <span class="ow">or</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;https&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s">&#39;https&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssl_enabled</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">password</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>  <span class="c"># NYI</span>
+        <span class="k">if</span> <span class="n">host</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;!&#39;</span><span class="p">):</span>
+            <span class="c"># Unix domain socket: hostname is &#39;!&#39; followed by</span>
+            <span class="c"># the URL-encoded socket path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">uds</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">host</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">parse</span>
+            <span class="c"># SSL currently not supported for Unix domain sockets</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_enabled</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;SSL not supported on Unix domain sockets&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+            <span class="k">if</span> <span class="n">port</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">+=</span> <span class="s">&#39;:</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">port</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">uds</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accept_compress_response</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span> <span class="o">=</span> <span class="mi">8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool_timeout</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">60</span>  <span class="c"># 8 minutes</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; http rpc provider on delete &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HttpRpcProvider.connect"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.HttpRpcProvider.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        connect</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.protocol.client.rpc.provider.RpcProvider`</span>
+<span class="sd">        :return: http rpc provider</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+</div>
+<div class="viewcode-block" id="HttpRpcProvider.disconnect"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.HttpRpcProvider.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; disconnect &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="k">def</span> <span class="nf">_get_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get connection from pool</span>
+
+<span class="sd">        :rtype: :class:`http_client.HTTPConnection`</span>
+<span class="sd">        :return: http connection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">idle_connections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_close_idle_connections</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">:</span>
+                <span class="n">conn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_close_connections</span><span class="p">(</span><span class="n">idle_connections</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_enabled</span><span class="p">:</span>
+                <span class="n">conn</span> <span class="o">=</span> <span class="n">HttpsConnection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">ssl_args</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">uds</span><span class="p">:</span>
+                <span class="n">conn</span> <span class="o">=</span> <span class="n">UnixSocketConnection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uds</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">conn</span> <span class="o">=</span> <span class="n">http_client</span><span class="o">.</span><span class="n">HTTPConnection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+
+            <span class="c"># Disable Nagle</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disable_nagle</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># If we got an existing connection, verify the state</span>
+            <span class="c"># of the socket</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connection_dropped</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">conn</span>
+
+    <span class="c">## Clean up connection pool to throw away idle timed-out connections</span>
+    <span class="c">#  SoapStubAdapter lock must be acquired before this method is called.</span>
+    <span class="k">def</span> <span class="nf">_close_idle_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        close all idle connections</span>
+
+<span class="sd">        :rtype: :class:`http_client.HTTPConnection`</span>
+<span class="sd">        :return: list of idle http connections</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">idle_connections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool_timeout</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">last_access_time</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">):</span>
+                <span class="n">idle_time</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">last_access_time</span>
+                <span class="k">if</span> <span class="n">idle_time</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_pool_timeout</span><span class="p">:</span>
+                    <span class="n">idle_connections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span>
+                    <span class="k">break</span>
+        <span class="k">return</span> <span class="n">idle_connections</span>
+
+    <span class="k">def</span> <span class="nf">_return_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return a connection to pool</span>
+
+<span class="sd">        :type  conn: :class:`http_client.HTTPConnection`</span>
+<span class="sd">        :param conn: http connection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_size</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
+                <span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_drop_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; drop all connections &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">connections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_close_connections</span><span class="p">(</span><span class="n">connections</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="HttpRpcProvider.is_connection_dropped"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.HttpRpcProvider.is_connection_dropped">[docs]</a>    <span class="k">def</span> <span class="nf">is_connection_dropped</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if the connection is dropped and should be closed.</span>
+
+<span class="sd">        :type  conn: :class:`http_client.HTTPConnection`</span>
+<span class="sd">        :param conn: HTTP connection object</span>
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: True if the connection is dropped, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s">&#39;sock&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="n">poll</span><span class="p">:</span>
+            <span class="c"># This version is better on platforms that support it.</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">poll</span><span class="p">()</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">POLLIN</span><span class="p">)</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">fno</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mf">0.0</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">fno</span> <span class="o">==</span> <span class="n">sock</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span>
+                    <span class="c"># Either data is buffered (bad), or the connection is</span>
+                    <span class="c"># dropped.</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">select</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c"># The return value is a triple of lists of objects that are</span>
+                <span class="c"># ready. If there is a socket error, then the return list</span>
+                <span class="c"># would be empty lists</span>
+                <span class="n">ready_objects</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span><span class="n">sock</span><span class="p">],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="mf">0.0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">ready_objects</span> <span class="k">else</span> <span class="bp">False</span>
+
+            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_close_connections</span><span class="p">(</span><span class="n">connections</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        close a list of connections</span>
+
+<span class="sd">        :type  connections: :class:`list` of :class:`http_client.HTTPConnection`</span>
+<span class="sd">        :param connections: a list of http connections</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">conn</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">connections</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="HttpRpcProvider.disable_nagle"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.HttpRpcProvider.disable_nagle">[docs]</a>    <span class="k">def</span> <span class="nf">disable_nagle</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        disable nagle algorithm for a connection</span>
+
+<span class="sd">        :type  conn: :class:`http_client.HTTPConnection`</span>
+<span class="sd">        :param conn: http connection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c"># Always disable NAGLE algorithm, but not for python 2.7</span>
+        <span class="c"># See pyVmomi/SoapAdapter.py for details</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s">&#39;connect&#39;</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">org_connect</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">connect</span>
+
+        <span class="k">def</span> <span class="nf">connect_disable_nagle</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; connect replacement with disable nagle &quot;&quot;&quot;</span>
+            <span class="n">org_connect</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">sock</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s">&#39;sock&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sock</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">TCP_NODELAY</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">connect</span> <span class="o">=</span> <span class="n">connect_disable_nagle</span>
+</div>
+<div class="viewcode-block" id="HttpRpcProvider.do_request"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.rpc.html#vmware.vapi.protocol.client.rpc.http_provider.HttpRpcProvider.do_request">[docs]</a>    <span class="k">def</span> <span class="nf">do_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Do rpc request</span>
+
+<span class="sd">        :type  request_ctx: :class:`dict` of :class:`str`, :class:`str`</span>
+<span class="sd">        :param request_ctx: Request context dictionary. The valid key/value pairs are:</span>
+<span class="sd">                content-type, {as in http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html 14.17}</span>
+<span class="sd">        :type  request: :class:`str`</span>
+<span class="sd">        :param request: The request body</span>
+
+<span class="sd">        :rtype: :class:`tuple` of (:class:`dict` of :class:`str`, :class:`str`),</span>
+<span class="sd">            :class:`str`</span>
+<span class="sd">        :return: Tuple of (response_ctx, response_body) where</span>
+<span class="sd">            response_ctx: Response context dictionary. The valid key/value pairs are:</span>
+<span class="sd">                    content-type, {as in http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html 14.17}</span>
+<span class="sd">            response: The response body</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># For http, content-type must be set</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="n">request_ctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;do_request: request_ctx content-type not set&#39;</span><span class="p">)</span>
+
+        <span class="n">response_ctx</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="n">content_type</span><span class="p">},</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">request</span><span class="p">:</span>
+            <span class="c"># Send request</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Cookie&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie</span><span class="p">,</span>
+                       <span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="n">content_type</span><span class="p">}</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">accept_compress_response</span><span class="p">:</span>
+                <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Accept-Encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;gzip, deflate&#39;</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;do_request: request_len </span><span class="si">%d</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+
+                <span class="n">conn</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+                <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">,</span> <span class="n">http_client</span><span class="o">.</span><span class="n">HTTPException</span><span class="p">):</span>
+                <span class="k">raise</span>
+
+            <span class="c"># Debug</span>
+            <span class="c"># logger.debug(&#39;do_request: response headers&#39;, resp.getheaders())</span>
+
+            <span class="n">cookie</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">&#39;Set-Cookie&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cookie</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="n">cookie</span>
+
+            <span class="n">status</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">status</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">or</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">500</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">encoding</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">&#39;Content-Encoding&#39;</span><span class="p">,</span> <span class="s">&#39;identity&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">encoding</span> <span class="o">==</span> <span class="s">&#39;gzip&#39;</span><span class="p">:</span>
+                        <span class="n">resp_reader</span> <span class="o">=</span> <span class="n">GzipReader</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">GzipReader</span><span class="o">.</span><span class="n">GZIP</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">encoding</span> <span class="o">==</span> <span class="s">&#39;deflate&#39;</span><span class="p">:</span>
+                        <span class="n">resp_reader</span> <span class="o">=</span> <span class="n">GzipReader</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">GzipReader</span><span class="o">.</span><span class="n">DEFLATE</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">resp_reader</span> <span class="o">=</span> <span class="n">resp</span>
+                    <span class="n">response</span> <span class="o">=</span> <span class="n">resp_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;do_request: response len </span><span class="si">%d</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="k">raise</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">resp_reader</span><span class="p">:</span>
+                        <span class="n">resp_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_return_connection</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+
+                <span class="n">content_type</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">content_type</span><span class="p">:</span>
+                    <span class="n">response_ctx</span><span class="p">[</span><span class="s">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_type</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">raise</span> <span class="n">http_client</span><span class="o">.</span><span class="n">HTTPException</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">reason</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie</span><span class="p">:</span>
+                <span class="n">response_ctx</span><span class="p">[</span><span class="s">&#39;Cookie&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cookie</span>
+        <span class="k">return</span> <span class="n">response_ctx</span><span class="p">,</span> <span class="n">response</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

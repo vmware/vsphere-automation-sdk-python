@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.data.serializers.cleanjson &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.data.serializers.cleanjson</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Serializer vAPI data values to clean (human readable/writable) json documents</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright (c) 2015 VMware, Inc.  All rights reserved.&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.value</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">StructValue</span><span class="p">,</span> <span class="n">ErrorValue</span><span class="p">,</span> <span class="n">ListValue</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">,</span> <span class="n">VoidValue</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">,</span>
+    <span class="n">BooleanValue</span><span class="p">,</span> <span class="n">IntegerValue</span><span class="p">,</span> <span class="n">DoubleValue</span><span class="p">,</span> <span class="n">BlobValue</span><span class="p">,</span> <span class="n">SecretValue</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.jsonlib</span> <span class="kn">import</span> <span class="n">canonicalize_double</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DataValueToJSONEncoder"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder">[docs]</a><span class="k">class</span> <span class="nc">DataValueToJSONEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custon JSON encoder that converts vAPI runtime values directly</span>
+<span class="sd">    into JSON string representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Even though __init__ is called below, pylint throws a warning</span>
+    <span class="c"># that base class __init__ is not called (W0231)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c"># pylint: disable=W0231</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nb">list</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+            <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">:</span> <span class="n">canonicalize_double</span><span class="p">,</span>
+            <span class="n">StructValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_struct_value</span><span class="p">,</span>
+            <span class="n">ErrorValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_struct_value</span><span class="p">,</span>
+            <span class="n">ListValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+            <span class="n">OptionalValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_optional_value</span><span class="p">,</span>
+            <span class="n">DoubleValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_double_value</span><span class="p">,</span>
+            <span class="n">IntegerValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+            <span class="n">BooleanValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+            <span class="n">StringValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+            <span class="n">VoidValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+            <span class="n">BlobValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_blob_value</span><span class="p">,</span>
+            <span class="n">SecretValue</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive_value</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c">#</span>
+    <span class="c"># Even though the recommended way to subclass JSONEncoder is by overriding</span>
+    <span class="c"># &quot;default&quot;, encode is being used as it will preserve the computed JSON</span>
+    <span class="c"># string literal for decimals. If we use default, the value returned by</span>
+    <span class="c"># canonicalize_double will be wrapped inside double quotes in the final</span>
+    <span class="c"># JSON message.</span>
+    <span class="c">#</span>
+<div class="viewcode-block" id="DataValueToJSONEncoder.encode"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder.encode">[docs]</a>    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encode a given vAPI runtime object</span>
+
+<span class="sd">        :type  value: :class:`object`</span>
+<span class="sd">        :param value: vAPI runtime object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_default</span><span class="p">)(</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToJSONEncoder.visit_struct_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder.visit_struct_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a StructValue object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param value: Struct value object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">get_fields</span><span class="p">():</span>
+            <span class="c"># Omit unset optional values</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_value</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">field_value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+                <span class="k">continue</span>
+            <span class="n">items</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_value</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&quot;</span><span class="si">%s</span><span class="s">&quot;:</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">items</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="s">&#39;{</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="DataValueToJSONEncoder.visit_list"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a ListValue object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.ListValue`</span>
+<span class="sd">        :param value: List value object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s">&#39;[</span><span class="si">%s</span><span class="s">]&#39;</span> <span class="o">%</span> <span class="n">string</span>
+</div>
+<div class="viewcode-block" id="DataValueToJSONEncoder.visit_optional_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder.visit_optional_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a OptionalValue object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.OptionalValue`</span>
+<span class="sd">        :param value: Optional value object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;null&#39;</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DataValueToJSONEncoder.visit_double_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder.visit_double_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DoubleValue object</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DoubleValue`</span>
+<span class="sd">        :param value: Double value object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">canonicalize_double</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToJSONEncoder.visit_primitive_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder.visit_primitive_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_primitive_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit one of StringValue, IntegerValue, BooleanValue or VoidValue</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.StringValue` (or)</span>
+<span class="sd">            :class:`vmware.vapi.data.value.IntegerValue` (or)</span>
+<span class="sd">            :class:`vmware.vapi.data.value.BooleanValue` (or)</span>
+<span class="sd">            :class:`vmware.vapi.data.value.VoidValue` (or)</span>
+<span class="sd">        :param value: StringValue, IntegerValue, BooleanValue or VoidValue object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToJSONEncoder.visit_blob_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder.visit_blob_value">[docs]</a>    <span class="k">def</span> <span class="nf">visit_blob_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit BlobValue</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.BlobValue`</span>
+<span class="sd">        :param value: BlobValue object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY3</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c"># For Python3 we need to convert str to byte string for b64encode</span>
+            <span class="n">data_value</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data_value</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataValueToJSONEncoder.visit_default"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueToJSONEncoder.visit_default">[docs]</a>    <span class="k">def</span> <span class="nf">visit_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the default visit method if the type of the input value</span>
+<span class="sd">        does not match any type in the keys present in dispatch map.</span>
+
+<span class="sd">        :type  value: :class:`object`</span>
+<span class="sd">        :param value: Python object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="DataValueConverter"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueConverter">[docs]</a><span class="k">class</span> <span class="nc">DataValueConverter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converter class that converts values from vAPI DataValue to clean</span>
+<span class="sd">    JSON objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DataValueConverter.convert_to_json"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.cleanjson.DataValueConverter.convert_to_json">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_json</span><span class="p">(</span><span class="n">data_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the given data value to a JSON string representation</span>
+
+<span class="sd">        :type  data_value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param data_value: Data value to be converted</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: JSON representation of the data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_value</span><span class="p">,</span>
+                          <span class="n">check_circular</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                          <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">),</span>
+                          <span class="n">cls</span><span class="o">=</span><span class="n">DataValueToJSONEncoder</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

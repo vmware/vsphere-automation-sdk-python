@@ -1,0 +1,716 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.appliance.recovery_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.appliance.recovery_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.appliance.recovery.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="Backup"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Backup">[docs]</a><span class="k">class</span> <span class="nc">Backup</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ``Backup`` class provides methods Performs backup restore operations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_BackupStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Backup.ReturnStatus"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Backup.ReturnStatus">[docs]</a>    <span class="k">class</span> <span class="nc">ReturnStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Backup.ReturnStatus`` class Defines the state of precheck</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">FAIL</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check failed</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">WARNING</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Passed with warnings</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">OK</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check passed</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`ReturnStatus` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">ReturnStatus</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">ReturnStatus</span><span class="p">(</span><span class="s">&#39;FAIL&#39;</span><span class="p">),</span>
+        <span class="n">ReturnStatus</span><span class="p">(</span><span class="s">&#39;WARNING&#39;</span><span class="p">),</span>
+        <span class="n">ReturnStatus</span><span class="p">(</span><span class="s">&#39;OK&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">ReturnStatus</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.backup.return_status&#39;</span><span class="p">,</span>
+        <span class="n">ReturnStatus</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Backup.LocationType"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Backup.LocationType">[docs]</a>    <span class="k">class</span> <span class="nc">LocationType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Backup.LocationType`` class Defines type of all locations for</span>
+<span class="sd">        backup/restore</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">FTPS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is FTPS server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HTTP</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is HTTP server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SCP</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is SSH server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HTTPS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is HTTPS server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">FTP</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is FTP server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`LocationType` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">LocationType</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;FTPS&#39;</span><span class="p">),</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;HTTP&#39;</span><span class="p">),</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;SCP&#39;</span><span class="p">),</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;HTTPS&#39;</span><span class="p">),</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;FTP&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">LocationType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.backup.location_type&#39;</span><span class="p">,</span>
+        <span class="n">LocationType</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Backup.LocalizableMessage"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Backup.LocalizableMessage">[docs]</a>    <span class="k">class</span> <span class="nc">LocalizableMessage</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Backup.LocalizableMessage`` class Structure representing message</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">default_message</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  id: :class:`str`</span>
+<span class="sd">            :param id: id in message bundle</span>
+<span class="sd">            :type  default_message: :class:`str`</span>
+<span class="sd">            :param default_message: text in english</span>
+<span class="sd">            :type  args: :class:`list` of :class:`str`</span>
+<span class="sd">            :param args: nested data</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_message</span> <span class="o">=</span> <span class="n">default_message</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">LocalizableMessage</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.backup.localizable_message&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;default_message&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;args&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">LocalizableMessage</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Backup.ReturnResult"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Backup.ReturnResult">[docs]</a>    <span class="k">class</span> <span class="nc">ReturnResult</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Backup.ReturnResult`` class Structure representing precheck result</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  status: :class:`Backup.ReturnStatus`</span>
+<span class="sd">            :param status: Check status</span>
+<span class="sd">            :type  messages: :class:`list` of :class:`Backup.LocalizableMessage`</span>
+<span class="sd">            :param messages: List of messages</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="n">messages</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">ReturnResult</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.backup.return_result&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Backup.ReturnStatus&#39;</span><span class="p">),</span>
+            <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Backup.LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="p">},</span>
+        <span class="n">ReturnResult</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Backup.BackupRequest"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Backup.BackupRequest">[docs]</a>    <span class="k">class</span> <span class="nc">BackupRequest</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Backup.BackupRequest`` class Structure representing requested backup</span>
+<span class="sd">        piece</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">parts</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">backup_password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">location_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">location</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">location_user</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">location_password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">comment</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  parts: :class:`list` of :class:`str`</span>
+<span class="sd">            :param parts: a list of optional parts. Run backup parts APIs to get list of</span>
+<span class="sd">                optional parts and description</span>
+<span class="sd">            :type  backup_password: :class:`str` or ``None``</span>
+<span class="sd">            :param backup_password: a password for a backup piece The backupPassword must adhere to the</span>
+<span class="sd">                following password requirements: At least 8 characters, cannot be</span>
+<span class="sd">                more than 20 characters in length. At least 1 uppercase letter. At</span>
+<span class="sd">                least 1 lowercase letter. At least 1 numeric digit. At least 1</span>
+<span class="sd">                special character (i.e. any character not in [0-9,a-z,A-Z]). Only</span>
+<span class="sd">                visible ASCII characters (for example, no space).</span>
+<span class="sd">                backupPassword If no password then the piece will not be encrypted</span>
+<span class="sd">            :type  location_type: :class:`Backup.LocationType`</span>
+<span class="sd">            :param location_type: a type of location</span>
+<span class="sd">            :type  location: :class:`str`</span>
+<span class="sd">            :param location: path or url</span>
+<span class="sd">            :type  location_user: :class:`str` or ``None``</span>
+<span class="sd">            :param location_user: username for location</span>
+<span class="sd">                locationUser User name for this location if login is required.</span>
+<span class="sd">            :type  location_password: :class:`str` or ``None``</span>
+<span class="sd">            :param location_password: password for location</span>
+<span class="sd">                locationPassword Password for the specified user if login is</span>
+<span class="sd">                required at this location.</span>
+<span class="sd">            :type  comment: :class:`str` or ``None``</span>
+<span class="sd">            :param comment: Custom comment</span>
+<span class="sd">                comment an optional comment</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parts</span> <span class="o">=</span> <span class="n">parts</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">backup_password</span> <span class="o">=</span> <span class="n">backup_password</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_type</span> <span class="o">=</span> <span class="n">location_type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_user</span> <span class="o">=</span> <span class="n">location_user</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_password</span> <span class="o">=</span> <span class="n">location_password</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">BackupRequest</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.backup.backup_request&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;parts&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;backup_password&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">SecretType</span><span class="p">()),</span>
+            <span class="s">&#39;location_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Backup.LocationType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;location&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;location_user&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;location_password&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">SecretType</span><span class="p">()),</span>
+            <span class="s">&#39;comment&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">BackupRequest</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Backup.validate"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Backup.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">piece</span><span class="p">,</span>
+                 <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check for backup errors without starting backup.</span>
+
+<span class="sd">        :type  piece: :class:`Backup.BackupRequest`</span>
+<span class="sd">        :param piece: BackupRequest Structure</span>
+<span class="sd">        :rtype: :class:`Backup.ReturnResult`</span>
+<span class="sd">        :return: ReturnResult Structure</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.FeatureInUse` </span>
+<span class="sd">            A backup or restore is already in progress</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;validate&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;piece&#39;</span><span class="p">:</span> <span class="n">piece</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Restore"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Restore">[docs]</a><span class="k">class</span> <span class="nc">Restore</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ``Restore`` class provides methods Performs restore operations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_RestoreStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Restore.LocationType"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Restore.LocationType">[docs]</a>    <span class="k">class</span> <span class="nc">LocationType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Restore.LocationType`` class Defines type of all locations for</span>
+<span class="sd">        backup/restore</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">FTPS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is FTPS server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HTTP</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is HTTP server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SCP</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is SSH server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HTTPS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is HTTPS server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">FTP</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Destination is FTP server</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`LocationType` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">LocationType</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;FTPS&#39;</span><span class="p">),</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;HTTP&#39;</span><span class="p">),</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;SCP&#39;</span><span class="p">),</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;HTTPS&#39;</span><span class="p">),</span>
+        <span class="n">LocationType</span><span class="p">(</span><span class="s">&#39;FTP&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">LocationType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.restore.location_type&#39;</span><span class="p">,</span>
+        <span class="n">LocationType</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Restore.RestoreRequest"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Restore.RestoreRequest">[docs]</a>    <span class="k">class</span> <span class="nc">RestoreRequest</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Restore.RestoreRequest`` class Structure representing requested restore</span>
+<span class="sd">        piece</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">backup_password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">location_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">location</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">location_user</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">location_password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  backup_password: :class:`str` or ``None``</span>
+<span class="sd">            :param backup_password: a password for a backup piece</span>
+<span class="sd">                backupPassword If no password then the piece will not be decrypted</span>
+<span class="sd">            :type  location_type: :class:`Restore.LocationType`</span>
+<span class="sd">            :param location_type: a type of location</span>
+<span class="sd">            :type  location: :class:`str`</span>
+<span class="sd">            :param location: path or url</span>
+<span class="sd">            :type  location_user: :class:`str` or ``None``</span>
+<span class="sd">            :param location_user: username for location</span>
+<span class="sd">                locationUser User name for this location if login is required.</span>
+<span class="sd">            :type  location_password: :class:`str` or ``None``</span>
+<span class="sd">            :param location_password: password for location</span>
+<span class="sd">                locationPassword Password for the specified user if login is</span>
+<span class="sd">                required at this location.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">backup_password</span> <span class="o">=</span> <span class="n">backup_password</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_type</span> <span class="o">=</span> <span class="n">location_type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_user</span> <span class="o">=</span> <span class="n">location_user</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location_password</span> <span class="o">=</span> <span class="n">location_password</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">RestoreRequest</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.restore.restore_request&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;backup_password&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">SecretType</span><span class="p">()),</span>
+            <span class="s">&#39;location_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Restore.LocationType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;location&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;location_user&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;location_password&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">SecretType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">RestoreRequest</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Restore.LocalizableMessage"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Restore.LocalizableMessage">[docs]</a>    <span class="k">class</span> <span class="nc">LocalizableMessage</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Restore.LocalizableMessage`` class Structure representing message</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">default_message</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  id: :class:`str`</span>
+<span class="sd">            :param id: id in message bundle</span>
+<span class="sd">            :type  default_message: :class:`str`</span>
+<span class="sd">            :param default_message: text in english</span>
+<span class="sd">            :type  args: :class:`list` of :class:`str`</span>
+<span class="sd">            :param args: nested data</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_message</span> <span class="o">=</span> <span class="n">default_message</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">LocalizableMessage</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.restore.localizable_message&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;default_message&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;args&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">LocalizableMessage</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Restore.Metadata"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Restore.Metadata">[docs]</a>    <span class="k">class</span> <span class="nc">Metadata</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Restore.Metadata`` class Structure representing metadata</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">parts</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">boxname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">comment</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">applicable</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  timestamp: :class:`datetime.datetime`</span>
+<span class="sd">            :param timestamp: Time when this backup was completed.</span>
+<span class="sd">            :type  parts: :class:`list` of :class:`str`</span>
+<span class="sd">            :param parts: List of parts included in the backup.</span>
+<span class="sd">            :type  version: :class:`str`</span>
+<span class="sd">            :param version: VCSA version</span>
+<span class="sd">            :type  boxname: :class:`str`</span>
+<span class="sd">            :param boxname: Box name is PNID/ FQDN etc</span>
+<span class="sd">            :type  comment: :class:`str`</span>
+<span class="sd">            :param comment: Custom comment</span>
+<span class="sd">            :type  applicable: :class:`bool`</span>
+<span class="sd">            :param applicable: Does the VCSA match the deployment type, network properties and</span>
+<span class="sd">                version of backed up VC</span>
+<span class="sd">            :type  messages: :class:`list` of :class:`Restore.LocalizableMessage`</span>
+<span class="sd">            :param messages: Any messages if the backup is not aplicable</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parts</span> <span class="o">=</span> <span class="n">parts</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boxname</span> <span class="o">=</span> <span class="n">boxname</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">applicable</span> <span class="o">=</span> <span class="n">applicable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="n">messages</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Metadata</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.recovery.restore.metadata&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;timestamp&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">(),</span>
+            <span class="s">&#39;parts&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;version&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;boxname&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;comment&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;applicable&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">(),</span>
+            <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Restore.LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="p">},</span>
+        <span class="n">Metadata</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Restore.validate"><a class="viewcode-back" href="../../../../com.vmware.appliance.html#com.vmware.appliance.recovery_client.Restore.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">piece</span><span class="p">,</span>
+                 <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get metadata before restore</span>
+
+<span class="sd">        :type  piece: :class:`Restore.RestoreRequest`</span>
+<span class="sd">        :param piece: RestoreRequest Structure</span>
+<span class="sd">        :rtype: :class:`Restore.Metadata`</span>
+<span class="sd">        :return: Metadata Structure</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;validate&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;piece&#39;</span><span class="p">:</span> <span class="n">piece</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_BackupStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for validate operation</span>
+        <span class="n">validate_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;piece&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Backup.BackupRequest&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">validate_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.feature_in_use&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;FeatureInUse&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">validate_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">validate_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;validate&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">validate_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Backup.ReturnResult&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">validate_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">validate_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">validate_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.appliance.recovery.backup&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_RestoreStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for validate operation</span>
+        <span class="n">validate_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;piece&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Restore.RestoreRequest&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">validate_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">validate_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">validate_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;validate&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">validate_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Restore.Metadata&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">validate_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">validate_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">validate_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.appliance.recovery.restore&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

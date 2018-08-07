@@ -1,0 +1,1299 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vapi.metadata.authentication_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vapi.metadata.authentication_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2014 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vapi.metadata.authentication.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vapi.metadata.authentication_client`` module provides classes</span>
+<span class="sd">that expose authentication information for operation elements across all the</span>
+<span class="sd">service elements. </span>
+
+<span class="sd">To calculate the effective authentication information for an operation element,</span>
+<span class="sd">you should first see if there is an authentication scheme specified for the</span>
+<span class="sd">operation element. If it is not specified, then authentication scheme for the</span>
+<span class="sd">service element that contains this operation element is used. If it is not</span>
+<span class="sd">specified for the service element as well, then the authentication scheme for</span>
+<span class="sd">the package element that contains this service element is used.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.metadata_client</span>
+
+
+<div class="viewcode-block" id="AuthenticationInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.AuthenticationInfo">[docs]</a><span class="k">class</span> <span class="nc">AuthenticationInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``AuthenticationInfo`` class describes the authentication information.</span>
+<span class="sd">    Authentication information could be specified for a package element,</span>
+<span class="sd">    service elenent or an operation element. </span>
+<span class="sd">    </span>
+<span class="sd">    Using the authentication scheme information, a client invoking an API call</span>
+<span class="sd">    from any class can figure out what kind of credentials are needed for that</span>
+<span class="sd">    API call.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">UnionValidator</span><span class="p">(</span>
+            <span class="s">&#39;scheme_type&#39;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s">&#39;SESSION_AWARE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;session_manager&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                <span class="s">&#39;SESSIONLESS&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">scheme_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">session_manager</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">scheme</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  scheme_type: :class:`AuthenticationInfo.SchemeType`</span>
+<span class="sd">        :param scheme_type: The type of the authentication scheme.</span>
+<span class="sd">        :type  session_manager: :class:`str`</span>
+<span class="sd">        :param session_manager: In a session aware authentication scheme, a session manager is</span>
+<span class="sd">            required that supports ``create``, ``delete`` and ``keepAlive``</span>
+<span class="sd">            methods. The fully qualified class name of the session manager is</span>
+<span class="sd">            provided in :attr:`AuthenticationInfo.session_manager` attribute.</span>
+<span class="sd">            This class is responsible for handling sessions.</span>
+<span class="sd">            This attribute is optional and it is only relevant when the value</span>
+<span class="sd">            of ``schemeType`` is</span>
+<span class="sd">            :attr:`AuthenticationInfo.SchemeType.SESSION_AWARE`.</span>
+<span class="sd">        :type  scheme: :class:`str`</span>
+<span class="sd">        :param scheme: String identifier of the authentication scheme. </span>
+<span class="sd">            </span>
+<span class="sd">            Following are the supported authentication schemes by the</span>
+<span class="sd">            infrastructure: </span>
+<span class="sd">            </span>
+<span class="sd">            * The identifier ``com.vmware.vapi.std.security.saml_hok_token``</span>
+<span class="sd">              for SAML holder of key token based authentication mechanism.</span>
+<span class="sd">            * The identifier ``com.vmware.vapi.std.security.bearer_token`` for</span>
+<span class="sd">              SAML bearer token based authentication mechanism.</span>
+<span class="sd">            * The identifier ``com.vmware.vapi.std.security.session_id`` for</span>
+<span class="sd">              session based authentication mechanism.</span>
+<span class="sd">            * The identifier ``com.vmware.vapi.std.security.user_pass`` for</span>
+<span class="sd">              username and password based authentication mechanism.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheme_type</span> <span class="o">=</span> <span class="n">scheme_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_manager</span> <span class="o">=</span> <span class="n">session_manager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheme</span> <span class="o">=</span> <span class="n">scheme</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AuthenticationInfo.SchemeType"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.AuthenticationInfo.SchemeType">[docs]</a>    <span class="k">class</span> <span class="nc">SchemeType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``AuthenticationInfo.SchemeType`` class provides class attributes for</span>
+<span class="sd">        the set of valid authentication scheme types.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SESSIONLESS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Indicates that the scheme is a session less authentication scheme, the user</span>
+<span class="sd">        is authenticated on every method. There is no explicit session</span>
+<span class="sd">        establishment.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SESSION_AWARE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Indicates that the scheme is a session aware authentication scheme. It</span>
+<span class="sd">        requires an explicit login before executing a method and logout when a</span>
+<span class="sd">        session terminates. A class might choose to have a session aware scheme if</span>
+<span class="sd">        it wants to associate some state corresponding to the user until the user</span>
+<span class="sd">        logs out or if it wants to mitigate the cost of authenticating the user on</span>
+<span class="sd">        every method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`SchemeType` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">SchemeType</span><span class="o">.</span><span class="n">SESSIONLESS</span> <span class="o">=</span> <span class="n">SchemeType</span><span class="p">(</span><span class="s">&#39;SESSIONLESS&#39;</span><span class="p">)</span>
+    <span class="n">SchemeType</span><span class="o">.</span><span class="n">SESSION_AWARE</span> <span class="o">=</span> <span class="n">SchemeType</span><span class="p">(</span><span class="s">&#39;SESSION_AWARE&#39;</span><span class="p">)</span>
+    <span class="n">SchemeType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.metadata.authentication.authentication_info.scheme_type&#39;</span><span class="p">,</span>
+        <span class="n">SchemeType</span><span class="p">))</span></div>
+<span class="n">AuthenticationInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.authentication.authentication_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;scheme_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;AuthenticationInfo.SchemeType&#39;</span><span class="p">),</span>
+        <span class="s">&#39;session_manager&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;scheme&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+    <span class="p">},</span>
+    <span class="n">AuthenticationInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ComponentData"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.ComponentData">[docs]</a><span class="k">class</span> <span class="nc">ComponentData</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ComponentData`` class contains the authentication information of the</span>
+<span class="sd">    component along with its fingerprint.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">fingerprint</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  info: :class:`ComponentInfo`</span>
+<span class="sd">        :param info: Authentication information of the component. This includes</span>
+<span class="sd">            information about all the modules in the component.</span>
+<span class="sd">        :type  fingerprint: :class:`str`</span>
+<span class="sd">        :param fingerprint: Fingerprint of the metadata of the component. </span>
+<span class="sd">            </span>
+<span class="sd">            Authentication information could change when there is an</span>
+<span class="sd">            infrastructure update. Since the data present in</span>
+<span class="sd">            :attr:`ComponentData.info` could be quite large, ``fingerprint``</span>
+<span class="sd">            provides a convenient way to check if the data for a particular</span>
+<span class="sd">            component is updated. </span>
+<span class="sd">            </span>
+<span class="sd">            You should store the fingerprint associated with a component. After</span>
+<span class="sd">            an update, by invoking the :func:`Component.fingerprint` method,</span>
+<span class="sd">            you can retrieve the new fingerprint for the component. If the new</span>
+<span class="sd">            fingerprint and the previously stored fingerprint do not match,</span>
+<span class="sd">            clients can then use the :func:`Component.get` to retrieve the new</span>
+<span class="sd">            authentication information for the component.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">fingerprint</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">ComponentData</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.authentication.component_data&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;info&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ComponentInfo&#39;</span><span class="p">),</span>
+        <span class="s">&#39;fingerprint&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+    <span class="p">},</span>
+    <span class="n">ComponentData</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ComponentInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.ComponentInfo">[docs]</a><span class="k">class</span> <span class="nc">ComponentInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ComponentInfo`` class contains authentication information of a</span>
+<span class="sd">    component element. </span>
+<span class="sd">    </span>
+<span class="sd">    For an explanation of authentication information contained within component</span>
+<span class="sd">    elements, see :class:`Component`.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">packages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  packages: :class:`dict` of :class:`str` and :class:`PackageInfo`</span>
+<span class="sd">        :param packages: Authentication information of all the package elements. The key in</span>
+<span class="sd">            the :class:`dict` is the identifier of the package element and the</span>
+<span class="sd">            value in the :class:`dict` is the authentication information for</span>
+<span class="sd">            the package element. </span>
+<span class="sd">            </span>
+<span class="sd">            For an explanation of authentication information containment within</span>
+<span class="sd">            package elements, see :class:`Package`.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the key in</span>
+<span class="sd">            the attribute :class:`dict` must be an identifier for the resource</span>
+<span class="sd">            type: ``com.vmware.vapi.package``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the key in the attribute</span>
+<span class="sd">            :class:`dict` will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.package``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packages</span> <span class="o">=</span> <span class="n">packages</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">ComponentInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.authentication.component_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;packages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;PackageInfo&#39;</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ComponentInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="OperationInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.OperationInfo">[docs]</a><span class="k">class</span> <span class="nc">OperationInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``OperationInfo`` class contains authentication information of an</span>
+<span class="sd">    operation element.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">schemes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  schemes: :class:`list` of :class:`AuthenticationInfo`</span>
+<span class="sd">        :param schemes: List of authentication schemes used by an operation element. The</span>
+<span class="sd">            authentication scheme specified on the service element</span>
+<span class="sd">            corresponding to this operation element is ignored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schemes</span> <span class="o">=</span> <span class="n">schemes</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">OperationInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.authentication.operation_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;schemes&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;AuthenticationInfo&#39;</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">OperationInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="PackageInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.PackageInfo">[docs]</a><span class="k">class</span> <span class="nc">PackageInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``PackageInfo`` class contains authentication information of a package</span>
+<span class="sd">    element. </span>
+<span class="sd">    </span>
+<span class="sd">    For an explanation of authentication information contained within package</span>
+<span class="sd">    elements, see :class:`Package`.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">schemes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">services</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  schemes: :class:`list` of :class:`AuthenticationInfo`</span>
+<span class="sd">        :param schemes: List of authentication schemes to be used for all the operation</span>
+<span class="sd">            elements contained in this package element. If a particular service</span>
+<span class="sd">            or operation element has no explicit authentications defined in the</span>
+<span class="sd">            authentication defintion file, these authentication schemes are</span>
+<span class="sd">            used for authenticating the user.</span>
+<span class="sd">        :type  services: :class:`dict` of :class:`str` and :class:`ServiceInfo`</span>
+<span class="sd">        :param services: Information about all service elements contained in this package</span>
+<span class="sd">            element that contain authentication information. The key in the</span>
+<span class="sd">            :class:`dict` is the identifier of the service element and the</span>
+<span class="sd">            value in the :class:`dict` is the authentication information for</span>
+<span class="sd">            the service element. </span>
+<span class="sd">            </span>
+<span class="sd">            For an explanation of authentication information containment within</span>
+<span class="sd">            service elements, see :class:`Service`.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the key in</span>
+<span class="sd">            the attribute :class:`dict` must be an identifier for the resource</span>
+<span class="sd">            type: ``com.vmware.vapi.service``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the key in the attribute</span>
+<span class="sd">            :class:`dict` will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schemes</span> <span class="o">=</span> <span class="n">schemes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">services</span> <span class="o">=</span> <span class="n">services</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">PackageInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.authentication.package_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;schemes&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;AuthenticationInfo&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;services&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ServiceInfo&#39;</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">PackageInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ServiceInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.ServiceInfo">[docs]</a><span class="k">class</span> <span class="nc">ServiceInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ServiceInfo`` class contains authentication information of a service</span>
+<span class="sd">    element. </span>
+<span class="sd">    </span>
+<span class="sd">    For an explanation of authentication information contained within service</span>
+<span class="sd">    elements, see :class:`Service`.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">schemes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">operations</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  schemes: :class:`list` of :class:`AuthenticationInfo`</span>
+<span class="sd">        :param schemes: List of authentication schemes to be used for all the operation</span>
+<span class="sd">            elements contained in this service element. The authentication</span>
+<span class="sd">            scheme specified on the package element corresponding to this</span>
+<span class="sd">            service element is ignored.</span>
+<span class="sd">        :type  operations: :class:`dict` of :class:`str` and :class:`OperationInfo`</span>
+<span class="sd">        :param operations: Information about all operation elements contained in this service</span>
+<span class="sd">            element that contain authentication information. The key in the</span>
+<span class="sd">            :class:`dict` is the identifier of the operation element and the</span>
+<span class="sd">            value in the :class:`dict` is the authentication information for</span>
+<span class="sd">            the operation element. </span>
+<span class="sd">            </span>
+<span class="sd">            For an explanation of containment of authentication information</span>
+<span class="sd">            within operation elements, see</span>
+<span class="sd">            :class:`com.vmware.vapi.metadata.authentication.service_client.Operation`.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the key in</span>
+<span class="sd">            the attribute :class:`dict` must be an identifier for the resource</span>
+<span class="sd">            type: ``com.vmware.vapi.operation``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the key in the attribute</span>
+<span class="sd">            :class:`dict` will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.operation``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schemes</span> <span class="o">=</span> <span class="n">schemes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="n">operations</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">ServiceInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.authentication.service_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;schemes&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;AuthenticationInfo&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;operations&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;OperationInfo&#39;</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ServiceInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Component"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Component">[docs]</a><span class="k">class</span> <span class="nc">Component</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Component`` class provides methods to retrieve authentication</span>
+<span class="sd">    information of a component element. </span>
+<span class="sd">    </span>
+<span class="sd">    A component element is said to contain authentication information if any</span>
+<span class="sd">    one of package elements contained in it has authentication information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.component&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for component.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ComponentStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Component.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Component.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the identifiers for the component elements that have</span>
+<span class="sd">        authentication information.</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The list of identifiers for the component elements that have</span>
+<span class="sd">            authentication information.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.component``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Component.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Component.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">component_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves authentication information about the component element</span>
+<span class="sd">        corresponding to ``component_id``. </span>
+<span class="sd">        </span>
+<span class="sd">        The :class:`ComponentData` contains the authentication information</span>
+<span class="sd">        about the component element and it&#39;s fingerprint. It contains</span>
+<span class="sd">        information about all the package elements that belong to this</span>
+<span class="sd">        component element.</span>
+
+<span class="sd">        :type  component_id: :class:`str`</span>
+<span class="sd">        :param component_id: Identifier of the component element.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.component``.</span>
+<span class="sd">        :rtype: :class:`ComponentData`</span>
+<span class="sd">        :return: The :class:`ComponentData` instance that corresponds to</span>
+<span class="sd">            ``component_id``</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the component element associated with ``component_id`` does not</span>
+<span class="sd">            have any authentication information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;component_id&#39;</span><span class="p">:</span> <span class="n">component_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Component.fingerprint"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Component.fingerprint">[docs]</a>    <span class="k">def</span> <span class="nf">fingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">component_id</span><span class="p">,</span>
+                    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the fingerprint computed from the authentication metadata of</span>
+<span class="sd">        the component element corresponding to ``component_id``. </span>
+<span class="sd">        </span>
+<span class="sd">        The fingerprint provides clients an efficient way to check if the</span>
+<span class="sd">        metadata for a particular component has been modified on the server.</span>
+<span class="sd">        The client can do this by comparing the result of this operation with</span>
+<span class="sd">        the fingerprint returned in the result of :func:`Component.get`.</span>
+
+<span class="sd">        :type  component_id: :class:`str`</span>
+<span class="sd">        :param component_id: Identifier of the component element.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.component``.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: The fingerprint computed from the authentication metadata of the</span>
+<span class="sd">            component.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the component element associated with ``component_id`` does not</span>
+<span class="sd">            have any authentication information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;fingerprint&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;component_id&#39;</span><span class="p">:</span> <span class="n">component_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Package"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Package">[docs]</a><span class="k">class</span> <span class="nc">Package</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Package`` class provides methods to retrieve authentication</span>
+<span class="sd">    information of a package element. </span>
+<span class="sd">    </span>
+<span class="sd">    A package element is said to contain authentication information if there is</span>
+<span class="sd">    a default authentication assigned to all service elements contained in the</span>
+<span class="sd">    package element or if one of the service element contained in this package</span>
+<span class="sd">    element has authentication information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.package&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for package.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_PackageStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Package.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Package.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the identifiers for the package elements that have</span>
+<span class="sd">        authentication information.</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The list of identifiers for the package elements that have</span>
+<span class="sd">            authentication information.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.package``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Package.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Package.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">package_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves authentication information about the package element</span>
+<span class="sd">        corresponding to ``package_id``.</span>
+
+<span class="sd">        :type  package_id: :class:`str`</span>
+<span class="sd">        :param package_id: Identifier of the package element.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.package``.</span>
+<span class="sd">        :rtype: :class:`PackageInfo`</span>
+<span class="sd">        :return: The :class:`PackageInfo` instance that corresponds to</span>
+<span class="sd">            ``package_id``</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the package element associated with ``package_id`` does not have</span>
+<span class="sd">            any authentication information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;package_id&#39;</span><span class="p">:</span> <span class="n">package_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Service"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Service">[docs]</a><span class="k">class</span> <span class="nc">Service</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Service`` class provides methods to retrieve authentication</span>
+<span class="sd">    information of a service element. </span>
+<span class="sd">    </span>
+<span class="sd">    A service element is said to contain authentication information if there is</span>
+<span class="sd">    a default authentication assigned to all operation elements contained in a</span>
+<span class="sd">    service element or if one of the operation elements contained in this</span>
+<span class="sd">    service element has authentication information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.service&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for service.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ServiceStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Service.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Service.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the identifiers for the service elements that have</span>
+<span class="sd">        authentication information.</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The list of identifiers for the service elements that have</span>
+<span class="sd">            authentication information.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Service.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Service.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">service_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves authentication information about the service element</span>
+<span class="sd">        corresponding to ``service_id``.</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Identifier of the service element.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        :rtype: :class:`ServiceInfo`</span>
+<span class="sd">        :return: The :class:`ServiceInfo` instance that corresponds to</span>
+<span class="sd">            ``service_id``</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the service element associated with ``service_id`` does not have</span>
+<span class="sd">            any authentication information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="n">service_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source">[docs]</a><span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Source`` class provides methods to manage the sources of</span>
+<span class="sd">    authentication metadata information. </span>
+<span class="sd">    </span>
+<span class="sd">    The interface definition language infrastructure provides tools to generate</span>
+<span class="sd">    various kinds of metadata in JSON format from the interface definition</span>
+<span class="sd">    files and additional properties files. One of the generated files contains</span>
+<span class="sd">    authentication information. The generated file can be registered as a</span>
+<span class="sd">    source of metadata. </span>
+<span class="sd">    </span>
+<span class="sd">    The authentication file contains all the data present in the interface</span>
+<span class="sd">    definition files. Each authentication file contains data about one</span>
+<span class="sd">    component element. When a authentication file is added as a source, each</span>
+<span class="sd">    source contributes only one component element&#39;s metadata. </span>
+<span class="sd">    </span>
+<span class="sd">    Authentication metadata can also be discovered from a remote server that</span>
+<span class="sd">    supports the authentication metadata classes (see</span>
+<span class="sd">    :mod:`com.vmware.vapi.metadata.authentication_client`). Since multiple</span>
+<span class="sd">    components can be registered with a single metadata server, when a remote</span>
+<span class="sd">    server is registered as a source, that source can contribute more than one</span>
+<span class="sd">    component.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.metadata.authentication.source&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for metadata source.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_SourceStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Source.Info"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Source.Info`` class contains the metadata source information.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;type&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;FILE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;filepath&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;REMOTE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;address&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">filepath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">address</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  description: :class:`str`</span>
+<span class="sd">            :param description: English language human readable description of the source.</span>
+<span class="sd">            :type  type: :class:`com.vmware.vapi.metadata_client.SourceType`</span>
+<span class="sd">            :param type: Type of the metadata source.</span>
+<span class="sd">            :type  filepath: :class:`str`</span>
+<span class="sd">            :param filepath: Absolute file path of the authentication metadata file that has the</span>
+<span class="sd">                authentication information about one component element. The</span>
+<span class="sd">                ``filePath`` is the path to the file in the server&#39;s filesystem.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is null.</span>
+<span class="sd">            :type  address: :class:`str`</span>
+<span class="sd">            :param address: Connection information for the remote server. This must be in the</span>
+<span class="sd">                format http(s)://IP:port/namespace. </span>
+<span class="sd">                </span>
+<span class="sd">                The remote server must support the classes in the</span>
+<span class="sd">                :mod:`com.vmware.vapi.metadata.authentication_client` module. It</span>
+<span class="sd">                must expose authentication information of one or more components.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is null.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.metadata.authentication.source.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">metadata_client</span><span class="p">,</span> <span class="s">&#39;SourceType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;filepath&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">URIType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Source.CreateSpec"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source.CreateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">CreateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Source.CreateSpec`` class contains the registration information of a</span>
+<span class="sd">        authentication source.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;type&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;FILE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;filepath&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;REMOTE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;address&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">filepath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">address</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  description: :class:`str`</span>
+<span class="sd">            :param description: English language human readable description of the source.</span>
+<span class="sd">            :type  type: :class:`com.vmware.vapi.metadata_client.SourceType`</span>
+<span class="sd">            :param type: Type of the metadata source.</span>
+<span class="sd">            :type  filepath: :class:`str`</span>
+<span class="sd">            :param filepath: Absolute file path of the metamodel metadata file that has the</span>
+<span class="sd">                metamodel information about one component element.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is</span>
+<span class="sd">                :attr:`com.vmware.vapi.metadata_client.SourceType.FILE`.</span>
+<span class="sd">            :type  address: :class:`str`</span>
+<span class="sd">            :param address: Connection information of the remote server. This should be of the</span>
+<span class="sd">                format http(s)://IP:port/namespace. </span>
+<span class="sd">                </span>
+<span class="sd">                The remote server should contain the classes in</span>
+<span class="sd">                :mod:`com.vmware.vapi.metadata.metamodel_client` module. It could</span>
+<span class="sd">                expose metamodel information of one or more components.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is</span>
+<span class="sd">                :attr:`com.vmware.vapi.metadata_client.SourceType.REMOTE`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">CreateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.metadata.authentication.source.create_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">metadata_client</span><span class="p">,</span> <span class="s">&#39;SourceType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;filepath&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">URIType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">CreateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Source.create"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">source_id</span><span class="p">,</span>
+               <span class="n">spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new metadata source. Once the server validates the</span>
+<span class="sd">        registration information of the metadata source, the authentication</span>
+<span class="sd">        metadata is retrieved from the source. This populates elements in all</span>
+<span class="sd">        the classes defined in</span>
+<span class="sd">        :mod:`com.vmware.vapi.metadata.authentication_client` module.</span>
+
+<span class="sd">        :type  source_id: :class:`str`</span>
+<span class="sd">        :param source_id: metadata source identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.authentication.source``.</span>
+<span class="sd">        :type  spec: :class:`Source.CreateSpec`</span>
+<span class="sd">        :param spec: create specification.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyExists` </span>
+<span class="sd">            if the metadata source identifier is already registered with the</span>
+<span class="sd">            infrastructure.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if the type of the source specified in null is invalid.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if the file specified in null is not a valid JSON file or if the</span>
+<span class="sd">            format of the authentication metadata in the JSON file is invalid.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if the URI specified in null is unreachable or if there is a</span>
+<span class="sd">            transport protocol or message protocol mismatch between the client</span>
+<span class="sd">            and the server or if the remote server do not have classes present</span>
+<span class="sd">            in :mod:`com.vmware.vapi.metadata.authentication_client` module.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the file specified in null does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Source.delete"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">source_id</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes an existing authentication metadata source from the</span>
+<span class="sd">        infrastructure.</span>
+
+<span class="sd">        :type  source_id: :class:`str`</span>
+<span class="sd">        :param source_id: Identifier of the metadata source.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.authentication.source``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the metadata source identifier is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Source.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">source_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves information about the metadata source corresponding to</span>
+<span class="sd">        ``source_id``.</span>
+
+<span class="sd">        :type  source_id: :class:`str`</span>
+<span class="sd">        :param source_id: Identifier of the metadata source.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.authentication.source``.</span>
+<span class="sd">        :rtype: :class:`Source.Info`</span>
+<span class="sd">        :return: The :class:`Source.Info` instance that corresponds to ``source_id``</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the metadata source associated with ``source_id`` is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Source.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the identifiers of the metadata sources currently registered</span>
+<span class="sd">        with the infrastructure.</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The list of identifiers for metadata sources currently registered.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.authentication.source``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Source.reload"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">source_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reloads the authentication metadata from all the metadata sources or of</span>
+<span class="sd">        a particular metadata source if ``source_id`` is specified.</span>
+
+<span class="sd">        :type  source_id: :class:`str` or ``None``</span>
+<span class="sd">        :param source_id: Identifier of the metadata source.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.authentication.source``.</span>
+<span class="sd">            If unspecified, all the metadata sources are reloaded.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the metadata source associated with ``source_id`` is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;reload&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Source.fingerprint"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.authentication_client.Source.fingerprint">[docs]</a>    <span class="k">def</span> <span class="nf">fingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">source_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the aggregate fingerprint of metadata from all the metadata</span>
+<span class="sd">        sources or from a particular metadata source if ``source_id`` is</span>
+<span class="sd">        specified.</span>
+
+<span class="sd">        :type  source_id: :class:`str` or ``None``</span>
+<span class="sd">        :param source_id: Identifier of the metadata source.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.authentication.source``.</span>
+<span class="sd">            If unspecified, the fingerprint of all the metadata sources is</span>
+<span class="sd">            returned.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Aggregate fingerprint of all the metadata sources or of a</span>
+<span class="sd">            particular metadata source.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the metadata source associated with ``source_id`` is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;fingerprint&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_ComponentStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;component_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.component&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for fingerprint operation</span>
+        <span class="n">fingerprint_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;component_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.component&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">fingerprint_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">fingerprint_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">fingerprint_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ComponentData&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;fingerprint&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">fingerprint_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">fingerprint_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">fingerprint_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">fingerprint_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.authentication.component&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_PackageStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;package_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.package&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;PackageInfo&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.authentication.package&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_ServiceStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.service&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ServiceInfo&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.authentication.service&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_SourceStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for create operation</span>
+        <span class="n">create_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.authentication.source&#39;</span><span class="p">),</span>
+            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Source.CreateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">create_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_exists&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyExists&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">create_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">create_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.authentication.source&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.authentication.source&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for reload operation</span>
+        <span class="n">reload_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="p">})</span>
+        <span class="n">reload_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">reload_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">reload_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for fingerprint operation</span>
+        <span class="n">fingerprint_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="p">})</span>
+        <span class="n">fingerprint_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">fingerprint_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">fingerprint_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;create&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">create_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">create_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">create_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">create_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Source.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;reload&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">reload_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">reload_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">reload_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">reload_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;fingerprint&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">fingerprint_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">fingerprint_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">fingerprint_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">fingerprint_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.authentication.source&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

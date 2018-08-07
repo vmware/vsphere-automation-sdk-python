@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.lib.thread_pool &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.lib.thread_pool</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module is YATP (Yet another thread pool)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2009-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">queue</span>
+
+
+<div class="viewcode-block" id="WorkItem"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.WorkItem">[docs]</a><span class="k">class</span> <span class="nc">WorkItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Work item &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Work item constructor</span>
+
+<span class="sd">        :type  fn: function</span>
+<span class="sd">        :param fn: Work item functor</span>
+<span class="sd">        :type  args: :class:`tuple`</span>
+<span class="sd">        :param args: Work item functor positional parameters</span>
+<span class="sd">        :type  kwargs: :class:`dict`</span>
+<span class="sd">        :param kwargs: Work item functor key-value parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ret</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">err</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+<div class="viewcode-block" id="WorkItem.join"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.WorkItem.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s">&#39;inf&#39;</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wait for work item is done</span>
+
+<span class="sd">        :type  timeout: :class:`float`</span>
+<span class="sd">        :param timeout: Timeout in seconds</span>
+<span class="sd">        :rtype: :class:`object`</span>
+<span class="sd">        :return: Work item functor&#39;s return value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Wait until work is done</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="c"># Throw exception if error occured</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">err</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">err</span>  <span class="c"># pylint: disable=E0702</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="WorkItem.done"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.WorkItem.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Signal work item is done &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        with statement enter</span>
+
+<span class="sd">        :rtype:  :class:`WorkItem`</span>
+<span class="sd">        :return: Work item object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; with statement exit &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span>
+
+<span class="c">## Thread pool</span>
+<span class="c">#</span>
+
+</div>
+<div class="viewcode-block" id="ThreadPool"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.ThreadPool">[docs]</a><span class="k">class</span> <span class="nc">ThreadPool</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Thread pool &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                 <span class="n">idle_timeout</span><span class="o">=</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Thread pool constructor</span>
+
+<span class="sd">        :type   min_workers: :class:`int`</span>
+<span class="sd">        :params min_workers: Min number of worker threads</span>
+<span class="sd">        :type   max_workers: :class:`int`</span>
+<span class="sd">        :params max_workers: Max number of worker threads</span>
+<span class="sd">        :type   idle_timeout: :class:`int`</span>
+<span class="sd">        :params idle_timeout: Worker threads idle timeout</span>
+<span class="sd">        :type   logger: :class:`logging.logger`</span>
+<span class="sd">        :params logger: logger to use. Default to stdout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">min_workers</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">min_workers</span> <span class="o">&lt;=</span> <span class="n">max_workers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_workers</span> <span class="o">=</span> <span class="n">min_workers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_workers</span> <span class="o">=</span> <span class="n">max_workers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idle_timeout</span> <span class="o">=</span> <span class="n">idle_timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">work_items</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shutting_down</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_workers</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_worker</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Log message &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Thread pool worker &quot;&quot;&quot;</span>
+        <span class="n">thd_name</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">shutting_down</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c"># Wait for request</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">work_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_items</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">idle_timeout</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+                    <span class="n">work_item</span> <span class="o">=</span> <span class="bp">None</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">work_item</span><span class="p">:</span>
+                    <span class="c"># Worker idle timeout. Retire thread if needed</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">done_thread</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_workers</span>
+                        <span class="k">if</span> <span class="n">done_thread</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_worker</span><span class="p">(</span><span class="n">thd_name</span><span class="p">)</span>
+                            <span class="k">break</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                    <span class="k">finally</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">shutting_down</span><span class="p">:</span>
+                    <span class="c"># Put the work item back to queue</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">work_items</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">work_item</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+                <span class="c"># Start work</span>
+                <span class="n">work_item</span><span class="o">.</span><span class="n">ret</span> <span class="o">=</span> <span class="n">work_item</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">work_item</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">work_item</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>  <span class="c"># pylint: disable=W0702</span>
+                <span class="k">if</span> <span class="n">sys</span><span class="p">:</span>
+                    <span class="kn">import</span> <span class="nn">traceback</span>
+                    <span class="n">errtype</span><span class="p">,</span> <span class="n">errvalue</span><span class="p">,</span> <span class="n">trace</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+                    <span class="n">stack_trace</span> <span class="o">=</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exception</span><span class="p">(</span>
+                                  <span class="n">errtype</span><span class="p">,</span> <span class="n">errvalue</span><span class="p">,</span> <span class="n">trace</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">thd_name</span> <span class="o">+</span> <span class="s">&quot; caught exception: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">errtype</span><span class="p">),</span>
+                              <span class="n">stack_trace</span><span class="p">]))</span>
+                    <span class="k">if</span> <span class="n">work_item</span><span class="p">:</span>
+                        <span class="n">work_item</span><span class="o">.</span><span class="n">err</span> <span class="o">=</span> <span class="n">errvalue</span>
+                    <span class="c">#</span>
+                    <span class="c"># NOTE: See the Python documentation for sys.exc_info for a warning</span>
+                    <span class="c"># about an inefficiency in garbage collection and the need to</span>
+                    <span class="c"># delete the local variable to which stacktrace is assigned</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="n">trace</span>
+                    <span class="k">except</span><span class="p">:</span>  <span class="c"># pylint: disable=W0702</span>
+                        <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># System is dying and likely to be in undefined state.</span>
+                    <span class="c"># sys (and other imported modules) could be unloaded and set</span>
+                    <span class="c"># to None when we get here. Must quit as quickly as possible</span>
+                    <span class="k">return</span>
+
+            <span class="c"># Signal done on work_item</span>
+            <span class="n">work_item</span><span class="o">.</span><span class="n">done</span><span class="p">()</span>
+
+        <span class="c"># One less worker</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_worker</span><span class="p">(</span><span class="n">thd_name</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_remove_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thd_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a worker. Assume locked</span>
+
+<span class="sd">        :type  thd_name: :class:`str`</span>
+<span class="sd">        :param thd_name: Remove a worker thread with the thread name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">thd_name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add a worker. Assume locked &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_workers</span><span class="p">:</span>
+            <span class="n">thd</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_worker</span><span class="p">)</span>
+            <span class="n">thd</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">thd</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">[</span><span class="n">thd</span><span class="o">.</span><span class="n">getName</span><span class="p">()]</span> <span class="o">=</span> <span class="n">thd</span>
+
+<div class="viewcode-block" id="ThreadPool.queue_work"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.ThreadPool.queue_work">[docs]</a>    <span class="k">def</span> <span class="nf">queue_work</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Queue work</span>
+
+<span class="sd">        Returns a work_item when work is queued to work queue</span>
+<span class="sd">        The work will start when a ready worker is available to process the work</span>
+<span class="sd">        User could call {work_item}.join() to wait for the work item to finish</span>
+
+<span class="sd">        :type  fn: function</span>
+<span class="sd">        :param fn: Work item functor</span>
+<span class="sd">        :type  args: :class:`tuple`</span>
+<span class="sd">        :param args: Work item functor positional parameters</span>
+<span class="sd">        :type  kwargs: :class:`dict`</span>
+<span class="sd">        :param kwargs: Work item functor key-value parameters</span>
+<span class="sd">        :rtype: :class:`WorkItem`</span>
+<span class="sd">        :return: work item when work is queued to work queue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shutting_down</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="c"># Add worker if needed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_worker</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+        <span class="n">work_item</span> <span class="o">=</span> <span class="n">WorkItem</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">work_items</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">work_item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">work_item</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ThreadPool.normalize_works"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.ThreadPool.normalize_works">[docs]</a>    <span class="k">def</span> <span class="nf">normalize_works</span><span class="p">(</span><span class="n">works</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generator to return work in normalize form: (fn, args, kwargs)</span>
+
+<span class="sd">        :type  works: iteratable of fn / (fn, args) / (fn, args, kwargs)</span>
+<span class="sd">        :param works: An iteratable of possible functor form</span>
+<span class="sd">        :rtype: :class:`tuple` of (fn, args, kwargs)</span>
+<span class="sd">        :return: A normalize tuple of (functor, args, kwargs)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">works</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">()</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">callable</span><span class="p">(</span><span class="n">work</span><span class="p">):</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="n">work</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">work</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">work</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">work</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">fn</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">work</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="n">work</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ThreadPool.queue_works_and_wait"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.ThreadPool.queue_works_and_wait">[docs]</a>    <span class="k">def</span> <span class="nf">queue_works_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">works</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Queue a brunch of works and wait until all works are completed / error</span>
+<span class="sd">        out</span>
+
+<span class="sd">        :type  works: iteratable of fn / (fn, args) / (fn, args, kwargs)</span>
+<span class="sd">        :param works: An iteratable of possible functor form</span>
+<span class="sd">        :rtype:  :class:`list` of {tuple} of :class:`bool`,:class:`object` or :class:`bool`,:class:`Exception`</span>
+<span class="sd">        :return: A list of (True, return val) / (False, exception) when all works done</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">work_items</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">queue_work</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize_works</span><span class="p">(</span><span class="n">works</span><span class="p">)]</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">work_items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">work</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">ret</span> <span class="o">=</span> <span class="n">work</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">True</span><span class="p">,</span> <span class="n">ret</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>  <span class="c"># pylint: disable=W0702</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">False</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># No work queued</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">results</span>
+</div>
+<div class="viewcode-block" id="ThreadPool.queue_work_and_wait"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.ThreadPool.queue_work_and_wait">[docs]</a>    <span class="k">def</span> <span class="nf">queue_work_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Queue a work and wait until the work is completed / error out</span>
+
+<span class="sd">        :type  fn: function</span>
+<span class="sd">        :param fn: Work item functor</span>
+<span class="sd">        :type  args: :class:`tuple`</span>
+<span class="sd">        :param args: Work item functor positional parameters</span>
+<span class="sd">        :type  kwargs: :class:`dict`</span>
+<span class="sd">        :param kwargs: Work item functor key-value parameters</span>
+<span class="sd">        :rtype: :class:`tuple` of (:class:`bool`, :class:`object`) or (:class:`bool`, :class:`Exception`)</span>
+<span class="sd">        :return: (True, return val) / (False, exception) when work is done</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue_works_and_wait</span><span class="p">([(</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)])[</span><span class="mi">0</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="ThreadPool.shutdown"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.thread_pool.ThreadPool.shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_wait</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shuthdown this thread pool</span>
+
+<span class="sd">        :type  no_wait: :class:`bool`</span>
+<span class="sd">        :param no_wait: Set to True to return immediately without waiting for all workers to quit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Set myself as shutting down.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shutting_down</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shutting_down</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="c"># Queue a fake work item</span>
+        <span class="n">work_item</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">work_items</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">work_item</span><span class="p">)</span>
+
+        <span class="c"># Wait until all workers quit</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">no_wait</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span><span class="s">&quot;shutdown: Waiting for workers to quit...&quot;</span><span class="p">)</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">num_workers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">)</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+                <span class="c"># done if no worker left or not making progress</span>
+                <span class="k">if</span> <span class="n">num_workers</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span><span class="s">&quot;shutdown: All workers quit&quot;</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Destructor &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; with statment enter &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; with statment exit &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

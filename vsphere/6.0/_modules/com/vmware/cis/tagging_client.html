@@ -1,0 +1,1742 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.cis.tagging_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.cis.tagging_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2015 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.cis.tagging.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Copyright 2013-2014 VMware, Inc. All rights reserved. -- VMware Confidential</span>
+<span class="sd">Copyright 2013-2014 VMware, Inc. All rights reserved. -- VMware Confidential</span>
+<span class="sd">Copyright 2013-2014 VMware, Inc. All rights reserved. -- VMware Confidential</span>
+<span class="sd">Copyright 2013-2014 VMware, Inc. All rights reserved. -- VMware Confidential</span>
+<span class="sd">Copyright 2013-2014 VMware, Inc. All rights reserved. -- VMware Confidential</span>
+<span class="sd">The ``com.vmware.cis.tagging_client`` component provides methods and classes to</span>
+<span class="sd">attach metadata, by means of tags, to vSphere objects to make these objects</span>
+<span class="sd">more sortable and searchable. You can use it to create, manage, and enumerate</span>
+<span class="sd">tags and their categories (the group a tag belongs to). You can also query the</span>
+<span class="sd">attached tags and attached objects.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std_client</span>
+
+
+<div class="viewcode-block" id="CategoryModel"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.CategoryModel">[docs]</a><span class="k">class</span> <span class="nc">CategoryModel</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``CategoryModel`` class defines a category that is used to group one or</span>
+<span class="sd">    more tags.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">cardinality</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">associable_types</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">used_by</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  id: :class:`str`</span>
+<span class="sd">        :param id: The unique identifier of the category.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the</span>
+<span class="sd">            attribute must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the attribute will be an identifier</span>
+<span class="sd">            for the resource type: ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: The display name of the category.</span>
+<span class="sd">        :type  description: :class:`str`</span>
+<span class="sd">        :param description: The description of the category.</span>
+<span class="sd">        :type  cardinality: :class:`CategoryModel.Cardinality`</span>
+<span class="sd">        :param cardinality: The associated cardinality (SINGLE, MULTIPLE) of the category.</span>
+<span class="sd">        :type  associable_types: :class:`set` of :class:`str`</span>
+<span class="sd">        :param associable_types: The types of objects that the tags in this category can be attached</span>
+<span class="sd">            to. If the :class:`set` is empty, then tags can be attached to all</span>
+<span class="sd">            types of objects. This field works only for objects that reside in</span>
+<span class="sd">            Inventory Service (IS). For non IS objects, this check is not</span>
+<span class="sd">            performed today and hence a tag can be attached to any non IS</span>
+<span class="sd">            object.</span>
+<span class="sd">        :type  used_by: :class:`set` of :class:`str`</span>
+<span class="sd">        :param used_by: The :class:`set` of users that can use this category. To add users</span>
+<span class="sd">            to this, you need to have the edit privilege on the category.</span>
+<span class="sd">            Similarly, to unsubscribe from this category, you need the edit</span>
+<span class="sd">            privilege on the category. You should not modify other users</span>
+<span class="sd">            subscription from this :class:`set`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cardinality</span> <span class="o">=</span> <span class="n">cardinality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">associable_types</span> <span class="o">=</span> <span class="n">associable_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">used_by</span> <span class="o">=</span> <span class="n">used_by</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CategoryModel.Cardinality"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.CategoryModel.Cardinality">[docs]</a>    <span class="k">class</span> <span class="nc">Cardinality</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``CategoryModel.Cardinality`` class defines the number of tags in a</span>
+<span class="sd">        category that can be assigned to an object.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SINGLE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An object can only be assigned one of the tags in this category. For</span>
+<span class="sd">        example, if a category is &quot;Operating System&quot;, then different tags of this</span>
+<span class="sd">        category would be &quot;Windows&quot;, &quot;Linux&quot;, and so on. In this case a VM object</span>
+<span class="sd">        can be assigned only one of these tags and hence the cardinality of the</span>
+<span class="sd">        associated category here is single.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">MULTIPLE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An object can be assigned several of the tags in this category. For</span>
+<span class="sd">        example, if a category is &quot;Server&quot;, then different tags of this category</span>
+<span class="sd">        would be &quot;AppServer&quot;, &quot;DatabaseServer&quot; and so on. In this case a VM object</span>
+<span class="sd">        can be assigned more than one of the above tags and hence the cardinality</span>
+<span class="sd">        of the associated category here is multiple.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`Cardinality` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">Cardinality</span><span class="o">.</span><span class="n">SINGLE</span> <span class="o">=</span> <span class="n">Cardinality</span><span class="p">(</span><span class="s">&#39;SINGLE&#39;</span><span class="p">)</span>
+    <span class="n">Cardinality</span><span class="o">.</span><span class="n">MULTIPLE</span> <span class="o">=</span> <span class="n">Cardinality</span><span class="p">(</span><span class="s">&#39;MULTIPLE&#39;</span><span class="p">)</span>
+    <span class="n">Cardinality</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.cis.tagging.category_model.cardinality&#39;</span><span class="p">,</span>
+        <span class="n">Cardinality</span><span class="p">))</span></div>
+<span class="n">CategoryModel</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.cis.tagging.category_model&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;cardinality&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;CategoryModel.Cardinality&#39;</span><span class="p">),</span>
+        <span class="s">&#39;associable_types&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;used_by&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">CategoryModel</span><span class="p">,</span>
+    <span class="bp">True</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]))</span>
+
+
+
+<div class="viewcode-block" id="TagModel"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.TagModel">[docs]</a><span class="k">class</span> <span class="nc">TagModel</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``TagModel`` class defines a tag that can be attached to vSphere</span>
+<span class="sd">    objects.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">category_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">used_by</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  id: :class:`str`</span>
+<span class="sd">        :param id: The unique identifier of the tag.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the</span>
+<span class="sd">            attribute must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``. When methods return a value of this</span>
+<span class="sd">            class as a return value, the attribute will be an identifier for</span>
+<span class="sd">            the resource type: ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :type  category_id: :class:`str`</span>
+<span class="sd">        :param category_id: The identifier of the parent category in which this tag will be</span>
+<span class="sd">            created.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the</span>
+<span class="sd">            attribute must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the attribute will be an identifier</span>
+<span class="sd">            for the resource type: ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: The display name of the tag.</span>
+<span class="sd">        :type  description: :class:`str`</span>
+<span class="sd">        :param description: The description of the tag.</span>
+<span class="sd">        :type  used_by: :class:`set` of :class:`str`</span>
+<span class="sd">        :param used_by: The :class:`set` of users that can use this tag. To add users to</span>
+<span class="sd">            this, you need to have the edit privilege on the tag. Similarly, to</span>
+<span class="sd">            unsubscribe from this tag, you need the edit privilege on the tag.</span>
+<span class="sd">            You should not modify other users subscription from this</span>
+<span class="sd">            :class:`set`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category_id</span> <span class="o">=</span> <span class="n">category_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">used_by</span> <span class="o">=</span> <span class="n">used_by</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">TagModel</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.cis.tagging.tag_model&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+        <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;used_by&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">TagModel</span><span class="p">,</span>
+    <span class="bp">True</span><span class="p">,</span>
+    <span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]))</span>
+
+
+
+<div class="viewcode-block" id="Category"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category">[docs]</a><span class="k">class</span> <span class="nc">Category</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Category`` class provides methods to create, read, update, delete,</span>
+<span class="sd">    and enumerate categories.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_CategoryStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Category.CreateSpec"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.CreateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">CreateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Category.CreateSpec`` class is used to create a category. </span>
+<span class="sd">        </span>
+<span class="sd">        Use the :func:`Category.create` method to create a category defined by the</span>
+<span class="sd">        create specification.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">cardinality</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">associable_types</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  name: :class:`str`</span>
+<span class="sd">            :param name: The display name of the category.</span>
+<span class="sd">            :type  description: :class:`str`</span>
+<span class="sd">            :param description: The description of the category.</span>
+<span class="sd">            :type  cardinality: :class:`CategoryModel.Cardinality`</span>
+<span class="sd">            :param cardinality: The associated cardinality (SINGLE, MULTIPLE) of the category.</span>
+<span class="sd">            :type  associable_types: :class:`set` of :class:`str`</span>
+<span class="sd">            :param associable_types: Object types to which this category&#39;s tags can be attached.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cardinality</span> <span class="o">=</span> <span class="n">cardinality</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">associable_types</span> <span class="o">=</span> <span class="n">associable_types</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">CreateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.cis.tagging.category.create_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;cardinality&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;CategoryModel.Cardinality&#39;</span><span class="p">),</span>
+            <span class="s">&#39;associable_types&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">CreateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Category.UpdateSpec"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.UpdateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">UpdateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Category.UpdateSpec`` class describes the updates to be made to an</span>
+<span class="sd">        existing category. </span>
+<span class="sd">        </span>
+<span class="sd">        Use the :func:`Category.update` method to modify a category. When you call</span>
+<span class="sd">        the method, specify the category identifier. You obtain the category</span>
+<span class="sd">        identifier when you call the :func:`Category.create` method. You can also</span>
+<span class="sd">        retrieve an identifier by using the :func:`Category.list` method.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">cardinality</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">associable_types</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  name: :class:`str` or ``None``</span>
+<span class="sd">            :param name: The display name of the category.</span>
+<span class="sd">                If None the name will not be modified.</span>
+<span class="sd">            :type  description: :class:`str` or ``None``</span>
+<span class="sd">            :param description: The description of the category.</span>
+<span class="sd">                If None the description will not be modified.</span>
+<span class="sd">            :type  cardinality: :class:`CategoryModel.Cardinality` or ``None``</span>
+<span class="sd">            :param cardinality: The associated cardinality (SINGLE, MULTIPLE) of the category.</span>
+<span class="sd">                If None the cardinality will not be modified.</span>
+<span class="sd">            :type  associable_types: :class:`set` of :class:`str` or ``None``</span>
+<span class="sd">            :param associable_types: Object types to which this category&#39;s tags can be attached. </span>
+<span class="sd">                </span>
+<span class="sd">                The :class:`set` of associable types cannot be updated</span>
+<span class="sd">                incrementally. For example, if</span>
+<span class="sd">                :attr:`Category.UpdateSpec.associable_types` originally contains</span>
+<span class="sd">                {A,B,C} and you want to add D, then you need to pass {A,B,C,D} in</span>
+<span class="sd">                your update specification. You also cannot remove any item from</span>
+<span class="sd">                this :class:`set`. For example, if you have {A,B,C}, then you</span>
+<span class="sd">                cannot remove say {A} from it. Similarly, if you start with an</span>
+<span class="sd">                empty :class:`set`, then that implies that you can tag any object</span>
+<span class="sd">                and hence you cannot later pass say {A}, because that would be</span>
+<span class="sd">                restricting the type of objects you want to tag. Thus, associable</span>
+<span class="sd">                types can only grow and not shrink.</span>
+<span class="sd">                If None the associable types will not be modified.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cardinality</span> <span class="o">=</span> <span class="n">cardinality</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">associable_types</span> <span class="o">=</span> <span class="n">associable_types</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">UpdateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.cis.tagging.category.update_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;cardinality&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;CategoryModel.Cardinality&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;associable_types&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">SetType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">())),</span>
+        <span class="p">},</span>
+        <span class="n">UpdateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Category.create"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">create_spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a category. To invoke this method, you need the create category</span>
+<span class="sd">        privilege.</span>
+
+<span class="sd">        :type  create_spec: :class:`Category.CreateSpec`</span>
+<span class="sd">        :param create_spec:  Specification for the new category to be created.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: The identifier of the created category.</span>
+<span class="sd">            The return value will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyExists` </span>
+<span class="sd">            if the :attr:`Category.CreateSpec.name` provided in the</span>
+<span class="sd">            ``create_spec`` is the name of an already existing category.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if any of the information in the ``create_spec`` is invalid.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to create a category.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;create_spec&#39;</span><span class="p">:</span> <span class="n">create_spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Category.get"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">category_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches the category information for the given category identifier. In</span>
+<span class="sd">        order to view the category information, you need the read privilege on</span>
+<span class="sd">        the category.</span>
+
+<span class="sd">        :type  category_id: :class:`str`</span>
+<span class="sd">        :param category_id:  The identifier of the input category.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :rtype: :class:`CategoryModel`</span>
+<span class="sd">        :return: The :class:`CategoryModel` that corresponds to ``category_id``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the category for the given ``category_id`` does not exist in the</span>
+<span class="sd">            system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to read the category.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Category.update"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">category_id</span><span class="p">,</span>
+               <span class="n">update_spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates an existing category. To invoke this method, you need the edit</span>
+<span class="sd">        privilege on the category.</span>
+
+<span class="sd">        :type  category_id: :class:`str`</span>
+<span class="sd">        :param category_id:  The identifier of the category to be updated.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :type  update_spec: :class:`Category.UpdateSpec`</span>
+<span class="sd">        :param update_spec:  Specification to update the category.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyExists` </span>
+<span class="sd">            if the :attr:`Category.UpdateSpec.name` provided in the</span>
+<span class="sd">            ``update_spec`` is the name of an already existing category.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if any of the information in the ``update_spec`` is invalid.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the category for the given ``category_id`` does not exist in the</span>
+<span class="sd">            system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to update the category.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;update&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">,</span>
+                            <span class="s">&#39;update_spec&#39;</span><span class="p">:</span> <span class="n">update_spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Category.delete"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">category_id</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes an existing category. To invoke this method, you need the</span>
+<span class="sd">        delete privilege on the category.</span>
+
+<span class="sd">        :type  category_id: :class:`str`</span>
+<span class="sd">        :param category_id:  The identifier of category to be deleted.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the category for the given ``category_id`` does not exist in the</span>
+<span class="sd">            system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to delete the category.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Category.list"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enumerates the categories in the system. To invoke this method, you</span>
+<span class="sd">        need the read privilege on the individual categories. The :class:`list`</span>
+<span class="sd">        will only contain those categories for which you have read privileges.</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of resource identifiers for the categories in the</span>
+<span class="sd">            system.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Category.list_used_categories"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.list_used_categories">[docs]</a>    <span class="k">def</span> <span class="nf">list_used_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">used_by_entity</span><span class="p">,</span>
+                             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enumerates all categories for which the ``used_by_entity`` is part of</span>
+<span class="sd">        the :attr:`CategoryModel.used_by` subscribers :class:`set`. To invoke</span>
+<span class="sd">        this method, you need the read privilege on the individual categories.</span>
+
+<span class="sd">        :type  used_by_entity: :class:`str`</span>
+<span class="sd">        :param used_by_entity:  The field on which the results will be filtered.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of resource identifiers for the categories in the</span>
+<span class="sd">            system that are used by ``used_by_entity``.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list_used_categories&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="n">used_by_entity</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Category.add_to_used_by"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.add_to_used_by">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_used_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">category_id</span><span class="p">,</span>
+                       <span class="n">used_by_entity</span><span class="p">,</span>
+                       <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds the ``used_by_entity`` to the :attr:`CategoryModel.used_by`</span>
+<span class="sd">        subscribers :class:`set` for the specified category. If the</span>
+<span class="sd">        ``used_by_entity`` is already in the :class:`set`, then this becomes an</span>
+<span class="sd">        idempotent no-op. To invoke this method, you need the modify</span>
+<span class="sd">        :attr:`CategoryModel.used_by` privilege on the category.</span>
+
+<span class="sd">        :type  category_id: :class:`str`</span>
+<span class="sd">        :param category_id:  The identifier of the input category.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :type  used_by_entity: :class:`str`</span>
+<span class="sd">        :param used_by_entity: The name of the user to be added to the</span>
+<span class="sd">            :attr:`CategoryModel.used_by` :class:`set`.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the category for the given ``category_id`` does not exist in the</span>
+<span class="sd">            system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if you do not have the privilege to add an entity to the</span>
+<span class="sd">            :attr:`CategoryModel.used_by` field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;add_to_used_by&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">,</span>
+                            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="n">used_by_entity</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Category.remove_from_used_by"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.remove_from_used_by">[docs]</a>    <span class="k">def</span> <span class="nf">remove_from_used_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">category_id</span><span class="p">,</span>
+                            <span class="n">used_by_entity</span><span class="p">,</span>
+                            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes the ``used_by_entity`` from the :attr:`CategoryModel.used_by`</span>
+<span class="sd">        subscribers :class:`set`. If the ``used_by_entity`` is not using this</span>
+<span class="sd">        category, then this becomes a no-op. To invoke this method, you need</span>
+<span class="sd">        the modify :attr:`CategoryModel.used_by` privilege on the category.</span>
+
+<span class="sd">        :type  category_id: :class:`str`</span>
+<span class="sd">        :param category_id:  The identifier of the input category.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :type  used_by_entity: :class:`str`</span>
+<span class="sd">        :param used_by_entity: The name of the user to be removed from the</span>
+<span class="sd">            :attr:`CategoryModel.used_by` :class:`set`.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the category for the given ``category_id`` does not exist in the</span>
+<span class="sd">            system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if you do not have the privilege to remove an entity from the</span>
+<span class="sd">            :attr:`CategoryModel.used_by` field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;remove_from_used_by&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">,</span>
+                            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="n">used_by_entity</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Category.revoke_propagating_permissions"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Category.revoke_propagating_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">revoke_propagating_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                       <span class="n">category_id</span><span class="p">,</span>
+                                       <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revokes all propagating permissions on the given category. You should</span>
+<span class="sd">        then attach a direct permission with tagging privileges on the given</span>
+<span class="sd">        category. To invoke this method, you need category related privileges</span>
+<span class="sd">        (direct or propagating) on the concerned category.</span>
+
+<span class="sd">        :type  category_id: :class:`str`</span>
+<span class="sd">        :param category_id:  The identifier of the input category.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the category for the given ``category_id`` does not exist in the</span>
+<span class="sd">            system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if you do not have the privilege to revoke propagating permissions</span>
+<span class="sd">            on the category.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;revoke_propagating_permissions&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Tag"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag">[docs]</a><span class="k">class</span> <span class="nc">Tag</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Tag`` class provides methods to create, read, update, delete, and</span>
+<span class="sd">    enumerate tags.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_TagStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Tag.CreateSpec"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.CreateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">CreateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Tag.CreateSpec`` class describes a tag. </span>
+<span class="sd">        </span>
+<span class="sd">        Use the :func:`Tag.create` method to create a tag defined by the create</span>
+<span class="sd">        specification.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">category_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  name: :class:`str`</span>
+<span class="sd">            :param name: The display name of the tag. The name must be unique within its</span>
+<span class="sd">                category.</span>
+<span class="sd">            :type  description: :class:`str`</span>
+<span class="sd">            :param description: The description of the tag.</span>
+<span class="sd">            :type  category_id: :class:`str`</span>
+<span class="sd">            :param category_id: The unique identifier of the parent category in which this tag will</span>
+<span class="sd">                be created.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.cis.tagging.Category``. When methods return a value of</span>
+<span class="sd">                this class as a return value, the attribute will be an identifier</span>
+<span class="sd">                for the resource type: ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">category_id</span> <span class="o">=</span> <span class="n">category_id</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">CreateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.cis.tagging.tag.create_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">CreateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Tag.UpdateSpec"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.UpdateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">UpdateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Tag.UpdateSpec`` class describes the updates to be made to an</span>
+<span class="sd">        existing tag. </span>
+<span class="sd">        </span>
+<span class="sd">        Use the :func:`Tag.update` method to modify a tag. When you call the</span>
+<span class="sd">        method, you specify the tag identifier. You obtain the tag identifier when</span>
+<span class="sd">        you call the :func:`Tag.create` method. You can also retrieve an identifier</span>
+<span class="sd">        by using the :func:`Tag.list` method.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  name: :class:`str` or ``None``</span>
+<span class="sd">            :param name: The display name of the tag.</span>
+<span class="sd">                If None the name will not be modified.</span>
+<span class="sd">            :type  description: :class:`str` or ``None``</span>
+<span class="sd">            :param description: The description of the tag.</span>
+<span class="sd">                If None the description will not be modified.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">UpdateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.cis.tagging.tag.update_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">UpdateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Tag.create"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">create_spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a tag. To invoke this method, you need the create tag privilege</span>
+<span class="sd">        on the input category.</span>
+
+<span class="sd">        :type  create_spec: :class:`Tag.CreateSpec`</span>
+<span class="sd">        :param create_spec:  Specification for the new tag to be created.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: The identifier of the created tag.</span>
+<span class="sd">            The return value will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyExists` </span>
+<span class="sd">            if the :attr:`Tag.CreateSpec.name` provided in the ``create_spec``</span>
+<span class="sd">            is the name of an already existing tag in the input category.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if any of the input information in the ``create_spec`` is invalid.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the category for in the given ``create_spec`` does not exist in</span>
+<span class="sd">            the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to create tag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;create_spec&#39;</span><span class="p">:</span> <span class="n">create_spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Tag.get"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">tag_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches the tag information for the given tag identifier. To invoke</span>
+<span class="sd">        this method, you need the read privilege on the tag in order to view</span>
+<span class="sd">        the tag info.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :rtype: :class:`TagModel`</span>
+<span class="sd">        :return: The :class:`TagModel` that corresponds to ``tag_id``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if the user does not have the privilege to read the tag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Tag.update"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">tag_id</span><span class="p">,</span>
+               <span class="n">update_spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates an existing tag. To invoke this method, you need the edit</span>
+<span class="sd">        privilege on the tag.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :type  update_spec: :class:`Tag.UpdateSpec`</span>
+<span class="sd">        :param update_spec:  Specification to update the tag.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyExists` </span>
+<span class="sd">            if the :attr:`Tag.UpdateSpec.name` provided in the ``update_spec``</span>
+<span class="sd">            is the name of an already existing tag in the same category.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if any of the input information in the ``update_spec`` is invalid.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to update the tag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;update&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="s">&#39;update_spec&#39;</span><span class="p">:</span> <span class="n">update_spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Tag.delete"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">tag_id</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes an existing tag. To invoke this method, you need the delete</span>
+<span class="sd">        privilege on the tag.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to delete the tag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Tag.list"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enumerates the tags in the system. To invoke this method, you need read</span>
+<span class="sd">        privilege on the individual tags. The :class:`list` will only contain</span>
+<span class="sd">        tags for which you have read privileges.</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of resource identifiers for the tags in the</span>
+<span class="sd">            system.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Tag.list_used_tags"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.list_used_tags">[docs]</a>    <span class="k">def</span> <span class="nf">list_used_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">used_by_entity</span><span class="p">,</span>
+                       <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enumerates all tags for which the ``used_by_entity`` is part of the</span>
+<span class="sd">        :attr:`TagModel.used_by` subscribers :class:`set`. To invoke this</span>
+<span class="sd">        method, you need the read privilege on the individual tags.</span>
+
+<span class="sd">        :type  used_by_entity: :class:`str`</span>
+<span class="sd">        :param used_by_entity:  The field on which the results will be filtered.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of resource identifiers for the tags in the</span>
+<span class="sd">            system that are used by ``used_by_entity``.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list_used_tags&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="n">used_by_entity</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Tag.list_tags_for_category"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.list_tags_for_category">[docs]</a>    <span class="k">def</span> <span class="nf">list_tags_for_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">category_id</span><span class="p">,</span>
+                               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enumerates all tags for the given category. To invoke this method, you</span>
+<span class="sd">        need the read privilege on the given category and the individual tags</span>
+<span class="sd">        in that category.</span>
+
+<span class="sd">        :type  category_id: :class:`str`</span>
+<span class="sd">        :param category_id:  The identifier of the input category.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Category``.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of resource identifiers for the tags in the given</span>
+<span class="sd">            input category.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the category for the given ``category_id`` does not exist in the</span>
+<span class="sd">            system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to read the category.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list_tags_for_category&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Tag.add_to_used_by"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.add_to_used_by">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_used_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">tag_id</span><span class="p">,</span>
+                       <span class="n">used_by_entity</span><span class="p">,</span>
+                       <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds the ``used_by_entity`` to the :attr:`TagModel.used_by` subscribers</span>
+<span class="sd">        :class:`set`. If the ``used_by_entity`` is already in the :class:`set`,</span>
+<span class="sd">        then this becomes a no-op. To invoke this method, you need the modify</span>
+<span class="sd">        :attr:`TagModel.used_by` privilege on the tag.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :type  used_by_entity: :class:`str`</span>
+<span class="sd">        :param used_by_entity: The name of the user to be added to the :attr:`TagModel.used_by`</span>
+<span class="sd">            :class:`set`.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if you do not have the privilege to add an entity to the</span>
+<span class="sd">            :attr:`TagModel.used_by` field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;add_to_used_by&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="n">used_by_entity</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Tag.remove_from_used_by"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.remove_from_used_by">[docs]</a>    <span class="k">def</span> <span class="nf">remove_from_used_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="n">used_by_entity</span><span class="p">,</span>
+                            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes the ``used_by_entity`` from the :attr:`TagModel.used_by`</span>
+<span class="sd">        subscribers set. If the ``used_by_entity`` is not using this tag, then</span>
+<span class="sd">        this becomes a no-op. To invoke this method, you need modify</span>
+<span class="sd">        :attr:`TagModel.used_by` privilege on the tag.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :type  used_by_entity: :class:`str`</span>
+<span class="sd">        :param used_by_entity: The name of the user to be removed from the</span>
+<span class="sd">            :attr:`TagModel.used_by` :class:`set`.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if you do not have the privilege to remove an entity from the</span>
+<span class="sd">            :attr:`TagModel.used_by` field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;remove_from_used_by&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="n">used_by_entity</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Tag.revoke_propagating_permissions"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.Tag.revoke_propagating_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">revoke_propagating_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                       <span class="n">tag_id</span><span class="p">,</span>
+                                       <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Revokes all propagating permissions on the given tag. You should then</span>
+<span class="sd">        attach a direct permission with tagging privileges on the given tag. To</span>
+<span class="sd">        invoke this method, you need tag related privileges (direct or</span>
+<span class="sd">        propagating) on the concerned tag.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if you do not have the privilege to revoke propagating permissions</span>
+<span class="sd">            on the tag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;revoke_propagating_permissions&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="TagAssociation"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.TagAssociation">[docs]</a><span class="k">class</span> <span class="nc">TagAssociation</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``TagAssociation`` class provides methods to attach, detach, and query</span>
+<span class="sd">    tags.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_TagAssociationStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TagAssociation.attach"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.TagAssociation.attach">[docs]</a>    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">tag_id</span><span class="p">,</span>
+               <span class="n">object_id</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Attaches the given tag to the input object. To invoke this method, you</span>
+<span class="sd">        need the attach tag privilege on the tag and the read privilege on the</span>
+<span class="sd">        object.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :type  object_id: :class:`com.vmware.vapi.std_client.DynamicID`</span>
+<span class="sd">        :param object_id:  The identifier of the input object.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if the input tag is not eligible to be attached to this object or</span>
+<span class="sd">            if the ``object_id`` is not valid.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if you do not have the privilege to attach the tag or do not have</span>
+<span class="sd">            the privilege to read the concerned object. The tag needs to pass</span>
+<span class="sd">            the cardinality and associability test in order to be eligible for</span>
+<span class="sd">            attachment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;attach&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="n">object_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="TagAssociation.detach"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.TagAssociation.detach">[docs]</a>    <span class="k">def</span> <span class="nf">detach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">tag_id</span><span class="p">,</span>
+               <span class="n">object_id</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Detaches the tag from the given object. To invoke this method, you need</span>
+<span class="sd">        the attach tag privilege on the tag and the read privilege on the</span>
+<span class="sd">        object.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :type  object_id: :class:`com.vmware.vapi.std_client.DynamicID`</span>
+<span class="sd">        :param object_id:  The identifier of the input object.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if you do not have the privilege to detach the tag or do not have</span>
+<span class="sd">            the privilege to read the concerned object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;detach&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="n">object_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="TagAssociation.list_attached_objects"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.TagAssociation.list_attached_objects">[docs]</a>    <span class="k">def</span> <span class="nf">list_attached_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">tag_id</span><span class="p">,</span>
+                              <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches the :class:`list` of attached objects for the given tag. To</span>
+<span class="sd">        invoke this method, you need the read privilege on the input tag. Only</span>
+<span class="sd">        those objects for which you have read privileges will be returned.</span>
+
+<span class="sd">        :type  tag_id: :class:`str`</span>
+<span class="sd">        :param tag_id:  The identifier of the input tag.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`com.vmware.vapi.std_client.DynamicID`</span>
+<span class="sd">        :return: The :class:`list` of attached object identifiers.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the tag for the given ``tag_id`` does not exist in the system.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to read the tag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list_attached_objects&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="n">tag_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="TagAssociation.list_attached_tags"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.TagAssociation.list_attached_tags">[docs]</a>    <span class="k">def</span> <span class="nf">list_attached_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">object_id</span><span class="p">,</span>
+                           <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches the :class:`list` of tags attached to the given object. To</span>
+<span class="sd">        invoke this method, you need the read privilege on the input object.</span>
+<span class="sd">        The :class:`list` will only contain those tags for which you have read</span>
+<span class="sd">        privileges.</span>
+
+<span class="sd">        :type  object_id: :class:`com.vmware.vapi.std_client.DynamicID`</span>
+<span class="sd">        :param object_id:  The identifier of the input object.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of all tag identifiers that correspond to the</span>
+<span class="sd">            tags attached to the given object.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to read the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list_attached_tags&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="n">object_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="TagAssociation.list_attachable_tags"><a class="viewcode-back" href="../../../../com.vmware.cis.html#com.vmware.cis.tagging_client.TagAssociation.list_attachable_tags">[docs]</a>    <span class="k">def</span> <span class="nf">list_attachable_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">object_id</span><span class="p">,</span>
+                             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches the :class:`list` of attachable tags for the given object,</span>
+<span class="sd">        omitting the tags that have already been attached. Criteria for</span>
+<span class="sd">        attachability is calculated based on tagging cardinality</span>
+<span class="sd">        (:attr:`CategoryModel.cardinality`) and associability</span>
+<span class="sd">        (:attr:`CategoryModel.associable_types`) constructs. To invoke this</span>
+<span class="sd">        method, you need the read privilege on the input object. The</span>
+<span class="sd">        :class:`list` will only contain those tags for which you have read</span>
+<span class="sd">        privileges.</span>
+
+<span class="sd">        :type  object_id: :class:`com.vmware.vapi.std_client.DynamicID`</span>
+<span class="sd">        :param object_id:  The identifier of the input object.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: The :class:`list` of tag identifiers that are eligible to be</span>
+<span class="sd">            attached to the given object.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.cis.tagging.Tag``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">             if you do not have the privilege to read the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list_attachable_tags&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="n">object_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_CategoryStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for create operation</span>
+        <span class="n">create_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;create_spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Category.CreateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">create_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_exists&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyExists&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">create_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">create_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for update operation</span>
+        <span class="n">update_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+            <span class="s">&#39;update_spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Category.UpdateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">update_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_exists&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyExists&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">update_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">update_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list_used_categories operation</span>
+        <span class="n">list_used_categories_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">list_used_categories_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_used_categories_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_used_categories_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for add_to_used_by operation</span>
+        <span class="n">add_to_used_by_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">add_to_used_by_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">add_to_used_by_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">add_to_used_by_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for remove_from_used_by operation</span>
+        <span class="n">remove_from_used_by_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">remove_from_used_by_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">remove_from_used_by_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">remove_from_used_by_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for revoke_propagating_permissions operation</span>
+        <span class="n">revoke_propagating_permissions_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">revoke_propagating_permissions_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">revoke_propagating_permissions_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">revoke_propagating_permissions_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;create&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">create_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">create_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">create_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">create_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;CategoryModel&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;update&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">update_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">update_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">update_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">update_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list_used_categories&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_used_categories_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_used_categories_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_used_categories_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_used_categories_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;add_to_used_by&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">add_to_used_by_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">add_to_used_by_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">add_to_used_by_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">add_to_used_by_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;remove_from_used_by&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">remove_from_used_by_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">remove_from_used_by_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">remove_from_used_by_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">remove_from_used_by_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;revoke_propagating_permissions&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">revoke_propagating_permissions_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">revoke_propagating_permissions_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">revoke_propagating_permissions_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">revoke_propagating_permissions_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.category&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_TagStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for create operation</span>
+        <span class="n">create_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;create_spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Tag.CreateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">create_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_exists&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyExists&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">create_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">create_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for update operation</span>
+        <span class="n">update_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+            <span class="s">&#39;update_spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Tag.UpdateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">update_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_exists&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyExists&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">update_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">update_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list_used_tags operation</span>
+        <span class="n">list_used_tags_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">list_used_tags_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_used_tags_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_used_tags_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list_tags_for_category operation</span>
+        <span class="n">list_tags_for_category_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;category_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Category&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_tags_for_category_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_tags_for_category_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_tags_for_category_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for add_to_used_by operation</span>
+        <span class="n">add_to_used_by_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">add_to_used_by_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">add_to_used_by_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">add_to_used_by_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for remove_from_used_by operation</span>
+        <span class="n">remove_from_used_by_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+            <span class="s">&#39;used_by_entity&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">remove_from_used_by_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">remove_from_used_by_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">remove_from_used_by_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for revoke_propagating_permissions operation</span>
+        <span class="n">revoke_propagating_permissions_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">revoke_propagating_permissions_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">revoke_propagating_permissions_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">revoke_propagating_permissions_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;create&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">create_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">create_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">create_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">create_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;TagModel&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;update&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">update_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">update_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">update_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">update_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list_used_tags&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_used_tags_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_used_tags_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_used_tags_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_used_tags_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list_tags_for_category&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_tags_for_category_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_tags_for_category_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_tags_for_category_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_tags_for_category_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;add_to_used_by&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">add_to_used_by_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">add_to_used_by_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">add_to_used_by_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">add_to_used_by_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;remove_from_used_by&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">remove_from_used_by_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">remove_from_used_by_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">remove_from_used_by_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">remove_from_used_by_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;revoke_propagating_permissions&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">revoke_propagating_permissions_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">revoke_propagating_permissions_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">revoke_propagating_permissions_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">revoke_propagating_permissions_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.tag&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_TagAssociationStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for attach operation</span>
+        <span class="n">attach_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;DynamicID&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">attach_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">attach_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">attach_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for detach operation</span>
+        <span class="n">detach_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;DynamicID&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">detach_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">detach_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">detach_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list_attached_objects operation</span>
+        <span class="n">list_attached_objects_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.Tag&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_attached_objects_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_attached_objects_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_attached_objects_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list_attached_tags operation</span>
+        <span class="n">list_attached_tags_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;DynamicID&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_attached_tags_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_attached_tags_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_attached_tags_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list_attachable_tags operation</span>
+        <span class="n">list_attachable_tags_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;object_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;DynamicID&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_attachable_tags_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_attachable_tags_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_attachable_tags_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;attach&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">attach_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">attach_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">attach_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">attach_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;detach&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">detach_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">detach_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">detach_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">detach_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list_attached_objects&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_attached_objects_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;DynamicID&#39;</span><span class="p">)),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_attached_objects_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_attached_objects_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_attached_objects_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list_attached_tags&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_attached_tags_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_attached_tags_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_attached_tags_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_attached_tags_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list_attachable_tags&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_attachable_tags_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_attachable_tags_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_attachable_tags_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_attachable_tags_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.tagging.tag_association&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,502 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.content.library.item.downloadsession_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.content.library.item.downloadsession_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2015 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.content.library.item.downloadsession.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The Content Library Item Download Session module provides classes and classes</span>
+<span class="sd">for downloading files in a session.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.content.library.item_client</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std_client</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="File"><a class="viewcode-back" href="../../../../../../com.vmware.content.library.item.html#com.vmware.content.library.item.downloadsession_client.File">[docs]</a><span class="k">class</span> <span class="nc">File</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``File`` class provides methods for accessing files within a download</span>
+<span class="sd">    session. </span>
+<span class="sd">    </span>
+<span class="sd">    After a download session is created against a library item, the ``File``</span>
+<span class="sd">    class can be used to retrieve all downloadable content within the library</span>
+<span class="sd">    item. Since the content may not be available immediately in a downloadable</span>
+<span class="sd">    form on the server side, the client will have to prepare the file and wait</span>
+<span class="sd">    for the file status to become :attr:`File.PrepareStatus.PREPARED`. </span>
+<span class="sd">    </span>
+<span class="sd">     See :class:`com.vmware.content.library.item_client.DownloadSession`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_FileStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="File.PrepareStatus"><a class="viewcode-back" href="../../../../../../com.vmware.content.library.item.html#com.vmware.content.library.item.downloadsession_client.File.PrepareStatus">[docs]</a>    <span class="k">class</span> <span class="nc">PrepareStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``File.PrepareStatus`` class defines the state of the file in</span>
+<span class="sd">        preparation for download.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">UNPREPARED</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The file hasn&#39;t been requested for preparation.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PREPARE_REQUESTED</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A prepare has been requested, however the server hasn&#39;t started the</span>
+<span class="sd">        preparation yet.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PREPARING</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A prepare has been requested and the file is in the process of being</span>
+<span class="sd">        prepared.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PREPARED</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepare succeeded. The file is ready for download.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ERROR</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepare failed.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`PrepareStatus` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">PrepareStatus</span><span class="o">.</span><span class="n">UNPREPARED</span> <span class="o">=</span> <span class="n">PrepareStatus</span><span class="p">(</span><span class="s">&#39;UNPREPARED&#39;</span><span class="p">)</span>
+    <span class="n">PrepareStatus</span><span class="o">.</span><span class="n">PREPARE_REQUESTED</span> <span class="o">=</span> <span class="n">PrepareStatus</span><span class="p">(</span><span class="s">&#39;PREPARE_REQUESTED&#39;</span><span class="p">)</span>
+    <span class="n">PrepareStatus</span><span class="o">.</span><span class="n">PREPARING</span> <span class="o">=</span> <span class="n">PrepareStatus</span><span class="p">(</span><span class="s">&#39;PREPARING&#39;</span><span class="p">)</span>
+    <span class="n">PrepareStatus</span><span class="o">.</span><span class="n">PREPARED</span> <span class="o">=</span> <span class="n">PrepareStatus</span><span class="p">(</span><span class="s">&#39;PREPARED&#39;</span><span class="p">)</span>
+    <span class="n">PrepareStatus</span><span class="o">.</span><span class="n">ERROR</span> <span class="o">=</span> <span class="n">PrepareStatus</span><span class="p">(</span><span class="s">&#39;ERROR&#39;</span><span class="p">)</span>
+    <span class="n">PrepareStatus</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.content.library.item.downloadsession.file.prepare_status&#39;</span><span class="p">,</span>
+        <span class="n">PrepareStatus</span><span class="p">))</span>
+
+<div class="viewcode-block" id="File.EndpointType"><a class="viewcode-back" href="../../../../../../com.vmware.content.library.item.html#com.vmware.content.library.item.downloadsession_client.File.EndpointType">[docs]</a>    <span class="k">class</span> <span class="nc">EndpointType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``File.EndpointType`` class defines the types of endpoints used to</span>
+<span class="sd">        download the file.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HTTPS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An https download endpoint.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DIRECT</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A direct download endpoint indicating the location of the file on storage.</span>
+<span class="sd">        The caller is responsible for retrieving the file from the storage location</span>
+<span class="sd">        directly.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`EndpointType` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">EndpointType</span><span class="o">.</span><span class="n">HTTPS</span> <span class="o">=</span> <span class="n">EndpointType</span><span class="p">(</span><span class="s">&#39;HTTPS&#39;</span><span class="p">)</span>
+    <span class="n">EndpointType</span><span class="o">.</span><span class="n">DIRECT</span> <span class="o">=</span> <span class="n">EndpointType</span><span class="p">(</span><span class="s">&#39;DIRECT&#39;</span><span class="p">)</span>
+    <span class="n">EndpointType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.content.library.item.downloadsession.file.endpoint_type&#39;</span><span class="p">,</span>
+        <span class="n">EndpointType</span><span class="p">))</span>
+
+<div class="viewcode-block" id="File.Info"><a class="viewcode-back" href="../../../../../../com.vmware.content.library.item.html#com.vmware.content.library.item.downloadsession_client.File.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``File.Info`` class defines the downloaded file.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">bytes_transferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">download_endpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">checksum_info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">error_message</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  name: :class:`str`</span>
+<span class="sd">            :param name: The name of the file.</span>
+<span class="sd">            :type  size: :class:`long` or ``None``</span>
+<span class="sd">            :param size: The file size, in bytes.</span>
+<span class="sd">                This attribute may not be available immediately. It is guaranteed</span>
+<span class="sd">                to be set when the client finishes downloading the file.</span>
+<span class="sd">            :type  bytes_transferred: :class:`long`</span>
+<span class="sd">            :param bytes_transferred: The number of bytes that have been transferred by the server so far</span>
+<span class="sd">                for making this file prepared for download. This value may stay at</span>
+<span class="sd">                zero till the client starts downloading the file.</span>
+<span class="sd">            :type  status: :class:`File.PrepareStatus`</span>
+<span class="sd">            :param status: The preparation status (UNPREPARED, PREPARE_REQUESTED, PREPARING,</span>
+<span class="sd">                PREPARED, ERROR) of the file.</span>
+<span class="sd">            :type  download_endpoint: :class:`com.vmware.content.library.item_client.TransferEndpoint` or ``None``</span>
+<span class="sd">            :param download_endpoint: Endpoint at which the file is available for download. The value is</span>
+<span class="sd">                valid only when the :attr:`File.Info.status` is</span>
+<span class="sd">                :attr:`File.PrepareStatus.PREPARED`.</span>
+<span class="sd">                This attribute won&#39;t be set until the file status is</span>
+<span class="sd">                :attr:`File.PrepareStatus.PREPARED`.</span>
+<span class="sd">            :type  checksum_info: :class:`com.vmware.content.library.item_client.File.ChecksumInfo` or ``None``</span>
+<span class="sd">            :param checksum_info: The checksum information of the file. When the download is</span>
+<span class="sd">                complete, you can retrieve the checksum from the :func:`File.get`</span>
+<span class="sd">                method to verify the checksum for the downloaded file.</span>
+<span class="sd">                The checksum is always calculated for the downloaded file, but this</span>
+<span class="sd">                attribute won&#39;t be set until the download is complete.</span>
+<span class="sd">            :type  error_message: :class:`com.vmware.vapi.std_client.LocalizableMessage` or ``None``</span>
+<span class="sd">            :param error_message: Error message for a failed preparation when the prepare status is</span>
+<span class="sd">                :attr:`File.PrepareStatus.ERROR`.</span>
+<span class="sd">                This attribute won&#39;t be set unless there was an error with the file</span>
+<span class="sd">                transfer.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bytes_transferred</span> <span class="o">=</span> <span class="n">bytes_transferred</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">download_endpoint</span> <span class="o">=</span> <span class="n">download_endpoint</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checksum_info</span> <span class="o">=</span> <span class="n">checksum_info</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span> <span class="o">=</span> <span class="n">error_message</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.content.library.item.downloadsession.file.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;size&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">()),</span>
+            <span class="s">&#39;bytes_transferred&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;File.PrepareStatus&#39;</span><span class="p">),</span>
+            <span class="s">&#39;download_endpoint&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">item_client</span><span class="p">,</span> <span class="s">&#39;TransferEndpoint&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;checksum_info&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">item_client</span><span class="p">,</span> <span class="s">&#39;File.ChecksumInfo&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;error_message&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="File.list"><a class="viewcode-back" href="../../../../../../com.vmware.content.library.item.html#com.vmware.content.library.item.downloadsession_client.File.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">download_session_id</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists the information of all the files in the library item associated</span>
+<span class="sd">        with the download session.</span>
+
+<span class="sd">        :type  download_session_id: :class:`str`</span>
+<span class="sd">        :param download_session_id:  Identifier of the download session.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.item.DownloadSession``.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`File.Info`</span>
+<span class="sd">        :return: The :class:`list` of :class:`File.Info` instances.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the download session associated with ``download_session_id``</span>
+<span class="sd">            doesn&#39;t exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.library.Item`` referenced by</span>
+<span class="sd">              the parameter ``libraryItemId`` requires ``System.Read``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;download_session_id&#39;</span><span class="p">:</span> <span class="n">download_session_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="File.prepare"><a class="viewcode-back" href="../../../../../../com.vmware.content.library.item.html#com.vmware.content.library.item.downloadsession_client.File.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">download_session_id</span><span class="p">,</span>
+                <span class="n">file_name</span><span class="p">,</span>
+                <span class="n">endpoint_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Requests a file to be prepared for download.</span>
+
+<span class="sd">        :type  download_session_id: :class:`str`</span>
+<span class="sd">        :param download_session_id:  Identifier of the download session.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.item.DownloadSession``.</span>
+<span class="sd">        :type  file_name: :class:`str`</span>
+<span class="sd">        :param file_name:  Name of the file requested for download.</span>
+<span class="sd">        :type  endpoint_type: :class:`File.EndpointType` or ``None``</span>
+<span class="sd">        :param endpoint_type: Endpoint type request, one of HTTPS, DIRECT. This will determine</span>
+<span class="sd">            the type of the :attr:`File.Info.download_endpoint` that is</span>
+<span class="sd">            generated when the file is prepared. The</span>
+<span class="sd">            :attr:`File.EndpointType.DIRECT` is only available to users who</span>
+<span class="sd">            have the ContentLibrary.ReadStorage privilege.</span>
+<span class="sd">            If not specified the default is :attr:`File.EndpointType.HTTPS`.</span>
+<span class="sd">        :rtype: :class:`File.Info`</span>
+<span class="sd">        :return: File information containing the status of the request and the</span>
+<span class="sd">            download link to the file.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             if the download session does not exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if there is no file with the specified ``file_name``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the the download session wasn&#39;t created with the</span>
+<span class="sd">            ContentLibrary.ReadStorage privilege and the caller requested a</span>
+<span class="sd">            :attr:`File.EndpointType.DIRECT` endpoint type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;prepare&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;download_session_id&#39;</span><span class="p">:</span> <span class="n">download_session_id</span><span class="p">,</span>
+                            <span class="s">&#39;file_name&#39;</span><span class="p">:</span> <span class="n">file_name</span><span class="p">,</span>
+                            <span class="s">&#39;endpoint_type&#39;</span><span class="p">:</span> <span class="n">endpoint_type</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="File.get"><a class="viewcode-back" href="../../../../../../com.vmware.content.library.item.html#com.vmware.content.library.item.downloadsession_client.File.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">download_session_id</span><span class="p">,</span>
+            <span class="n">file_name</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves file download information for a specific file.</span>
+
+<span class="sd">        :type  download_session_id: :class:`str`</span>
+<span class="sd">        :param download_session_id:  Identifier of the download session.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.item.DownloadSession``.</span>
+<span class="sd">        :type  file_name: :class:`str`</span>
+<span class="sd">        :param file_name:  Name of the file requested.</span>
+<span class="sd">        :rtype: :class:`File.Info`</span>
+<span class="sd">        :return: The :class:`File.Info` instance containing the status of the file</span>
+<span class="sd">            and its download link if available.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the download session associated with ``download_session_id``</span>
+<span class="sd">            does not exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">             if there is no file with the specified ``file_name``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * The resource ``com.vmware.content.library.Item`` referenced by</span>
+<span class="sd">              the parameter ``libraryItemId`` requires ``System.Read``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;download_session_id&#39;</span><span class="p">:</span> <span class="n">download_session_id</span><span class="p">,</span>
+                            <span class="s">&#39;file_name&#39;</span><span class="p">:</span> <span class="n">file_name</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_FileStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;download_session_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.item.DownloadSession&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for prepare operation</span>
+        <span class="n">prepare_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;download_session_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.item.DownloadSession&#39;</span><span class="p">),</span>
+            <span class="s">&#39;file_name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;endpoint_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;File.EndpointType&#39;</span><span class="p">)),</span>
+        <span class="p">})</span>
+        <span class="n">prepare_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">prepare_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">prepare_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;download_session_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.item.DownloadSession&#39;</span><span class="p">),</span>
+            <span class="s">&#39;file_name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;File.Info&#39;</span><span class="p">)),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;prepare&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">prepare_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;File.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">prepare_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">prepare_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">prepare_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;File.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.item.downloadsession.file&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

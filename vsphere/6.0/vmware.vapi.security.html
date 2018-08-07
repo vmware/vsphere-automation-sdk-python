@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>security Package &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="index.html" />
+    <link rel="up" title="vapi Package" href="vmware.vapi.html" />
+    <link rel="next" title="server Package" href="vmware.vapi.server.html" />
+    <link rel="prev" title="provider Package" href="vmware.vapi.provider.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vmware.vapi.server.html" title="server Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="vmware.vapi.provider.html" title="provider Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="vmware.html" >vmware Package</a> &raquo;</li>
+          <li><a href="vmware.vapi.html" accesskey="U">vapi Package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="security-package">
+<h1>security Package<a class="headerlink" href="#security-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">security</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-vmware.vapi.security"></span></div>
+<div class="section" id="module-vmware.vapi.security.chain">
+<span id="chain-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">chain</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.security.chain" title="Permalink to this headline">¶</a></h2>
+<p>AuthenticationChain processor</p>
+<dl class="class">
+<dt id="vmware.vapi.security.chain.AuthenticationChain">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.security.chain.</tt><tt class="descname">AuthenticationChain</tt><a class="reference internal" href="_modules/vmware/vapi/security/chain.html#AuthenticationChain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.chain.AuthenticationChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Implementations of this interface are used to chain authentication when
+there is intermediary between the client and the server i.e. an
+aggregator node.</p>
+<dl class="method">
+<dt id="vmware.vapi.security.chain.AuthenticationChain.next_context">
+<tt class="descname">next_context</tt><big>(</big><em>ctx</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/chain.html#AuthenticationChain.next_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.chain.AuthenticationChain.next_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the next security context based on the current context</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.SecurityContext" title="vmware.vapi.core.SecurityContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.SecurityContext</span></tt></a>) &#8211; Current security context</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.SecurityContext" title="vmware.vapi.core.SecurityContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.SecurityContext</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Next security context</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.security.lib">
+<span id="lib-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">lib</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.security.lib" title="Permalink to this headline">¶</a></h2>
+<p>AuthenticationChain processor lib</p>
+<dl class="function">
+<dt id="vmware.vapi.security.lib.next_security_context">
+<tt class="descclassname">vmware.vapi.security.lib.</tt><tt class="descname">next_security_context</tt><big>(</big><em>ctx</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/lib.html#next_security_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.lib.next_security_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the next security context based on the current context</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ctx</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.SecurityContext" title="vmware.vapi.core.SecurityContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.SecurityContext</span></tt></a>) &#8211; Current security context</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.SecurityContext" title="vmware.vapi.core.SecurityContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.SecurityContext</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Next security context</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.security.session">
+<span id="session-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">session</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.security.session" title="Permalink to this headline">¶</a></h2>
+<p>Session Security Helper</p>
+<dl class="function">
+<dt id="vmware.vapi.security.session.create_session_security_context">
+<tt class="descclassname">vmware.vapi.security.session.</tt><tt class="descname">create_session_security_context</tt><big>(</big><em>session_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/session.html#create_session_security_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.session.create_session_security_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a security context for Session Id based authentication
+scheme</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Session ID</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.SecurityContext" title="vmware.vapi.core.SecurityContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.SecurityContext</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Newly created security context</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.security.sso">
+<span id="sso-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">sso</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.security.sso" title="Permalink to this headline">¶</a></h2>
+<p>SSO Security Helper</p>
+<dl class="class">
+<dt id="vmware.vapi.security.sso.JSONCanonicalEncoder">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.security.sso.</tt><tt class="descname">JSONCanonicalEncoder</tt><big>(</big><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONCanonicalEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONCanonicalEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">json.encoder.JSONEncoder</span></tt></p>
+<p>Custom JSON Encoder class to canonicalize dictionary
+and list objects</p>
+<p>Constructor for JSONEncoder, with sensible defaults.</p>
+<p>If skipkeys is False, then it is a TypeError to attempt
+encoding of keys that are not str, int, long, float or None.  If
+skipkeys is True, such items are simply skipped.</p>
+<p>If ensure_ascii is True, the output is guaranteed to be str
+objects with all incoming unicode characters escaped.  If
+ensure_ascii is false, the output will be unicode object.</p>
+<p>If check_circular is True, then lists, dicts, and custom encoded
+objects will be checked for circular references during encoding to
+prevent an infinite recursion (which would cause an OverflowError).
+Otherwise, no such check takes place.</p>
+<p>If allow_nan is True, then NaN, Infinity, and -Infinity will be
+encoded as such.  This behavior is not JSON specification compliant,
+but is consistent with most JavaScript based encoders and decoders.
+Otherwise, it will be a ValueError to encode such floats.</p>
+<p>If sort_keys is True, then the output of dictionaries will be
+sorted by key; this is useful for regression tests to ensure
+that JSON serializations can be compared on a day-to-day basis.</p>
+<p>If indent is a non-negative integer, then JSON array
+elements and object members will be pretty-printed with that
+indent level.  An indent level of 0 will only insert newlines.
+None is the most compact representation.</p>
+<p>If specified, separators should be a (item_separator, key_separator)
+tuple.  The default is (&#8216;, &#8216;, &#8216;: &#8216;).  To get the most compact JSON
+representation you should specify (&#8216;,&#8217;, &#8216;:&#8217;) to eliminate whitespace.</p>
+<p>If specified, default is a function that gets called for objects
+that can&#8217;t otherwise be serialized.  It should return a JSON encodable
+version of the object or raise a <tt class="docutils literal"><span class="pre">TypeError</span></tt>.</p>
+<p>If encoding is not None, then all input strings will be
+transformed into unicode using that encoding prior to JSON-encoding.
+The default is UTF-8.</p>
+<dl class="method">
+<dt id="vmware.vapi.security.sso.JSONCanonicalEncoder.encode">
+<tt class="descname">encode</tt><big>(</big><em>o</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONCanonicalEncoder.encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONCanonicalEncoder.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode a given python object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>o</strong> (<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt>) &#8211; Python object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON string in canonicalized form</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.security.sso.JSONCanonicalizer">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.security.sso.</tt><tt class="descname">JSONCanonicalizer</tt><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONCanonicalizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONCanonicalizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This class is responsible for transforming JSON messages into their
+canonical representation.</p>
+<dl class="docutils">
+<dt>The canonical form is defined by the following rules:</dt>
+<dd><ol class="first last arabic simple">
+<li>Non-significant(1) whitespace characters MUST NOT be used</li>
+<li>Non-significant(1) line endings MUST NOT be used</li>
+<li>Entries (set of name/value pairs) in JSON objects MUST be sorted
+lexicographically(2) by their names based on UCS codepoint values</li>
+<li>Arrays MUST preserve their initial ordering</li>
+</ol>
+</dd>
+</dl>
+<p>Link to the IEFT proposal:
+<a class="reference external" href="https://datatracker.ietf.org/doc/draft-staykov-hu-json-canonical-form/">https://datatracker.ietf.org/doc/draft-staykov-hu-json-canonical-form/</a></p>
+<dl class="staticmethod">
+<dt id="vmware.vapi.security.sso.JSONCanonicalizer.canonicalize">
+<em class="property">static </em><tt class="descname">canonicalize</tt><big>(</big><em>input_message</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONCanonicalizer.canonicalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONCanonicalizer.canonicalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Canonicalize the input message</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_message</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Input message</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Canonicalized message</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="vmware.vapi.security.sso.JSONCanonicalizer.canonicalize_py_obj">
+<em class="property">static </em><tt class="descname">canonicalize_py_obj</tt><big>(</big><em>py_obj</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONCanonicalizer.canonicalize_py_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONCanonicalizer.canonicalize_py_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Canonicalize the input python object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_message</strong> (<tt class="xref py py-class docutils literal"><span class="pre">object</span></tt>) &#8211; Input python object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Canonicalized message</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.security.sso.JSONSSOSigner">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.security.sso.</tt><tt class="descname">JSONSSOSigner</tt><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONSSOSigner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONSSOSigner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.protocol.common.html#vmware.vapi.protocol.common.lib.RequestProcessor" title="vmware.vapi.protocol.common.lib.RequestProcessor"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.protocol.common.lib.RequestProcessor</span></tt></a></p>
+<p>This class is used for signing JSON request messages</p>
+<dl class="method">
+<dt id="vmware.vapi.security.sso.JSONSSOSigner.process">
+<tt class="descname">process</tt><big>(</big><em>input_message</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONSSOSigner.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONSSOSigner.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sign the input JSON request message.</p>
+<p>The message is signed using user&#8217;s private key. The digest and saml
+token is then added to the security context block of the execution
+context. A timestamp is also added to guard against replay attacks</p>
+<p>Sample input security context:
+{</p>
+<blockquote>
+<div>&#8216;schemeId&#8217;: &#8216;SAML_TOKEN&#8217;,
+&#8216;privateKey&#8217;: &lt;PRIVATE_KEY&gt;,
+&#8216;samlToken&#8217;: &lt;SAML_TOKEN&gt;,
+&#8216;signatureAlgorithm&#8217;: &lt;ALGORITHM&gt;,</div></blockquote>
+<p>}</p>
+<p>Security context block before signing:
+{</p>
+<blockquote>
+<div><p>&#8216;schemeId&#8217;: &#8216;SAML_TOKEN&#8217;,
+&#8216;signatureAlgorithm&#8217;: &lt;ALGORITHM&gt;,
+&#8216;timestamp&#8217;: {</p>
+<blockquote>
+<div>&#8216;created&#8217;: &#8216;2012-10-26T12:24:18.941Z&#8217;,
+&#8216;expires&#8217;: &#8216;2012-10-26T12:44:18.941Z&#8217;,</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+<p>Security context block after signing:
+{</p>
+<blockquote>
+<div><p>&#8216;schemeId&#8217;: &#8216;SAML_TOKEN&#8217;,
+&#8216;signatureAlgorithm&#8217;: &lt;ALGORITHM&gt;,
+&#8216;signature&#8217;: {</p>
+<blockquote>
+<div>&#8216;samlToken&#8217;: &lt;SAML_TOKEN&gt;,
+&#8216;value&#8217;: &lt;DIGEST&gt;</div></blockquote>
+<p>}
+&#8216;timestamp&#8217;: {</p>
+<blockquote>
+<div>&#8216;created&#8217;: &#8216;2012-10-26T12:24:18.941Z&#8217;,
+&#8216;expires&#8217;: &#8216;2012-10-26T12:44:18.941Z&#8217;,</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.security.sso.JSONSSOVerifier">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.security.sso.</tt><tt class="descname">JSONSSOVerifier</tt><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONSSOVerifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONSSOVerifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.protocol.common.html#vmware.vapi.protocol.common.lib.RequestProcessor" title="vmware.vapi.protocol.common.lib.RequestProcessor"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.protocol.common.lib.RequestProcessor</span></tt></a></p>
+<p>This class is used to verify the authenticity of the request
+message by verifying the digest present in the security context
+block.</p>
+<dl class="method">
+<dt id="vmware.vapi.security.sso.JSONSSOVerifier.process">
+<tt class="descname">process</tt><big>(</big><em>input_message</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#JSONSSOVerifier.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.JSONSSOVerifier.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify the input JSON message.</p>
+<p>For verification, we need 4 things:
+1. algorithm: extracted from security context
+2. certificate: public key of the principal embedded in the
+SAML token is used
+3. digest: value field from signature block
+4. canonical msg: signature block is removed from the request
+and the remaining part is canonicalized</p>
+<p>Sample input security context:
+{</p>
+<blockquote>
+<div><p>&#8216;schemeId&#8217;: &#8216;SAML_TOKEN&#8217;,
+&#8216;signatureAlgorithm&#8217;: &lt;ALGORITHM&gt;,
+&#8216;signature&#8217;: {</p>
+<blockquote>
+<div>&#8216;samlToken&#8217;: &lt;SAML_TOKEN&gt;,
+&#8216;value&#8217;: &lt;DIGEST&gt;</div></blockquote>
+<p>}
+&#8216;timestamp&#8217;: {</p>
+<blockquote>
+<div>&#8216;created&#8217;: &#8216;2012-10-26T12:24:18.941Z&#8217;,
+&#8216;expires&#8217;: &#8216;2012-10-26T12:44:18.941Z&#8217;,</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_message</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Input JSON request message</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON request message after signature verification</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.security.sso.create_saml_bearer_security_context">
+<tt class="descclassname">vmware.vapi.security.sso.</tt><tt class="descname">create_saml_bearer_security_context</tt><big>(</big><em>token</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#create_saml_bearer_security_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.create_saml_bearer_security_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a security context for SAML bearer token based
+authentication scheme</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>token</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; SAML Token</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.security.sso.create_saml_security_context">
+<tt class="descclassname">vmware.vapi.security.sso.</tt><tt class="descname">create_saml_security_context</tt><big>(</big><em>token</em>, <em>private_key</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#create_saml_security_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.create_saml_security_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a security context for SAML token based
+authentication scheme</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>token</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; SAML Token</li>
+<li><strong>private_key</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Absolute file path of the private key of the user</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.SecurityContext" title="vmware.vapi.core.SecurityContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.SecurityContext</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Newly created security context</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.security.sso.setup_saml_token_processors">
+<tt class="descclassname">vmware.vapi.security.sso.</tt><tt class="descname">setup_saml_token_processors</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/sso.html#setup_saml_token_processors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.sso.setup_saml_token_processors" title="Permalink to this definition">¶</a></dt>
+<dd><p>If SAML token based authentication scheme is used, this operation
+should be invoked by the client to setup the request processors
+that does the request signing using the token.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.security.user_password">
+<span id="user-password-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">user_password</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.security.user_password" title="Permalink to this headline">¶</a></h2>
+<p>User password Security Helper</p>
+<dl class="function">
+<dt id="vmware.vapi.security.user_password.create_user_password_security_context">
+<tt class="descclassname">vmware.vapi.security.user_password.</tt><tt class="descname">create_user_password_security_context</tt><big>(</big><em>user_name</em>, <em>password</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/security/user_password.html#create_user_password_security_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.security.user_password.create_user_password_security_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a security context for Username-Password based authentication
+scheme</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Name of the user</li>
+<li><strong>password</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Password of the user</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.SecurityContext" title="vmware.vapi.core.SecurityContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.SecurityContext</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Newly created security context</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">security Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">security</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.security.chain"><tt class="docutils literal"><span class="pre">chain</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.security.lib"><tt class="docutils literal"><span class="pre">lib</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.security.session"><tt class="docutils literal"><span class="pre">session</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.security.sso"><tt class="docutils literal"><span class="pre">sso</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.security.user_password"><tt class="docutils literal"><span class="pre">user_password</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="vmware.vapi.provider.html"
+                        title="previous chapter">provider Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="vmware.vapi.server.html"
+                        title="next chapter">server Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/vmware.vapi.security.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vmware.vapi.server.html" title="server Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="vmware.vapi.provider.html" title="provider Package"
+             >previous</a> |</li>
+        <li><a href="index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="vmware.html" >vmware Package</a> &raquo;</li>
+          <li><a href="vmware.vapi.html" >vapi Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

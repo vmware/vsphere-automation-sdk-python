@@ -1,0 +1,790 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.provider.introspection &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.provider.introspection</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Introspection services</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2013-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ApiInterface</span><span class="p">,</span> <span class="n">InterfaceIdentifier</span><span class="p">,</span> <span class="n">MethodIdentifier</span><span class="p">,</span> <span class="n">InterfaceDefinition</span><span class="p">,</span>
+    <span class="n">MethodDefinition</span><span class="p">,</span> <span class="n">MethodResult</span><span class="p">,</span> <span class="n">ExecutionContext</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.definition</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">StructDefinition</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">,</span> <span class="n">ListDefinition</span><span class="p">,</span> <span class="n">StructRefDefinition</span><span class="p">,</span>
+    <span class="n">OptionalDefinition</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Introspection</span><span class="p">,</span> <span class="n">MAP_ENTRY</span><span class="p">,</span> <span class="n">OPERATION_INPUT</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.std</span> <span class="kn">import</span> <span class="n">make_error_value_from_msgs</span><span class="p">,</span> <span class="n">make_std_error_def</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.value</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">StringValue</span><span class="p">,</span> <span class="n">ListValue</span><span class="p">,</span> <span class="n">StructValue</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.serializers.introspection</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">convert_data_def_to_data_value</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.fingerprint</span> <span class="kn">import</span> <span class="n">generate_fingerprint</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+
+
+<span class="c"># errors</span>
+<span class="n">not_found_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span><span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_checksum"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.get_checksum">[docs]</a><span class="k">def</span> <span class="nf">get_checksum</span><span class="p">(</span><span class="n">api_services</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the checksum of services registered with LocalProvider</span>
+
+<span class="sd">    :type  api_services: :class:`dict`</span>
+<span class="sd">    :param api_services: Dictionary of all the services registered with local provider</span>
+<span class="sd">        Key is :class:`vmware.vapi.core.InterfaceIdentifier` and value is</span>
+<span class="sd">        :class:`vmware.vapi.core.ApiInterface`</span>
+<span class="sd">    :rtype: :class:`str`</span>
+<span class="sd">    :return: checksum of the service information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">api_services</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="IntrospectionBaseApiInterface"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface">[docs]</a><span class="k">class</span> <span class="nc">IntrospectionBaseApiInterface</span><span class="p">(</span><span class="n">ApiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper base class for all Introspection VMODL2 dynamic services</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_id</span><span class="p">,</span> <span class="n">method_defs</span><span class="p">,</span> <span class="n">methods</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Api Interface instance</span>
+
+<span class="sd">        :type  iface_id: :class:`vmware.vapi.core.InterfaceIdentifier`</span>
+<span class="sd">        :param iface_id: Interface identifier</span>
+<span class="sd">        :type  method_defs: :class:`dict`</span>
+<span class="sd">        :param method_defs: Dictionary of method identifiers to method definitions</span>
+<span class="sd">        :type  methods: :class:`dict`</span>
+<span class="sd">        :param methods: Dictionary of method identifiers to method references</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ApiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">iface_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method_defs</span> <span class="o">=</span> <span class="n">method_defs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_methods</span> <span class="o">=</span> <span class="n">methods</span>
+
+<div class="viewcode-block" id="IntrospectionBaseApiInterface.get_identifier"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_identifier">[docs]</a>    <span class="k">def</span> <span class="nf">get_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns interface identifier</span>
+
+<span class="sd">        :rtype: :class:`InterfaceIdentifier`</span>
+<span class="sd">        :return: Interface identifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+</div>
+<div class="viewcode-block" id="IntrospectionBaseApiInterface.get_definition"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_definition">[docs]</a>    <span class="k">def</span> <span class="nf">get_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns interface definition</span>
+
+<span class="sd">        :rtype: :class:`InterfaceDefinition`</span>
+<span class="sd">        :return: Interface definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">InterfaceDefinition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_methods</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+</div>
+<div class="viewcode-block" id="IntrospectionBaseApiInterface.get_method_definition"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_method_definition">[docs]</a>    <span class="k">def</span> <span class="nf">get_method_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the method definition</span>
+
+<span class="sd">        :rtype: :class:`MethodDefinition`</span>
+<span class="sd">        :return: Method definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method_defs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_id</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="IntrospectionBaseApiInterface.invoke"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">method_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invokes the specified method using the execution context and</span>
+<span class="sd">        the input provided</span>
+
+<span class="sd">        :type  ctx: :class:`ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context for this method</span>
+<span class="sd">        :type  method_id: :class:`MethodIdentifier`</span>
+<span class="sd">        :param method_id: Method identifier</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Method input parameters</span>
+
+<span class="sd">        :rtype: :class:`MethodResult`</span>
+<span class="sd">        :return: Result of the method invocation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_methods</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_id</span><span class="p">)</span>
+        <span class="n">method_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method_defs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">method_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="n">method_def</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">input_value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ProviderApiInterface"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ProviderApiInterface">[docs]</a><span class="k">class</span> <span class="nc">ProviderApiInterface</span><span class="p">(</span><span class="n">IntrospectionBaseApiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This service provides operations to retrieve information of a</span>
+<span class="sd">    vAPI Provider. A provider represents a vAPI endpoint that is exposing a</span>
+<span class="sd">    collection of vAPI services.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">introspection_adapter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ProviderApiInterface</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the provider</span>
+<span class="sd">        :type  introspection_adapter:</span>
+<span class="sd">            :class:`vmware.vapi.provider.introspection.ApiProviderIntrospector`</span>
+<span class="sd">        :param introspection_adapter: Adapter for fetching introspection information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span> <span class="o">=</span> <span class="n">introspection_adapter</span>
+
+        <span class="n">iface_id</span> <span class="o">=</span> <span class="n">InterfaceIdentifier</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.provider&#39;</span><span class="p">)</span>
+
+        <span class="n">method_defs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c"># get method</span>
+        <span class="n">get_method_id</span> <span class="o">=</span> <span class="n">MethodIdentifier</span><span class="p">(</span><span class="n">iface_id</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">)</span>
+        <span class="n">output_def</span> <span class="o">=</span> <span class="n">StructDefinition</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.provider.info&#39;</span><span class="p">,</span>
+            <span class="p">[(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">()),</span>
+             <span class="p">(</span><span class="s">&#39;checksum&#39;</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">())]</span>
+        <span class="p">)</span>
+        <span class="n">method_defs</span><span class="p">[</span><span class="n">get_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">MethodDefinition</span><span class="p">(</span>
+            <span class="n">get_method_id</span><span class="p">,</span>
+            <span class="n">StructDefinition</span><span class="p">(</span><span class="n">OPERATION_INPUT</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="n">output_def</span><span class="p">,</span>
+            <span class="p">[]</span>
+        <span class="p">)</span>
+
+        <span class="n">methods</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">methods</span><span class="p">[</span><span class="n">get_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span>
+
+        <span class="n">IntrospectionBaseApiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                               <span class="n">iface_id</span><span class="p">,</span>
+                                               <span class="n">method_defs</span><span class="p">,</span>
+                                               <span class="n">methods</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_def</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">input_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns information about the vAPI provider</span>
+
+<span class="sd">        :type  method_def: :class:`vmware.vapi.core.MethodDefinition`</span>
+<span class="sd">        :param method_def: Method definition</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Struct value input</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Information about the vAPI provider</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">method_def</span><span class="o">.</span><span class="n">get_output_definition</span><span class="p">()</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">))</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;checksum&#39;</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span><span class="o">.</span><span class="n">get_checksum</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ServiceApiInterface"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ServiceApiInterface">[docs]</a><span class="k">class</span> <span class="nc">ServiceApiInterface</span><span class="p">(</span><span class="n">IntrospectionBaseApiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This service exposes operations to retrieve information about the</span>
+<span class="sd">    services exposed by a vAPI endpoint</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">introspection_adapter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ServiceApiInterface</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the provider</span>
+<span class="sd">        :type  introspection_adapter:</span>
+<span class="sd">            :class:`vmware.vapi.provider.introspection.ApiProviderIntrospector`</span>
+<span class="sd">        :param introspection_adapter: Adapter for fetching introspection information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span> <span class="o">=</span> <span class="n">introspection_adapter</span>
+
+        <span class="n">iface_id</span> <span class="o">=</span> <span class="n">InterfaceIdentifier</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.service&#39;</span><span class="p">)</span>
+        <span class="n">method_defs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">methods</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c"># list method</span>
+        <span class="n">list_method_id</span> <span class="o">=</span> <span class="n">MethodIdentifier</span><span class="p">(</span><span class="n">iface_id</span><span class="p">,</span> <span class="s">&#39;list&#39;</span><span class="p">)</span>
+        <span class="n">output_def</span> <span class="o">=</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">StringDefinition</span><span class="p">())</span>
+        <span class="n">method_defs</span><span class="p">[</span><span class="n">list_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">MethodDefinition</span><span class="p">(</span>
+            <span class="n">list_method_id</span><span class="p">,</span>
+            <span class="n">StructDefinition</span><span class="p">(</span><span class="n">OPERATION_INPUT</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="n">output_def</span><span class="p">,</span>
+            <span class="p">[]</span>
+        <span class="p">)</span>
+        <span class="n">methods</span><span class="p">[</span><span class="n">list_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span>
+
+        <span class="c"># get method</span>
+        <span class="n">get_method_id</span> <span class="o">=</span> <span class="n">MethodIdentifier</span><span class="p">(</span><span class="n">iface_id</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">)</span>
+        <span class="n">output_def</span> <span class="o">=</span> <span class="n">StructDefinition</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.service.info&#39;</span><span class="p">,</span>
+            <span class="p">[(</span><span class="s">&#39;operations&#39;</span><span class="p">,</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">StringDefinition</span><span class="p">()))])</span>
+        <span class="n">method_defs</span><span class="p">[</span><span class="n">get_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">MethodDefinition</span><span class="p">(</span>
+            <span class="n">get_method_id</span><span class="p">,</span>
+            <span class="n">StructDefinition</span><span class="p">(</span><span class="n">OPERATION_INPUT</span><span class="p">,</span>
+                             <span class="p">[(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">())]),</span>
+            <span class="n">output_def</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">not_found_def</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">methods</span><span class="p">[</span><span class="n">get_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span>
+
+        <span class="n">IntrospectionBaseApiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                               <span class="n">iface_id</span><span class="p">,</span>
+                                               <span class="n">method_defs</span><span class="p">,</span>
+                                               <span class="n">methods</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_def</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">input_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the set of service identifiers</span>
+
+<span class="sd">        :type  method_def: :class:`vmware.vapi.core.MethodDefinition`</span>
+<span class="sd">        :param method_def: Method definition</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Struct value input</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Set of service identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">method_def</span><span class="o">.</span><span class="n">get_output_definition</span><span class="p">()</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span><span class="o">.</span><span class="n">get_services</span><span class="p">():</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">StringValue</span><span class="p">(</span><span class="n">service</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_def</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">input_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns information about specified service</span>
+
+<span class="sd">        :type  method_def: :class:`vmware.vapi.core.MethodDefinition`</span>
+<span class="sd">        :param method_def: Method definition</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Struct value input</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Information about specified service</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">service_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span><span class="o">.</span><span class="n">get_service_info</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="OperationApiInterface"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.OperationApiInterface">[docs]</a><span class="k">class</span> <span class="nc">OperationApiInterface</span><span class="p">(</span><span class="n">IntrospectionBaseApiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This service exposes a list of operations to retrieve</span>
+<span class="sd">    information about the operations present in a vAPI service</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">introspection_adapter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize OperationApiInterface</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the provider</span>
+<span class="sd">        :type  introspection_adapter:</span>
+<span class="sd">            :class:`vmware.vapi.provider.introspection.ApiProviderIntrospector`</span>
+<span class="sd">        :param introspection_adapter: Adapter for fetching introspection information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span> <span class="o">=</span> <span class="n">introspection_adapter</span>
+        <span class="n">iface_id</span> <span class="o">=</span> <span class="n">InterfaceIdentifier</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.operation&#39;</span><span class="p">)</span>
+        <span class="n">method_defs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">methods</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c"># list method</span>
+        <span class="n">list_method_id</span> <span class="o">=</span> <span class="n">MethodIdentifier</span><span class="p">(</span><span class="n">iface_id</span><span class="p">,</span> <span class="s">&#39;list&#39;</span><span class="p">)</span>
+        <span class="n">output_def</span> <span class="o">=</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">StringDefinition</span><span class="p">())</span>
+        <span class="n">method_defs</span><span class="p">[</span><span class="n">list_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">MethodDefinition</span><span class="p">(</span>
+            <span class="n">list_method_id</span><span class="p">,</span>
+            <span class="n">StructDefinition</span><span class="p">(</span><span class="n">OPERATION_INPUT</span><span class="p">,</span>
+                             <span class="p">[(</span><span class="s">&#39;service_id&#39;</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">())]),</span>
+            <span class="n">output_def</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">not_found_def</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">methods</span><span class="p">[</span><span class="n">list_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span>
+
+        <span class="c"># get method</span>
+        <span class="n">get_method_id</span> <span class="o">=</span> <span class="n">MethodIdentifier</span><span class="p">(</span><span class="n">iface_id</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">)</span>
+        <span class="n">data_ref_def</span> <span class="o">=</span> <span class="n">StructRefDefinition</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.operation.data_definition&#39;</span><span class="p">)</span>
+        <span class="n">field_def</span> <span class="o">=</span> <span class="n">StructDefinition</span><span class="p">(</span>
+            <span class="n">MAP_ENTRY</span><span class="p">,</span>
+            <span class="p">[(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">()),</span>
+             <span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="n">data_ref_def</span><span class="p">)])</span>
+        <span class="n">data_def</span> <span class="o">=</span> <span class="n">StructDefinition</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.operation.data_definition&#39;</span><span class="p">,</span>
+            <span class="p">[(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">()),</span>
+             <span class="p">(</span><span class="s">&#39;element_definition&#39;</span><span class="p">,</span> <span class="n">OptionalDefinition</span><span class="p">(</span><span class="n">data_ref_def</span><span class="p">)),</span>
+             <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">OptionalDefinition</span><span class="p">(</span><span class="n">StringDefinition</span><span class="p">())),</span>
+             <span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">,</span> <span class="n">OptionalDefinition</span><span class="p">(</span><span class="n">ListDefinition</span><span class="p">(</span><span class="n">field_def</span><span class="p">)))])</span>
+        <span class="n">data_ref_def</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">data_def</span>
+        <span class="n">output_def</span> <span class="o">=</span> <span class="n">StructDefinition</span><span class="p">(</span>
+            <span class="s">&#39;com.vmware.vapi.std.introspection.operation.info&#39;</span><span class="p">,</span>
+            <span class="p">[(</span><span class="s">&#39;input_definition&#39;</span><span class="p">,</span> <span class="n">data_def</span><span class="p">),</span>
+             <span class="p">(</span><span class="s">&#39;output_definition&#39;</span><span class="p">,</span> <span class="n">data_def</span><span class="p">),</span>
+             <span class="p">(</span><span class="s">&#39;error_definitions&#39;</span><span class="p">,</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">data_def</span><span class="p">))])</span>
+        <span class="n">method_defs</span><span class="p">[</span><span class="n">get_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">MethodDefinition</span><span class="p">(</span>
+            <span class="n">get_method_id</span><span class="p">,</span>
+            <span class="n">StructDefinition</span><span class="p">(</span><span class="n">OPERATION_INPUT</span><span class="p">,</span>
+                             <span class="p">[(</span><span class="s">&#39;service_id&#39;</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">()),</span>
+                              <span class="p">(</span><span class="s">&#39;operation_id&#39;</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">())]),</span>
+            <span class="n">output_def</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">not_found_def</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">methods</span><span class="p">[</span><span class="n">get_method_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span>
+
+        <span class="n">IntrospectionBaseApiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                               <span class="n">iface_id</span><span class="p">,</span>
+                                               <span class="n">method_defs</span><span class="p">,</span>
+                                               <span class="n">methods</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_def</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">input_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the set of operation identifiers</span>
+
+<span class="sd">        :type  method_def: :class:`vmware.vapi.core.MethodDefinition`</span>
+<span class="sd">        :param method_def: Method definition</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Struct value input</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Set of operation identifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">service_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;service_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span><span class="o">.</span><span class="n">get_operations</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_def</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">input_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns information about a vAPI operation</span>
+
+<span class="sd">        :type  method_def: :class:`vmware.vapi.core.MethodDefinition`</span>
+<span class="sd">        :param method_def: Method definition</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Struct value input</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Information about a vAPI operation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">service_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;service_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">operation_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;operation_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adapter</span><span class="o">.</span><span class="n">get_operation_info</span><span class="p">(</span><span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ApiProviderIntrospector"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ApiProviderIntrospector">[docs]</a><span class="k">class</span> <span class="nc">ApiProviderIntrospector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class for fetching introspection information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ApiProviderIntrospector</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the provider</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_services</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">ProviderApiInterface</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span>
+            <span class="n">ServiceApiInterface</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span>
+            <span class="n">OperationApiInterface</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="ApiProviderIntrospector.get_introspection_services"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_introspection_services">[docs]</a>    <span class="k">def</span> <span class="nf">get_introspection_services</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of introspection services</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.core.ApiInterface`</span>
+<span class="sd">        :return: list of introspection services</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_services</span>
+</div>
+<div class="viewcode-block" id="ApiProviderIntrospector.get_checksum"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_checksum">[docs]</a>    <span class="k">def</span> <span class="nf">get_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the checksum of the API information available</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Checksum of the API information available</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="ApiProviderIntrospector.get_services"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_services">[docs]</a>    <span class="k">def</span> <span class="nf">get_services</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of available services</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: List of available services</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="ApiProviderIntrospector.get_service_info"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_service_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get information about a particular service</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Introspection service info. The DataValue in the output</span>
+<span class="sd">            represents :class:&#39;com.vmware.vapi.std.introspection.Service.Info&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="ApiProviderIntrospector.get_operations"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_operations">[docs]</a>    <span class="k">def</span> <span class="nf">get_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the list of available operations for a particular service</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Result that contains list of available operations. The DataValue</span>
+<span class="sd">            in the output is list of StringValues containing the operation names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="ApiProviderIntrospector.get_operation_info"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_operation_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_operation_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the operation information</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Result that contains operation information. The DataValue in the output</span>
+<span class="sd">             represents :class:&#39;com.vmware.vapi.std.introspection.Operation.Info&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="LocalProviderIntrospector"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.LocalProviderIntrospector">[docs]</a><span class="k">class</span> <span class="nc">LocalProviderIntrospector</span><span class="p">(</span><span class="n">ApiProviderIntrospector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Specialization of :class:`vmware.vapi.provider.introspection.ApiProviderIntrospector`</span>
+<span class="sd">    that uses data available in Local Provider to process the Introspection</span>
+<span class="sd">    service API requests</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize LocalProviderIntrospector</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the provider</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ApiProviderIntrospector</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="LocalProviderIntrospector.add_service"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.LocalProviderIntrospector.add_service">[docs]</a>    <span class="k">def</span> <span class="nf">add_service</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">api_interface</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new service to the introspector</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  api_interface: :class:`vmware.vapi.core.ApiInterface`</span>
+<span class="sd">        :param api_interface: ApiInterface corresponding to the service</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="p">[</span><span class="n">service_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_interface</span>
+</div>
+<div class="viewcode-block" id="LocalProviderIntrospector.get_checksum"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_checksum">[docs]</a>    <span class="k">def</span> <span class="nf">get_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="LocalProviderIntrospector.get_services"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_services">[docs]</a>    <span class="k">def</span> <span class="nf">get_services</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="LocalProviderIntrospector.get_service_info"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_service_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">):</span>
+        <span class="n">service_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">service_info</span><span class="p">:</span>
+            <span class="n">method_ids</span> <span class="o">=</span> <span class="n">service_info</span><span class="o">.</span><span class="n">get_definition</span><span class="p">()</span><span class="o">.</span><span class="n">get_method_identifiers</span><span class="p">()</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">StructValue</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.std.introspection.service.info&#39;</span><span class="p">,</span>
+                <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;operations&#39;</span><span class="p">:</span> <span class="n">ListValue</span><span class="p">(</span>
+                    <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">StringValue</span><span class="p">(</span><span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+                            <span class="k">for</span> <span class="n">method_id</span> <span class="ow">in</span> <span class="n">method_ids</span><span class="p">])}</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.introspection.service.not_found&#39;</span><span class="p">,</span> <span class="n">service_id</span><span class="p">)</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span><span class="n">not_found_def</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LocalProviderIntrospector.get_operations"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_operations">[docs]</a>    <span class="k">def</span> <span class="nf">get_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">):</span>
+        <span class="n">service_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">service_info</span><span class="p">:</span>
+            <span class="n">method_ids</span> <span class="o">=</span> <span class="n">service_info</span><span class="o">.</span><span class="n">get_definition</span><span class="p">()</span><span class="o">.</span><span class="n">get_method_identifiers</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span>
+                <span class="n">output</span><span class="o">=</span><span class="n">ListValue</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">StringValue</span><span class="p">(</span><span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+                                         <span class="k">for</span> <span class="n">method_id</span> <span class="ow">in</span> <span class="n">method_ids</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.introspection.operation.service.not_found&#39;</span><span class="p">,</span> <span class="n">service_id</span><span class="p">)</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span><span class="n">not_found_def</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_convert_method_def_to_data_value</span><span class="p">(</span><span class="n">method_def</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts a :class:`vmware.vapi.core.MethodDefinition` object</span>
+<span class="sd">        to :class:`vmware.vapi.data.value.DataValue` object</span>
+
+<span class="sd">        :type  method_def: :class:`vmware.vapi.core.MethodDefinition`</span>
+<span class="sd">        :param method_def: Method definition</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: Data value object representing method definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">StructValue</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.std.introspection.operation.info&#39;</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="p">{</span>
+                <span class="s">&#39;input_definition&#39;</span><span class="p">:</span> <span class="n">convert_data_def_to_data_value</span><span class="p">(</span>
+                    <span class="n">method_def</span><span class="o">.</span><span class="n">get_input_definition</span><span class="p">()),</span>
+                <span class="s">&#39;output_definition&#39;</span><span class="p">:</span> <span class="n">convert_data_def_to_data_value</span><span class="p">(</span>
+                    <span class="n">method_def</span><span class="o">.</span><span class="n">get_output_definition</span><span class="p">()),</span>
+                <span class="s">&#39;error_definitions&#39;</span><span class="p">:</span> <span class="n">ListValue</span><span class="p">(</span>
+                    <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">convert_data_def_to_data_value</span><span class="p">(</span><span class="n">error_def</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">error_def</span> <span class="ow">in</span> <span class="n">method_def</span><span class="o">.</span><span class="n">get_error_definitions</span><span class="p">()])</span>
+            <span class="p">})</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+<div class="viewcode-block" id="LocalProviderIntrospector.get_operation_info"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_operation_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_operation_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">):</span>
+        <span class="n">service_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">service_info</span><span class="p">:</span>
+            <span class="n">method_ids</span> <span class="o">=</span> <span class="n">service_info</span><span class="o">.</span><span class="n">get_definition</span><span class="p">()</span><span class="o">.</span><span class="n">get_method_identifiers</span><span class="p">()</span>
+            <span class="n">operation_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+                               <span class="k">for</span> <span class="n">method_id</span> <span class="ow">in</span> <span class="n">method_ids</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">operation_id</span> <span class="ow">in</span> <span class="n">operation_names</span><span class="p">:</span>
+                <span class="n">method_def</span> <span class="o">=</span> <span class="n">service_info</span><span class="o">.</span><span class="n">get_method_definition</span><span class="p">(</span>
+                    <span class="n">MethodIdentifier</span><span class="p">(</span><span class="n">InterfaceIdentifier</span><span class="p">(</span><span class="n">service_id</span><span class="p">),</span>
+                                     <span class="n">operation_id</span><span class="p">))</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_method_def_to_data_value</span><span class="p">(</span><span class="n">method_def</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.introspection.operation.not_found&#39;</span><span class="p">,</span>
+                    <span class="n">operation_id</span><span class="p">,</span>
+                    <span class="n">service_id</span><span class="p">)</span>
+                <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span><span class="n">not_found_def</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.introspection.operation.service.not_found&#39;</span><span class="p">,</span> <span class="n">service_id</span><span class="p">)</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span><span class="n">not_found_def</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="AggregatorIntrospector"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.AggregatorIntrospector">[docs]</a><span class="k">class</span> <span class="nc">AggregatorIntrospector</span><span class="p">(</span><span class="n">ApiProviderIntrospector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Specialization of :class:`vmware.vapi.provider.introspection.ApiProviderIntrospector`</span>
+<span class="sd">    that uses data available in Aggregator Provider to process the Introspection</span>
+<span class="sd">    service API requests</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">local_provider</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize AggregatorIntrospector</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the provider</span>
+<span class="sd">        :type  local_provider: :class:`vmware.vapi.core.ApiProvider`</span>
+<span class="sd">        :param local_provider: LocalProvider that will be used to serve</span>
+<span class="sd">            introspection requests for introspection services itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_local_provider</span> <span class="o">=</span> <span class="n">local_provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_local_provider_class_name</span> <span class="o">=</span> <span class="n">local_provider</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ApiProviderIntrospector</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AggregatorIntrospector.add_service"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.AggregatorIntrospector.add_service">[docs]</a>    <span class="k">def</span> <span class="nf">add_service</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">api_provider</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new service to the introspector</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  api_provider: :class:`vmware.vapi.core.ApiProvider`</span>
+<span class="sd">        :param api_provider: ApiProvider that is exposing the service</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="p">[</span><span class="n">service_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_provider</span>
+</div>
+<div class="viewcode-block" id="AggregatorIntrospector.remove_service"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.AggregatorIntrospector.remove_service">[docs]</a>    <span class="k">def</span> <span class="nf">remove_service</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new service to the introspector</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">service_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="p">[</span><span class="n">service_id</span><span class="p">]</span>
+</div>
+    <span class="k">def</span> <span class="nf">_get_provider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the ApiProvider instance to be used for invoking the</span>
+<span class="sd">        introspection calls</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.ApiProvider`</span>
+<span class="sd">        :return: ApiProvider instance to be used</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#</span>
+        <span class="c"># Aggregator routes based on a mapping from Service identifier to</span>
+        <span class="c"># ApiProvider. There is an introspection service in the aggregator</span>
+        <span class="c"># that is aggregator the data from local provider and all remote</span>
+        <span class="c"># providers. So, the mapping in aggregator would be:</span>
+        <span class="c">#   com.vmware.vapi.std.introspection.service -&gt; Introspection service</span>
+        <span class="c">#       in aggregator</span>
+        <span class="c"># But if we route based on this rule, we will go into infinite recursion</span>
+        <span class="c">#</span>
+        <span class="c"># So, the introspection calls for introspection services should be</span>
+        <span class="c"># routed to local provider in the aggregator, as that would be a terminal</span>
+        <span class="c"># point and can return data.</span>
+        <span class="c"># The introspection data for introspection calls is same if that</span>
+        <span class="c"># is serviced by the one in aggregator or by the one in local provider</span>
+        <span class="c">#</span>
+        <span class="k">if</span> <span class="n">service_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Introspection</span><span class="o">.</span><span class="n">PACKAGE</span><span class="p">):</span>
+            <span class="n">provider</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_provider</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">provider</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">provider</span>
+
+<div class="viewcode-block" id="AggregatorIntrospector.get_checksum"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.AggregatorIntrospector.get_checksum">[docs]</a>    <span class="k">def</span> <span class="nf">get_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># XXX: Resultant checksum does not include the data from the services</span>
+        <span class="c"># registered in the local provider of the aggregator. Since no one is</span>
+        <span class="c"># using Python aggregator, making this a low priority now.</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">ExecutionContext</span><span class="p">()</span>
+        <span class="n">struct_value</span> <span class="o">=</span> <span class="n">StructValue</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">OPERATION_INPUT</span><span class="p">)</span>
+        <span class="n">providers</span> <span class="o">=</span> <span class="p">[</span><span class="n">provider</span> <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                     <span class="k">if</span> <span class="n">provider</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_provider_class_name</span><span class="p">]</span>
+        <span class="n">method_results</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">provider</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">Introspection</span><span class="o">.</span><span class="n">PROVIDER_SVC</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="n">struct_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">providers</span><span class="p">]</span>
+        <span class="n">checksums</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;checksum&#39;</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">method_results</span> <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">checksums</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="AggregatorIntrospector.get_services"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.AggregatorIntrospector.get_services">[docs]</a>    <span class="k">def</span> <span class="nf">get_services</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_service_data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="AggregatorIntrospector.get_service_info"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.AggregatorIntrospector.get_service_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_service_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">):</span>
+        <span class="n">provider</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_provider</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">ExecutionContext</span><span class="p">()</span>
+        <span class="n">struct_value</span> <span class="o">=</span> <span class="n">StructValue</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">OPERATION_INPUT</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">StringValue</span><span class="p">(</span><span class="n">service_id</span><span class="p">)})</span>
+        <span class="k">return</span> <span class="n">provider</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="n">Introspection</span><span class="o">.</span><span class="n">SERVICE_SVC</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">,</span>
+            <span class="n">struct_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AggregatorIntrospector.get_operations"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.AggregatorIntrospector.get_operations">[docs]</a>    <span class="k">def</span> <span class="nf">get_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">):</span>
+        <span class="n">provider</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_provider</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">ExecutionContext</span><span class="p">()</span>
+        <span class="n">struct_value</span> <span class="o">=</span> <span class="n">StructValue</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">OPERATION_INPUT</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="n">StringValue</span><span class="p">(</span><span class="n">service_id</span><span class="p">)})</span>
+        <span class="k">return</span> <span class="n">provider</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="n">Introspection</span><span class="o">.</span><span class="n">OPERATION_SVC</span><span class="p">,</span> <span class="s">&#39;list&#39;</span><span class="p">,</span>
+            <span class="n">struct_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AggregatorIntrospector.get_operation_info"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.AggregatorIntrospector.get_operation_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_operation_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">):</span>
+        <span class="n">provider</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_provider</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">ExecutionContext</span><span class="p">()</span>
+        <span class="n">struct_value</span> <span class="o">=</span> <span class="n">StructValue</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">OPERATION_INPUT</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="n">StringValue</span><span class="p">(</span><span class="n">service_id</span><span class="p">),</span>
+                    <span class="s">&#39;operation_id&#39;</span><span class="p">:</span> <span class="n">StringValue</span><span class="p">(</span><span class="n">operation_id</span><span class="p">)})</span>
+        <span class="k">return</span> <span class="n">provider</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="n">Introspection</span><span class="o">.</span><span class="n">OPERATION_SVC</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">,</span>
+            <span class="n">struct_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="register_instance"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.introspection.register_instance">[docs]</a><span class="k">def</span> <span class="nf">register_instance</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Services to be registered with LocalProvider</span>
+
+<span class="sd">    :rtype: :class:`list` of :class:`vmware.vapi.core.ApiInterface`</span>
+<span class="sd">    :return: List of services to be registered with LocalProvider</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">ProviderApiInterface</span><span class="p">(),</span>
+            <span class="n">ServiceApiInterface</span><span class="p">(),</span>
+            <span class="n">OperationApiInterface</span><span class="p">()]</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

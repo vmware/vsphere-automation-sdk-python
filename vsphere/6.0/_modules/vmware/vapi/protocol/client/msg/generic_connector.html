@@ -1,0 +1,189 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.protocol.client.msg.generic_connector &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.protocol.client.msg.generic_connector</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Generic client connector</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.protocol.client.connector</span> <span class="kn">import</span> <span class="n">Connector</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">ExecutionContext</span><span class="p">,</span> <span class="n">SecurityContext</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.context</span> <span class="kn">import</span> <span class="n">create_default_application_context</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GenericConnector"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.generic_connector.GenericConnector">[docs]</a><span class="k">class</span> <span class="nc">GenericConnector</span><span class="p">(</span><span class="n">Connector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A generic protocol connector &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rpc_provider</span><span class="p">,</span> <span class="n">api_provider</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic protocol connector init</span>
+
+<span class="sd">        :type  rpc_provider: :class:`vmware.vapi.protocol.client.rpc.provider.RpcProvider`</span>
+<span class="sd">        :param rpc_provider: rpc provider object</span>
+<span class="sd">        :type  api_provider: :class:`vmware.vapi.core.ApiProvider`</span>
+<span class="sd">        :param api_provider: api provider object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Connector</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpc_provider</span> <span class="o">=</span> <span class="n">rpc_provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_provider</span> <span class="o">=</span> <span class="n">api_provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_application_ctx</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_security_ctx</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="GenericConnector.connect"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.generic_connector.GenericConnector.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; rpc provider connect &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpc_provider</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GenericConnector.disconnect"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.generic_connector.GenericConnector.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; rpc provider disconnect &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpc_provider</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GenericConnector.get_api_provider"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.generic_connector.GenericConnector.get_api_provider">[docs]</a>    <span class="k">def</span> <span class="nf">get_api_provider</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get api provider</span>
+
+<span class="sd">        :rtype:  :class:`vmware.vapi.core.ApiProvider`</span>
+<span class="sd">        :return: api provider</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_provider</span>
+</div>
+<div class="viewcode-block" id="GenericConnector.set_application_context"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.generic_connector.GenericConnector.set_application_context">[docs]</a>    <span class="k">def</span> <span class="nf">set_application_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the application context</span>
+
+<span class="sd">        All the subsequent calls made using this</span>
+<span class="sd">        connector will use this as the application</span>
+<span class="sd">        context in the ExecutionContext</span>
+
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ApplicationContext`</span>
+<span class="sd">        :param ctx: New application context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_application_ctx</span> <span class="o">=</span> <span class="n">ctx</span>
+</div>
+<div class="viewcode-block" id="GenericConnector.set_security_context"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.generic_connector.GenericConnector.set_security_context">[docs]</a>    <span class="k">def</span> <span class="nf">set_security_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the security context</span>
+
+<span class="sd">        All the subsequent calls made using this</span>
+<span class="sd">        connector will use this as the security</span>
+<span class="sd">        context in the ExecutionContext</span>
+
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.SecurityContext`</span>
+<span class="sd">        :param ctx: New security context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_security_ctx</span> <span class="o">=</span> <span class="n">ctx</span>
+</div>
+<div class="viewcode-block" id="GenericConnector.new_context"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.generic_connector.GenericConnector.new_context">[docs]</a>    <span class="k">def</span> <span class="nf">new_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        create new execution context object</span>
+
+<span class="sd">        :rtype:  :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :return: execution context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">app_ctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application_ctx</span>
+        <span class="c"># Create a default application context only if</span>
+        <span class="c"># the user has not provided anything</span>
+        <span class="k">if</span> <span class="n">app_ctx</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">app_ctx</span> <span class="o">=</span> <span class="n">create_default_application_context</span><span class="p">()</span>
+        <span class="n">sec_ctx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_security_ctx</span>
+        <span class="k">if</span> <span class="n">sec_ctx</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">sec_ctx</span> <span class="o">=</span> <span class="n">SecurityContext</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ExecutionContext</span><span class="p">(</span><span class="n">app_ctx</span><span class="p">,</span> <span class="n">sec_ctx</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

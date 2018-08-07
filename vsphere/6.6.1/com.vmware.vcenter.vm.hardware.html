@@ -1,0 +1,1309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vcenter.vm.hardware package &mdash; vSphere Automation SDK for Python 6.6.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '6.6.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.6.1 documentation" href="index.html" />
+    <link rel="up" title="com.vmware.vcenter.vm package" href="com.vmware.vcenter.vm.html" />
+    <link rel="next" title="vmware package" href="vmware.html" />
+    <link rel="prev" title="com.vmware.vcenter.vm package" href="com.vmware.vcenter.vm.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vmware.html" title="vmware package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="com.vmware.vcenter.vm.html" title="com.vmware.vcenter.vm package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">vSphere Automation SDK for Python 6.6.1 documentation</a> &raquo;</li>
+          <li><a href="com.html" >com package</a> &raquo;</li>
+          <li><a href="com.vmware.html" >com.vmware package</a> &raquo;</li>
+          <li><a href="com.vmware.vcenter.html" >com.vmware.vcenter package</a> &raquo;</li>
+          <li><a href="com.vmware.vcenter.vm.html" accesskey="U">com.vmware.vcenter.vm package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="com-vmware-vcenter-vm-hardware-package">
+<h1>com.vmware.vcenter.vm.hardware package<a class="headerlink" href="#com-vmware-vcenter-vm-hardware-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-com.vmware.vcenter.vm.hardware.adapter_client">
+<span id="com-vmware-vcenter-vm-hardware-adapter-client-module"></span><h2>com.vmware.vcenter.vm.hardware.adapter_client module<a class="headerlink" href="#module-com.vmware.vcenter.vm.hardware.adapter_client" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.adapter_client</span></tt> module provides classes
+for managing the configuration and state of the virtual adapters belonging to a
+virtual machine. This includes methods for reading and manipulating the
+conifguration of USB adapters and host bus adapters.</p>
+<p>Note that classes for adapters with no configurable properties or runtime
+state, such as IDE and PCI adapters, are omitted.</p>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata">
+<em class="property">class </em><tt class="descclassname">com.vmware.vcenter.vm.hardware.adapter_client.</tt><tt class="descname">Sata</tt><big>(</big><em>config</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Sata</span></tt> class provides methods for configuring the virtual SATA
+adapters of a virtual machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.CreateSpec">
+<em class="property">class </em><tt class="descname">CreateSpec</tt><big>(</big><em>type=None</em>, <em>bus=None</em>, <em>pci_slot_number=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.CreateSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Sata.CreateSpec</span></tt> class provides a specification for the
+configuration of a newly-created virtual SATA adapter.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type" title="com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type"><tt class="xref py py-class docutils literal"><span class="pre">Sata.Type</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Adapter type.
+If None, a guest-specific default value will be used.</li>
+<li><strong>bus</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; SATA bus number.
+If None, the server will choose an available bus number; if none is
+available, the request will fail.</li>
+<li><strong>pci_slot_number</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Address of the SATA adapter on the PCI bus.
+If None, the server will choose an available address when the
+virtual machine is powered on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.Info">
+<em class="property">class </em><tt class="descclassname">Sata.</tt><tt class="descname">Info</tt><big>(</big><em>label=None</em>, <em>type=None</em>, <em>bus=None</em>, <em>pci_slot_number=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Sata.Info</span></tt> class contains information about a virtual SATA adapter.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Device label.</li>
+<li><strong>type</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type" title="com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type"><tt class="xref py py-class docutils literal"><span class="pre">Sata.Type</span></tt></a>) &#8211; Adapter type.</li>
+<li><strong>bus</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt>) &#8211; SATA bus number.</li>
+<li><strong>pci_slot_number</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Address of the SATA adapter on the PCI bus.
+May be None if the virtual machine has never been powered on since
+the adapter was created.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.RESOURCE_TYPE">
+<tt class="descclassname">Sata.</tt><tt class="descname">RESOURCE_TYPE</tt><em class="property"> = 'com.vmware.vcenter.vm.hardware.SataAdapter'</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.RESOURCE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resource type for the virtual SATA adapter device.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.Summary">
+<em class="property">class </em><tt class="descclassname">Sata.</tt><tt class="descname">Summary</tt><big>(</big><em>adapter=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Sata.Summary</span></tt> class contains commonly used information about a
+Virtual SATA adapter.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>adapter</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the virtual SATA adapter.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.SataAdapter</span></tt>. When methods return
+a value of this class as a return value, the attribute will be an
+identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.SataAdapter</span></tt>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type">
+<em class="property">class </em><tt class="descclassname">Sata.</tt><tt class="descname">Type</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.enum.Enum</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Sata.Type</span></tt> class defines the valid emulation types for a virtual
+SATA adapter.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class represents an enumerated type in the interface language
+definition. The class contains class attributes which represent the
+values in the current version of the enumerated type. Newer versions of
+the enumerated type may contain new values. To use new values of the
+enumerated type in communication with a server that supports the newer
+version of the API, you instantiate this class. See <a class="reference internal" href="custom/rst/enumeration.html#enumeration-description"><em>enumerated
+type description page</em></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; String value for the <tt class="xref py py-class docutils literal"><span class="pre">Type</span></tt> instance.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type.AHCI">
+<tt class="descname">AHCI</tt><em class="property"> = Type(string=u'AHCI')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type.AHCI" title="Permalink to this definition">¶</a></dt>
+<dd><p>AHCI host bus adapter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.create">
+<tt class="descclassname">Sata.</tt><tt class="descname">create</tt><big>(</big><em>vm</em>, <em>spec</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a virtual SATA adapter to the virtual machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</li>
+<li><strong>spec</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.CreateSpec" title="com.vmware.vcenter.vm.hardware.adapter_client.Sata.CreateSpec"><tt class="xref py py-class docutils literal"><span class="pre">Sata.CreateSpec</span></tt></a>) &#8211; Specification for the new virtual SATA adapter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Virtual SATA adapter identifier.
+The return value will be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.SataAdapter</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reported that the SATA adapter was created but was
+unable to confirm the creation because the identifier of the new
+adapter could not be determined.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></tt> 
+if the virtual machine is suspended</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine is not found.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.UnableToAllocateResource</span></tt> 
+if there are no more available SATA buses on the virtual machine.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInUse</span></tt> 
+if the specified SATA bus or PCI address is in use.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt> 
+if the specified SATA bus or PCI address is out of bounds.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceBusy</span></tt> 
+if the virtual machine is busy performing another operation.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unsupported</span></tt> 
+if the guest operating system of the virtual machine is not
+supported and spec includes None attributes that default to
+guest-specific values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.delete">
+<tt class="descclassname">Sata.</tt><tt class="descname">delete</tt><big>(</big><em>vm</em>, <em>adapter</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a virtual SATA adapter from the virtual machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</li>
+<li><strong>adapter</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual SATA adapter identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.SataAdapter</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></tt> 
+if the virtual machine is suspended</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine or virtual SATA adapter is not found.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceBusy</span></tt> 
+if the virtual machine is busy performing another operation.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.get">
+<tt class="descclassname">Sata.</tt><tt class="descname">get</tt><big>(</big><em>vm</em>, <em>adapter</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns information about a virtual SATA adapter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</li>
+<li><strong>adapter</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual SATA adapter identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.SataAdapter</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Info" title="com.vmware.vcenter.vm.hardware.adapter_client.Sata.Info"><tt class="xref py py-class docutils literal"><span class="pre">Sata.Info</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Information about the specified virtual SATA adapter.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine or virtual SATA adapter is not found.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Sata.list">
+<tt class="descclassname">Sata.</tt><tt class="descname">list</tt><big>(</big><em>vm</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns commonly used information about the virtual SATA adapters
+belonging to the virtual machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.list" title="com.vmware.vcenter.vm.hardware.adapter_client.Sata.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Summary" title="com.vmware.vcenter.vm.hardware.adapter_client.Sata.Summary"><tt class="xref py py-class docutils literal"><span class="pre">Sata.Summary</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of commonly used information about virtual SATA adapters.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine is not found.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi">
+<em class="property">class </em><tt class="descclassname">com.vmware.vcenter.vm.hardware.adapter_client.</tt><tt class="descname">Scsi</tt><big>(</big><em>config</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Scsi</span></tt> class provides methods for configuring the virtual SCSI
+adapters of a virtual machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.CreateSpec">
+<em class="property">class </em><tt class="descname">CreateSpec</tt><big>(</big><em>type=None</em>, <em>bus=None</em>, <em>pci_slot_number=None</em>, <em>sharing=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.CreateSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Scsi.CreateSpec</span></tt> class provides a specification for the
+configuration of a newly-created virtual SCSI adapter.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.Type</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Adapter type.
+If None, a guest-specific default value will be used.</li>
+<li><strong>bus</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; SCSI bus number.
+If None, the server will choose an available bus number; if none is
+available, the request will fail.</li>
+<li><strong>pci_slot_number</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Address of the SCSI adapter on the PCI bus. If the PCI address is
+invalid, the server will change it when the VM is started or as the
+device is hot added.
+If None, the server will choose an available address when the
+virtual machine is powered on.</li>
+<li><strong>sharing</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.Sharing</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Bus sharing mode.
+If None, the adapter will default to <a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing.NONE" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing.NONE"><tt class="xref py py-attr docutils literal"><span class="pre">Scsi.Sharing.NONE</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Info">
+<em class="property">class </em><tt class="descclassname">Scsi.</tt><tt class="descname">Info</tt><big>(</big><em>label=None</em>, <em>type=None</em>, <em>scsi=None</em>, <em>pci_slot_number=None</em>, <em>sharing=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Scsi.Info</span></tt> class contains information about a virtual SCSI adapter.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Device label.</li>
+<li><strong>type</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.Type</span></tt></a>) &#8211; Adapter type.</li>
+<li><strong>scsi</strong> (<a class="reference internal" href="com.vmware.vcenter.vm.html#com.vmware.vcenter.vm.hardware_client.ScsiAddressInfo" title="com.vmware.vcenter.vm.hardware_client.ScsiAddressInfo"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware_client.ScsiAddressInfo</span></tt></a>) &#8211; Address of the SCSI adapter on the SCSI bus.</li>
+<li><strong>pci_slot_number</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Address of the SCSI adapter on the PCI bus. If the PCI address is
+invalid, the server will change it when the VM is started or as the
+device is hot added.
+May be None if the virtual machine has never been powered on since
+the adapter was created.</li>
+<li><strong>sharing</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.Sharing</span></tt></a>) &#8211; Bus sharing mode.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.RESOURCE_TYPE">
+<tt class="descclassname">Scsi.</tt><tt class="descname">RESOURCE_TYPE</tt><em class="property"> = 'com.vmware.vcenter.vm.hardware.ScsiAdapter'</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.RESOURCE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resource type for the virtual SCSI adapter device.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing">
+<em class="property">class </em><tt class="descclassname">Scsi.</tt><tt class="descname">Sharing</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.enum.Enum</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Scsi.Sharing</span></tt> class defines the valid bus sharing modes for a
+virtual SCSI adapter.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class represents an enumerated type in the interface language
+definition. The class contains class attributes which represent the
+values in the current version of the enumerated type. Newer versions of
+the enumerated type may contain new values. To use new values of the
+enumerated type in communication with a server that supports the newer
+version of the API, you instantiate this class. See <a class="reference internal" href="custom/rst/enumeration.html#enumeration-description"><em>enumerated
+type description page</em></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; String value for the <tt class="xref py py-class docutils literal"><span class="pre">Sharing</span></tt> instance.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing.NONE">
+<tt class="descname">NONE</tt><em class="property"> = Sharing(string=u'NONE')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing.NONE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The virtual SCSI bus is not shared.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing.PHYSICAL">
+<tt class="descname">PHYSICAL</tt><em class="property"> = Sharing(string=u'PHYSICAL')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing.PHYSICAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>The virtual SCSI bus is shared between two or more virtual machines
+residing on different physical hosts.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing.VIRTUAL">
+<tt class="descname">VIRTUAL</tt><em class="property"> = Sharing(string=u'VIRTUAL')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing.VIRTUAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>The virtual SCSI bus is shared between two or more virtual machines. In
+this case, no physical machine is involved.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Summary">
+<em class="property">class </em><tt class="descclassname">Scsi.</tt><tt class="descname">Summary</tt><big>(</big><em>adapter=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Scsi.Summary</span></tt> class contains commonly used information about a
+Virtual SCSI adapter.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>adapter</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the virtual SCSI adapter.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.ScsiAdapter</span></tt>. When methods return
+a value of this class as a return value, the attribute will be an
+identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.ScsiAdapter</span></tt>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type">
+<em class="property">class </em><tt class="descclassname">Scsi.</tt><tt class="descname">Type</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.enum.Enum</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Scsi.Type</span></tt> class defines the valid emulation types for a virtual
+SCSI adapter.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class represents an enumerated type in the interface language
+definition. The class contains class attributes which represent the
+values in the current version of the enumerated type. Newer versions of
+the enumerated type may contain new values. To use new values of the
+enumerated type in communication with a server that supports the newer
+version of the API, you instantiate this class. See <a class="reference internal" href="custom/rst/enumeration.html#enumeration-description"><em>enumerated
+type description page</em></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; String value for the <tt class="xref py py-class docutils literal"><span class="pre">Type</span></tt> instance.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type.BUSLOGIC">
+<tt class="descname">BUSLOGIC</tt><em class="property"> = Type(string=u'BUSLOGIC')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type.BUSLOGIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>BusLogic host bus adapter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type.LSILOGIC">
+<tt class="descname">LSILOGIC</tt><em class="property"> = Type(string=u'LSILOGIC')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type.LSILOGIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>LSI Logic host bus adapter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type.LSILOGICSAS">
+<tt class="descname">LSILOGICSAS</tt><em class="property"> = Type(string=u'LSILOGICSAS')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type.LSILOGICSAS" title="Permalink to this definition">¶</a></dt>
+<dd><p>LSI Logic SAS 1068 host bus adapter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type.PVSCSI">
+<tt class="descname">PVSCSI</tt><em class="property"> = Type(string=u'PVSCSI')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type.PVSCSI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Paravirtualized host bus adapter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.UpdateSpec">
+<em class="property">class </em><tt class="descclassname">Scsi.</tt><tt class="descname">UpdateSpec</tt><big>(</big><em>sharing=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.UpdateSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Scsi.UpdateSpec</span></tt> class describes the updates to be made to the
+configuration of a virtual SCSI adapter.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sharing</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.Sharing</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Bus sharing mode.</p>
+<p>This attribute may only be modified if the virtual machine is not
+powered on.
+If None, the value is unchanged.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.create">
+<tt class="descclassname">Scsi.</tt><tt class="descname">create</tt><big>(</big><em>vm</em>, <em>spec</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a virtual SCSI adapter to the virtual machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</li>
+<li><strong>spec</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.CreateSpec" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.CreateSpec"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.CreateSpec</span></tt></a>) &#8211; Specification for the new virtual SCSI adapter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Virtual SCSI adapter identifier.
+The return value will be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.ScsiAdapter</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reported that the SCSI adapter was created but was
+unable to confirm the creation because the identifier of the new
+adapter could not be determined.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></tt> 
+if the virtual machine is suspended</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine is not found.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.UnableToAllocateResource</span></tt> 
+if there are no more available SCSI buses on the virtual machine.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInUse</span></tt> 
+if the specified SCSI bus is in use.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt> 
+if the specified SATA bus or PCI address is out of bounds.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceBusy</span></tt> 
+if the virtual machine is busy performing another operation.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unsupported</span></tt> 
+if the guest operating system of the virtual machine is not
+supported and spec includes None attributes that default to
+guest-specific values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.delete">
+<tt class="descclassname">Scsi.</tt><tt class="descname">delete</tt><big>(</big><em>vm</em>, <em>adapter</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a virtual SCSI adapter from the virtual machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</li>
+<li><strong>adapter</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual SCSI adapter identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.ScsiAdapter</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></tt> 
+if the virtual machine is suspended</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine or virtual SCSI adapter is not found.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceBusy</span></tt> 
+if the virtual machine is busy performing another operation.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.get">
+<tt class="descclassname">Scsi.</tt><tt class="descname">get</tt><big>(</big><em>vm</em>, <em>adapter</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns information about a virtual SCSI adapter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</li>
+<li><strong>adapter</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual SCSI adapter identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.ScsiAdapter</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Info" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Info"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.Info</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Information about the specified virtual SCSI adapter.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine or virtual SCSI adapter is not found.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.list">
+<tt class="descclassname">Scsi.</tt><tt class="descname">list</tt><big>(</big><em>vm</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns commonly used information about the virtual SCSI adapters
+belonging to the virtual machine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.list" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Summary" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Summary"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.Summary</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of commonly used information about virtual SCSI adapters.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine is not found.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.update">
+<tt class="descclassname">Scsi.</tt><tt class="descname">update</tt><big>(</big><em>vm</em>, <em>adapter</em>, <em>spec</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the configuration of a virtual SCSI adapter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</li>
+<li><strong>adapter</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual SCSI adapter identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.ScsiAdapter</span></tt>.</li>
+<li><strong>spec</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.UpdateSpec" title="com.vmware.vcenter.vm.hardware.adapter_client.Scsi.UpdateSpec"><tt class="xref py py-class docutils literal"><span class="pre">Scsi.UpdateSpec</span></tt></a>) &#8211; Specification for updating the virtual SCSI adapter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine or virtual SCSI adapter is not found.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></tt> 
+if one or more of the attributes specified in the <tt class="docutils literal"><span class="pre">spec</span></tt>
+parameter cannot be modified due to the current power state of the
+virtual machine or the connection state of the virtual SCSI
+adapter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceBusy</span></tt> 
+if the virtual machine is busy performing another operation.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-com.vmware.vcenter.vm.hardware.boot_client">
+<span id="com-vmware-vcenter-vm-hardware-boot-client-module"></span><h2>com.vmware.vcenter.vm.hardware.boot_client module<a class="headerlink" href="#module-com.vmware.vcenter.vm.hardware.boot_client" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.boot_client</span></tt> module provides classes for
+managing the virtual devices used to boot a virtual machine.</p>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device">
+<em class="property">class </em><tt class="descclassname">com.vmware.vcenter.vm.hardware.boot_client.</tt><tt class="descname">Device</tt><big>(</big><em>config</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Device</span></tt> class provides methods for configuring the device order used
+when booting a virtual machine.</p>
+<p>The boot order may be specified using a mixture of device classes and
+device instances, chosen from among the following:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.CDROM" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.CDROM"><tt class="xref py py-attr docutils literal"><span class="pre">Device.Type.CDROM</span></tt></a>: Boot from a virtual CD-ROM drive; the device
+instance(s) will be chosen by the BIOS subsystem.</li>
+<li><a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.FLOPPY" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.FLOPPY"><tt class="xref py py-attr docutils literal"><span class="pre">Device.Type.FLOPPY</span></tt></a>: Boot from a virtual floppy drive; the device
+instance(s) will be chosen by the BIOS subsystem.</li>
+<li><a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.DISK" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.DISK"><tt class="xref py py-attr docutils literal"><span class="pre">Device.Type.DISK</span></tt></a>: Boot from a virtual disk device; the device
+instance is specified explicitly in <tt class="xref py py-attr docutils literal"><span class="pre">Device.Entry.disks</span></tt> list, and
+multiple instances may be specified in the list.</li>
+<li><a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET"><tt class="xref py py-attr docutils literal"><span class="pre">Device.Type.ETHERNET</span></tt></a>: Boot from a virtual Ethernet adapter; the
+device instance is specified explicitly as <tt class="xref py py-attr docutils literal"><span class="pre">Device.Entry.nic</span></tt>, and
+multiple adapters may be specified in the boot order list.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.Entry">
+<em class="property">class </em><tt class="descname">Entry</tt><big>(</big><em>type=None</em>, <em>nic=None</em>, <em>disks=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Entry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Device.Entry</span></tt> class specifies a bootable virtual device class or
+specific bootable virtual device(s).</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type"><tt class="xref py py-class docutils literal"><span class="pre">Device.Type</span></tt></a>) &#8211; Virtual device type.</li>
+<li><strong>nic</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual Ethernet device. Ethernet device to use as boot device for
+this entry.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.Ethernet</span></tt>. When methods return a
+value of this class as a return value, the attribute will be an
+identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.Ethernet</span></tt>.
+This attribute is optional and it is only relevant when the value
+of <tt class="docutils literal"><span class="pre">type</span></tt> is <a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET"><tt class="xref py py-attr docutils literal"><span class="pre">Device.Type.ETHERNET</span></tt></a>.</li>
+<li><strong>disks</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual disk device. List of virtual disks in boot order.
+When clients pass a value of this class as a parameter, the
+attribute must contain identifiers for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.Disk</span></tt>. When methods return a
+value of this class as a return value, the attribute will contain
+identifiers for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.vm.hardware.Disk</span></tt>.
+This attribute is optional and it is only relevant when the value
+of <tt class="docutils literal"><span class="pre">type</span></tt> is <a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.DISK" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.DISK"><tt class="xref py py-attr docutils literal"><span class="pre">Device.Type.DISK</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.EntryCreateSpec">
+<em class="property">class </em><tt class="descclassname">Device.</tt><tt class="descname">EntryCreateSpec</tt><big>(</big><em>type=None</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.EntryCreateSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></p>
+<p>The class <tt class="docutils literal"><span class="pre">Device.EntryCreateSpec</span></tt> specifies a list of bootable virtual
+device classes. When a VM is being created and a <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of
+<tt class="docutils literal"><span class="pre">Device.EntryCreateSpec</span></tt> is specified, the boot order of the specific
+device instances are not specified in this class. The boot order of the
+specific device instance will be the order in which the Ethernet and Disk
+devices appear in the <tt class="docutils literal"><span class="pre">nics</span></tt> and <tt class="docutils literal"><span class="pre">disks</span></tt> respectively.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>type</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type"><tt class="xref py py-class docutils literal"><span class="pre">Device.Type</span></tt></a>) &#8211; Virtual Boot device type.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.Type">
+<em class="property">class </em><tt class="descclassname">Device.</tt><tt class="descname">Type</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.enum.Enum</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">Device.Type</span></tt> class defines the valid device types that may be used
+as bootable devices.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class represents an enumerated type in the interface language
+definition. The class contains class attributes which represent the
+values in the current version of the enumerated type. Newer versions of
+the enumerated type may contain new values. To use new values of the
+enumerated type in communication with a server that supports the newer
+version of the API, you instantiate this class. See <a class="reference internal" href="custom/rst/enumeration.html#enumeration-description"><em>enumerated
+type description page</em></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; String value for the <tt class="xref py py-class docutils literal"><span class="pre">Type</span></tt> instance.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.CDROM">
+<tt class="descname">CDROM</tt><em class="property"> = Type(string=u'CDROM')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.CDROM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Virtual CD-ROM device.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.DISK">
+<tt class="descname">DISK</tt><em class="property"> = Type(string=u'DISK')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.DISK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Virtual disk device.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET">
+<tt class="descname">ETHERNET</tt><em class="property"> = Type(string=u'ETHERNET')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Virtual Ethernet adapter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.FLOPPY">
+<tt class="descname">FLOPPY</tt><em class="property"> = Type(string=u'FLOPPY')</em><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.FLOPPY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Virtual floppy drive.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.get">
+<tt class="descclassname">Device.</tt><tt class="descname">get</tt><big>(</big><em>vm</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an ordered list of boot devices for the virtual machine. If the
+<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> is empty, the virtual machine uses a default boot
+sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Entry" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Entry"><tt class="xref py py-class docutils literal"><span class="pre">Device.Entry</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Ordered list of configured boot devices.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine is not found.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.hardware.boot_client.Device.set">
+<tt class="descclassname">Device.</tt><tt class="descname">set</tt><big>(</big><em>vm</em>, <em>devices</em><big>)</big><a class="headerlink" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the virtual devices that will be used to boot the virtual machine.
+The virtual machine will check the devices in order, attempting to boot
+from each, until the virtual machine boots successfully. If the
+<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> is empty, the virtual machine will use a default boot
+sequence. There should be no more than one instance of
+<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Entry" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Entry"><tt class="xref py py-class docutils literal"><span class="pre">Device.Entry</span></tt></a> for a given device type except
+<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET"><tt class="xref py py-attr docutils literal"><span class="pre">Device.Type.ETHERNET</span></tt></a> in the <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Virtual machine identifier.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">VirtualMachine</span></tt>.</li>
+<li><strong>devices</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Entry" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Entry"><tt class="xref py py-class docutils literal"><span class="pre">Device.Entry</span></tt></a>) &#8211; Ordered list of boot devices.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt> 
+if the system reports an error while responding to the request.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt> 
+if the virtual machine is not found, or if any of the specified
+virtual devices is not found.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt> 
+if a any of the CDROM, DISK, ETHERNET, FLOPPY values appears in
+more than one <tt class="docutils literal"><span class="pre">Device.Entry</span></tt> with the exception of
+<a class="reference internal" href="#com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET" title="com.vmware.vcenter.vm.hardware.boot_client.Device.Type.ETHERNET"><tt class="xref py py-attr docutils literal"><span class="pre">Device.Type.ETHERNET</span></tt></a>, which may appear multiple times if
+the virtual machine has been configured with multiple Ethernet
+adapters.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceBusy</span></tt> 
+if the virtual machine is busy performing another operation.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt> 
+if the virtual machine&#8217;s configuration state cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt> 
+if the user can not be authenticated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt> 
+if the user doesn&#8217;t have the required privileges.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-com.vmware.vcenter.vm.hardware">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-com.vmware.vcenter.vm.hardware" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">com.vmware.vcenter.vm.hardware package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-com.vmware.vcenter.vm.hardware.adapter_client">com.vmware.vcenter.vm.hardware.adapter_client module</a></li>
+<li><a class="reference internal" href="#module-com.vmware.vcenter.vm.hardware.boot_client">com.vmware.vcenter.vm.hardware.boot_client module</a></li>
+<li><a class="reference internal" href="#module-com.vmware.vcenter.vm.hardware">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="com.vmware.vcenter.vm.html"
+                        title="previous chapter">com.vmware.vcenter.vm package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="vmware.html"
+                        title="next chapter">vmware package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/com.vmware.vcenter.vm.hardware.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vmware.html" title="vmware package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="com.vmware.vcenter.vm.html" title="com.vmware.vcenter.vm package"
+             >previous</a> |</li>
+        <li><a href="index.html">vSphere Automation SDK for Python 6.6.1 documentation</a> &raquo;</li>
+          <li><a href="com.html" >com package</a> &raquo;</li>
+          <li><a href="com.vmware.html" >com.vmware package</a> &raquo;</li>
+          <li><a href="com.vmware.vcenter.html" >com.vmware.vcenter package</a> &raquo;</li>
+          <li><a href="com.vmware.vcenter.vm.html" >com.vmware.vcenter.vm package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014-2017, VMware, Inc. All rights reserved.
+    </div>
+  </body>
+</html>

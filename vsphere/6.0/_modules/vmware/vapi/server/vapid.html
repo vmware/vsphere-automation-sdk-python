@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.server.vapid &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.server.vapid</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Vapi server</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">locale</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">logging.config</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">configparser</span>
+
+<span class="kn">import</span> <span class="nn">vmware.vapi.debug.livedump</span>  <span class="c"># pylint: disable=W0611</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.addr_url_parser</span> <span class="kn">import</span> <span class="n">get_url_scheme</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.constants</span> <span class="kn">import</span> <span class="n">DEFAULT_LOCALE</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.settings</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.settings.sections</span> <span class="kn">import</span> <span class="n">ENDPOINT</span><span class="p">,</span> <span class="n">LOGGERS</span>
+
+<span class="c"># Note: Use logger only after configure_logging has been called!!!</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="c"># Set english locale for vAPI server</span>
+<span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="n">DEFAULT_LOCALE</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="check_file_exists"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.vapid.check_file_exists">[docs]</a><span class="k">def</span> <span class="nf">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if name is a file and exists</span>
+
+<span class="sd">    :type  :class:`str`</span>
+<span class="sd">    :param file name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">os</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;No such file: &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="set_process_title"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.vapid.set_process_title">[docs]</a><span class="k">def</span> <span class="nf">set_process_title</span><span class="p">(</span><span class="n">cfg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If setproctitle library is available, set the process title</span>
+<span class="sd">    :type  cfg: :class:`configparser`</span>
+<span class="sd">    :param cfg: configparser object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">setproctitle</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;process.name&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">setproctitle</span><span class="o">.</span><span class="n">setproctitle</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&#39;Could not set the process title because of </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="configure_logging"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.vapid.configure_logging">[docs]</a><span class="k">def</span> <span class="nf">configure_logging</span><span class="p">(</span><span class="n">log_config</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure logging using properties file</span>
+
+<span class="sd">    :type  log_config: :class:`str`</span>
+<span class="sd">    :kwarg log_config: File path of the properties file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">log_config</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+        <span class="n">handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span>
+            <span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> </span><span class="si">%(levelname)-8s</span><span class="s"> </span><span class="si">%(name)-15s</span><span class="s"> </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+        <span class="c"># Configure the root logger</span>
+        <span class="n">root_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+        <span class="n">root_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">root_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">check_file_exists</span><span class="p">(</span><span class="n">log_config</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fileConfig</span><span class="p">(</span><span class="n">log_config</span><span class="p">)</span>
+
+    <span class="k">global</span> <span class="n">logger</span>  <span class="c"># pylint: disable=W0603</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;vmware.vapi.server.vapid&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_ssl_args"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.vapid.get_ssl_args">[docs]</a><span class="k">def</span> <span class="nf">get_ssl_args</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">protocol_prefix</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the ssl arguments</span>
+
+<span class="sd">    :type  cfg: :class:`configparser.SafeConfigParser`</span>
+<span class="sd">    :param cfg: Configuration</span>
+<span class="sd">    :type  protocol_prefix: :class:`str`</span>
+<span class="sd">    :param protocol_prefix: Prefix of the protocol configuration</span>
+<span class="sd">    :rtype: :class:`dict`</span>
+<span class="sd">    :return: SSL arguments for this protocol configuration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ssl_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ssl_prefix</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.ssl&#39;</span> <span class="o">%</span> <span class="n">protocol_prefix</span>
+
+    <span class="c"># Try to get the certdir from environment variable or .certdir option</span>
+    <span class="n">certdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;CERTDIR&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">certdir</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">certdir</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.certdir&#39;</span> <span class="o">%</span> <span class="n">ssl_prefix</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+            <span class="c"># But don&#39;t complain yet</span>
+            <span class="k">pass</span>
+
+    <span class="k">for</span> <span class="n">ssl_key</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;ca_certs&#39;</span><span class="p">,</span> <span class="s">&#39;certfile&#39;</span><span class="p">,</span> <span class="s">&#39;keyfile&#39;</span><span class="p">):</span>
+        <span class="n">option</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ssl_prefix</span><span class="p">,</span> <span class="n">ssl_key</span><span class="p">)</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+            <span class="c"># ca_certs, certfile and keyfile are optional, so don&#39;t complain</span>
+            <span class="c"># if they are not present</span>
+            <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">certdir</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c"># If one of ca_certs, certfile, keyfile is specified</span>
+                <span class="c"># and certdir is not specified, then raise an error</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Specify certificate absolute directory path &#39;</span>
+                             <span class="s">&#39;either by setting environment variable CERTDIR &#39;</span>
+                             <span class="s">&#39;or by setting </span><span class="si">%s</span><span class="s">.certdir in the properties file&#39;</span><span class="p">,</span>
+                             <span class="n">ssl_prefix</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">.certdir&#39;</span> <span class="o">%</span> <span class="n">ssl_prefix</span><span class="p">,</span>
+                                                 <span class="n">ENDPOINT</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">certdir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+                <span class="n">check_file_exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="n">ssl_args</span><span class="p">[</span><span class="n">ssl_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span>
+    <span class="k">return</span> <span class="n">ssl_args</span>
+
+</div>
+<div class="viewcode-block" id="setup_provider_chain"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.vapid.setup_provider_chain">[docs]</a><span class="k">def</span> <span class="nf">setup_provider_chain</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">singleton</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setup the API Provider chain</span>
+
+<span class="sd">    In the properties file, users would specify the order of ApiProviders</span>
+<span class="sd">    For ex: InterposerProvider, ApiAggregator. In this case all incoming</span>
+<span class="sd">    requests would first go to InterposerProvider and then forwarded to</span>
+<span class="sd">    ApiAggregator after processing.</span>
+
+<span class="sd">    This function initializes all these providers in the reverse order</span>
+<span class="sd">    and passes the reference of n+1th provider to nth provider.</span>
+
+<span class="sd">    :type  cfg: :class:`configparser.SafeConfigParser`</span>
+<span class="sd">    :param cfg: Configuration</span>
+<span class="sd">    :type singleton: :class:`bool`</span>
+<span class="sd">    :param singleton: Specify whether to create new instances of Providers or</span>
+<span class="sd">                      use existing ones</span>
+<span class="sd">    :rtype: :class:`list` of :class:`vmware.vapi.core.ApiProvider`</span>
+<span class="sd">    :return: List of API Providers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># This import cannot be at the top as we need to wait for logger to get</span>
+    <span class="c"># initialized with right handlers</span>
+    <span class="kn">from</span> <span class="nn">vmware.vapi.lib.load</span> <span class="kn">import</span> <span class="n">dynamic_import</span>
+    <span class="n">singleton_providers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;ApiAggregator&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.provider.aggregator.get_provider&#39;</span><span class="p">,</span>
+        <span class="s">&#39;LocalProvider&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.provider.local.get_provider&#39;</span><span class="p">,</span>
+        <span class="s">&#39;InterposerProvider&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.provider.interposer.get_provider&#39;</span><span class="p">,</span>
+        <span class="s">&#39;AuthenticationFilter&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.provider.authentication.get_provider&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">providers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;ApiAggregator&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.provider.aggregator.AggregatorProvider&#39;</span><span class="p">,</span>
+        <span class="s">&#39;LocalProvider&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.provider.local.LocalProvider&#39;</span><span class="p">,</span>
+        <span class="s">&#39;InterposerProvider&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.provider.interposer.InterposerProvider&#39;</span><span class="p">,</span>
+        <span class="s">&#39;AuthenticationFilter&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.provider.authentication.AuthenticationFilter&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">provider_types</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;provider.type&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+    <span class="n">provider_map</span> <span class="o">=</span> <span class="n">singleton_providers</span> <span class="k">if</span> <span class="n">singleton</span> <span class="k">else</span> <span class="n">providers</span>
+
+    <span class="n">providers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">provider_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">provider_types</span><span class="p">)):</span>
+        <span class="n">provider_name</span> <span class="o">=</span> <span class="n">provider_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">provider_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">provider_name</span><span class="p">:</span>
+            <span class="n">provider_constructor</span> <span class="o">=</span> <span class="n">dynamic_import</span><span class="p">(</span><span class="n">provider_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">provider_constructor</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s">&#39;Could not import </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">provider_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c"># TODO: Add validation to make sure that the last provider</span>
+                <span class="c"># can support registration of services</span>
+                <span class="n">provider</span> <span class="o">=</span> <span class="n">provider_constructor</span><span class="p">()</span>
+                <span class="n">provider</span><span class="o">.</span><span class="n">register_by_properties</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">provider</span> <span class="o">=</span> <span class="n">provider_constructor</span><span class="p">()</span>
+                <span class="n">provider</span><span class="o">.</span><span class="n">next_provider</span> <span class="o">=</span> <span class="n">providers</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">providers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Could not load provider&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="n">providers</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="create_servers"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.vapid.create_servers">[docs]</a><span class="k">def</span> <span class="nf">create_servers</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">singleton</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create RPC servers</span>
+
+<span class="sd">    :type spec: :class:`dict`</span>
+<span class="sd">    :param spec: Protocol configurations</span>
+<span class="sd">    :type singleton: :class:`bool`</span>
+<span class="sd">    :kwarg singleton: Specify whether to create new instances of Providers or</span>
+<span class="sd">                      use existing ones</span>
+<span class="sd">    :rtype: :class:`list` of :class:`vmware.vapi.server.server_interface.ServerInterface`</span>
+<span class="sd">    :return: list of servers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">server_providers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;asyncore&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.server.asyncore_server.get_server&#39;</span><span class="p">,</span>
+        <span class="s">&#39;twisted&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.server.twisted_server.get_server&#39;</span><span class="p">,</span>
+        <span class="s">&#39;stdio&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.server.stdio_server.get_server&#39;</span><span class="p">,</span>
+        <span class="s">&#39;wsgi&#39;</span><span class="p">:</span> <span class="s">&#39;vmware.vapi.server.wsgi_server.get_server&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">SafeConfigParser</span><span class="p">()</span>
+    <span class="n">cfg</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+
+    <span class="c"># Set the singleton config object</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
+
+    <span class="c"># Configure logging</span>
+    <span class="k">if</span> <span class="n">LOGGERS</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+        <span class="n">configure_logging</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">configure_logging</span><span class="p">()</span>
+    <span class="n">set_process_title</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+
+    <span class="n">providers</span> <span class="o">=</span> <span class="n">setup_provider_chain</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">singleton</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">providers</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">providers</span>
+    <span class="c"># Get the first API Provider to connect to RPC</span>
+    <span class="n">provider</span> <span class="o">=</span> <span class="n">providers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">protocol_configs</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;protocol&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;No protocol configurations specified&#39;</span><span class="p">)</span>
+
+    <span class="c"># These import cannot be at the top as we need to wait for logger to get</span>
+    <span class="c"># initialized with right handlers</span>
+    <span class="kn">from</span> <span class="nn">vmware.vapi.lib.load</span> <span class="kn">import</span> <span class="n">dynamic_import</span>
+    <span class="kn">from</span> <span class="nn">vmware.vapi.protocol.server.msg.handler_factory</span> <span class="kn">import</span> <span class="n">ProtocolHandlerFactory</span>
+    <span class="kn">from</span> <span class="nn">vmware.vapi.protocol.server.transport.async_server_adapter_factory</span> <span class="kn">import</span> <span class="n">AsyncServerAdapterFactory</span>
+    <span class="n">servers</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">msg_handlers</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">protocol_handlers</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">protocol_config</span> <span class="ow">in</span> <span class="n">protocol_configs</span><span class="p">:</span>
+        <span class="n">protocol_prefix</span> <span class="o">=</span> <span class="s">&#39;protocol.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">protocol_config</span>
+        <span class="n">rpc_prefix</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.rpc&#39;</span> <span class="o">%</span> <span class="n">protocol_prefix</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="n">rpc_prefix</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;url: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">transport_protocol</span> <span class="o">=</span> <span class="n">get_url_scheme</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;transport protocol: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+        <span class="c"># Get request handler</span>
+        <span class="n">msg_handler_factory</span> <span class="o">=</span> <span class="n">ProtocolHandlerFactory</span><span class="p">()</span>
+        <span class="n">msg_protocol</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.msg&#39;</span> <span class="o">%</span> <span class="n">protocol_prefix</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">msg_handler_class</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.msg.handler&#39;</span> <span class="o">%</span> <span class="n">protocol_prefix</span><span class="p">)</span>
+            <span class="n">msg_handler_reference</span> <span class="o">=</span> <span class="n">dynamic_import</span><span class="p">(</span><span class="n">msg_handler_class</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">msg_handler_reference</span><span class="p">:</span>
+                <span class="n">msg_handler</span> <span class="o">=</span> <span class="n">msg_handler_reference</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;msg_protocol </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">msg_protocol</span><span class="p">)</span>
+            <span class="n">msg_handler</span> <span class="o">=</span> <span class="n">msg_handlers</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">msg_protocol</span><span class="p">,</span> <span class="n">provider</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">msg_handler</span><span class="p">:</span>
+                <span class="n">msg_handler</span> <span class="o">=</span> <span class="n">msg_handler_factory</span><span class="o">.</span><span class="n">get_handler</span><span class="p">(</span><span class="n">msg_protocol</span><span class="p">,</span> <span class="n">provider</span><span class="p">)</span>
+        <span class="n">msg_handlers</span><span class="p">[(</span><span class="n">msg_protocol</span><span class="p">,</span> <span class="n">provider</span><span class="p">)]</span> <span class="o">=</span> <span class="n">msg_handler</span>
+
+        <span class="c"># Get async server to msg handler adapter</span>
+        <span class="n">adapter_factory</span> <span class="o">=</span> <span class="n">AsyncServerAdapterFactory</span><span class="p">()</span>
+        <span class="n">protocol_handler</span> <span class="o">=</span> <span class="n">protocol_handlers</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">transport_protocol</span><span class="p">,</span> <span class="n">msg_handler</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">protocol_handler</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">url</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;stdio&#39;</span><span class="p">,</span> <span class="s">&#39;wsgi&#39;</span><span class="p">):</span>
+                <span class="n">protocol_handler_factory</span> <span class="o">=</span> <span class="n">ProtocolHandlerFactory</span><span class="p">()</span>
+                <span class="n">protocol_handler</span> <span class="o">=</span> \
+                    <span class="n">protocol_handler_factory</span><span class="o">.</span><span class="n">get_handler</span><span class="p">(</span><span class="n">msg_protocol</span><span class="p">,</span> <span class="n">provider</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">protocol_handler</span> <span class="o">=</span> <span class="n">adapter_factory</span><span class="o">.</span><span class="n">get_adapter</span><span class="p">(</span><span class="n">transport_protocol</span><span class="p">,</span>
+                                                               <span class="n">msg_handler</span><span class="p">)</span>
+            <span class="n">protocol_handlers</span><span class="p">[(</span><span class="n">transport_protocol</span><span class="p">,</span> <span class="n">msg_handler</span><span class="p">)]</span> <span class="o">=</span> <span class="n">protocol_handler</span>
+
+        <span class="c"># Extract ssl arguments</span>
+        <span class="n">ssl_args</span> <span class="o">=</span> <span class="n">get_ssl_args</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">protocol_prefix</span><span class="p">)</span>
+
+        <span class="c"># Get server constructor</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">rpc_server</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.server&#39;</span> <span class="o">%</span> <span class="n">rpc_prefix</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transport_protocol</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;stdio&#39;</span><span class="p">):</span>
+                <span class="n">rpc_server</span> <span class="o">=</span> <span class="s">&#39;stdio&#39;</span>
+            <span class="k">elif</span> <span class="n">transport_protocol</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;wsgi&#39;</span><span class="p">):</span>
+                <span class="n">rpc_server</span> <span class="o">=</span> <span class="s">&#39;wsgi&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rpc_server</span> <span class="o">=</span> <span class="s">&#39;asyncore&#39;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;rpc server: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">rpc_server</span><span class="p">)</span>
+
+        <span class="c"># Register handler</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">servers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rpc_server</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">server</span><span class="p">:</span>
+            <span class="n">server_name</span> <span class="o">=</span> <span class="n">server_providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rpc_server</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">server_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">server_constructor</span> <span class="o">=</span> <span class="n">dynamic_import</span><span class="p">(</span><span class="n">server_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">server_constructor</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Could not find RPC constructor&#39;</span><span class="p">)</span>
+
+            <span class="n">server</span> <span class="o">=</span> <span class="n">server_constructor</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+            <span class="n">servers</span><span class="p">[</span><span class="n">rpc_server</span><span class="p">]</span> <span class="o">=</span> <span class="n">server</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">register_handler</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">msg_protocol</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">,</span> <span class="n">ssl_args</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">servers</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="shutdown_servers"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.vapid.shutdown_servers">[docs]</a><span class="k">def</span> <span class="nf">shutdown_servers</span><span class="p">(</span><span class="n">servers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shutdown all servers</span>
+
+<span class="sd">    :type  :class:`list` of servers</span>
+<span class="sd">    :param List of servers to shutdown</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.vapid.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; main &quot;&quot;&quot;</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">check_file_exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">spec</span><span class="p">))</span>
+
+    <span class="n">servers</span> <span class="o">=</span> <span class="n">create_servers</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">servers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;No server available. Quit&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">servers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">threaded_servers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">main_thread_server</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="s">&#39;main_thread_only&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">main_thread_server</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">main_thread_server</span> <span class="o">==</span> <span class="n">server</span><span class="p">:</span>
+                    <span class="n">main_thread_server</span> <span class="o">=</span> <span class="n">server</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;More than one servers required running on main thread!&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">threaded_servers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+
+        <span class="c"># Use thread pool to start servers</span>
+        <span class="kn">from</span> <span class="nn">vmware.vapi.lib.thread_pool</span> <span class="kn">import</span> <span class="n">ThreadPool</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">ThreadPool</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">servers</span><span class="p">))</span>
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">shutdown_servers</span><span class="p">,</span> <span class="n">servers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">main_thread_server</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">threaded_servers</span><span class="p">:</span>
+                <span class="n">pool</span><span class="o">.</span><span class="n">queue_work</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">)</span>
+            <span class="n">main_thread_server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Wait until all server die</span>
+            <span class="n">pool</span><span class="o">.</span><span class="n">queue_works_and_wait</span><span class="p">([</span><span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span> <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">threaded_servers</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">servers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

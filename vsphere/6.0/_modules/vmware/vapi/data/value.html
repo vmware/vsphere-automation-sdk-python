@@ -1,0 +1,785 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.data.value &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.data.value</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">vAPI DataValues</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.type</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.visitor</span> <span class="kn">import</span> <span class="n">VapiVisitor</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DataValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.DataValue">[docs]</a><span class="k">class</span> <span class="nc">DataValue</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A piece of introspectable value in vAPI infrastructure</span>
+
+<span class="sd">    :type type: :class:`vmware.vapi.data.type.Type`</span>
+<span class="sd">    :ivar type: Type of DataValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DataValue</span>
+
+<span class="sd">        :type  data_type: :class:`vmware.vapi.data.type.Type`</span>
+<span class="sd">        :param data_type: Type of DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">data_type</span>
+
+<div class="viewcode-block" id="DataValue.accept"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.DataValue.accept">[docs]</a>    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visitor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies a visitor to this DataValue</span>
+
+<span class="sd">        :type  visitor: :class:`SimpleValueVisitor`</span>
+<span class="sd">        :param visitor: visitor operating on this DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="PrimitiveDataValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.PrimitiveDataValue">[docs]</a><span class="k">class</span> <span class="nc">PrimitiveDataValue</span><span class="p">(</span><span class="n">DataValue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all primitive DataValues</span>
+
+<span class="sd">    :type value: :class:`object`</span>
+<span class="sd">    :ivar value: Primitive value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">DataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">(value=</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span>
+                                 <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="ComparableValueMixin"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.ComparableValueMixin">[docs]</a><span class="k">class</span> <span class="nc">ComparableValueMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper class to implement the rich comparator operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="IntegerValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.IntegerValue">[docs]</a><span class="k">class</span> <span class="nc">IntegerValue</span><span class="p">(</span><span class="n">PrimitiveDataValue</span><span class="p">,</span> <span class="n">ComparableValueMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for integer values</span>
+
+<span class="sd">    :type value: :class:`int`</span>
+<span class="sd">    :ivar value: 64 bit signed int present in IntegerValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize IntegerValue</span>
+
+<span class="sd">        :type  value: :class:`int`</span>
+<span class="sd">        :kwarg value: Integer value to be initialized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrimitiveDataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">)</span>
+        <span class="n">ComparableValueMixin</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&quot;vapi.data.invalid&quot;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+</div>
+<div class="viewcode-block" id="DoubleValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.DoubleValue">[docs]</a><span class="k">class</span> <span class="nc">DoubleValue</span><span class="p">(</span><span class="n">PrimitiveDataValue</span><span class="p">,</span> <span class="n">ComparableValueMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for float values</span>
+
+<span class="sd">    :type value: :class:`float` or :class:`decimal.Decimal`</span>
+<span class="sd">    :ivar value: 64 bit signed float present in DoubleValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DoubleValue</span>
+
+<span class="sd">        :type  value: :class:`float` or :class:`decimal.Decimal`</span>
+<span class="sd">        :kwarg value: Float or decimal.Decimal value to be initialized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrimitiveDataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">)</span>
+        <span class="n">ComparableValueMixin</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&#39;vapi.data.invalid&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="c"># Accept floats, but store as decimal</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&#39;vapi.data.invalid.double.inf&#39;</span><span class="p">,</span>
+                                                  <span class="n">value</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+</div>
+<div class="viewcode-block" id="StringValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.StringValue">[docs]</a><span class="k">class</span> <span class="nc">StringValue</span><span class="p">(</span><span class="n">PrimitiveDataValue</span><span class="p">,</span> <span class="n">ComparableValueMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for strings</span>
+
+<span class="sd">    :type value: :class:`str`</span>
+<span class="sd">    :ivar value: String present in StringValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize StringValue</span>
+
+<span class="sd">        :type  value: :class:`str`</span>
+<span class="sd">        :kwarg value: String value to be initialized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrimitiveDataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">)</span>
+        <span class="n">ComparableValueMixin</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&quot;vapi.data.invalid&quot;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+</div>
+<div class="viewcode-block" id="BooleanValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.BooleanValue">[docs]</a><span class="k">class</span> <span class="nc">BooleanValue</span><span class="p">(</span><span class="n">PrimitiveDataValue</span><span class="p">,</span> <span class="n">ComparableValueMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for bool values</span>
+
+<span class="sd">    :type value: :class:`bool`</span>
+<span class="sd">    :ivar value: Bool present in BooleanValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize BooleanValue</span>
+
+<span class="sd">        :type  value: :class:`bool`</span>
+<span class="sd">        :kwarg value: Bool value to be initialized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrimitiveDataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">)</span>
+        <span class="n">ComparableValueMixin</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&quot;vapi.data.invalid&quot;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+</div>
+<div class="viewcode-block" id="BlobValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.BlobValue">[docs]</a><span class="k">class</span> <span class="nc">BlobValue</span><span class="p">(</span><span class="n">PrimitiveDataValue</span><span class="p">,</span> <span class="n">ComparableValueMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for binary values</span>
+
+<span class="sd">    :type value: :class:`bytes`</span>
+<span class="sd">    :ivar value: Binary present in BlobValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize BooleanValue</span>
+
+<span class="sd">        :type  value: :class:`bytes`</span>
+<span class="sd">        :kwarg value: Binary value to be initialized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrimitiveDataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">BLOB</span><span class="p">)</span>
+        <span class="n">ComparableValueMixin</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+</div>
+<div class="viewcode-block" id="VoidValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.VoidValue">[docs]</a><span class="k">class</span> <span class="nc">VoidValue</span><span class="p">(</span><span class="n">PrimitiveDataValue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize VoidValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrimitiveDataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">VoidValue</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span> <span class="o">==</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;VoidValue()&#39;</span>
+
+
+<span class="c"># Disabling the pylint complaint about badly implemented container</span>
+<span class="c"># as we don&#39;t need __setitem__, __delitem__ and __getitem__</span></div>
+<div class="viewcode-block" id="ListValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.ListValue">[docs]</a><span class="k">class</span> <span class="nc">ListValue</span><span class="p">(</span><span class="n">DataValue</span><span class="p">):</span>  <span class="c"># pylint: disable=R0924</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for lists</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ListValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&quot;vapi.data.invalid&quot;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="nb">type</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list_val</span> <span class="o">=</span> <span class="n">values</span> <span class="k">if</span> <span class="n">values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="ListValue.add"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.ListValue.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add an element to ListValue</span>
+
+<span class="sd">        :type  value: :class:`DataValue`</span>
+<span class="sd">        :param value: DataValue to be added</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ListValue.add_all"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.ListValue.add_all">[docs]</a>    <span class="k">def</span> <span class="nf">add_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add all the elements from input list to ListValue</span>
+
+<span class="sd">        :type  values: :class:`list` of :class:`DataValue`</span>
+<span class="sd">        :param values: List of DataValues to be added</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ListValue.is_empty"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.ListValue.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns true if the list is empty</span>
+
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: True if the list is empty, false otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_val</span>
+</div>
+<div class="viewcode-block" id="ListValue.size"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.ListValue.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the size of the list</span>
+
+<span class="sd">        :rtype: :class:`int`</span>
+<span class="sd">        :return: Size of the list value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_val</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ListValue</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">size</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">for</span> <span class="n">self_item</span><span class="p">,</span> <span class="n">other_item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">self_item</span> <span class="o">!=</span> <span class="n">other_item</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span> <span class="o">==</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_val</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_val</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">repr</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_val</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s">&#39;ListValue(values=[</span><span class="si">%s</span><span class="s">])&#39;</span> <span class="o">%</span> <span class="n">ret</span>
+
+</div>
+<div class="viewcode-block" id="OptionalValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.OptionalValue">[docs]</a><span class="k">class</span> <span class="nc">OptionalValue</span><span class="p">(</span><span class="n">DataValue</span><span class="p">,</span> <span class="n">ComparableValueMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for optionals</span>
+
+<span class="sd">    :type value: :class:`DataValue`</span>
+<span class="sd">    :ivar value: DataValue present in this OptionalValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize OptionalValue</span>
+
+<span class="sd">        :type  value: :class:`DataValue`</span>
+<span class="sd">        :kwarg value: DataValue to be used in OptionalValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span>
+        <span class="n">ComparableValueMixin</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="OptionalValue.is_set"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.OptionalValue.is_set">[docs]</a>    <span class="k">def</span> <span class="nf">is_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns true if OptionalValue has a DataValue present in it</span>
+
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: Returns true if OptionalValue is initialized with some</span>
+<span class="sd">                 DataValue, false otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;OptionalValue(</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="StructValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.StructValue">[docs]</a><span class="k">class</span> <span class="nc">StructValue</span><span class="p">(</span><span class="n">DataValue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for Structures</span>
+
+<span class="sd">    :type name: :class:`str`</span>
+<span class="sd">    :ivar name: Name of the structure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize StructValue</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :kwarg name: Name of the StructValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="n">values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&quot;vapi.data.invalid&quot;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="nb">type</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="o">=</span> <span class="n">values</span> <span class="k">if</span> <span class="n">values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="StructValue.get_fields"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.StructValue.get_fields">[docs]</a>    <span class="k">def</span> <span class="nf">get_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the map of field names and values present in this</span>
+<span class="sd">        StructValue.</span>
+
+<span class="sd">        :rtype: :class:`dict` of :class:`str` and :class:`DataValue`</span>
+<span class="sd">        :return: Fields in this struct value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StructValue.get_field_names"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.StructValue.get_field_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of field names present in this StructValue.</span>
+<span class="sd">        The ordering of fields is not preserved.</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: List of field names present in this StructValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="StructValue.has_field"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.StructValue.has_field">[docs]</a>    <span class="k">def</span> <span class="nf">has_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns true if the field is present in the StructValue, false otherwise</span>
+
+<span class="sd">        :type  field: :class:`str`</span>
+<span class="sd">        :param field: Name of the field</span>
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: Returns true if the field is present in the StructValue,</span>
+<span class="sd">                 false otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span>
+</div>
+<div class="viewcode-block" id="StructValue.get_field"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.StructValue.get_field">[docs]</a>    <span class="k">def</span> <span class="nf">get_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the field value of the field present in the StructValue</span>
+
+<span class="sd">        :type  field: :class:`str`</span>
+<span class="sd">        :param field: Name of the field</span>
+<span class="sd">        :rtype: :class:`DataValue`</span>
+<span class="sd">        :return: Returns the field value of the field present in the StructValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&quot;vapi.data.structure.getfield.unknown&quot;</span><span class="p">,</span>
+                <span class="n">field</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+</div>
+<div class="viewcode-block" id="StructValue.set_field"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.StructValue.set_field">[docs]</a>    <span class="k">def</span> <span class="nf">set_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the field value for the field name passed in the argument</span>
+
+<span class="sd">        :type  field: :class:`str`</span>
+<span class="sd">        :param field: Name of the field</span>
+<span class="sd">        :type  field: :class:`str`</span>
+<span class="sd">        :param field: Name of the field to be set</span>
+<span class="sd">        :type  value: :class:`DataValue`</span>
+<span class="sd">        :param value: DataValue to be used for the field</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&quot;vapi.data.structure.setfield.null&quot;</span><span class="p">,</span>
+                <span class="n">field</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</div>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">StructValue</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">())</span> <span class="o">!=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span> <span class="o">==</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;StructValue(name=</span><span class="si">%s</span><span class="s">, values=</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                                                    <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">))</span>
+
+<div class="viewcode-block" id="StructValue.keys"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.StructValue.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of field names</span>
+
+<span class="sd">        :rtype: :class:`list` or :class:`str`</span>
+<span class="sd">        :return: List of field names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ErrorValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.ErrorValue">[docs]</a><span class="k">class</span> <span class="nc">ErrorValue</span><span class="p">(</span><span class="n">StructValue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for Errors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ErrorValue</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :kwarg name: Name of the ErrorValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">StructValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ErrorValue</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="n">StructValue</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span> <span class="o">==</span> <span class="n">other</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="SecretValue"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SecretValue">[docs]</a><span class="k">class</span> <span class="nc">SecretValue</span><span class="p">(</span><span class="n">PrimitiveDataValue</span><span class="p">,</span> <span class="n">ComparableValueMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DataValue class for secret values. Only strings are allowed to be</span>
+<span class="sd">    secrets.</span>
+
+<span class="sd">    :type value: :class:`str`</span>
+<span class="sd">    :ivar value: String present in SecretValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize StringValue</span>
+
+<span class="sd">        :type  value: :class:`str`</span>
+<span class="sd">        :kwarg value: String value to be initialized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrimitiveDataValue</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">)</span>
+        <span class="n">ComparableValueMixin</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="s">&quot;vapi.data.invalid&quot;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                              <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;SecretValue(&lt;secret&gt;)&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;&lt;secret&gt;&#39;</span>
+
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor">[docs]</a><span class="k">class</span> <span class="nc">SimpleValueVisitor</span><span class="p">(</span><span class="n">VapiVisitor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base no-op implementation of a DataValue visitor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize SimpleValueVisitor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiVisitor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Value&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SimpleValueVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a VoidValue</span>
+
+<span class="sd">        :type  value: :class:`VoidValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_integer"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_integer">[docs]</a>    <span class="k">def</span> <span class="nf">visit_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a IntegerValue</span>
+
+<span class="sd">        :type  value: :class:`IntegerValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_double"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_double">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a DoubleValue</span>
+
+<span class="sd">        :type  value: :class:`DoubleValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a StringValue</span>
+
+<span class="sd">        :type  value: :class:`StringValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_boolean"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_boolean">[docs]</a>    <span class="k">def</span> <span class="nf">visit_boolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a BooleanValue</span>
+
+<span class="sd">        :type  value: :class:`BooleanValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_blob"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_blob">[docs]</a>    <span class="k">def</span> <span class="nf">visit_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a BlobValue</span>
+
+<span class="sd">        :type  value: :class:`BlobValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a ListValue</span>
+
+<span class="sd">        :type  value: :class:`ListValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a OptionalValue</span>
+
+<span class="sd">        :type  value: :class:`OptionalValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_struct"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a StructValue</span>
+
+<span class="sd">        :type  value: :class:`StructValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an ErrorValue</span>
+
+<span class="sd">        :type  value: :class:`ErrorValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SimpleValueVisitor.visit_secret"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.SimpleValueVisitor.visit_secret">[docs]</a>    <span class="k">def</span> <span class="nf">visit_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a SecretValue</span>
+
+<span class="sd">        :type  value: :class:`SecretValue`</span>
+<span class="sd">        :param value: Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+
+<span class="c"># vapi type name to vapi type value map</span></div></div>
+<span class="n">type_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">:</span> <span class="n">VoidValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="n">IntegerValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="n">DoubleValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span> <span class="n">StringValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">:</span> <span class="n">BooleanValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">:</span> <span class="n">ListValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">:</span> <span class="n">StructValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span> <span class="n">ErrorValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">:</span> <span class="n">OptionalValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">BLOB</span><span class="p">:</span> <span class="n">BlobValue</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">:</span> <span class="n">SecretValue</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="data_value_factory"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.value.data_value_factory">[docs]</a><span class="k">def</span> <span class="nf">data_value_factory</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convenience method to create datavalues</span>
+
+<span class="sd">    :type  data_type: :class:`str`</span>
+<span class="sd">    :param data_type: String representation of the data value type</span>
+<span class="sd">    :param args: The argument list to be passed to the data value constructor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">constructor</span> <span class="o">=</span> <span class="n">type_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">constructor</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

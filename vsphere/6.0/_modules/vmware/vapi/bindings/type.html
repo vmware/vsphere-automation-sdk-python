@@ -1,0 +1,1065 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.bindings.type &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.bindings.type</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Representation of an IDL type for the use of the Python language bindings.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.definition</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IntegerDefinition</span><span class="p">,</span> <span class="n">DoubleDefinition</span><span class="p">,</span> <span class="n">BooleanDefinition</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">,</span>
+    <span class="n">BlobDefinition</span><span class="p">,</span> <span class="n">VoidDefinition</span><span class="p">,</span> <span class="n">OpaqueDefinition</span><span class="p">,</span> <span class="n">ListDefinition</span><span class="p">,</span>
+    <span class="n">StructDefinition</span><span class="p">,</span> <span class="n">OptionalDefinition</span><span class="p">,</span> <span class="n">SecretDefinition</span><span class="p">,</span> <span class="n">StructRefDefinition</span><span class="p">,</span>
+    <span class="n">ErrorDefinition</span><span class="p">,</span> <span class="n">ReferenceResolver</span><span class="p">,</span> <span class="n">DynamicStructDefinition</span><span class="p">,</span>
+    <span class="n">AnyErrorDefinition</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.visitor</span> <span class="kn">import</span> <span class="n">VapiVisitor</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.constants</span> <span class="kn">import</span> <span class="n">MAP_ENTRY</span>
+
+<span class="n">MAP_KEY_FIELD</span> <span class="o">=</span> <span class="s">&#39;key&#39;</span>
+<span class="n">MAP_VALUE_FIELD</span> <span class="o">=</span> <span class="s">&#39;value&#39;</span>
+
+
+<div class="viewcode-block" id="BindingType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingType">[docs]</a><span class="k">class</span> <span class="nc">BindingType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of an IDL type for the use of the Python language bindings</span>
+
+<span class="sd">    :type  definition: :class:`vmware.vapi.data.definition.DataDefinition`</span>
+<span class="sd">    :param definition: Data definition corresponding to this binding type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="BindingType.accept"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingType.accept">[docs]</a>    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visitor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies a visitor to this BindingType</span>
+
+<span class="sd">        :type  visitor: :class:`BindingTypeVisitor`</span>
+<span class="sd">        :param visitor: visitor operating on the BindingType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="BindingType.definition"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingType.definition">[docs]</a>    <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the data defintion corresponding to this binding type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># This will make sure that we only generate the definition once</span>
+        <span class="c"># for every instance of binding type</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span> <span class="o">=</span> <span class="n">TypeUtil</span><span class="o">.</span><span class="n">convert_to_data_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_definition</span>
+
+</div></div>
+<div class="viewcode-block" id="VoidType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.VoidType">[docs]</a><span class="k">class</span> <span class="nc">VoidType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of void IDL type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="IntegerType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.IntegerType">[docs]</a><span class="k">class</span> <span class="nc">IntegerType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of integer IDL Type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DoubleType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DoubleType">[docs]</a><span class="k">class</span> <span class="nc">DoubleType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of float IDL Type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="StringType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.StringType">[docs]</a><span class="k">class</span> <span class="nc">StringType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of string IDL Type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="SecretType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.SecretType">[docs]</a><span class="k">class</span> <span class="nc">SecretType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of @secret IDL annotation in Python Binding. @secret</span>
+<span class="sd">    annotation can only be applied to strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="BooleanType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BooleanType">[docs]</a><span class="k">class</span> <span class="nc">BooleanType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of boolean IDL Type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="BlobType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BlobType">[docs]</a><span class="k">class</span> <span class="nc">BlobType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of binary IDL Type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="OptionalType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.OptionalType">[docs]</a><span class="k">class</span> <span class="nc">OptionalType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of optional IDL annotation in Python Binding</span>
+
+<span class="sd">    :type element_type: :class:`BindingType`</span>
+<span class="sd">    :ivar element_type: element type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">BindingType</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected an instance of BindingType as&#39;</span> <span class="o">+</span>
+                            <span class="s">&#39;element_type parameter of OptionalType()&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_element_type</span> <span class="o">=</span> <span class="n">element_type</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OptionalType.element_type"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.OptionalType.element_type">[docs]</a>    <span class="k">def</span> <span class="nf">element_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the element type of this ListType</span>
+
+<span class="sd">        :rtype: :class:`BindingType`</span>
+<span class="sd">        :return: element type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_element_type</span>
+
+</div></div>
+<div class="viewcode-block" id="ListType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.ListType">[docs]</a><span class="k">class</span> <span class="nc">ListType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of List IDL type in Python Binding</span>
+
+<span class="sd">    :type element_type: :class:`BindingType`</span>
+<span class="sd">    :ivar element_type: element type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">BindingType</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected an instance of BindingType as&#39;</span> <span class="o">+</span>
+                            <span class="s">&#39;element_type parameter of ListType()&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_element_type</span> <span class="o">=</span> <span class="n">element_type</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ListType.element_type"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.ListType.element_type">[docs]</a>    <span class="k">def</span> <span class="nf">element_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the element type of this ListType</span>
+
+<span class="sd">        :rtype: :class:`BindingType`</span>
+<span class="sd">        :return: element type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_element_type</span>
+
+</div></div>
+<div class="viewcode-block" id="SetType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.SetType">[docs]</a><span class="k">class</span> <span class="nc">SetType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of Set IDL type in Python Binding</span>
+
+<span class="sd">    :type element_type: :class:`BindingType`</span>
+<span class="sd">    :ivar element_type: element type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element_type</span><span class="p">,</span> <span class="n">BindingType</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected an instance of BindingType as&#39;</span> <span class="o">+</span>
+                            <span class="s">&#39;element_type parameter of SetType()&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_element_type</span> <span class="o">=</span> <span class="n">element_type</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="SetType.element_type"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.SetType.element_type">[docs]</a>    <span class="k">def</span> <span class="nf">element_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the element type of this SetType</span>
+
+<span class="sd">        :rtype: :class:`BindingType`</span>
+<span class="sd">        :return: element type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_element_type</span>
+
+</div></div>
+<div class="viewcode-block" id="MapType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.MapType">[docs]</a><span class="k">class</span> <span class="nc">MapType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of Map IDL type in Python Binding</span>
+
+<span class="sd">    :type key_type: :class:`BindingType`</span>
+<span class="sd">    :ivar key_type: map key type</span>
+<span class="sd">    :type value_type: :class:`BindingType`</span>
+<span class="sd">    :ivar value_type: map value type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_type</span><span class="p">,</span> <span class="n">value_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key_type</span><span class="p">,</span> <span class="n">BindingType</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_type</span><span class="p">,</span> <span class="n">BindingType</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected an instance of BindingType for&#39;</span> <span class="o">+</span>
+                            <span class="s">&#39;key_type and value_type parameters of MapType()&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_key_type</span> <span class="o">=</span> <span class="n">key_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value_type</span> <span class="o">=</span> <span class="n">value_type</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="MapType.key_type"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.MapType.key_type">[docs]</a>    <span class="k">def</span> <span class="nf">key_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the key type of this MapType</span>
+
+<span class="sd">        :rtype: :class:`BindingType`</span>
+<span class="sd">        :return: key type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key_type</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="MapType.value_type"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.MapType.value_type">[docs]</a>    <span class="k">def</span> <span class="nf">value_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the value type of this MapType</span>
+
+<span class="sd">        :rtype: :class:`BindingType`</span>
+<span class="sd">        :return: value type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_type</span>
+
+</div></div>
+<div class="viewcode-block" id="StructType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.StructType">[docs]</a><span class="k">class</span> <span class="nc">StructType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of Structure IDL type in Python Binding</span>
+
+<span class="sd">    :type name: :class:`str`</span>
+<span class="sd">    :ivar name: Name of the structure</span>
+<span class="sd">    :type binding_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">    :ivar binding_class: Reference to the Python native class corresponding</span>
+<span class="sd">                         to this structure</span>
+<span class="sd">    :type is_model: :class:`bool`</span>
+<span class="sd">    :ivar is_model: True if the structure is marked as Model, False otherwise</span>
+<span class="sd">    :type model_keys: :class:`list` of :class:`str` or :class:`None`</span>
+<span class="sd">    :ivar model_keys: List of model keys for the structure if it is marked as Model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">binding_class</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">is_model</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">model_keys</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Structure name should be a string&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected a dict instance in StructType&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">binding_type</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">binding_type</span><span class="p">,</span> <span class="n">BindingType</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Type of the field </span><span class="si">%s</span><span class="s"> in StructType should &#39;</span> <span class="o">+</span>
+                                <span class="s">&#39;be a BindingType&#39;</span> <span class="o">%</span> <span class="n">field_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_binding_class</span> <span class="o">=</span> <span class="n">binding_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field_map</span> <span class="o">=</span> <span class="n">fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_model</span> <span class="o">=</span> <span class="n">is_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_keys</span> <span class="o">=</span> <span class="n">model_keys</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="StructType.name"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.StructType.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the name of the StructType</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Name of the StructType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="StructType.binding_class"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.StructType.binding_class">[docs]</a>    <span class="k">def</span> <span class="nf">binding_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the reference to the Python native class</span>
+<span class="sd">        corresponding to this structure</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">        :return: Reference to the python native class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_binding_class</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="StructType.is_model"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.StructType.is_model">[docs]</a>    <span class="k">def</span> <span class="nf">is_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the Struct is marked as model</span>
+
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: True if the Struct is marked as model, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_model</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="StructType.model_keys"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.StructType.model_keys">[docs]</a>    <span class="k">def</span> <span class="nf">model_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns list of model keys for the Struct if it is marked as model</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`str` or None</span>
+<span class="sd">        :return: List of model keys for the Struct if it is marked as model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_keys</span>
+</div>
+<div class="viewcode-block" id="StructType.get_field_names"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.StructType.get_field_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of field names present in this StructType</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: List of field names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="StructType.get_field"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.StructType.get_field">[docs]</a>    <span class="k">def</span> <span class="nf">get_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the BindingType of the argument</span>
+
+<span class="sd">        :type  field_name: :class:`str`</span>
+<span class="sd">        :param field_name: Field name</span>
+<span class="sd">        :rtype: :class:`BindingType`</span>
+<span class="sd">        :return: BindingType of the field specified</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ErrorType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.ErrorType">[docs]</a><span class="k">class</span> <span class="nc">ErrorType</span><span class="p">(</span><span class="n">StructType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of Error IDL type in Python Binding</span>
+
+<span class="sd">    :type definition: :class:`vmware.vapi.data.ErrorDefinition`</span>
+<span class="sd">    :ivar definition: type representation in the API runtime</span>
+<span class="sd">    :type name: :class:`str`</span>
+<span class="sd">    :ivar name: Name of the structure</span>
+<span class="sd">    :type binding_class: :class:`vmware.vapi.bindings.error.VapiError`</span>
+<span class="sd">    :ivar binding_class: Reference to the Python native class corresponding</span>
+<span class="sd">                         to this error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">binding_class</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">StructType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">binding_class</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ReferenceType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.ReferenceType">[docs]</a><span class="k">class</span> <span class="nc">ReferenceType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reference type to resolve references lazily.</span>
+
+<span class="sd">    :type resolved_type: :class:`StructType` or :class:`EnumType`</span>
+<span class="sd">    :ivar resolved_type: Resolved reference type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ReferenceType</span>
+
+<span class="sd">        :type  context: :class:`module`</span>
+<span class="sd">        :param context: Module reference that has the type</span>
+<span class="sd">        :type  type_name: :class:`str`</span>
+<span class="sd">        :param type_name: Fully qualified name of the type reference. i.e.</span>
+<span class="sd">            if the type Bar is nested inside type Foo, it would be Foo.Bar</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type_name</span> <span class="o">=</span> <span class="n">type_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolved_type</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resolves the struct or enum reference</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span>
+        <span class="c"># Get the required reference by walking down the fully qualified name</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolved_type</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_binding_type</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ReferenceType.resolved_type"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.ReferenceType.resolved_type">[docs]</a>    <span class="k">def</span> <span class="nf">resolved_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the resolved struct type or enum type</span>
+
+<span class="sd">        :rtype: :class:`StructType` or</span>
+<span class="sd">            :class:`EnumType`</span>
+<span class="sd">        :return: Resolved struct type or enum type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolved_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolved_type</span>
+
+</div></div>
+<div class="viewcode-block" id="OpaqueType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.OpaqueType">[docs]</a><span class="k">class</span> <span class="nc">OpaqueType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of Opaque IDL annotation in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DynamicStructType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DynamicStructType">[docs]</a><span class="k">class</span> <span class="nc">DynamicStructType</span><span class="p">(</span><span class="n">StructType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of StructValue IDL annotation in Python Binding</span>
+
+<span class="sd">    :type has_fields_of_type: :class:`ReferenceType`</span>
+<span class="sd">    :ivar has_fields_of_type: List of reference types whose fields need to be</span>
+<span class="sd">        present in the StructValue for this DynamicStruct type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">binding_class</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">has_fields_of_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DynamicStructType</span>
+
+<span class="sd">        :type  name: :class:`str`</span>
+<span class="sd">        :param name: Name of the Structure</span>
+<span class="sd">        :type  fields: :class:`dict` of :class:`str` and :class:`BindingType`</span>
+<span class="sd">        :param fields: Map of field name and field binding type</span>
+<span class="sd">        :type  binding_class: :class:`vmware.vapi.data.definition.DataDefinition`</span>
+<span class="sd">        :param binding_class: Data definition for this type</span>
+<span class="sd">        :type  has_fields_of_type: :class:`ReferenceType`</span>
+<span class="sd">        :param has_fields_of_type: List of reference types whose fields need to</span>
+<span class="sd">            be present in the StructValue for this DynamicStruct type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">StructType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">binding_class</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_fields_of_type</span> <span class="o">=</span> <span class="n">has_fields_of_type</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="DynamicStructType.has_fields_of_type"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DynamicStructType.has_fields_of_type">[docs]</a>    <span class="k">def</span> <span class="nf">has_fields_of_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the has_fields_of_type</span>
+
+<span class="sd">        :rtype  :class:`ReferenceType`</span>
+<span class="sd">        :return List of reference types whose fields need to be present in the</span>
+<span class="sd">            StructValue for this DynamicStruct type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_fields_of_type</span>
+
+</div></div>
+<div class="viewcode-block" id="AnyErrorType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.AnyErrorType">[docs]</a><span class="k">class</span> <span class="nc">AnyErrorType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of Exception type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize AnyErrorType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DateTimeType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DateTimeType">[docs]</a><span class="k">class</span> <span class="nc">DateTimeType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of datetime IDL Type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="URIType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.URIType">[docs]</a><span class="k">class</span> <span class="nc">URIType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of URI IDL Type in Python Binding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="EnumType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.EnumType">[docs]</a><span class="k">class</span> <span class="nc">EnumType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of enum IDL Type in Python Binding</span>
+
+<span class="sd">    :type name: :class:`str`</span>
+<span class="sd">    :ivar name: Name of the enum</span>
+<span class="sd">    :type binding_class: :class:`vmware.vapi.bindings.struct.VapiStruct`</span>
+<span class="sd">    :ivar binding_class: Reference to the Python native class corresponding</span>
+<span class="sd">                         to this structure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">binding_class</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_binding_class</span> <span class="o">=</span> <span class="n">binding_class</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="EnumType.name"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.EnumType.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the name of the EnumType</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Name of the EnumType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="EnumType.binding_class"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.EnumType.binding_class">[docs]</a>    <span class="k">def</span> <span class="nf">binding_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the reference to the Python native class</span>
+<span class="sd">        corresponding to this structure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_binding_class</span>
+
+</div></div>
+<div class="viewcode-block" id="IdType"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.IdType">[docs]</a><span class="k">class</span> <span class="nc">IdType</span><span class="p">(</span><span class="n">BindingType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of ID IDL type in Python Binding</span>
+
+<span class="sd">    :type resolved_types: :class:`list` of :class:`str` or :class:`str` or</span>
+<span class="sd">        :class:`None`</span>
+<span class="sd">    :ivar resolved_types: Resource type(s) for the ID</span>
+<span class="sd">    :type resource_type_field_name: :class:`str` or :class:`None`</span>
+<span class="sd">    :ivar resource_type_field_name: Name of the field specifying the resource</span>
+<span class="sd">        type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource_types</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">resource_type_field_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">BindingType</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resource_types</span> <span class="o">=</span> <span class="n">resource_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resource_type_field_name</span> <span class="o">=</span> <span class="n">resource_type_field_name</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="IdType.resource_types"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.IdType.resource_types">[docs]</a>    <span class="k">def</span> <span class="nf">resource_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the Resource type(s) for the ID field</span>
+
+<span class="sd">        :rtype: :class:`list` of :class:`str` or :class:`str` or :class:`None`</span>
+<span class="sd">        :return: Resource type(s) for the ID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_types</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="IdType.resource_type_field_name"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.IdType.resource_type_field_name">[docs]</a>    <span class="k">def</span> <span class="nf">resource_type_field_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the name of the field specifying the resource type</span>
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Name of the field specifying the resource type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_type_field_name</span>
+
+</div></div>
+<div class="viewcode-block" id="BindingTypeVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor">[docs]</a><span class="k">class</span> <span class="nc">BindingTypeVisitor</span><span class="p">(</span><span class="n">VapiVisitor</span><span class="p">):</span>  <span class="c"># pylint: disable=R0922</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base no-op implementation of a BindingType visitor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize BindingTypeVisitor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiVisitor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Type&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BindingTypeVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a void value (i.e. None)</span>
+
+<span class="sd">        :type  typ: :class:`VoidType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_integer"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_integer">[docs]</a>    <span class="k">def</span> <span class="nf">visit_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an integer value</span>
+
+<span class="sd">        :type  typ: :class:`IntegerType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_double"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_double">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a double value</span>
+
+<span class="sd">        :type  typ: :class:`DoubleType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a string value</span>
+
+<span class="sd">        :type  typ: :class:`StringType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_boolean"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_boolean">[docs]</a>    <span class="k">def</span> <span class="nf">visit_boolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a boolean value</span>
+
+<span class="sd">        :type  typ: :class:`BooleanType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_blob"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_blob">[docs]</a>    <span class="k">def</span> <span class="nf">visit_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a blob value</span>
+
+<span class="sd">        :type  typ: :class:`BlobType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an optional value</span>
+
+<span class="sd">        :type  typ: :class:`OptionalType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a list value</span>
+
+<span class="sd">        :type  typ: :class:`ListType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a struct value</span>
+
+<span class="sd">        :type  typ: :class:`StructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_dynamic_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_dynamic_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_dynamic_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a struct value</span>
+
+<span class="sd">        :type  typ: :class:`DynamicStructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_any_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_any_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_any_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an error value</span>
+
+<span class="sd">        :type  typ: :class:`AnyErrorType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_opaque"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_opaque">[docs]</a>    <span class="k">def</span> <span class="nf">visit_opaque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an opaque value.</span>
+
+<span class="sd">        :type  typ: :class:`OpaqueType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_secret"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_secret">[docs]</a>    <span class="k">def</span> <span class="nf">visit_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a secret value</span>
+
+<span class="sd">        :type  typ: :class:`SecretType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_date_time"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_date_time">[docs]</a>    <span class="k">def</span> <span class="nf">visit_date_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a datetime value</span>
+
+<span class="sd">        :type  typ: :class:`DateTimeType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_uri"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_uri">[docs]</a>    <span class="k">def</span> <span class="nf">visit_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an URI value</span>
+
+<span class="sd">        :type  typ: :class:`URIType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_enum"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_enum">[docs]</a>    <span class="k">def</span> <span class="nf">visit_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a enum value</span>
+
+<span class="sd">        :type  typ: :class:`EnumType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an error type</span>
+
+<span class="sd">        :type  typ: :class:`ErrorType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_reference"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_reference">[docs]</a>    <span class="k">def</span> <span class="nf">visit_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a reference type</span>
+
+<span class="sd">        :type  typ: :class:`ReferenceType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="BindingTypeVisitor.visit_id"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.BindingTypeVisitor.visit_id">[docs]</a>    <span class="k">def</span> <span class="nf">visit_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a ID value</span>
+
+<span class="sd">        :type  typ: :class:`IdType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="DataDefinitionBuilder"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder">[docs]</a><span class="k">class</span> <span class="nc">DataDefinitionBuilder</span><span class="p">(</span><span class="n">BindingTypeVisitor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds DataDefinition by visiting a BindingType</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">seen_structures</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DataDefinitionBuilder</span>
+
+<span class="sd">        :type  ctx: :class:`vmware.vapi.data.definition.ReferenceResolver`</span>
+<span class="sd">        :param ctx: Data definition reference resolver object</span>
+<span class="sd">        :type  seen_structures: :class:`list` or :class:`str`</span>
+<span class="sd">        :param seen_structures: List of structures seen</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BindingTypeVisitor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ctx</span> <span class="o">=</span> <span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seen_structures</span> <span class="o">=</span> <span class="n">seen_structures</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="DataDefinitionBuilder.get_out_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.get_out_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_out_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the data definition</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.definition.DataDefinition`</span>
+<span class="sd">        :return: Data definition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a void value (i.e. None)</span>
+
+<span class="sd">        :type  typ: :class:`VoidType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">VoidDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_integer"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_integer">[docs]</a>    <span class="k">def</span> <span class="nf">visit_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an integer value</span>
+
+<span class="sd">        :type  typ: :class:`IntegerType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">IntegerDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_double"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_double">[docs]</a>    <span class="k">def</span> <span class="nf">visit_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a double value</span>
+
+<span class="sd">        :type  typ: :class:`DoubleType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">DoubleDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a string value</span>
+
+<span class="sd">        :type  typ: :class:`StringType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">StringDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_boolean"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_boolean">[docs]</a>    <span class="k">def</span> <span class="nf">visit_boolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a boolean value</span>
+
+<span class="sd">        :type  typ: :class:`BooleanType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">BooleanDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_blob"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_blob">[docs]</a>    <span class="k">def</span> <span class="nf">visit_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a blob value</span>
+
+<span class="sd">        :type  typ: :class:`BlobType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">BlobDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an optional value</span>
+
+<span class="sd">        :type  typ: :class:`OptionalType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">typ</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">element_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">OptionalDefinition</span><span class="p">(</span><span class="n">element_def</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a list value</span>
+
+<span class="sd">        :type  typ: :class:`ListType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">typ</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">element_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">element_def</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_set"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_set">[docs]</a>    <span class="k">def</span> <span class="nf">visit_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a set value</span>
+
+<span class="sd">        :type  typ: :class:`SetType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">typ</span><span class="o">.</span><span class="n">element_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">element_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">element_def</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_map"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_map">[docs]</a>    <span class="k">def</span> <span class="nf">visit_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a map value</span>
+
+<span class="sd">        :type  typ: :class:`MapType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_defs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">typ</span><span class="o">.</span><span class="n">key_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">key_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+        <span class="n">field_defs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">MAP_KEY_FIELD</span><span class="p">,</span> <span class="n">key_def</span><span class="p">))</span>
+        <span class="n">typ</span><span class="o">.</span><span class="n">value_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">value_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+
+        <span class="n">field_defs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">MAP_VALUE_FIELD</span><span class="p">,</span> <span class="n">value_def</span><span class="p">))</span>
+        <span class="n">element_def</span> <span class="o">=</span> <span class="n">StructDefinition</span><span class="p">(</span><span class="n">MAP_ENTRY</span><span class="p">,</span> <span class="n">field_defs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">element_def</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a struct value</span>
+
+<span class="sd">        :type  typ: :class:`StructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">typ</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seen_structures</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">StructRefDefinition</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ctx</span><span class="o">.</span><span class="n">add_reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_seen_structures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">field_defs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">():</span>
+                <span class="n">field_type</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+                <span class="n">field_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">field_defs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">field_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">StructDefinition</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_defs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ctx</span><span class="o">.</span><span class="n">add_definition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_dynamic_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_dynamic_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_dynamic_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a struct value</span>
+
+<span class="sd">        :type  typ: :class:`DynamicStructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">DynamicStructDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_any_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_any_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_any_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an error value</span>
+
+<span class="sd">        :type  typ: :class:`AnyErrorType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">AnyErrorDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_opaque"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_opaque">[docs]</a>    <span class="k">def</span> <span class="nf">visit_opaque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an opaque value.</span>
+
+<span class="sd">        :type  typ: :class:`OpaqueType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">OpaqueDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_secret"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_secret">[docs]</a>    <span class="k">def</span> <span class="nf">visit_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a secret value</span>
+
+<span class="sd">        :type  typ: :class:`SecretType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">SecretDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_date_time"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_date_time">[docs]</a>    <span class="k">def</span> <span class="nf">visit_date_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a datetime value</span>
+
+<span class="sd">        :type  typ: :class:`DateTimeType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">StringDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_uri"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_uri">[docs]</a>    <span class="k">def</span> <span class="nf">visit_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an URI value</span>
+
+<span class="sd">        :type  typ: :class:`URIType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">StringDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_enum"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_enum">[docs]</a>    <span class="k">def</span> <span class="nf">visit_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a enum value</span>
+
+<span class="sd">        :type  typ: :class:`EnumType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">StringDefinition</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_reference"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_reference">[docs]</a>    <span class="k">def</span> <span class="nf">visit_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a reference type</span>
+
+<span class="sd">        :type  typ: :class:`ReferenceType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">typ</span><span class="o">.</span><span class="n">resolved_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an error type</span>
+
+<span class="sd">        :type  typ: :class:`ErrorType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_defs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">():</span>
+            <span class="n">field_type</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+            <span class="n">field_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">field_defs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">field_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">ErrorDefinition</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_defs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DataDefinitionBuilder.visit_id"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.DataDefinitionBuilder.visit_id">[docs]</a>    <span class="k">def</span> <span class="nf">visit_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a ID value</span>
+
+<span class="sd">        :type  typ: :class:`IdType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">StringDefinition</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="TypeUtil"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.TypeUtil">[docs]</a><span class="k">class</span> <span class="nc">TypeUtil</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a BindingType object to DataDefinition object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TypeUtil.convert_to_data_definition"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.type.TypeUtil.convert_to_data_definition">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_data_definition</span><span class="p">(</span><span class="n">binding_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts a BindingType object to DataDefinition object</span>
+
+<span class="sd">        :type  binding_type: :class:`BindingType`</span>
+<span class="sd">        :param binding_type: Binding type</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.definition.DataDefinition`</span>
+<span class="sd">        :return: DataDefinition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">ReferenceResolver</span><span class="p">()</span>
+        <span class="n">seen_structures</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">visitor</span> <span class="o">=</span> <span class="n">DataDefinitionBuilder</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">seen_structures</span><span class="p">)</span>
+        <span class="n">binding_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">visitor</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.data.validator &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.data.validator</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Data Validator classes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.value</span> <span class="kn">import</span> <span class="n">StringValue</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">,</span> <span class="n">StructValue</span><span class="p">,</span> <span class="n">ListValue</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.type</span> <span class="kn">import</span> <span class="n">DynamicStructType</span><span class="p">,</span> <span class="n">ReferenceType</span><span class="p">,</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">ListType</span><span class="p">,</span> <span class="n">SetType</span><span class="p">,</span> <span class="n">OptionalType</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Validator"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.validator.Validator">[docs]</a><span class="k">class</span> <span class="nc">Validator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>  <span class="c"># pylint: disable=R0922</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    vAPI Data object validator class</span>
+<span class="sd">    This is an abstract class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Validator.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.validator.Validator.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_value</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method validates a data value</span>
+
+<span class="sd">        :type data_value :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param data_value The struct value that needs to be validated</span>
+<span class="sd">        :type data_type :class:`vmware.vapi.binding.type.BindingType`</span>
+<span class="sd">        :param data_type The Struct binding type</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return List of error messages if validation fails or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="UnionValidator"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.validator.UnionValidator">[docs]</a><span class="k">class</span> <span class="nc">UnionValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Union Validator class that validates a struct value for union consistency</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">discriminant_name</span><span class="p">,</span> <span class="n">case_map</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the union validator class</span>
+
+<span class="sd">        :type discriminant_name :class:`str`</span>
+<span class="sd">        :param discriminant_name Name of a structure field that represents a</span>
+<span class="sd">                                 union discriminant</span>
+<span class="sd">        :type case_map :class:`dict`</span>
+<span class="sd">        :param case_map Python dict with string value of the discriminant as</span>
+<span class="sd">                        dictionary key and list of tuple of structure field</span>
+<span class="sd">                        associated with it and a boolean representing whether</span>
+<span class="sd">                        it is rqeuired as dictionary value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_discriminant_name</span> <span class="o">=</span> <span class="n">discriminant_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_case_map</span> <span class="o">=</span> <span class="n">case_map</span>
+        <span class="n">Validator</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UnionValidator.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.validator.UnionValidator.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_value</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates a struct value for union consistency</span>
+
+<span class="sd">        :type data_value :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param data_value The struct value that needs to be validated</span>
+<span class="sd">        :type data_type :class:`vmware.vapi.binding.type.BindingType`</span>
+<span class="sd">        :param data_type The Struct binding type</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return List of error messages if validation fails or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">data_value</span><span class="p">,</span> <span class="n">StructValue</span><span class="p">))</span>
+        <span class="n">discriminant</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">data_value</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_discriminant_name</span><span class="p">):</span>
+            <span class="c"># Checking if discriminant is present</span>
+            <span class="n">discriminant</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_discriminant_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">discriminant</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">):</span>
+                <span class="n">discriminant</span> <span class="o">=</span> <span class="n">discriminant</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">case</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">discriminant</span><span class="p">:</span>
+            <span class="c"># Discriminant is present. Find the associated case value</span>
+            <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">discriminant</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">case_</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_case_map</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">discriminant</span> <span class="o">==</span> <span class="n">StringValue</span><span class="p">(</span><span class="n">case_</span><span class="p">):</span>
+                    <span class="n">case</span> <span class="o">=</span> <span class="n">case_</span>
+                    <span class="k">break</span>
+        <span class="k">if</span> <span class="n">case</span><span class="p">:</span>
+            <span class="c"># Since case is valid, verify fields requried for this case are</span>
+            <span class="c"># present</span>
+            <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">required</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case_map</span><span class="p">[</span><span class="n">case</span><span class="p">]:</span>
+                <span class="n">missing</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="n">data_value</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">):</span>
+                    <span class="n">field</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+                    <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">required</span> <span class="ow">and</span> <span class="n">field</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="c">#Validation failed</span>
+                        <span class="n">missing</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c">#Validation failed</span>
+                    <span class="n">missing</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                        <span class="s">&#39;vapi.data.structure.union.missing&#39;</span><span class="p">,</span>
+                        <span class="n">data_value</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+        <span class="n">all_case_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">six</span><span class="o">.</span><span class="n">itervalues</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_case_map</span><span class="p">)))</span>
+        <span class="n">allowed_case_field_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">case</span><span class="p">:</span>
+            <span class="n">allowed_case_field_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case_map</span><span class="p">[</span><span class="n">case</span><span class="p">]]</span>
+        <span class="n">prohibited_case_field_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">all_case_fields</span>
+                                       <span class="k">if</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_case_field_names</span><span class="p">]</span>
+
+        <span class="c"># Verify that remaining fields are not present</span>
+        <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">prohibited_case_field_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data_value</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">):</span>
+                <span class="n">field</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+                <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="c">#Validation failed</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                        <span class="s">&#39;vapi.data.structure.union.extra&#39;</span><span class="p">,</span>
+                        <span class="n">data_value</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="HasFieldsOfValidator"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.validator.HasFieldsOfValidator">[docs]</a><span class="k">class</span> <span class="nc">HasFieldsOfValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    HasFieldsOfValidator validator class that validates the data_value has reuired fields of the class specified</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Validator</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HasFieldsOfValidator.validate"><a class="viewcode-back" href="../../../../vmware.vapi.data.html#vmware.vapi.data.validator.HasFieldsOfValidator.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_value</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates a struct value for union consistency</span>
+
+<span class="sd">        :type data_value :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param data_value The struct value that needs to be validated</span>
+<span class="sd">        :type data_type :class:`vmware.vapi.binding.type.BindingType`</span>
+<span class="sd">        :param data_type The Struct binding type</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return List of error messages if validation fails or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">data_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_int</span><span class="p">(</span><span class="n">data_value</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_validate_int</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">data_value</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates a data value recursively. This is an internal method.</span>
+
+<span class="sd">        :type data_value :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param data_value The struct value that needs to be validated</span>
+<span class="sd">        :type data_type :class:`vmware.vapi.binding.type.BindingType`</span>
+<span class="sd">        :param data_type The Struct binding type</span>
+<span class="sd">        :rtype: :class:`list` of :class:`vmware.vapi.message.Message` or ``None``</span>
+<span class="sd">        :return List of error messages if validation fails or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">DynamicStructType</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">data_type</span><span class="o">.</span><span class="n">has_fields_of_type</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">type_</span> <span class="ow">in</span> <span class="n">data_type</span><span class="o">.</span><span class="n">has_fields_of_type</span><span class="p">:</span>
+                    <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">ReferenceType</span><span class="p">))</span>
+                    <span class="n">resolved_type</span> <span class="o">=</span> <span class="n">type_</span><span class="o">.</span><span class="n">resolved_type</span>
+                    <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">resolved_type</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">data_value</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">):</span>
+                            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                                <span class="s">&#39;vapi.data.structure.dynamic.missing&#39;</span><span class="p">,</span>
+                                <span class="n">field_name</span><span class="p">,</span> <span class="n">resolved_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="n">msg</span><span class="p">]</span>
+                        <span class="n">field_type</span> <span class="o">=</span> <span class="n">resolved_type</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+                        <span class="n">field_value</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+                        <span class="n">msg_list</span> <span class="o">=</span> <span class="n">field_type</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">field_value</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">msg_list</span><span class="p">:</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg_list</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="n">msg_list</span><span class="p">]</span>
+                        <span class="c">#Recursive validation</span>
+                        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_validate_int</span><span class="p">(</span><span class="n">field_value</span><span class="p">,</span> <span class="n">field_type</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">ReferenceType</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_validate_int</span><span class="p">(</span><span class="n">data_value</span><span class="p">,</span> <span class="n">data_type</span><span class="o">.</span><span class="n">resolved_type</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">ListType</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">SetType</span><span class="p">):</span>
+            <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">data_value</span><span class="p">,</span> <span class="n">ListValue</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data_value</span><span class="p">:</span>
+                <span class="n">msg_list</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_validate_int</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">data_type</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">msg_list</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">msg_list</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">OptionalType</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">data_value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+                <span class="n">msg_list</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_validate_int</span><span class="p">(</span><span class="n">data_value</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">data_type</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">msg_list</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">msg_list</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">StructType</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">data_type</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">():</span>
+                <span class="k">assert</span><span class="p">(</span><span class="n">data_value</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">))</span>
+                <span class="n">field_type</span> <span class="o">=</span> <span class="n">data_type</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+                <span class="n">field_value</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+                <span class="n">msg_list</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_validate_int</span><span class="p">(</span><span class="n">field_value</span><span class="p">,</span> <span class="n">field_type</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">msg_list</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">msg_list</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

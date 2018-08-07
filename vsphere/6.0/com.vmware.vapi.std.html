@@ -1,0 +1,1807 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>std Package &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="index.html" />
+    <link rel="up" title="vapi Package" href="com.vmware.vapi.html" />
+    <link rel="next" title="vcenter Package" href="com.vmware.vcenter.html" />
+    <link rel="prev" title="privilege Package" href="com.vmware.vapi.metadata.privilege.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="com.vmware.vcenter.html" title="vcenter Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="com.vmware.vapi.metadata.privilege.html" title="privilege Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="com.html" >com Package</a> &raquo;</li>
+          <li><a href="com.vmware.html" >vmware Package</a> &raquo;</li>
+          <li><a href="com.vmware.vapi.html" accesskey="U">vapi Package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="std-package">
+<h1>std Package<a class="headerlink" href="#std-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">std</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-com.vmware.vapi.std"></span></div>
+<div class="section" id="module-com.vmware.vapi.std.errors_client">
+<span id="errors-client-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">errors_client</span></tt> Module<a class="headerlink" href="#module-com.vmware.vapi.std.errors_client" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">com.vmware.vapi.std.errors_client</span></tt> module provides the standard
+exceptions that can be included in the list of exceptions in the specification
+of methods to indicate that the method might report those exceptions. It also
+provides some classes intended to be used as payload to provide additional
+information about those exceptions.</p>
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.AlreadyExists">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">AlreadyExists</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#AlreadyExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.AlreadyExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">AlreadyExists</span></tt> exception indicates that an attempt was made to
+create an entity but the entity already exists. Typically the entity has a
+name or identifier that is required to be unique in some context, but there
+is already an entity with that name or identifier in that context.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Trying to create a new tag category when a tag category with the
+specified name already exists.</li>
+<li>Trying to create a new tag in tag category when a tag with the specified
+name already exists the tag category.</li>
+<li>Trying to create a LUN with a specific UUID on a node (for replication
+purposes) when a LUN with that UUID already exists on the node.</li>
+<li>Trying to create a file in a directory or move or copy a file to a
+directory when a file with that name already exists in the directory.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.AlreadyInDesiredState">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">AlreadyInDesiredState</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#AlreadyInDesiredState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.AlreadyInDesiredState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">AlreadyInDesiredState</span></tt> exception indicates that an attempt to change
+the state of a resource or service had no effect because the resource or
+service is already in the desired state.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Trying to power on a virtual machine that is already powered on.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vapi.std.errors_client.ArgumentLocations">
+<em class="property">class </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">ArgumentLocations</tt><big>(</big><em>primary=None</em>, <em>secondary=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#ArgumentLocations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">ArgumentLocations</span></tt> class describes which part(s) of the input to the
+method caused the exception.</p>
+<p>Some types of exceptions are caused by the value of one of the inputs to
+the method, possibly due to an interaction with other inputs to the method.
+This class is intended to be used as the payload to identify those inputs
+when the method reports exceptions like <a class="reference internal" href="#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">InvalidArgument</span></tt></a> or
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">NotFound</span></tt></a>. See <tt class="xref py py-attr docutils literal"><span class="pre">Error.data</span></tt>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>primary</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; String describing the location of the input that triggered the
+exception.</li>
+<li><strong>secondary</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> (possibly empty) of strings describing the locations
+of other inputs that caused the the primary input to trigger the
+exception.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.Canceled">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">Canceled</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#Canceled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.Canceled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Canceled</span></tt> exception indicates that the method canceled itself in
+response to an explicit request to do so. Methods being &#8220;canceled&#8221; for
+other reasons (for example the client connection was closed, a time out
+occured, or due to excessive resource consumption) should not report this
+exception.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>A user is monitoring the progress of the method in a GUI and sees that it
+is likely to take longer than he is willing to wait and clicks the cancel
+button.</li>
+<li>A user invokes the method using a command-line tool and decides that she
+didn&#8217;t really want to invoke that method, and presses CTRL-c.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>The client&#8217;s connection to the server was closed. Reporting an exception
+is pointless since the client will not receive the error response because
+the connection has been closed.</li>
+<li>The request is taking longer than some amount of time. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TimedOut" title="com.vmware.vapi.std.errors_client.TimedOut"><tt class="xref py py-class docutils literal"><span class="pre">TimedOut</span></tt></a> exception would be reported if the time was specified as
+part of the input or is documented in the API contract.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.ConcurrentChange">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">ConcurrentChange</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#ConcurrentChange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.ConcurrentChange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">ConcurrentChange</span></tt> exception indicates that a data structure, entity,
+or resource has been modified since some earlier point in time. Typically
+this happens when the client is doing the <em>write</em> portion of a
+read-modify-write sequence and indicates that it wants the server to notify
+it if the data in the server has changed after it did the <em>read</em>, so that
+it can avoid overwriting that change inadvertantly.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.Error">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">Error</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#Error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.Error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.error.VapiError" title="vmware.vapi.bindings.error.VapiError"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.error.VapiError</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Error</span></tt> exception describes theattributes common to all standard
+exceptions.</p>
+<blockquote>
+<div>This exception serves two purposes:</div></blockquote>
+<ol class="arabic simple">
+<li>It is the exception that clients in many programming languages can catch
+to handle all standard exceptions. Typically those clients will display one
+or more of the localizable messages from <tt class="xref py py-attr docutils literal"><span class="pre">Error.messages</span></tt> to a human.</li>
+<li>It is the exception that methods can report when they need to report
+some exception, but the exception doesn&#8217;t fit into any other standard
+exception, and in fact the only reasonable way for a client to react to the
+exception is to display the message(s) to a human.</li>
+</ol>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.FeatureInUse">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">FeatureInUse</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#FeatureInUse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.FeatureInUse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">FeatureInUse</span></tt> exception indicates that an action cannot be completed
+because a feature is in use.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Trying to disable snapshots on a virtual machine which has a snapshot.</li>
+<li>Trying to downgrade a license that has licensed features that are in use.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vapi.std.errors_client.FileLocations">
+<em class="property">class </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">FileLocations</tt><big>(</big><em>primary=None</em>, <em>secondary=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#FileLocations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.FileLocations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">FileLocations</span></tt> class identifies the file(s) that caused the method
+to report the exception.</p>
+<p>Some types of exceptions are caused by a problem with one or more files.
+This class is intended to be used as the payload to identify those files
+when the method reports exceptions like <a class="reference internal" href="#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">NotFound</span></tt></a>. See
+<tt class="xref py py-attr docutils literal"><span class="pre">Error.data</span></tt>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>primary</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; String identifying the file that triggered the exception.</li>
+<li><strong>secondary</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> (possibly empty) of strings identifying other files
+that caused the primary file to trigger the exception.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.InternalServerError">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">InternalServerError</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#InternalServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.InternalServerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">InternalServerError</span></tt> exception indicates that the server encounters
+an unexpected condition that prevented it from fulfilling the request.</p>
+<p>This exception is reported by the API infrastructure, so it could occur in
+response to the invocation of any method.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>The method returns a value whose type doesn&#8217;t match the type type the
+method says it should return.</li>
+<li>The method reports an exception that is not included in the list of
+exceptions the method says that it can report.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.InvalidArgument">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">InvalidArgument</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#InvalidArgument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.InvalidArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">InvalidArgument</span></tt> exception indicates that the values received for
+one or more parameters are not acceptable.</p>
+<p>This exception is reported by the API infrastructure, so it could occur in
+response to the invocation of any method. It may also be reported as the
+return value of method-specific validation.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>A parameter has a value that is not of the expected type.</li>
+<li>A parameter has a value that is not in the required range.</li>
+<li>A parameter has a value that is not one of the specifically allowed
+strings.</li>
+<li>One attribute of a class is the tag for a tagged union, and has a
+specific value but another attribute of the class that is required to be
+specified when the tag has that value is not specified, or another
+attribute of the class that is required to be unspecified when the tag has
+that value is specified.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>Trying to create a new tag in tag category when a tag with the specified
+name already exists the tag category. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.AlreadyExists" title="com.vmware.vapi.std.errors_client.AlreadyExists"><tt class="xref py py-class docutils literal"><span class="pre">AlreadyExists</span></tt></a> exception
+would be used instead.</li>
+<li>Invoke the method to retrieve information about a virtual machine,
+passing an id that does not identify an existing virtual machine. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">NotFound</span></tt></a> exception would be used instead.</li>
+<li>Attempt to put a virtual machine into a folder that can only contain
+hosts. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">InvalidElementType</span></tt></a> exception would be used instead.</li>
+<li>Attempt to attach a SCSI virtual disk to an IDE port. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">InvalidElementType</span></tt></a> exception would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.InvalidElementConfiguration">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">InvalidElementConfiguration</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#InvalidElementConfiguration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.InvalidElementConfiguration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">InvalidElementConfiguration</span></tt> exception indicates that an attempt to
+modify the configuration of an element or a group containing the element
+failed due to the configuraton of the element. A typical case is when the
+method is am attempt to change the group membership of the element fails,
+in which case a configuration change on the element may allow the group
+membership change to succeed.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Attempt to move a host with a fault tolerant virtual machine out of a
+cluster (i.e. make the host a standalone host).</li>
+<li>Attempt to remove a host from a DRS cluster without putting the host into
+maintenance mode.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.InvalidElementType">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">InvalidElementType</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#InvalidElementType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.InvalidElementType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">InvalidElementType</span></tt> exception indicates that the server was unable
+to fulfil the request because an element of a specific type cannot be a
+member of particular group.</p>
+<p>This exception could be reported, for example, if an attempt is made to put
+an element into the wrong type of container.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Attempt to put a virtual machine into a folder that can only contain
+hosts.</li>
+<li>Attempt to attach a SCSI virtual disk to an IDE port.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>A parameter has a value that is not of the expected type. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">InvalidArgument</span></tt></a> exception would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.InvalidRequest">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">InvalidRequest</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#InvalidRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.InvalidRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">InvalidRequest</span></tt> exception indicates that the request is malformed in
+such a way that the server is unable to process it.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>The XML in a SOAP request is not well-formed so the server cannot parse
+the request.</li>
+<li>The XML in a SOAP request is well-formed but does not match the structure
+required by the SOAP specification.</li>
+<li>A JSON-RPC request is not valid JSON.</li>
+<li>The JSON sent in a JSON-RPC request is not a valid JSON-RPC Request
+object.</li>
+<li>The Request object from a JSON-RPC request does not match the structure
+required by the API infrastructure.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>The parameter has a value that is not with the required range. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">InvalidArgument</span></tt></a> exception would be used instead.</li>
+<li>The name of the method specified in the request doesn&#8217;t not match any
+known method. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">NotFound</span></tt></a> exception would be used instead.</li>
+</ul>
+<p>Some transport protocols (for example JSON-RPC) include their own mechanism
+for reporting these kinds of errors, and the API infrastructure for a
+programming language may expose the errors using a language specific
+mechanism, so this exception might not be used.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.NotAllowedInCurrentState">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">NotAllowedInCurrentState</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#NotAllowedInCurrentState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.NotAllowedInCurrentState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">NotAllowedInCurrentState</span></tt> exception indicates that the requested
+method is not allowed with a resource or service in its current state. This
+could be because the method is performing a configuration change that is
+not allowed in the current state or because method itself is not allowed in
+the current state.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Trying to add a virtual device that cannot be hot plugged to a running
+virtual machine.</li>
+<li>Trying to upgrade the virtual hardware version for a suspended virtual
+machine.</li>
+<li>Trying to power off, reset, or suspend a virtual machine that is not
+powered on.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>Trying to power off a virtual machine that is in the process of being
+powered on. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.ResourceBusy" title="com.vmware.vapi.std.errors_client.ResourceBusy"><tt class="xref py py-class docutils literal"><span class="pre">ResourceBusy</span></tt></a> exception would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.NotFound">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">NotFound</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#NotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.NotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">NotFound</span></tt> exception indicates that a specified element could not be
+found.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Invoke the method to retrieve information about a virtual machine,
+passing an id that does not identify an existing virtual machine.</li>
+<li>Invoke the method to modify the configuration of a virtual nic, passing
+an id that does not identify an existing virtual nic in the specified
+virtual machine.</li>
+<li>Invoke the method to remove a vswitch, passing an id that does not
+identify an existing vswitch.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.OperationNotFound">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">OperationNotFound</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#OperationNotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.OperationNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">OperationNotFound</span></tt> exception indicates that the method specified in
+the request could not be found.</p>
+<p>Every API request specifies a service identifier and an operation
+identifier along with the parameters. If the API infrastructure is unable
+to find the requested class or method it reports this exception.</p>
+<p>This exception can be reported by the API infrastructure for any method,
+but it is specific to the API infrastructure, and should never be reported
+by the implementation of any method.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>A client provides an invalid service or operation identifier when
+invoking the method using a dynamic interface (for example REST).</li>
+<li>A client invokes the method from a class, but that class has not been
+installed.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>A client invokes a task scheduling method, but provides an invalid
+service identifier or operation identifier. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">NotFound</span></tt></a> exception
+would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.ResourceBusy">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">ResourceBusy</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#ResourceBusy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.ResourceBusy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">ResourceBusy</span></tt> exception indicates that the method could not be
+completed because a resource it needs is busy.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Trying to power off a virtual machine that is in the process of being
+powered on.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>Trying to remove a VMFS datastore when there is a virtual machine
+registered on any host attached to the datastore. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ResourceInUse" title="com.vmware.vapi.std.errors_client.ResourceInUse"><tt class="xref py py-class docutils literal"><span class="pre">ResourceInUse</span></tt></a> exception would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.ResourceInUse">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">ResourceInUse</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#ResourceInUse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.ResourceInUse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">ResourceInUse</span></tt> exception indicates that the method could not be
+completed because a resource is in use.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Trying to remove a VMFS datastore when the is a virtual machine
+registered on any host attached to the datastore.</li>
+<li>Trying to add a virtual switch if the physical network adapter being
+bridged is already in use.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>Trying to power off a virtual machine that is in the process of being
+powered on. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.ResourceBusy" title="com.vmware.vapi.std.errors_client.ResourceBusy"><tt class="xref py py-class docutils literal"><span class="pre">ResourceBusy</span></tt></a> exception would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.ResourceInaccessible">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">ResourceInaccessible</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#ResourceInaccessible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.ResourceInaccessible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">ResourceInaccessible</span></tt> exception indicates that the method could not
+be completed because an entity is not accessible.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Attempt to invoke some method on a virtual machine when the virtual
+machine&#8217;s configuration file is not accessible (for example due to a
+storage APD condition).</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>Attempt to invoke some method when the server is too busy. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">ServiceUnavailable</span></tt></a> exception would be used instead.</li>
+<li>Attempt to invoke some method when the server is undergoing maintenance.
+The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">ServiceUnavailable</span></tt></a> exception would be used instead.</li>
+<li>Some method fails to contact VMware Tools running inside the virtual
+machine. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">ServiceUnavailable</span></tt></a> exception would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.ServiceUnavailable">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">ServiceUnavailable</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#ServiceUnavailable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">ServiceUnavailable</span></tt> exception indicates that the class is
+unavailable.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Attempt to invoke a method when the server is too busy.</li>
+<li>Attempt to invoke a method when the server is undergoing maintenance.</li>
+<li>An method fails to contact VMware Tools running inside the virtual
+machine.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>A client provides an invalid service or operation identifier when
+invoking the method using a dynamic interface (for example REST). The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.OperationNotFound" title="com.vmware.vapi.std.errors_client.OperationNotFound"><tt class="xref py py-class docutils literal"><span class="pre">OperationNotFound</span></tt></a> exception would be used instead.</li>
+<li>A client invokes the method from the class, but that class has not been
+installed. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.OperationNotFound" title="com.vmware.vapi.std.errors_client.OperationNotFound"><tt class="xref py py-class docutils literal"><span class="pre">OperationNotFound</span></tt></a> exception would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.TimedOut">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">TimedOut</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#TimedOut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.TimedOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">TimedOut</span></tt> exception indicates that the method did not complete
+within the allowed amount of time. The allowed amount of time might be:</p>
+<ul class="simple">
+<li>provided by the client as an input parameter.</li>
+<li>a fixed limit of the class implementation that is a documented part of
+the contract of the class.</li>
+<li>a configurable limit used by the implementation of the class.</li>
+<li>a dynamic limit computed by the implementation of the class.</li>
+</ul>
+<p>The method may or may not complete after the <tt class="docutils literal"><span class="pre">TimedOut</span></tt> exception was
+reported.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>The method was unable to complete within the timeout duration specified
+by a parameter of the method.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>A server implementation that puts requests into a queue before
+dispatching them might delete a request from the queue if it doesn&#8217;t get
+dispatched within <em>n</em> minutes. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">ServiceUnavailable</span></tt></a> exception
+would be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vapi.std.errors_client.TransientIndication">
+<em class="property">class </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">TransientIndication</tt><big>(</big><em>is_transient=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#TransientIndication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">TransientIndication</span></tt> class indicates whether or not the exception is
+transient.</p>
+<p>Some types of exceptions are transient in certain situtations and not
+transient in other situtations. This exception payload can be used to
+indicate to clients whether a particular exception is transient. See
+<tt class="xref py py-attr docutils literal"><span class="pre">Error.data</span></tt>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>is_transient</strong> (<tt class="xref py py-class docutils literal"><span class="pre">bool</span></tt>) &#8211; Indicates that the exception this class is attached to is
+transient.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.UnableToAllocateResource">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">UnableToAllocateResource</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#UnableToAllocateResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.UnableToAllocateResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">UnableToAllocateResource</span></tt> exception indicates that the method failed
+because it was unable to allocate or acquire a required resource.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Trying to power on a virtual machine when there are not enough licenses
+to do so.</li>
+<li>Trying to power on a virtual machine that would violate a resource usage
+policy.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>Trying to power off a virtual machine that is in the process of being
+powered on. A <a class="reference internal" href="#com.vmware.vapi.std.errors_client.ResourceBusy" title="com.vmware.vapi.std.errors_client.ResourceBusy"><tt class="xref py py-class docutils literal"><span class="pre">ResourceBusy</span></tt></a> exception would be used instead.</li>
+<li>Trying to remove a VMFS datastore when the is a virtual machine
+registered on any host attached to the datastore. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ResourceInUse" title="com.vmware.vapi.std.errors_client.ResourceInUse"><tt class="xref py py-class docutils literal"><span class="pre">ResourceInUse</span></tt></a> exception would be used instead.</li>
+<li>Trying to add a virtual switch if the physical network adapter being
+bridged is already in use. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.ResourceInUse" title="com.vmware.vapi.std.errors_client.ResourceInUse"><tt class="xref py py-class docutils literal"><span class="pre">ResourceInUse</span></tt></a> exception would be
+used instead.</li>
+<li>Attempt to invoke some method on a virtual machine when the virtual
+machine&#8217;s configuration file is not accessible (for example due to a
+storage APD condition). The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.ResourceInaccessible" title="com.vmware.vapi.std.errors_client.ResourceInaccessible"><tt class="xref py py-class docutils literal"><span class="pre">ResourceInaccessible</span></tt></a> exception would
+be used instead.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.Unauthenticated">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">Unauthenticated</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#Unauthenticated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.Unauthenticated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Unauthenticated</span></tt> exception indicates that the method requires
+authentication and the user is not authenticated.</p>
+<p>API requests may include a security context containing user credentials.
+For example, the user credentials could be a SAML token, a user name and
+password, or the session identifier for a previously established session.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>The SAML token in the request&#8217;s security context has expired.</li>
+<li>The user name and password in the request&#8217;s security context are invalid.</li>
+<li>The session identifier in the request&#8217;s security context identifies a
+session that has expired.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>The user is authenticated but isn&#8217;t authorized to perform the requested
+method. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">Unauthorized</span></tt></a> exception would be used instead.</li>
+</ul>
+<p>For security reasons, the <tt class="xref py py-attr docutils literal"><span class="pre">Error.data</span></tt> attribute in this exception is
+None, and the <tt class="xref py py-attr docutils literal"><span class="pre">Error.messages</span></tt> attribute in this exception does not
+disclose which part of the security context is correct or incorrect. For
+example the messages would not disclose whether a username or a password is
+valid or invalid, but only that a combination of username and password is
+invalid.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.Unauthorized">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">Unauthorized</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#Unauthorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.Unauthorized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Unauthorized</span></tt> exception indicates that the user is not authorized to
+perform the method.</p>
+<p>API requests may include a security context containing user credentials.
+For example, the user credentials could be a SAML token, a user name and
+password, or the session identifier for a previously established session.
+Invoking the method may require that the user identified by those
+credentials has particular privileges on the method or on one or more
+resource identifiers passed to the method.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>The method requires that the user have one or more privileges on the
+method, but the user identified by the credentials in the security context
+does not have the required privileges.</li>
+<li>The method requires that the user have one or more privileges on a
+resource identifier passed to the method, but the user identified by the
+credentials in the security context does not have the required privileges.</li>
+</ul>
+<blockquote>
+<div>Counterexamples:</div></blockquote>
+<ul class="simple">
+<li>The SAML token in the request&#8217;s security context has expired. A
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.Unauthenticated" title="com.vmware.vapi.std.errors_client.Unauthenticated"><tt class="xref py py-class docutils literal"><span class="pre">Unauthenticated</span></tt></a> exception would be used instead.</li>
+<li>The user name and password in the request&#8217;s security context are invalid.
+The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Unauthenticated" title="com.vmware.vapi.std.errors_client.Unauthenticated"><tt class="xref py py-class docutils literal"><span class="pre">Unauthenticated</span></tt></a> exception would be used instead.</li>
+<li>The session identifier in the request&#8217;s security context identifies a
+session that has expired. The <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Unauthenticated" title="com.vmware.vapi.std.errors_client.Unauthenticated"><tt class="xref py py-class docutils literal"><span class="pre">Unauthenticated</span></tt></a> exception would be
+used instead.</li>
+</ul>
+<p>For security reasons, the <tt class="xref py py-attr docutils literal"><span class="pre">Error.data</span></tt> attribute in this exception is
+None, and the <tt class="xref py py-attr docutils literal"><span class="pre">Error.messages</span></tt> attribute in this exception does not
+disclose why the user is not authorized to perform the method. For example
+the messages would not disclose which privilege the user did not have or
+which resource identifier the user did not have the required privilege to
+access. The API documentation should indicate what privileges are required.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.UnexpectedInput">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">UnexpectedInput</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#UnexpectedInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.UnexpectedInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">UnexpectedInput</span></tt> exception indicates that the request contained a
+parameter or attribute whose name is not known by the server.</p>
+<p>Every method expects parameters with known names. Some of those parameters
+may be (or contain) classes, and the method expects those classes to
+contain attributes with known names. If the method receives parameters or
+attributes with names that is does not expect, this exception may be
+reported.</p>
+<p>This exception can be reported by the API infrastructure for any method,
+but it is specific to the API infrastructure, and should never be reported
+by the implementation of any method.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>A client using stubs generated from the interface specification for
+version2 of a class invokes the method passing one or more parameters that
+were added in version2, but they are communicating with a server that only
+supports version1 of the class.</li>
+<li>A client provides an unexpected parameter or attribute name when invoking
+the method using a dynamic interface (for example REST).</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="com.vmware.vapi.std.errors_client.Unsupported">
+<em class="property">exception </em><tt class="descclassname">com.vmware.vapi.std.errors_client.</tt><tt class="descname">Unsupported</tt><big>(</big><em>messages=None</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/vapi/std/errors_client.html#Unsupported"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.vapi.std.errors_client.Unsupported" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Unsupported</span></tt> exception indicates that the method is not supported by
+the class.</p>
+<blockquote>
+<div>Examples:</div></blockquote>
+<ul class="simple">
+<li>Trying to hot-plug a CPU when the current configuration of the VM does
+not support hot-plugging of CPUs.</li>
+<li>Trying to change the memory size to a value that is not within the
+acceptable guest memory bounds supported by the virtual machine&#8217;s host.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; <p>Stack of one or more localizable messages for human exception
+consumers.</p>
+<p>The message at the top of the stack (first in the list) describes
+the exception from the perspective of the method the client
+invoked. Each subsequent message in the stack describes the &#8220;cause&#8221;
+of the prior message.</p>
+</li>
+<li><strong>data</strong> (<tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.struct.VapiStruct</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; <p>Data to facilitate clients responding to the method reporting a
+standard exception to indicating that it was unable to complete
+successfully.</p>
+<p>Methods may provide data that clients can use when responding to
+exceptions. Since the data that clients need may be specific to the
+context of the method reporting the exception, different methods
+that report the same exception may provide different data in the
+exception. The documentation for each each method will describe
+what, if any, data it provides for each exception it reports. The
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.ArgumentLocations" title="com.vmware.vapi.std.errors_client.ArgumentLocations"><tt class="xref py py-class docutils literal"><span class="pre">ArgumentLocations</span></tt></a>, <a class="reference internal" href="#com.vmware.vapi.std.errors_client.FileLocations" title="com.vmware.vapi.std.errors_client.FileLocations"><tt class="xref py py-class docutils literal"><span class="pre">FileLocations</span></tt></a>, and
+<a class="reference internal" href="#com.vmware.vapi.std.errors_client.TransientIndication" title="com.vmware.vapi.std.errors_client.TransientIndication"><tt class="xref py py-class docutils literal"><span class="pre">TransientIndication</span></tt></a> classes are intended as possible
+values for this attribute.
+<a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID" title="com.vmware.vapi.std_client.DynamicID"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.DynamicID</span></tt></a> may also be useful as
+a value for this attribute (although that is not its primary
+purpose). Some classes may provide their own specific classes for
+use as the value of this attribute when reporting exceptions from
+their methods.
+Some methods will not set this attribute when reporting exceptions.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">std Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">std</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-com.vmware.vapi.std.errors_client"><tt class="docutils literal"><span class="pre">errors_client</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="com.vmware.vapi.metadata.privilege.html"
+                        title="previous chapter">privilege Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="com.vmware.vcenter.html"
+                        title="next chapter">vcenter Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/com.vmware.vapi.std.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="com.vmware.vcenter.html" title="vcenter Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="com.vmware.vapi.metadata.privilege.html" title="privilege Package"
+             >previous</a> |</li>
+        <li><a href="index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="com.html" >com Package</a> &raquo;</li>
+          <li><a href="com.vmware.html" >vmware Package</a> &raquo;</li>
+          <li><a href="com.vmware.vapi.html" >vapi Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
