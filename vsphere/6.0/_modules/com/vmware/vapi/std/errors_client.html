@@ -1,0 +1,2142 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vapi.std.errors_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vapi.std.errors_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2014 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vapi.std.errors.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vapi.std.errors_client`` module provides the standard</span>
+<span class="sd">exceptions that can be included in the list of exceptions in the specification</span>
+<span class="sd">of methods to indicate that the method might report those exceptions. It also</span>
+<span class="sd">provides some classes intended to be used as payload to provide additional</span>
+<span class="sd">information about those exceptions.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std_client</span>
+
+
+<div class="viewcode-block" id="ArgumentLocations"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ArgumentLocations">[docs]</a><span class="k">class</span> <span class="nc">ArgumentLocations</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ArgumentLocations`` class describes which part(s) of the input to the</span>
+<span class="sd">    method caused the exception. </span>
+<span class="sd">    </span>
+<span class="sd">    Some types of exceptions are caused by the value of one of the inputs to</span>
+<span class="sd">    the method, possibly due to an interaction with other inputs to the method.</span>
+<span class="sd">    This class is intended to be used as the payload to identify those inputs</span>
+<span class="sd">    when the method reports exceptions like :class:`InvalidArgument` or</span>
+<span class="sd">    :class:`NotFound`. See :attr:`Error.data`.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">primary</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">secondary</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  primary: :class:`str`</span>
+<span class="sd">        :param primary: String describing the location of the input that triggered the</span>
+<span class="sd">            exception.</span>
+<span class="sd">        :type  secondary: :class:`list` of :class:`str`</span>
+<span class="sd">        :param secondary: :class:`list` (possibly empty) of strings describing the locations</span>
+<span class="sd">            of other inputs that caused the the primary input to trigger the</span>
+<span class="sd">            exception.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">primary</span> <span class="o">=</span> <span class="n">primary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">secondary</span> <span class="o">=</span> <span class="n">secondary</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">ArgumentLocations</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.argument_locations&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;primary&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;secondary&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">ArgumentLocations</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="FileLocations"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.FileLocations">[docs]</a><span class="k">class</span> <span class="nc">FileLocations</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``FileLocations`` class identifies the file(s) that caused the method</span>
+<span class="sd">    to report the exception. </span>
+<span class="sd">    </span>
+<span class="sd">    Some types of exceptions are caused by a problem with one or more files.</span>
+<span class="sd">    This class is intended to be used as the payload to identify those files</span>
+<span class="sd">    when the method reports exceptions like :class:`NotFound`. See</span>
+<span class="sd">    :attr:`Error.data`.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">primary</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">secondary</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  primary: :class:`str`</span>
+<span class="sd">        :param primary: String identifying the file that triggered the exception.</span>
+<span class="sd">        :type  secondary: :class:`list` of :class:`str`</span>
+<span class="sd">        :param secondary: :class:`list` (possibly empty) of strings identifying other files</span>
+<span class="sd">            that caused the primary file to trigger the exception.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">primary</span> <span class="o">=</span> <span class="n">primary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">secondary</span> <span class="o">=</span> <span class="n">secondary</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">FileLocations</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.file_locations&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;primary&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;secondary&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">FileLocations</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="TransientIndication"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.TransientIndication">[docs]</a><span class="k">class</span> <span class="nc">TransientIndication</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``TransientIndication`` class indicates whether or not the exception is</span>
+<span class="sd">    transient. </span>
+<span class="sd">    </span>
+<span class="sd">    Some types of exceptions are transient in certain situtations and not</span>
+<span class="sd">    transient in other situtations. This exception payload can be used to</span>
+<span class="sd">    indicate to clients whether a particular exception is transient. See</span>
+<span class="sd">    :attr:`Error.data`.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">is_transient</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  is_transient: :class:`bool`</span>
+<span class="sd">        :param is_transient: Indicates that the exception this class is attached to is</span>
+<span class="sd">            transient.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_transient</span> <span class="o">=</span> <span class="n">is_transient</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">TransientIndication</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.transient_indication&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;is_transient&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">(),</span>
+    <span class="p">},</span>
+    <span class="n">TransientIndication</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Error"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Error">[docs]</a><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="n">VapiError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Error`` exception describes theattributes common to all standard</span>
+<span class="sd">    exceptions. </span>
+<span class="sd">    </span>
+<span class="sd">     This exception serves two purposes: </span>
+<span class="sd">    </span>
+<span class="sd">    #. It is the exception that clients in many programming languages can catch</span>
+<span class="sd">       to handle all standard exceptions. Typically those clients will display one</span>
+<span class="sd">       or more of the localizable messages from :attr:`Error.messages` to a human.</span>
+<span class="sd">    #. It is the exception that methods can report when they need to report</span>
+<span class="sd">       some exception, but the exception doesn&#39;t fit into any other standard</span>
+<span class="sd">       exception, and in fact the only reasonable way for a client to react to the</span>
+<span class="sd">       exception is to display the message(s) to a human.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;Error&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="n">messages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">VapiError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">Error</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">Error</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Unsupported"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unsupported">[docs]</a><span class="k">class</span> <span class="nc">Unsupported</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Unsupported`` exception indicates that the method is not supported by</span>
+<span class="sd">    the class. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to hot-plug a CPU when the current configuration of the VM does</span>
+<span class="sd">      not support hot-plugging of CPUs.</span>
+<span class="sd">    * Trying to change the memory size to a value that is not within the</span>
+<span class="sd">      acceptable guest memory bounds supported by the virtual machine&#39;s host.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;Unsupported&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">Unsupported</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.unsupported&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">Unsupported</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="UnexpectedInput"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.UnexpectedInput">[docs]</a><span class="k">class</span> <span class="nc">UnexpectedInput</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``UnexpectedInput`` exception indicates that the request contained a</span>
+<span class="sd">    parameter or attribute whose name is not known by the server. </span>
+<span class="sd">    </span>
+<span class="sd">    Every method expects parameters with known names. Some of those parameters</span>
+<span class="sd">    may be (or contain) classes, and the method expects those classes to</span>
+<span class="sd">    contain attributes with known names. If the method receives parameters or</span>
+<span class="sd">    attributes with names that is does not expect, this exception may be</span>
+<span class="sd">    reported. </span>
+<span class="sd">    </span>
+<span class="sd">    This exception can be reported by the API infrastructure for any method,</span>
+<span class="sd">    but it is specific to the API infrastructure, and should never be reported</span>
+<span class="sd">    by the implementation of any method. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * A client using stubs generated from the interface specification for</span>
+<span class="sd">      version2 of a class invokes the method passing one or more parameters that</span>
+<span class="sd">      were added in version2, but they are communicating with a server that only</span>
+<span class="sd">      supports version1 of the class.</span>
+<span class="sd">    * A client provides an unexpected parameter or attribute name when invoking</span>
+<span class="sd">      the method using a dynamic interface (for example REST).</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;UnexpectedInput&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">UnexpectedInput</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.unexpected_input&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">UnexpectedInput</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Unauthorized"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized">[docs]</a><span class="k">class</span> <span class="nc">Unauthorized</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Unauthorized`` exception indicates that the user is not authorized to</span>
+<span class="sd">    perform the method. </span>
+<span class="sd">    </span>
+<span class="sd">    API requests may include a security context containing user credentials.</span>
+<span class="sd">    For example, the user credentials could be a SAML token, a user name and</span>
+<span class="sd">    password, or the session identifier for a previously established session.</span>
+<span class="sd">    Invoking the method may require that the user identified by those</span>
+<span class="sd">    credentials has particular privileges on the method or on one or more</span>
+<span class="sd">    resource identifiers passed to the method. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The method requires that the user have one or more privileges on the</span>
+<span class="sd">      method, but the user identified by the credentials in the security context</span>
+<span class="sd">      does not have the required privileges.</span>
+<span class="sd">    * The method requires that the user have one or more privileges on a</span>
+<span class="sd">      resource identifier passed to the method, but the user identified by the</span>
+<span class="sd">      credentials in the security context does not have the required privileges.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The SAML token in the request&#39;s security context has expired. A</span>
+<span class="sd">      :class:`Unauthenticated` exception would be used instead.</span>
+<span class="sd">    * The user name and password in the request&#39;s security context are invalid.</span>
+<span class="sd">      The :class:`Unauthenticated` exception would be used instead.</span>
+<span class="sd">    * The session identifier in the request&#39;s security context identifies a</span>
+<span class="sd">      session that has expired. The :class:`Unauthenticated` exception would be</span>
+<span class="sd">      used instead.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">    For security reasons, the :attr:`Error.data` attribute in this exception is</span>
+<span class="sd">    None, and the :attr:`Error.messages` attribute in this exception does not</span>
+<span class="sd">    disclose why the user is not authorized to perform the method. For example</span>
+<span class="sd">    the messages would not disclose which privilege the user did not have or</span>
+<span class="sd">    which resource identifier the user did not have the required privilege to</span>
+<span class="sd">    access. The API documentation should indicate what privileges are required.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;Unauthorized&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">Unauthorized</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">Unauthorized</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Unauthenticated"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthenticated">[docs]</a><span class="k">class</span> <span class="nc">Unauthenticated</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Unauthenticated`` exception indicates that the method requires</span>
+<span class="sd">    authentication and the user is not authenticated. </span>
+<span class="sd">    </span>
+<span class="sd">    API requests may include a security context containing user credentials.</span>
+<span class="sd">    For example, the user credentials could be a SAML token, a user name and</span>
+<span class="sd">    password, or the session identifier for a previously established session. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The SAML token in the request&#39;s security context has expired.</span>
+<span class="sd">    * The user name and password in the request&#39;s security context are invalid.</span>
+<span class="sd">    * The session identifier in the request&#39;s security context identifies a</span>
+<span class="sd">      session that has expired.</span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The user is authenticated but isn&#39;t authorized to perform the requested</span>
+<span class="sd">      method. The :class:`Unauthorized` exception would be used instead.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">    For security reasons, the :attr:`Error.data` attribute in this exception is</span>
+<span class="sd">    None, and the :attr:`Error.messages` attribute in this exception does not</span>
+<span class="sd">    disclose which part of the security context is correct or incorrect. For</span>
+<span class="sd">    example the messages would not disclose whether a username or a password is</span>
+<span class="sd">    valid or invalid, but only that a combination of username and password is</span>
+<span class="sd">    invalid.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;Unauthenticated&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">Unauthenticated</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">Unauthenticated</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="UnableToAllocateResource"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.UnableToAllocateResource">[docs]</a><span class="k">class</span> <span class="nc">UnableToAllocateResource</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``UnableToAllocateResource`` exception indicates that the method failed</span>
+<span class="sd">    because it was unable to allocate or acquire a required resource. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to power on a virtual machine when there are not enough licenses</span>
+<span class="sd">      to do so.</span>
+<span class="sd">    * Trying to power on a virtual machine that would violate a resource usage</span>
+<span class="sd">      policy.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to power off a virtual machine that is in the process of being</span>
+<span class="sd">      powered on. A :class:`ResourceBusy` exception would be used instead.</span>
+<span class="sd">    * Trying to remove a VMFS datastore when the is a virtual machine</span>
+<span class="sd">      registered on any host attached to the datastore. The</span>
+<span class="sd">      :class:`ResourceInUse` exception would be used instead.</span>
+<span class="sd">    * Trying to add a virtual switch if the physical network adapter being</span>
+<span class="sd">      bridged is already in use. The :class:`ResourceInUse` exception would be</span>
+<span class="sd">      used instead.</span>
+<span class="sd">    * Attempt to invoke some method on a virtual machine when the virtual</span>
+<span class="sd">      machine&#39;s configuration file is not accessible (for example due to a</span>
+<span class="sd">      storage APD condition). The :class:`ResourceInaccessible` exception would</span>
+<span class="sd">      be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;UnableToAllocateResource&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">UnableToAllocateResource</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.unable_to_allocate_resource&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">UnableToAllocateResource</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="TimedOut"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.TimedOut">[docs]</a><span class="k">class</span> <span class="nc">TimedOut</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``TimedOut`` exception indicates that the method did not complete</span>
+<span class="sd">    within the allowed amount of time. The allowed amount of time might be: </span>
+<span class="sd">    </span>
+<span class="sd">    * provided by the client as an input parameter.</span>
+<span class="sd">    * a fixed limit of the class implementation that is a documented part of</span>
+<span class="sd">      the contract of the class.</span>
+<span class="sd">    * a configurable limit used by the implementation of the class.</span>
+<span class="sd">    * a dynamic limit computed by the implementation of the class.</span>
+<span class="sd">    </span>
+<span class="sd">    The method may or may not complete after the ``TimedOut`` exception was</span>
+<span class="sd">    reported. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The method was unable to complete within the timeout duration specified</span>
+<span class="sd">      by a parameter of the method.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * A server implementation that puts requests into a queue before</span>
+<span class="sd">      dispatching them might delete a request from the queue if it doesn&#39;t get</span>
+<span class="sd">      dispatched within *n* minutes. The :class:`ServiceUnavailable` exception</span>
+<span class="sd">      would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;TimedOut&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">TimedOut</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.timed_out&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">TimedOut</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ServiceUnavailable"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ServiceUnavailable">[docs]</a><span class="k">class</span> <span class="nc">ServiceUnavailable</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ServiceUnavailable`` exception indicates that the class is</span>
+<span class="sd">    unavailable. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Attempt to invoke a method when the server is too busy.</span>
+<span class="sd">    * Attempt to invoke a method when the server is undergoing maintenance.</span>
+<span class="sd">    * An method fails to contact VMware Tools running inside the virtual</span>
+<span class="sd">      machine.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * A client provides an invalid service or operation identifier when</span>
+<span class="sd">      invoking the method using a dynamic interface (for example REST). The</span>
+<span class="sd">      :class:`OperationNotFound` exception would be used instead.</span>
+<span class="sd">    * A client invokes the method from the class, but that class has not been</span>
+<span class="sd">      installed. The :class:`OperationNotFound` exception would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;ServiceUnavailable&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">ServiceUnavailable</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ServiceUnavailable</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ResourceInaccessible"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ResourceInaccessible">[docs]</a><span class="k">class</span> <span class="nc">ResourceInaccessible</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ResourceInaccessible`` exception indicates that the method could not</span>
+<span class="sd">    be completed because an entity is not accessible. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Attempt to invoke some method on a virtual machine when the virtual</span>
+<span class="sd">      machine&#39;s configuration file is not accessible (for example due to a</span>
+<span class="sd">      storage APD condition).</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Attempt to invoke some method when the server is too busy. The</span>
+<span class="sd">      :class:`ServiceUnavailable` exception would be used instead.</span>
+<span class="sd">    * Attempt to invoke some method when the server is undergoing maintenance.</span>
+<span class="sd">      The :class:`ServiceUnavailable` exception would be used instead.</span>
+<span class="sd">    * Some method fails to contact VMware Tools running inside the virtual</span>
+<span class="sd">      machine. The :class:`ServiceUnavailable` exception would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;ResourceInaccessible&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">ResourceInaccessible</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ResourceInaccessible</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ResourceInUse"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ResourceInUse">[docs]</a><span class="k">class</span> <span class="nc">ResourceInUse</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ResourceInUse`` exception indicates that the method could not be</span>
+<span class="sd">    completed because a resource is in use. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to remove a VMFS datastore when the is a virtual machine</span>
+<span class="sd">      registered on any host attached to the datastore.</span>
+<span class="sd">    * Trying to add a virtual switch if the physical network adapter being</span>
+<span class="sd">      bridged is already in use.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to power off a virtual machine that is in the process of being</span>
+<span class="sd">      powered on. The :class:`ResourceBusy` exception would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;ResourceInUse&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">ResourceInUse</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.resource_in_use&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ResourceInUse</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ResourceBusy"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ResourceBusy">[docs]</a><span class="k">class</span> <span class="nc">ResourceBusy</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ResourceBusy`` exception indicates that the method could not be</span>
+<span class="sd">    completed because a resource it needs is busy. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to power off a virtual machine that is in the process of being</span>
+<span class="sd">      powered on.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to remove a VMFS datastore when there is a virtual machine</span>
+<span class="sd">      registered on any host attached to the datastore. The</span>
+<span class="sd">      :class:`ResourceInUse` exception would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;ResourceBusy&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">ResourceBusy</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ResourceBusy</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="OperationNotFound"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.OperationNotFound">[docs]</a><span class="k">class</span> <span class="nc">OperationNotFound</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``OperationNotFound`` exception indicates that the method specified in</span>
+<span class="sd">    the request could not be found. </span>
+<span class="sd">    </span>
+<span class="sd">    Every API request specifies a service identifier and an operation</span>
+<span class="sd">    identifier along with the parameters. If the API infrastructure is unable</span>
+<span class="sd">    to find the requested class or method it reports this exception. </span>
+<span class="sd">    </span>
+<span class="sd">    This exception can be reported by the API infrastructure for any method,</span>
+<span class="sd">    but it is specific to the API infrastructure, and should never be reported</span>
+<span class="sd">    by the implementation of any method. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * A client provides an invalid service or operation identifier when</span>
+<span class="sd">      invoking the method using a dynamic interface (for example REST).</span>
+<span class="sd">    * A client invokes the method from a class, but that class has not been</span>
+<span class="sd">      installed.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * A client invokes a task scheduling method, but provides an invalid</span>
+<span class="sd">      service identifier or operation identifier. The :class:`NotFound` exception</span>
+<span class="sd">      would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;OperationNotFound&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">OperationNotFound</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.operation_not_found&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">OperationNotFound</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="NotFound"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound">[docs]</a><span class="k">class</span> <span class="nc">NotFound</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``NotFound`` exception indicates that a specified element could not be</span>
+<span class="sd">    found. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Invoke the method to retrieve information about a virtual machine,</span>
+<span class="sd">      passing an id that does not identify an existing virtual machine.</span>
+<span class="sd">    * Invoke the method to modify the configuration of a virtual nic, passing</span>
+<span class="sd">      an id that does not identify an existing virtual nic in the specified</span>
+<span class="sd">      virtual machine.</span>
+<span class="sd">    * Invoke the method to remove a vswitch, passing an id that does not</span>
+<span class="sd">      identify an existing vswitch.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;NotFound&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">NotFound</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">NotFound</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="NotAllowedInCurrentState"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotAllowedInCurrentState">[docs]</a><span class="k">class</span> <span class="nc">NotAllowedInCurrentState</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``NotAllowedInCurrentState`` exception indicates that the requested</span>
+<span class="sd">    method is not allowed with a resource or service in its current state. This</span>
+<span class="sd">    could be because the method is performing a configuration change that is</span>
+<span class="sd">    not allowed in the current state or because method itself is not allowed in</span>
+<span class="sd">    the current state. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to add a virtual device that cannot be hot plugged to a running</span>
+<span class="sd">      virtual machine.</span>
+<span class="sd">    * Trying to upgrade the virtual hardware version for a suspended virtual</span>
+<span class="sd">      machine.</span>
+<span class="sd">    * Trying to power off, reset, or suspend a virtual machine that is not</span>
+<span class="sd">      powered on.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to power off a virtual machine that is in the process of being</span>
+<span class="sd">      powered on. The :class:`ResourceBusy` exception would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">NotAllowedInCurrentState</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">NotAllowedInCurrentState</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="InvalidRequest"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidRequest">[docs]</a><span class="k">class</span> <span class="nc">InvalidRequest</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``InvalidRequest`` exception indicates that the request is malformed in</span>
+<span class="sd">    such a way that the server is unable to process it. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The XML in a SOAP request is not well-formed so the server cannot parse</span>
+<span class="sd">      the request.</span>
+<span class="sd">    * The XML in a SOAP request is well-formed but does not match the structure</span>
+<span class="sd">      required by the SOAP specification.</span>
+<span class="sd">    * A JSON-RPC request is not valid JSON.</span>
+<span class="sd">    * The JSON sent in a JSON-RPC request is not a valid JSON-RPC Request</span>
+<span class="sd">      object.</span>
+<span class="sd">    * The Request object from a JSON-RPC request does not match the structure</span>
+<span class="sd">      required by the API infrastructure.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The parameter has a value that is not with the required range. The</span>
+<span class="sd">      :class:`InvalidArgument` exception would be used instead.</span>
+<span class="sd">    * The name of the method specified in the request doesn&#39;t not match any</span>
+<span class="sd">      known method. The :class:`NotFound` exception would be used instead.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">    Some transport protocols (for example JSON-RPC) include their own mechanism</span>
+<span class="sd">    for reporting these kinds of errors, and the API infrastructure for a</span>
+<span class="sd">    programming language may expose the errors using a language specific</span>
+<span class="sd">    mechanism, so this exception might not be used.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;InvalidRequest&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">InvalidRequest</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.invalid_request&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">InvalidRequest</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="InvalidElementType"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType">[docs]</a><span class="k">class</span> <span class="nc">InvalidElementType</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``InvalidElementType`` exception indicates that the server was unable</span>
+<span class="sd">    to fulfil the request because an element of a specific type cannot be a</span>
+<span class="sd">    member of particular group. </span>
+<span class="sd">    </span>
+<span class="sd">    This exception could be reported, for example, if an attempt is made to put</span>
+<span class="sd">    an element into the wrong type of container. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Attempt to put a virtual machine into a folder that can only contain</span>
+<span class="sd">      hosts.</span>
+<span class="sd">    * Attempt to attach a SCSI virtual disk to an IDE port.</span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * A parameter has a value that is not of the expected type. The</span>
+<span class="sd">      :class:`InvalidArgument` exception would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;InvalidElementType&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">InvalidElementType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_type&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">InvalidElementType</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="InvalidElementConfiguration"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementConfiguration">[docs]</a><span class="k">class</span> <span class="nc">InvalidElementConfiguration</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``InvalidElementConfiguration`` exception indicates that an attempt to</span>
+<span class="sd">    modify the configuration of an element or a group containing the element</span>
+<span class="sd">    failed due to the configuraton of the element. A typical case is when the</span>
+<span class="sd">    method is am attempt to change the group membership of the element fails,</span>
+<span class="sd">    in which case a configuration change on the element may allow the group</span>
+<span class="sd">    membership change to succeed. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Attempt to move a host with a fault tolerant virtual machine out of a</span>
+<span class="sd">      cluster (i.e. make the host a standalone host).</span>
+<span class="sd">    * Attempt to remove a host from a DRS cluster without putting the host into</span>
+<span class="sd">      maintenance mode.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;InvalidElementConfiguration&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">InvalidElementConfiguration</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.invalid_element_configuration&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">InvalidElementConfiguration</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="InvalidArgument"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument">[docs]</a><span class="k">class</span> <span class="nc">InvalidArgument</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``InvalidArgument`` exception indicates that the values received for</span>
+<span class="sd">    one or more parameters are not acceptable. </span>
+<span class="sd">    </span>
+<span class="sd">    This exception is reported by the API infrastructure, so it could occur in</span>
+<span class="sd">    response to the invocation of any method. It may also be reported as the</span>
+<span class="sd">    return value of method-specific validation. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * A parameter has a value that is not of the expected type.</span>
+<span class="sd">    * A parameter has a value that is not in the required range.</span>
+<span class="sd">    * A parameter has a value that is not one of the specifically allowed</span>
+<span class="sd">      strings.</span>
+<span class="sd">    * One attribute of a class is the tag for a tagged union, and has a</span>
+<span class="sd">      specific value but another attribute of the class that is required to be</span>
+<span class="sd">      specified when the tag has that value is not specified, or another</span>
+<span class="sd">      attribute of the class that is required to be unspecified when the tag has</span>
+<span class="sd">      that value is specified.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to create a new tag in tag category when a tag with the specified</span>
+<span class="sd">      name already exists the tag category. The :class:`AlreadyExists` exception</span>
+<span class="sd">      would be used instead.</span>
+<span class="sd">    * Invoke the method to retrieve information about a virtual machine,</span>
+<span class="sd">      passing an id that does not identify an existing virtual machine. The</span>
+<span class="sd">      :class:`NotFound` exception would be used instead.</span>
+<span class="sd">    * Attempt to put a virtual machine into a folder that can only contain</span>
+<span class="sd">      hosts. The :class:`InvalidElementType` exception would be used instead.</span>
+<span class="sd">    * Attempt to attach a SCSI virtual disk to an IDE port. The</span>
+<span class="sd">      :class:`InvalidElementType` exception would be used instead.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;InvalidArgument&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">InvalidArgument</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">InvalidArgument</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="InternalServerError"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InternalServerError">[docs]</a><span class="k">class</span> <span class="nc">InternalServerError</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``InternalServerError`` exception indicates that the server encounters</span>
+<span class="sd">    an unexpected condition that prevented it from fulfilling the request. </span>
+<span class="sd">    </span>
+<span class="sd">    This exception is reported by the API infrastructure, so it could occur in</span>
+<span class="sd">    response to the invocation of any method. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The method returns a value whose type doesn&#39;t match the type type the</span>
+<span class="sd">      method says it should return.</span>
+<span class="sd">    * The method reports an exception that is not included in the list of</span>
+<span class="sd">      exceptions the method says that it can report.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;InternalServerError&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">InternalServerError</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.internal_server_error&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">InternalServerError</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="FeatureInUse"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.FeatureInUse">[docs]</a><span class="k">class</span> <span class="nc">FeatureInUse</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``FeatureInUse`` exception indicates that an action cannot be completed</span>
+<span class="sd">    because a feature is in use. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to disable snapshots on a virtual machine which has a snapshot.</span>
+<span class="sd">    * Trying to downgrade a license that has licensed features that are in use.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;FeatureInUse&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">FeatureInUse</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.feature_in_use&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">FeatureInUse</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ConcurrentChange"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ConcurrentChange">[docs]</a><span class="k">class</span> <span class="nc">ConcurrentChange</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``ConcurrentChange`` exception indicates that a data structure, entity,</span>
+<span class="sd">    or resource has been modified since some earlier point in time. Typically</span>
+<span class="sd">    this happens when the client is doing the *write* portion of a</span>
+<span class="sd">    read-modify-write sequence and indicates that it wants the server to notify</span>
+<span class="sd">    it if the data in the server has changed after it did the *read*, so that</span>
+<span class="sd">    it can avoid overwriting that change inadvertantly.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;ConcurrentChange&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">ConcurrentChange</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.concurrent_change&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ConcurrentChange</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Canceled"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Canceled">[docs]</a><span class="k">class</span> <span class="nc">Canceled</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Canceled`` exception indicates that the method canceled itself in</span>
+<span class="sd">    response to an explicit request to do so. Methods being &quot;canceled&quot; for</span>
+<span class="sd">    other reasons (for example the client connection was closed, a time out</span>
+<span class="sd">    occured, or due to excessive resource consumption) should not report this</span>
+<span class="sd">    exception. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * A user is monitoring the progress of the method in a GUI and sees that it</span>
+<span class="sd">      is likely to take longer than he is willing to wait and clicks the cancel</span>
+<span class="sd">      button.</span>
+<span class="sd">    * A user invokes the method using a command-line tool and decides that she</span>
+<span class="sd">      didn&#39;t really want to invoke that method, and presses CTRL-c.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">     Counterexamples: </span>
+<span class="sd">    </span>
+<span class="sd">    * The client&#39;s connection to the server was closed. Reporting an exception</span>
+<span class="sd">      is pointless since the client will not receive the error response because</span>
+<span class="sd">      the connection has been closed.</span>
+<span class="sd">    * The request is taking longer than some amount of time. The</span>
+<span class="sd">      :class:`TimedOut` exception would be reported if the time was specified as</span>
+<span class="sd">      part of the input or is documented in the API contract.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;Canceled&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">Canceled</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.canceled&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">Canceled</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="AlreadyInDesiredState"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.AlreadyInDesiredState">[docs]</a><span class="k">class</span> <span class="nc">AlreadyInDesiredState</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``AlreadyInDesiredState`` exception indicates that an attempt to change</span>
+<span class="sd">    the state of a resource or service had no effect because the resource or</span>
+<span class="sd">    service is already in the desired state. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to power on a virtual machine that is already powered on.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;AlreadyInDesiredState&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">AlreadyInDesiredState</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.already_in_desired_state&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">AlreadyInDesiredState</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="AlreadyExists"><a class="viewcode-back" href="../../../../../com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.AlreadyExists">[docs]</a><span class="k">class</span> <span class="nc">AlreadyExists</span><span class="p">(</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``AlreadyExists`` exception indicates that an attempt was made to</span>
+<span class="sd">    create an entity but the entity already exists. Typically the entity has a</span>
+<span class="sd">    name or identifier that is required to be unique in some context, but there</span>
+<span class="sd">    is already an entity with that name or identifier in that context. </span>
+<span class="sd">    </span>
+<span class="sd">     Examples: </span>
+<span class="sd">    </span>
+<span class="sd">    * Trying to create a new tag category when a tag category with the</span>
+<span class="sd">      specified name already exists.</span>
+<span class="sd">    * Trying to create a new tag in tag category when a tag with the specified</span>
+<span class="sd">      name already exists the tag category.</span>
+<span class="sd">    * Trying to create a LUN with a specific UUID on a node (for replication</span>
+<span class="sd">      purposes) when a LUN with that UUID already exists on the node.</span>
+<span class="sd">    * Trying to create a file in a directory or move or copy a file to a</span>
+<span class="sd">      directory when a file with that name already exists in the directory.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_qualname</span> <span class="o">=</span> <span class="s">&#39;AlreadyExists&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">messages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  messages: :class:`list` of :class:`com.vmware.vapi.std_client.LocalizableMessage`</span>
+<span class="sd">        :param messages: Stack of one or more localizable messages for human exception</span>
+<span class="sd">            consumers. </span>
+<span class="sd">            </span>
+<span class="sd">            The message at the top of the stack (first in the list) describes</span>
+<span class="sd">            the exception from the perspective of the method the client</span>
+<span class="sd">            invoked. Each subsequent message in the stack describes the &quot;cause&quot;</span>
+<span class="sd">            of the prior message.</span>
+<span class="sd">        :type  data: :class:`vmware.vapi.struct.VapiStruct` or ``None``</span>
+<span class="sd">        :param data: Data to facilitate clients responding to the method reporting a</span>
+<span class="sd">            standard exception to indicating that it was unable to complete</span>
+<span class="sd">            successfully. </span>
+<span class="sd">            </span>
+<span class="sd">            Methods may provide data that clients can use when responding to</span>
+<span class="sd">            exceptions. Since the data that clients need may be specific to the</span>
+<span class="sd">            context of the method reporting the exception, different methods</span>
+<span class="sd">            that report the same exception may provide different data in the</span>
+<span class="sd">            exception. The documentation for each each method will describe</span>
+<span class="sd">            what, if any, data it provides for each exception it reports. The</span>
+<span class="sd">            :class:`ArgumentLocations`, :class:`FileLocations`, and</span>
+<span class="sd">            :class:`TransientIndication` classes are intended as possible</span>
+<span class="sd">            values for this attribute.</span>
+<span class="sd">            :class:`com.vmware.vapi.std_client.DynamicID` may also be useful as</span>
+<span class="sd">            a value for this attribute (although that is not its primary</span>
+<span class="sd">            purpose). Some classes may provide their own specific classes for</span>
+<span class="sd">            use as the value of this attribute when reporting exceptions from</span>
+<span class="sd">            their methods.</span>
+<span class="sd">            Some methods will not set this attribute when reporting exceptions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+</div>
+<span class="n">AlreadyExists</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ErrorType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.errors.already_exists&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std_client</span><span class="p">,</span> <span class="s">&#39;LocalizableMessage&#39;</span><span class="p">)),</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">DynamicStructType</span><span class="p">(</span><span class="s">&#39;vmware.vapi.dynamic_struct&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">VapiStruct</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">AlreadyExists</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

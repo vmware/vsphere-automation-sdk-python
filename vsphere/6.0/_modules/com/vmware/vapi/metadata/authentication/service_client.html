@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vapi.metadata.authentication.service_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vapi.metadata.authentication.service_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2014 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vapi.metadata.authentication.service.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vapi.metadata.authentication.service_client`` module provides</span>
+<span class="sd">classes to retrieve authentication information for operation elements.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.metadata.authentication_client</span>
+
+
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../../../../com.vmware.vapi.metadata.authentication.html#com.vmware.vapi.metadata.authentication.service_client.Operation">[docs]</a><span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Operation`` class provides methods to retrieve authentication</span>
+<span class="sd">    information of an operation element. </span>
+<span class="sd">    </span>
+<span class="sd">    An operation element is said to contain authentication information if</span>
+<span class="sd">    authentication schemes are specified in the authentication definition file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.operation&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for operation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_OperationStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Operation.list"><a class="viewcode-back" href="../../../../../../com.vmware.vapi.metadata.authentication.html#com.vmware.vapi.metadata.authentication.service_client.Operation.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">service_id</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the identifiers for the operation elements contained in the</span>
+<span class="sd">        service element corresponding to ``service_id`` that have</span>
+<span class="sd">        authentication information.</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Identifier of the service element.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: List of identifiers for the operation elements contained in the</span>
+<span class="sd">            service element that have authentication information.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.operation``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the service element associated with ``service_id`` does not have</span>
+<span class="sd">            any operation elements that have authentication information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="n">service_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Operation.get"><a class="viewcode-back" href="../../../../../../com.vmware.vapi.metadata.authentication.html#com.vmware.vapi.metadata.authentication.service_client.Operation.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">service_id</span><span class="p">,</span>
+            <span class="n">operation_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the authentication information about an operation element</span>
+<span class="sd">        corresponding to ``operation_id`` contained in the service element</span>
+<span class="sd">        corresponding to ``service_id``.</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Identifier of the service element.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Identifier of the operation element.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.operation``.</span>
+<span class="sd">        :rtype: :class:`com.vmware.vapi.metadata.authentication_client.OperationInfo`</span>
+<span class="sd">        :return: The</span>
+<span class="sd">            :class:`com.vmware.vapi.metadata.authentication_client.OperationInfo`</span>
+<span class="sd">            instance that corresponds to ``operation_id``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the service element associated with ``service_id`` does not</span>
+<span class="sd">            exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the operation element associated with ``operation_id`` does not</span>
+<span class="sd">            exist.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the operation element associated with ``operation_id`` does not</span>
+<span class="sd">            have any authentication information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="n">service_id</span><span class="p">,</span>
+                            <span class="s">&#39;operation_id&#39;</span><span class="p">:</span> <span class="n">operation_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_OperationStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.service&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.service&#39;</span><span class="p">),</span>
+            <span class="s">&#39;operation_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.operation&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">authentication_client</span><span class="p">,</span> <span class="s">&#39;OperationInfo&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.authentication.service.operation&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

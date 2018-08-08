@@ -1,0 +1,1373 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.appliance.techpreview.monitoring_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.appliance.techpreview.monitoring_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.appliance.techpreview.monitoring.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="Snmp"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp">[docs]</a><span class="k">class</span> <span class="nc">Snmp</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ``Snmp`` class provides methods SNMP agent operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_SnmpStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Snmp.SNMPAuthProto"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPAuthProto">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPAuthProto</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPAuthProto`` class Defines SNMP authentication protocols</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">none</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        NONE</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SHA1</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SHA1</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">MD5</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        MD5</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`SNMPAuthProto` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPAuthProto</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">SNMPAuthProto</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">),</span>
+        <span class="n">SNMPAuthProto</span><span class="p">(</span><span class="s">&#39;SHA1&#39;</span><span class="p">),</span>
+        <span class="n">SNMPAuthProto</span><span class="p">(</span><span class="s">&#39;MD5&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">SNMPAuthProto</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_auth_proto&#39;</span><span class="p">,</span>
+        <span class="n">SNMPAuthProto</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPPrivProto"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPPrivProto">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPPrivProto</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPPrivProto`` class Defines SNMP privacy protocols</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">AES128</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        AES128</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">none</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        NONE</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`SNMPPrivProto` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPPrivProto</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">SNMPPrivProto</span><span class="p">(</span><span class="s">&#39;AES128&#39;</span><span class="p">),</span>
+        <span class="n">SNMPPrivProto</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">SNMPPrivProto</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_priv_proto&#39;</span><span class="p">,</span>
+        <span class="n">SNMPPrivProto</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPSecLevel"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPSecLevel">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPSecLevel</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPSecLevel`` class Defines SNMP decurity levels</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">none</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        none</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        auth</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">priv</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        priv</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`SNMPSecLevel` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPSecLevel</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">SNMPSecLevel</span><span class="p">(</span><span class="s">&#39;none&#39;</span><span class="p">),</span>
+        <span class="n">SNMPSecLevel</span><span class="p">(</span><span class="s">&#39;auth&#39;</span><span class="p">),</span>
+        <span class="n">SNMPSecLevel</span><span class="p">(</span><span class="s">&#39;priv&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">SNMPSecLevel</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_sec_level&#39;</span><span class="p">,</span>
+        <span class="n">SNMPSecLevel</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPv3Notfication"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPv3Notfication">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPv3Notfication</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPv3Notfication`` class Defines SNMP v3 notification types</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inform</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        inform</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">trap</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        trap</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`SNMPv3Notfication` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPv3Notfication</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">SNMPv3Notfication</span><span class="p">(</span><span class="s">&#39;inform&#39;</span><span class="p">),</span>
+        <span class="n">SNMPv3Notfication</span><span class="p">(</span><span class="s">&#39;trap&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">SNMPv3Notfication</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNM_pv3_notfication&#39;</span><span class="p">,</span>
+        <span class="n">SNMPv3Notfication</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPLimits"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPLimits">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPLimits</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPLimits`` class Structure that provides various limits of the</span>
+<span class="sd">        SNMP agent.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">max_communities</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">max_trap_destinations_v1</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">max_destinations_v3</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">max_notification_filters</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">max_community_length</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">max_buffer_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  max_communities: :class:`long`</span>
+<span class="sd">            :param max_communities: Set up maximum communities limit</span>
+<span class="sd">            :type  max_trap_destinations_v1: :class:`long`</span>
+<span class="sd">            :param max_trap_destinations_v1: Set up max trap destinations limit</span>
+<span class="sd">            :type  max_destinations_v3: :class:`long`</span>
+<span class="sd">            :param max_destinations_v3: Set up max destinations limit</span>
+<span class="sd">            :type  max_notification_filters: :class:`long`</span>
+<span class="sd">            :param max_notification_filters: Set up max notification Filters</span>
+<span class="sd">            :type  max_community_length: :class:`long`</span>
+<span class="sd">            :param max_community_length: Set up max community length</span>
+<span class="sd">            :type  max_buffer_size: :class:`long`</span>
+<span class="sd">            :param max_buffer_size: Set up max buffer size</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_communities</span> <span class="o">=</span> <span class="n">max_communities</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_trap_destinations_v1</span> <span class="o">=</span> <span class="n">max_trap_destinations_v1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_destinations_v3</span> <span class="o">=</span> <span class="n">max_destinations_v3</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_notification_filters</span> <span class="o">=</span> <span class="n">max_notification_filters</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_community_length</span> <span class="o">=</span> <span class="n">max_community_length</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_buffer_size</span> <span class="o">=</span> <span class="n">max_buffer_size</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPLimits</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_limits&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;max_communities&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;max_trap_destinations_v1&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;max_destinations_v3&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;max_notification_filters&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;max_community_length&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;max_buffer_size&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPLimits</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPTestResults"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPTestResults">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPTestResults</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPTestResults`` class Structure to provide operators diagnostics</span>
+<span class="sd">        test results.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">success</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  success: :class:`bool`</span>
+<span class="sd">            :param success: Set success to true/false</span>
+<span class="sd">            :type  message: :class:`str`</span>
+<span class="sd">            :param message: message</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="n">success</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPTestResults</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_test_results&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">(),</span>
+            <span class="s">&#39;message&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPTestResults</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPStats"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPStats">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPStats</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPStats`` class Structure to provide operators diagnostics on snmp</span>
+<span class="sd">        agent itself.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">sysuptime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">worstrtimelast</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">avgresponsetime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">worstresponsetime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">inpkts</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">outpkts</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">usmstatsnotintimewindows</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">usmstatsunknownusernames</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">usmstatsunknownengineids</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">usmstatswrongdigests</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">usmstatsdecryptionerrors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">inbadversions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">inbadcommunitynames</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">inbadcommunityuses</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">inasnparseerrs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">intoobigs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">innosuchnames</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">inbadvalues</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">ingenerrs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">outtoobigs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">outnosuchnames</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">outbadvalues</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">outgenerrs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">outtraps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">silentdrops</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">avgvarbinds</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">maxvarbinds</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  sysuptime: :class:`str`</span>
+<span class="sd">            :param sysuptime: System uptime</span>
+<span class="sd">            :type  worstrtimelast: :class:`str`</span>
+<span class="sd">            :param worstrtimelast: Last updated time</span>
+<span class="sd">            :type  avgresponsetime: :class:`str`</span>
+<span class="sd">            :param avgresponsetime: Average response time</span>
+<span class="sd">            :type  worstresponsetime: :class:`str`</span>
+<span class="sd">            :param worstresponsetime: Response time</span>
+<span class="sd">            :type  inpkts: :class:`long`</span>
+<span class="sd">            :param inpkts: No of input packets</span>
+<span class="sd">            :type  outpkts: :class:`long`</span>
+<span class="sd">            :param outpkts: No of output packets</span>
+<span class="sd">            :type  usmstatsnotintimewindows: :class:`long`</span>
+<span class="sd">            :param usmstatsnotintimewindows: No of stats not in time window</span>
+<span class="sd">            :type  usmstatsunknownusernames: :class:`long`</span>
+<span class="sd">            :param usmstatsunknownusernames: No of usm stats unknown</span>
+<span class="sd">            :type  usmstatsunknownengineids: :class:`long`</span>
+<span class="sd">            :param usmstatsunknownengineids: No of usm stats unknown engine ids</span>
+<span class="sd">            :type  usmstatswrongdigests: :class:`long`</span>
+<span class="sd">            :param usmstatswrongdigests: No of wrogn digests</span>
+<span class="sd">            :type  usmstatsdecryptionerrors: :class:`long`</span>
+<span class="sd">            :param usmstatsdecryptionerrors: No. of decryption errors</span>
+<span class="sd">            :type  inbadversions: :class:`long`</span>
+<span class="sd">            :param inbadversions: No of bad versions</span>
+<span class="sd">            :type  inbadcommunitynames: :class:`long`</span>
+<span class="sd">            :param inbadcommunitynames: No of bad community names</span>
+<span class="sd">            :type  inbadcommunityuses: :class:`long`</span>
+<span class="sd">            :param inbadcommunityuses: No of bad community uses</span>
+<span class="sd">            :type  inasnparseerrs: :class:`long`</span>
+<span class="sd">            :param inasnparseerrs: No of parse errors</span>
+<span class="sd">            :type  intoobigs: :class:`long`</span>
+<span class="sd">            :param intoobigs: No of too bigs</span>
+<span class="sd">            :type  innosuchnames: :class:`long`</span>
+<span class="sd">            :param innosuchnames: No of no such names</span>
+<span class="sd">            :type  inbadvalues: :class:`long`</span>
+<span class="sd">            :param inbadvalues: No of bad values</span>
+<span class="sd">            :type  ingenerrs: :class:`long`</span>
+<span class="sd">            :param ingenerrs: No of gen errors</span>
+<span class="sd">            :type  outtoobigs: :class:`long`</span>
+<span class="sd">            :param outtoobigs: No out output too bigs</span>
+<span class="sd">            :type  outnosuchnames: :class:`long`</span>
+<span class="sd">            :param outnosuchnames: No of no such names</span>
+<span class="sd">            :type  outbadvalues: :class:`long`</span>
+<span class="sd">            :param outbadvalues: No of bad values</span>
+<span class="sd">            :type  outgenerrs: :class:`long`</span>
+<span class="sd">            :param outgenerrs: No of gen errors</span>
+<span class="sd">            :type  outtraps: :class:`long`</span>
+<span class="sd">            :param outtraps: No of output traps</span>
+<span class="sd">            :type  silentdrops: :class:`long`</span>
+<span class="sd">            :param silentdrops: No of silent drops</span>
+<span class="sd">            :type  avgvarbinds: :class:`long`</span>
+<span class="sd">            :param avgvarbinds: No of ave:rage var binds</span>
+<span class="sd">            :type  maxvarbinds: :class:`long`</span>
+<span class="sd">            :param maxvarbinds: No of max var binds</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sysuptime</span> <span class="o">=</span> <span class="n">sysuptime</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">worstrtimelast</span> <span class="o">=</span> <span class="n">worstrtimelast</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">avgresponsetime</span> <span class="o">=</span> <span class="n">avgresponsetime</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">worstresponsetime</span> <span class="o">=</span> <span class="n">worstresponsetime</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inpkts</span> <span class="o">=</span> <span class="n">inpkts</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outpkts</span> <span class="o">=</span> <span class="n">outpkts</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">usmstatsnotintimewindows</span> <span class="o">=</span> <span class="n">usmstatsnotintimewindows</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">usmstatsunknownusernames</span> <span class="o">=</span> <span class="n">usmstatsunknownusernames</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">usmstatsunknownengineids</span> <span class="o">=</span> <span class="n">usmstatsunknownengineids</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">usmstatswrongdigests</span> <span class="o">=</span> <span class="n">usmstatswrongdigests</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">usmstatsdecryptionerrors</span> <span class="o">=</span> <span class="n">usmstatsdecryptionerrors</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inbadversions</span> <span class="o">=</span> <span class="n">inbadversions</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inbadcommunitynames</span> <span class="o">=</span> <span class="n">inbadcommunitynames</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inbadcommunityuses</span> <span class="o">=</span> <span class="n">inbadcommunityuses</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inasnparseerrs</span> <span class="o">=</span> <span class="n">inasnparseerrs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">intoobigs</span> <span class="o">=</span> <span class="n">intoobigs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">innosuchnames</span> <span class="o">=</span> <span class="n">innosuchnames</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inbadvalues</span> <span class="o">=</span> <span class="n">inbadvalues</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ingenerrs</span> <span class="o">=</span> <span class="n">ingenerrs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outtoobigs</span> <span class="o">=</span> <span class="n">outtoobigs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outnosuchnames</span> <span class="o">=</span> <span class="n">outnosuchnames</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outbadvalues</span> <span class="o">=</span> <span class="n">outbadvalues</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outgenerrs</span> <span class="o">=</span> <span class="n">outgenerrs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outtraps</span> <span class="o">=</span> <span class="n">outtraps</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">silentdrops</span> <span class="o">=</span> <span class="n">silentdrops</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">avgvarbinds</span> <span class="o">=</span> <span class="n">avgvarbinds</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxvarbinds</span> <span class="o">=</span> <span class="n">maxvarbinds</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPStats</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_stats&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;sysuptime&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;worstrtimelast&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;avgresponsetime&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;worstresponsetime&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;inpkts&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;outpkts&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;usmstatsnotintimewindows&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;usmstatsunknownusernames&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;usmstatsunknownengineids&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;usmstatswrongdigests&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;usmstatsdecryptionerrors&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;inbadversions&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;inbadcommunitynames&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;inbadcommunityuses&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;inasnparseerrs&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;intoobigs&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;innosuchnames&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;inbadvalues&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;ingenerrs&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;outtoobigs&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;outnosuchnames&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;outbadvalues&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;outgenerrs&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;outtraps&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;silentdrops&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;avgvarbinds&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;maxvarbinds&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPStats</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPConfig"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPConfig">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPConfig</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPConfig`` class Structure that defines the SNMP configuration,</span>
+<span class="sd">        provided as input to set(), and never the result of get(). See</span>
+<span class="sd">        SNMPConfigReadOnly. This structure is used to configure SNMP v1, v2c, and</span>
+<span class="sd">        v3.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">authentication</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">communities</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">engineid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">loglevel</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">notraps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">privacy</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">remoteusers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">syscontact</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">syslocation</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">users</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">v3targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  authentication: :class:`Snmp.SNMPAuthProto`</span>
+<span class="sd">            :param authentication: Set the default authentication protocol. Values can be none, MD5,</span>
+<span class="sd">                or SHA1.</span>
+<span class="sd">            :type  communities: :class:`list` of :class:`str`</span>
+<span class="sd">            :param communities: Set up to ten communities, each of no more than 64 characters long.</span>
+<span class="sd">                The format is: community1[,community2,...]. This setting overwrites</span>
+<span class="sd">                any previous settings.</span>
+<span class="sd">            :type  engineid: :class:`str`</span>
+<span class="sd">            :param engineid: Set SNMPv3 engine ID. The engine ID must contain 5 to 32</span>
+<span class="sd">                hexadecimal characters. &quot;0x&quot; and colon (:) are removed from the ID.</span>
+<span class="sd">            :type  loglevel: :class:`str`</span>
+<span class="sd">            :param loglevel: System Agent syslog logging level: debug|info|warning|error.</span>
+<span class="sd">            :type  notraps: :class:`list` of :class:`str`</span>
+<span class="sd">            :param notraps: Comma-separated list of trap OIDs (object identifiers) for traps</span>
+<span class="sd">                not to be sent by the agent. Use &#39;reset&#39; to clear the setting.</span>
+<span class="sd">            :type  port: :class:`long`</span>
+<span class="sd">            :param port: Set up a UDP port which the SNMP agent uses to listen on for</span>
+<span class="sd">                polling requests. The default UDP port is 161.</span>
+<span class="sd">            :type  privacy: :class:`Snmp.SNMPPrivProto`</span>
+<span class="sd">            :param privacy: Set the default privacy protocol. Values: none or AES128.</span>
+<span class="sd">            :type  remoteusers: :class:`list` of :class:`str`</span>
+<span class="sd">            :param remoteusers: Set up to five inform user IDs. The format is:</span>
+<span class="sd">                user/auth-proto/-|auth-hash/priv-proto/-|priv-hash/engine-id[,...].</span>
+<span class="sd">                Here, user must be maximum 32 characters long; auth-proto is none,</span>
+<span class="sd">                MD5 or SHA1; priv-proto is none or AES; &#39;-&#39; indicates no hash;</span>
+<span class="sd">                engine-id is a hexadecimal string &#39;0x0-9a-f&#39; and must be up to 32</span>
+<span class="sd">                characters long.</span>
+<span class="sd">            :type  syscontact: :class:`str`</span>
+<span class="sd">            :param syscontact: System contact string as presented in sysContact.0. Up to 255</span>
+<span class="sd">                characters long.</span>
+<span class="sd">            :type  syslocation: :class:`str`</span>
+<span class="sd">            :param syslocation: System location string as presented in sysLocation.0. Up to 255</span>
+<span class="sd">                characters long.</span>
+<span class="sd">            :type  targets: :class:`list` of :class:`str`</span>
+<span class="sd">            :param targets: Set up to three targets to which to send SNMPv1 traps. The format</span>
+<span class="sd">                is: ip-or-hostname[\\\\@port]/community[,...]. The default port is</span>
+<span class="sd">                UDP 162. This setting overwrites any previous settings.</span>
+<span class="sd">            :type  users: :class:`list` of :class:`str`</span>
+<span class="sd">            :param users: Set up to five local users. The format is:</span>
+<span class="sd">                user/-|auth-hash/-|priv-hash/model[,...]. Here user is maximum 32</span>
+<span class="sd">                characters long; &#39;-&#39; indicates no hash; model is one of none, auth</span>
+<span class="sd">                or priv.</span>
+<span class="sd">            :type  v3targets: :class:`list` of :class:`str`</span>
+<span class="sd">            :param v3targets: Set up to three SNMPv3 notification targets. Format is:</span>
+<span class="sd">                ip-or-hostname[\\\\@port]/remote-user/security-level/trap|inform[,...].</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span> <span class="o">=</span> <span class="n">authentication</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">communities</span> <span class="o">=</span> <span class="n">communities</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engineid</span> <span class="o">=</span> <span class="n">engineid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span> <span class="o">=</span> <span class="n">loglevel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notraps</span> <span class="o">=</span> <span class="n">notraps</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">privacy</span> <span class="o">=</span> <span class="n">privacy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remoteusers</span> <span class="o">=</span> <span class="n">remoteusers</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">syscontact</span> <span class="o">=</span> <span class="n">syscontact</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">syslocation</span> <span class="o">=</span> <span class="n">syslocation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="n">users</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v3targets</span> <span class="o">=</span> <span class="n">v3targets</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPConfig</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_config&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;authentication&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPAuthProto&#39;</span><span class="p">),</span>
+            <span class="s">&#39;communities&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;engineid&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;loglevel&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;notraps&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;privacy&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPPrivProto&#39;</span><span class="p">),</span>
+            <span class="s">&#39;remoteusers&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;syscontact&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;syslocation&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;targets&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;users&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;v3targets&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPConfig</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPUser"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPUser">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPUser</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPUser`` class Structure that defines information associated with</span>
+<span class="sd">        an SNMP user. authKey and privKey are localized keys defined in</span>
+<span class="sd">        http://tools.ietf.org/html/rfc3826#section-1.2.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">sec_level</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">auth_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">priv_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  username: :class:`str`</span>
+<span class="sd">            :param username: SNMP Username</span>
+<span class="sd">            :type  sec_level: :class:`Snmp.SNMPSecLevel`</span>
+<span class="sd">            :param sec_level: SNMP security level</span>
+<span class="sd">            :type  auth_key: :class:`str`</span>
+<span class="sd">            :param auth_key: SNMP authorization key</span>
+<span class="sd">            :type  priv_key: :class:`str`</span>
+<span class="sd">            :param priv_key: SNMP privacy key</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sec_level</span> <span class="o">=</span> <span class="n">sec_level</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">priv_key</span> <span class="o">=</span> <span class="n">priv_key</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPUser</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_user&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;sec_level&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPSecLevel&#39;</span><span class="p">),</span>
+            <span class="s">&#39;auth_key&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;priv_key&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPUser</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPv3Target"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPv3Target">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPv3Target</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPv3Target`` class Structure that defines an SNMP v3 inform or</span>
+<span class="sd">        trap target.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">sec_level</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">ip</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  type: :class:`Snmp.SNMPv3Notfication`</span>
+<span class="sd">            :param type: SNMP target type</span>
+<span class="sd">            :type  sec_level: :class:`Snmp.SNMPSecLevel`</span>
+<span class="sd">            :param sec_level: SNMP security level</span>
+<span class="sd">            :type  ip: :class:`str`</span>
+<span class="sd">            :param ip: SNMP target ip</span>
+<span class="sd">            :type  port: :class:`long`</span>
+<span class="sd">            :param port: SNMP target port</span>
+<span class="sd">            :type  user: :class:`str`</span>
+<span class="sd">            :param user: SNMP User</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sec_level</span> <span class="o">=</span> <span class="n">sec_level</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="n">ip</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPv3Target</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNM_pv3_target&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPv3Notfication&#39;</span><span class="p">),</span>
+            <span class="s">&#39;sec_level&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPSecLevel&#39;</span><span class="p">),</span>
+            <span class="s">&#39;ip&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPv3Target</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPv1TrapTarget"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPv1TrapTarget">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPv1TrapTarget</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPv1TrapTarget`` class Structure that defines an SNMP v1/v2c trap</span>
+<span class="sd">        target.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">ip</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">community</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  ip: :class:`str`</span>
+<span class="sd">            :param ip: SNMP target ip</span>
+<span class="sd">            :type  port: :class:`long`</span>
+<span class="sd">            :param port: SNMP target port</span>
+<span class="sd">            :type  community: :class:`str`</span>
+<span class="sd">            :param community: SNMP target community</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="n">ip</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">community</span> <span class="o">=</span> <span class="n">community</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPv1TrapTarget</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNM_pv1_trap_target&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;ip&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;community&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPv1TrapTarget</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPRemoteUser"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPRemoteUser">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPRemoteUser</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPRemoteUser`` class Structure that defines a user at particular</span>
+<span class="sd">        remote SNMPv3 entity needed when using informs. auth_key and priv_key</span>
+<span class="sd">        contained localized keys as defined in</span>
+<span class="sd">        http://tools.ietf.org/html/rfc3826#section-1.2.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">sec_level</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">authentication</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">auth_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">privacy</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">priv_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">engineid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  username: :class:`str`</span>
+<span class="sd">            :param username: SNMP Username</span>
+<span class="sd">            :type  sec_level: :class:`Snmp.SNMPSecLevel`</span>
+<span class="sd">            :param sec_level: SNMP security level</span>
+<span class="sd">            :type  authentication: :class:`Snmp.SNMPAuthProto`</span>
+<span class="sd">            :param authentication: SNMP authorization protocol</span>
+<span class="sd">            :type  auth_key: :class:`str`</span>
+<span class="sd">            :param auth_key: SNMP authorization key</span>
+<span class="sd">            :type  privacy: :class:`Snmp.SNMPPrivProto`</span>
+<span class="sd">            :param privacy: SNMP privacy protocol</span>
+<span class="sd">            :type  priv_key: :class:`str`</span>
+<span class="sd">            :param priv_key: SNMP privacy key</span>
+<span class="sd">            :type  engineid: :class:`str`</span>
+<span class="sd">            :param engineid: SNMP v3 engine id</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sec_level</span> <span class="o">=</span> <span class="n">sec_level</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span> <span class="o">=</span> <span class="n">authentication</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">privacy</span> <span class="o">=</span> <span class="n">privacy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">priv_key</span> <span class="o">=</span> <span class="n">priv_key</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engineid</span> <span class="o">=</span> <span class="n">engineid</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPRemoteUser</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_remote_user&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;sec_level&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPSecLevel&#39;</span><span class="p">),</span>
+            <span class="s">&#39;authentication&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPAuthProto&#39;</span><span class="p">),</span>
+            <span class="s">&#39;auth_key&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;privacy&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPPrivProto&#39;</span><span class="p">),</span>
+            <span class="s">&#39;priv_key&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;engineid&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPRemoteUser</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPConfigReadOnly"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPConfigReadOnly">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPConfigReadOnly</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPConfigReadOnly`` class Structure that defines the SNMP</span>
+<span class="sd">        configuration, the result of get(), and never provided as input to set().</span>
+<span class="sd">        This structure differs from SNMPConfig because it contains localized keys</span>
+<span class="sd">        (as defined in http://tools.ietf.org/html/rfc3826#section-1.2), instead of</span>
+<span class="sd">        raw secret strings. This structure can be used to configure SNMP v1, v2c,</span>
+<span class="sd">        and v3. Keep this structure in sync with vmw_snmp.py:_default_config().</span>
+<span class="sd">        Note that if a field if left empty, it is considered unset and will be</span>
+<span class="sd">        ignored. Existing array elements below can be unset by sending an element</span>
+<span class="sd">        with the string &#39;reset&#39;.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">authentication</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">communities</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">enable</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">engineid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">loglevel</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">notraps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">privacy</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">syscontact</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">syslocation</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">users</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">remoteusers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">v3targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">pid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  authentication: :class:`Snmp.SNMPAuthProto`</span>
+<span class="sd">            :param authentication: Set the default authentication protocol. Values can be none, MD5,</span>
+<span class="sd">                or SHA1.</span>
+<span class="sd">            :type  communities: :class:`list` of :class:`str`</span>
+<span class="sd">            :param communities: Set up to ten communities, each of no more than 64 characters long.</span>
+<span class="sd">                The format is: community1[,community2,...]. This setting overwrites</span>
+<span class="sd">                any previous settings.</span>
+<span class="sd">            :type  enable: :class:`bool`</span>
+<span class="sd">            :param enable: Set enable to true/false</span>
+<span class="sd">            :type  engineid: :class:`str`</span>
+<span class="sd">            :param engineid: Set SNMPv3 engine ID.</span>
+<span class="sd">            :type  loglevel: :class:`str`</span>
+<span class="sd">            :param loglevel: System Agent syslog logging level: debug|info|warning|error.</span>
+<span class="sd">            :type  notraps: :class:`list` of :class:`str`</span>
+<span class="sd">            :param notraps: Comma-separated list of trap OIDs (object identifiers) for traps</span>
+<span class="sd">                not to be sent by the agent. Use &#39;reset&#39; to clear the setting.</span>
+<span class="sd">            :type  port: :class:`long`</span>
+<span class="sd">            :param port: Set up a UDP port which the SNMP agent uses to listen on for</span>
+<span class="sd">                polling requests. The default UDP port is 161.</span>
+<span class="sd">            :type  privacy: :class:`Snmp.SNMPPrivProto`</span>
+<span class="sd">            :param privacy: Set the default privacy protocol.</span>
+<span class="sd">            :type  syscontact: :class:`str`</span>
+<span class="sd">            :param syscontact: System contact string as presented in sysContact.0. Up to 255</span>
+<span class="sd">                characters long.</span>
+<span class="sd">            :type  syslocation: :class:`str`</span>
+<span class="sd">            :param syslocation: System location string as presented in sysLocation.0. Up to 255</span>
+<span class="sd">                characters long.</span>
+<span class="sd">            :type  targets: :class:`list` of :class:`Snmp.SNMPv1TrapTarget`</span>
+<span class="sd">            :param targets: Set up to three targets to which to send SNMPv1 traps.</span>
+<span class="sd">            :type  users: :class:`list` of :class:`Snmp.SNMPUser`</span>
+<span class="sd">            :param users: Set up to five local users.</span>
+<span class="sd">            :type  remoteusers: :class:`list` of :class:`Snmp.SNMPRemoteUser`</span>
+<span class="sd">            :param remoteusers: Set up remote users.</span>
+<span class="sd">            :type  v3targets: :class:`list` of :class:`Snmp.SNMPv3Target`</span>
+<span class="sd">            :param v3targets: Set up to three SNMPv3 notification targets. Format is:</span>
+<span class="sd">                ip-or-hostname[\\\\@port]/remote-user/security-level/trap|inform[,...].</span>
+<span class="sd">            :type  pid: :class:`str`</span>
+<span class="sd">            :param pid: Set up pid</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span> <span class="o">=</span> <span class="n">authentication</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">communities</span> <span class="o">=</span> <span class="n">communities</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enable</span> <span class="o">=</span> <span class="n">enable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engineid</span> <span class="o">=</span> <span class="n">engineid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span> <span class="o">=</span> <span class="n">loglevel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">notraps</span> <span class="o">=</span> <span class="n">notraps</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">privacy</span> <span class="o">=</span> <span class="n">privacy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">syscontact</span> <span class="o">=</span> <span class="n">syscontact</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">syslocation</span> <span class="o">=</span> <span class="n">syslocation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="n">users</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remoteusers</span> <span class="o">=</span> <span class="n">remoteusers</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v3targets</span> <span class="o">=</span> <span class="n">v3targets</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPConfigReadOnly</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_config_read_only&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;authentication&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPAuthProto&#39;</span><span class="p">),</span>
+            <span class="s">&#39;communities&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;enable&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">(),</span>
+            <span class="s">&#39;engineid&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;loglevel&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;notraps&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;privacy&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPPrivProto&#39;</span><span class="p">),</span>
+            <span class="s">&#39;syscontact&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;syslocation&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;targets&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPv1TrapTarget&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;users&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPUser&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;remoteusers&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPRemoteUser&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;v3targets&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPv3Target&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;pid&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPConfigReadOnly</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPHashConfig"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPHashConfig">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPHashConfig</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPHashConfig`` class Structure to provide up to two secrets to</span>
+<span class="sd">        combine with the SNMPv3 engine ID and authentication or privacy protocol to</span>
+<span class="sd">        form a localized hash. auth_hash is always required, priv_hash can be</span>
+<span class="sd">        empty. By default arguments are paths on the local filesystem, raw_secret</span>
+<span class="sd">        takes path to be the actual raw secret. First implementation was in ESXi:</span>
+<span class="sd">        esxcli system snmp hash --help</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">auth_hash</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">priv_hash</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">raw_secret</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  auth_hash: :class:`str`</span>
+<span class="sd">            :param auth_hash: Provide filename to secret for authentication hash, use in set</span>
+<span class="sd">                --users (required secret)</span>
+<span class="sd">            :type  priv_hash: :class:`str`</span>
+<span class="sd">            :param priv_hash: Provide filename to secret for privacy hash, use in set --users</span>
+<span class="sd">                (secret)</span>
+<span class="sd">            :type  raw_secret: :class:`bool`</span>
+<span class="sd">            :param raw_secret: Make --auth_path and --priv_path flags read raw secret from command</span>
+<span class="sd">                line instead of file.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auth_hash</span> <span class="o">=</span> <span class="n">auth_hash</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">priv_hash</span> <span class="o">=</span> <span class="n">priv_hash</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">raw_secret</span> <span class="o">=</span> <span class="n">raw_secret</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPHashConfig</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_hash_config&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;auth_hash&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;priv_hash&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;raw_secret&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">BooleanType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPHashConfig</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Snmp.SNMPHashResults"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.SNMPHashResults">[docs]</a>    <span class="k">class</span> <span class="nc">SNMPHashResults</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Snmp.SNMPHashResults`` class Structure to provide operators diagnostics</span>
+<span class="sd">        test results.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">auth_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">priv_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  auth_key: :class:`str`</span>
+<span class="sd">            :param auth_key: SNMP authentication key</span>
+<span class="sd">            :type  priv_key: :class:`str`</span>
+<span class="sd">            :param priv_key: SNMP privacy key</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">priv_key</span> <span class="o">=</span> <span class="n">priv_key</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">SNMPHashResults</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp.SNMP_hash_results&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;auth_key&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;priv_key&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">SNMPHashResults</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Snmp.reset"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Restore settings to factory defaults.</span>
+
+
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;reset&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Snmp.enable"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.enable">[docs]</a>    <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start a disabled SNMP agent.</span>
+
+
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;enable&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Snmp.hash"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.hash">[docs]</a>    <span class="k">def</span> <span class="nf">hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">config</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate localized keys for secure SNMPv3 communications.</span>
+
+<span class="sd">        :type  config: :class:`Snmp.SNMPHashConfig`</span>
+<span class="sd">        :param config: SNMP hash configuration.</span>
+<span class="sd">        :rtype: :class:`Snmp.SNMPHashResults`</span>
+<span class="sd">        :return: SNMP hash result</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;hash&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Snmp.limits"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.limits">[docs]</a>    <span class="k">def</span> <span class="nf">limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get SNMP limits information.</span>
+
+
+<span class="sd">        :rtype: :class:`Snmp.SNMPLimits`</span>
+<span class="sd">        :return: SNMP limits structure</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;limits&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Snmp.get"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an SNMP agent configuration.</span>
+
+
+<span class="sd">        :rtype: :class:`Snmp.SNMPConfigReadOnly`</span>
+<span class="sd">        :return: SNMP config structure</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Snmp.disable"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.disable">[docs]</a>    <span class="k">def</span> <span class="nf">disable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stop an enabled SNMP agent.</span>
+
+
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;disable&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Snmp.set"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set SNMP configuration.</span>
+
+<span class="sd">        :type  config: :class:`Snmp.SNMPConfig`</span>
+<span class="sd">        :param config: SNMP configuration.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;set&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Snmp.test"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send a warmStart notification to all configured traps and inform</span>
+<span class="sd">        destinations (see RFC 3418).</span>
+
+
+<span class="sd">        :rtype: :class:`Snmp.SNMPTestResults`</span>
+<span class="sd">        :return: SNMP test result</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Snmp.stats"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.monitoring_client.Snmp.stats">[docs]</a>    <span class="k">def</span> <span class="nf">stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate diagnostics report for snmp agent.</span>
+
+
+<span class="sd">        :rtype: :class:`Snmp.SNMPStats`</span>
+<span class="sd">        :return: SNMP stats</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;stats&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_SnmpStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for reset operation</span>
+        <span class="n">reset_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">reset_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">reset_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">reset_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for enable operation</span>
+        <span class="n">enable_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">enable_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">enable_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">enable_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for hash operation</span>
+        <span class="n">hash_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPHashConfig&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">hash_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">hash_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">hash_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for limits operation</span>
+        <span class="n">limits_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">limits_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">limits_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">limits_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for disable operation</span>
+        <span class="n">disable_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">disable_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">disable_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">disable_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for set operation</span>
+        <span class="n">set_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPConfig&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">set_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">set_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">set_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for test operation</span>
+        <span class="n">test_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">test_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">test_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">test_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for stats operation</span>
+        <span class="n">stats_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">stats_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">stats_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">stats_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;reset&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">reset_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">reset_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">reset_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">reset_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;enable&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">enable_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">enable_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">enable_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">enable_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;hash&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">hash_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPHashResults&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">hash_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">hash_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">hash_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;limits&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">limits_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPLimits&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">limits_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">limits_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">limits_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPConfigReadOnly&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;disable&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">disable_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">disable_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">disable_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">disable_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">set_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">set_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">set_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">set_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;test&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">test_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPTestResults&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">test_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">test_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">test_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">stats_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Snmp.SNMPStats&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">stats_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">stats_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">stats_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.appliance.techpreview.monitoring.snmp&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

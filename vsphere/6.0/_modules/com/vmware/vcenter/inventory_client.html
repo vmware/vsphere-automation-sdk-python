@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vcenter.inventory_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vcenter.inventory_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2015 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vcenter.inventory.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vcenter.inventory_client`` component provides methods and</span>
+<span class="sd">classes for retrieving vCenter datastore and network information for a given</span>
+<span class="sd">:class:`list` of identifiers.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="Datastore"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.inventory_client.Datastore">[docs]</a><span class="k">class</span> <span class="nc">Datastore</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Datastore`` class provides methods to retrieve information about</span>
+<span class="sd">    datastores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_DatastoreStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Datastore.Info"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.inventory_client.Datastore.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Datastore.Info`` class contains information about a datastore.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  type: :class:`str`</span>
+<span class="sd">            :param type: Type of the datastore.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be one of ``Datastore`` or ``StoragePod``. When</span>
+<span class="sd">                methods return a value of this class as a return value, the</span>
+<span class="sd">                attribute will be one of ``Datastore`` or ``StoragePod``.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.inventory.datastore.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Datastore.find"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.inventory_client.Datastore.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">datastores</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns datastore information for the specified datastores. The key in</span>
+<span class="sd">        the return value :class:`dict` is the datastore identifier and the</span>
+<span class="sd">        value in the :class:`dict` is the datastore information.</span>
+
+<span class="sd">        :type  datastores: :class:`list` of :class:`str`</span>
+<span class="sd">        :param datastores: Identifiers of the datastores for which information will be</span>
+<span class="sd">            returned.</span>
+<span class="sd">            The parameter must contain identifiers for the resource type:</span>
+<span class="sd">            ``Datastore``.</span>
+<span class="sd">        :rtype: :class:`dict` of :class:`str` and (:class:`Datastore.Info` or ``None``)</span>
+<span class="sd">        :return: Datastore information for the specified datastores. The key in the</span>
+<span class="sd">            return value :class:`dict` is the datastore identifier and the</span>
+<span class="sd">            value in the :class:`dict` is the datastore information.</span>
+<span class="sd">            The key in the return value :class:`dict` will be an identifier for</span>
+<span class="sd">            the resource type: ``Datastore``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if no datastore can be found for one or more of the datastore</span>
+<span class="sd">            identifiers in ``datastores``</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * Method execution requires ``System.Read``.</span>
+<span class="sd">            * The resource ``Datastore`` referenced by the parameter</span>
+<span class="sd">              ``datastores`` requires ``System.Read``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;find&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;datastores&#39;</span><span class="p">:</span> <span class="n">datastores</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Network"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.inventory_client.Network">[docs]</a><span class="k">class</span> <span class="nc">Network</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Network`` class provides methods to retrieve information about</span>
+<span class="sd">    vCenter Server networks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_NetworkStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Network.Info"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.inventory_client.Network.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Network.Info`` class contains information about a vCenter Server</span>
+<span class="sd">        network.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  type: :class:`str`</span>
+<span class="sd">            :param type: Type of the vCenter Server network.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be one of ``Network``,</span>
+<span class="sd">                ``DistributedVirtualPortgroup``, or ``OpaqueNetwork``. When methods</span>
+<span class="sd">                return a value of this class as a return value, the attribute will</span>
+<span class="sd">                be one of ``Network``, ``DistributedVirtualPortgroup``, or</span>
+<span class="sd">                ``OpaqueNetwork``.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.inventory.network.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Network.find"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.inventory_client.Network.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">networks</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns network information for the specified vCenter Server networks.</span>
+<span class="sd">        The key in the return value :class:`dict` is the network identifier and</span>
+<span class="sd">        the value in the :class:`dict` is the network information.</span>
+
+<span class="sd">        :type  networks: :class:`list` of :class:`str`</span>
+<span class="sd">        :param networks: Identifiers of the vCenter Server networks for which information</span>
+<span class="sd">            will be returned.</span>
+<span class="sd">            The parameter must contain identifiers for the resource type:</span>
+<span class="sd">            ``Network``.</span>
+<span class="sd">        :rtype: :class:`dict` of :class:`str` and (:class:`Network.Info` or ``None``)</span>
+<span class="sd">        :return: Network information for the specified vCenter Server networks. The</span>
+<span class="sd">            key in the return value :class:`dict` is the network identifier and</span>
+<span class="sd">            the value in the :class:`dict` is the network information.</span>
+<span class="sd">            The key in the return value :class:`dict` will be an identifier for</span>
+<span class="sd">            the resource type: ``Network``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if no datastore can be found for one or more of the vCenter Server</span>
+<span class="sd">            network identifiers in ``networks``</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized`</span>
+<span class="sd">            if you do not have all of the privileges described as follows: </span>
+<span class="sd">            </span>
+<span class="sd">            * Method execution requires ``System.Read``.</span>
+<span class="sd">            * The resource ``Network`` referenced by the parameter ``networks``</span>
+<span class="sd">              requires ``System.Read``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;find&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;networks&#39;</span><span class="p">:</span> <span class="n">networks</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_DatastoreStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for find operation</span>
+        <span class="n">find_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;datastores&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="p">})</span>
+        <span class="n">find_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">find_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">find_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;find&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">find_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Datastore.Info&#39;</span><span class="p">))),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">find_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">find_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">find_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.inventory.datastore&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_NetworkStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for find operation</span>
+        <span class="n">find_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;networks&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="p">})</span>
+        <span class="n">find_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">find_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">find_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;find&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">find_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Network.Info&#39;</span><span class="p">))),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">find_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">find_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">find_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.inventory.network&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

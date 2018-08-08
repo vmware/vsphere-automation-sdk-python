@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.protocol.client.msg.json_connector &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.protocol.client.msg.json_connector</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Json client handler</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">ApiProvider</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.protocol.client.msg.generic_connector</span> <span class="kn">import</span> <span class="n">GenericConnector</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.constants</span> <span class="kn">import</span> <span class="n">PROCESSORS</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.load</span> <span class="kn">import</span> <span class="n">import_multiple_classes</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.serializers.jsonrpc</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">JsonRpcDictToVapi</span><span class="p">,</span>
+    <span class="n">vapi_jsonrpc_request_factory</span><span class="p">,</span> <span class="n">deserialize_response</span><span class="p">,</span>
+    <span class="n">vapi_jsonrpc_error_transport_error</span><span class="p">,</span>
+    <span class="n">VAPI_INVOKE</span>
+<span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="JsonClientProvider"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.json_connector.JsonClientProvider">[docs]</a><span class="k">class</span> <span class="nc">JsonClientProvider</span><span class="p">(</span><span class="n">ApiProvider</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Json rpc client provider &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rpc_provider</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Json rpc client provider init</span>
+
+<span class="sd">        :type  rpc_provider: :class:`vmware.vapi.protocol.client.rpc.provider.RpcProvider`</span>
+<span class="sd">        :param rpc_provider: rpc provider object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ApiProvider</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpc_provider</span> <span class="o">=</span> <span class="n">rpc_provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_vapi</span> <span class="o">=</span> <span class="n">JsonRpcDictToVapi</span>
+
+        <span class="c"># Load all the post processors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_processors</span> <span class="o">=</span> <span class="n">import_multiple_classes</span><span class="p">(</span><span class="n">__name__</span><span class="p">,</span>
+                                                       <span class="n">PROCESSORS</span><span class="p">)</span>
+
+<div class="viewcode-block" id="JsonClientProvider.invoke"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.json_connector.JsonClientProvider.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invokes the specified method using the input value and the</span>
+<span class="sd">        the execution context provided</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param input_value: method input parameters</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: execution context object</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: method result object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;serviceId&#39;</span><span class="p">:</span> <span class="n">service_id</span><span class="p">,</span>
+            <span class="s">&#39;operationId&#39;</span><span class="p">:</span> <span class="n">operation_id</span><span class="p">,</span>
+            <span class="s">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_value</span><span class="p">,</span>
+            <span class="s">&#39;ctx&#39;</span><span class="p">:</span> <span class="n">ctx</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_request</span><span class="p">(</span><span class="n">VAPI_INVOKE</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_vapi</span><span class="o">.</span><span class="n">method_result</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="c">#</span>
+    <span class="c">## vapi methods end</span>
+</div>
+    <span class="k">def</span> <span class="nf">_do_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform json rpc request</span>
+
+<span class="sd">        :type  method: :class:`str`</span>
+<span class="sd">        :param method: json rpc method name</span>
+<span class="sd">        :type  params: :class:`dict` or None</span>
+<span class="sd">        :param params: json rpc method params</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.serializer.jsonrpc.JsonRpcResponse`</span>
+<span class="sd">        :return: json rpc response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;_do_request: request </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpc_provider</span><span class="o">.</span><span class="n">connect</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Connection refused&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">vapi_jsonrpc_error_transport_error</span><span class="p">()</span>
+        <span class="n">request_ctx</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">}</span>
+        <span class="n">id_</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">advance_iterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>  <span class="c"># atomic increment</span>
+        <span class="n">id_</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">id_</span><span class="p">)</span>  <span class="c"># TODO: Bypass java barf temporary</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">vapi_jsonrpc_request_factory</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+                                               <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                               <span class="nb">id</span><span class="o">=</span><span class="n">id_</span><span class="p">)</span>
+        <span class="n">request_msg</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">processor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_processors</span><span class="p">:</span>
+            <span class="n">request_msg</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">request_msg</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;_do_request: request </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">request_msg</span><span class="p">)</span>
+        <span class="c"># do_request returns response_ctx, response_msg</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">response_msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpc_provider</span><span class="o">.</span><span class="n">do_request</span><span class="p">(</span><span class="n">request_ctx</span><span class="p">,</span> <span class="n">request_msg</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;_do_request: response </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">response_msg</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">deserialize_response</span><span class="p">(</span><span class="n">response_msg</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">validate_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;_do_request: method </span><span class="si">%s</span><span class="s"> response with error </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span>
+                         <span class="n">method</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">response</span><span class="o">.</span><span class="n">error</span>  <span class="c"># pylint: disable=E0702</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+</div>
+<div class="viewcode-block" id="get_protocol_connector"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.client.msg.html#vmware.vapi.protocol.client.msg.json_connector.get_protocol_connector">[docs]</a><span class="k">def</span> <span class="nf">get_protocol_connector</span><span class="p">(</span><span class="n">rpc_provider</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get protocol connector</span>
+
+<span class="sd">    :type  rpc_provider: :class:`vmware.vapi.protocol.client.rpc.provider.RpcProvider`</span>
+<span class="sd">    :param rpc_provider: rpc provider object</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.protocol.client.connector.Connector`</span>
+<span class="sd">    :return: json rpc connector object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">api_provider</span> <span class="o">=</span> <span class="n">JsonClientProvider</span><span class="p">(</span><span class="n">rpc_provider</span><span class="p">)</span>
+    <span class="n">connector</span> <span class="o">=</span> <span class="n">GenericConnector</span><span class="p">(</span><span class="n">rpc_provider</span><span class="p">,</span> <span class="n">api_provider</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">connector</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

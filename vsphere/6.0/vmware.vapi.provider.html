@@ -1,0 +1,1127 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>provider Package &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="index.html" />
+    <link rel="up" title="vapi Package" href="vmware.vapi.html" />
+    <link rel="next" title="security Package" href="vmware.vapi.security.html" />
+    <link rel="prev" title="transport Package" href="vmware.vapi.protocol.server.transport.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vmware.vapi.security.html" title="security Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="vmware.vapi.protocol.server.transport.html" title="transport Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="vmware.html" >vmware Package</a> &raquo;</li>
+          <li><a href="vmware.vapi.html" accesskey="U">vapi Package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="provider-package">
+<h1>provider Package<a class="headerlink" href="#provider-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">provider</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-vmware.vapi.provider"></span></div>
+<div class="section" id="module-vmware.vapi.provider.aggregator">
+<span id="aggregator-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">aggregator</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.provider.aggregator" title="Permalink to this headline">¶</a></h2>
+<p>Aggregator Api Provider</p>
+<dl class="class">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.aggregator.</tt><tt class="descname">AggregatorProvider</tt><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a></p>
+<p>AggregatorProvider is an aggregating implementation of the
+ApiProvider interface. It aggregates a bunch of ApiProvider
+instances and expose it.</p>
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.get_providers">
+<tt class="descname">get_providers</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.get_providers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.get_providers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the connection information of ApiProviders
+registered with the AggregatorProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt> of (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Tuple containing rpc protocol, msg protocol and uri</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.get_service_identifiers">
+<em class="property">static </em><tt class="descname">get_service_identifiers</tt><big>(</big><em>api_provider</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.get_service_identifiers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.get_service_identifiers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invokes introspection service list on the Api Provider and retrieves
+the list of services</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>api_provider</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a>) &#8211; ApiProvider instance to be used for retrieving service
+identifiers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of service identifiers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">Exception</span></tt>: if service identifiers could not be retrieved</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.invoke">
+<tt class="descname">invoke</tt><big>(</big><em>service_id</em>, <em>operation_id</em>, <em>input_value</em>, <em>ctx</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.invoke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.invoke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invokes the specified method using the execution context and
+the input provided</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</li>
+<li><strong>operation_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Operation identifier</li>
+<li><strong>input_value</strong> (<a class="reference internal" href="vmware.vapi.data.html#vmware.vapi.data.value.StructValue" title="vmware.vapi.data.value.StructValue"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.data.value.StructValue</span></tt></a>) &#8211; Method input parameters</li>
+<li><strong>ctx</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ExecutionContext" title="vmware.vapi.core.ExecutionContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ExecutionContext</span></tt></a>) &#8211; Execution context for this method</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodResult" title="vmware.vapi.core.MethodResult"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodResult</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Result of the method invocation</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.register_by_properties">
+<tt class="descname">register_by_properties</tt><big>(</big><em>properties</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.register_by_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.register_by_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a provider using a properties dictionary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>properties</strong> (<tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt>) &#8211; Properties dictionary</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.register_provider">
+<tt class="descname">register_provider</tt><big>(</big><em>provider</em>, <em>name</em>, <em>rpc</em>, <em>msg</em>, <em>addr</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.register_provider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.register_provider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a ApiProvider with the AggregatorProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>provider</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a>) &#8211; ApiProvider to be registered</li>
+<li><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Provider name</li>
+<li><strong>rpc</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; RPC Protocol</li>
+<li><strong>msg</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Msg Protocol</li>
+<li><strong>addr</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; URI of the ApiProvider</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.register_service">
+<tt class="descname">register_service</tt><big>(</big><em>service_id</em>, <em>provider</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.register_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.register_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register an service with the AggregatorProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</li>
+<li><strong>provider</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a>) &#8211; ApiProvider impl. for the specified service identifier</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.reload_providers">
+<tt class="descname">reload_providers</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.reload_providers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.reload_providers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload all the providers in the AggregatorProvider</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.unregister_provider">
+<tt class="descname">unregister_provider</tt><big>(</big><em>provider_name</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.unregister_provider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.unregister_provider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unregister a provider from AggregatorProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>provider_name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Provider to be unregistered</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.unregister_provider_by_name">
+<tt class="descname">unregister_provider_by_name</tt><big>(</big><em>provider_name</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.unregister_provider_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.unregister_provider_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unregister a provider from AggregatorProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>provider_name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Provider to be unregistered</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.aggregator.AggregatorProvider.unregister_service">
+<tt class="descname">unregister_service</tt><big>(</big><em>service_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#AggregatorProvider.unregister_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.AggregatorProvider.unregister_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unregister an service from AggregatorProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; service to be unregistered</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.provider.aggregator.get_provider">
+<tt class="descclassname">vmware.vapi.provider.aggregator.</tt><tt class="descname">get_provider</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/aggregator.html#get_provider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.aggregator.get_provider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the singleton AggregatorProvider instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.AggregatorProvider</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">AggregatorProvider instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.provider.authentication">
+<span id="authentication-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">authentication</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.provider.authentication" title="Permalink to this headline">¶</a></h2>
+<p>Authentication API Provider filter</p>
+<dl class="class">
+<dt id="vmware.vapi.provider.authentication.AuthenticationFilter">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.authentication.</tt><tt class="descname">AuthenticationFilter</tt><big>(</big><em>next_provider=None</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/authentication.html#AuthenticationFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.authentication.AuthenticationFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vmware.vapi.provider.filter.ApiProviderFilter" title="vmware.vapi.provider.filter.ApiProviderFilter"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.filter.ApiProviderFilter</span></tt></a></p>
+<p>AuthenticationFilter in API Provider chain enforces the authentication
+schemes specified in the authentication metadata file</p>
+<p>Initialize AuthenticationFilter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>next_provider</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; API Provider to invoke the requests</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="vmware.vapi.provider.authentication.AuthenticationFilter.invoke">
+<tt class="descname">invoke</tt><big>(</big><em>service_id</em>, <em>operation_id</em>, <em>input_value</em>, <em>ctx</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/authentication.html#AuthenticationFilter.invoke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.authentication.AuthenticationFilter.invoke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoke an API request</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</li>
+<li><strong>operation_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Operation identifier</li>
+<li><strong>input_value</strong> (<a class="reference internal" href="vmware.vapi.data.html#vmware.vapi.data.value.StructValue" title="vmware.vapi.data.value.StructValue"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.data.value.StructValue</span></tt></a>) &#8211; Method input parameters</li>
+<li><strong>ctx</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ExecutionContext" title="vmware.vapi.core.ExecutionContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ExecutionContext</span></tt></a>) &#8211; Execution context for this method</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodResult" title="vmware.vapi.core.MethodResult"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodResult</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Result of the method invocation</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.provider.authentication.get_provider">
+<tt class="descclassname">vmware.vapi.provider.authentication.</tt><tt class="descname">get_provider</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/authentication.html#get_provider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.authentication.get_provider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the singleton AuthenticationFilter instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#vmware.vapi.provider.authentication.AuthenticationFilter" title="vmware.vapi.provider.authentication.AuthenticationFilter"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.authentication.AuthenticationFilter</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">AuthenticationFilter instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.provider.authentication.load_metadata">
+<tt class="descclassname">vmware.vapi.provider.authentication.</tt><tt class="descname">load_metadata</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/authentication.html#load_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.authentication.load_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the metadata from the json file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Authentication metadata</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.provider.filter">
+<span id="filter-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">filter</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.provider.filter" title="Permalink to this headline">¶</a></h2>
+<p>API Provider filter</p>
+<dl class="class">
+<dt id="vmware.vapi.provider.filter.ApiProviderFilter">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.filter.</tt><tt class="descname">ApiProviderFilter</tt><big>(</big><em>next_provider=None</em>, <em>errors_to_augment=None</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/filter.html#ApiProviderFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.filter.ApiProviderFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a></p>
+<p>ApiProviderFilter is a base class for all ApiProvider filters.
+This handles all the common methods and also takes care of augmenting
+errors reported by an ApiProvider filter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>next_provider</strong> &#8211; Next API Provider in the chain</td>
+</tr>
+</tbody>
+</table>
+<p>Initialize ApiProviderFilter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>next_provider</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; API Provider to invoke the requests</li>
+<li><strong>errors_to_augment</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of
+<a class="reference internal" href="vmware.vapi.data.html#vmware.vapi.data.definition.ErrorDefinition" title="vmware.vapi.data.definition.ErrorDefinition"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.data.definition.ErrorDefinition</span></tt></a>) &#8211; List of error definitions to be added to method
+definitions</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="vmware.vapi.provider.filter.ApiProviderFilter.invoke">
+<tt class="descname">invoke</tt><big>(</big><em>service_id</em>, <em>operation_id</em>, <em>input_value</em>, <em>ctx</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/filter.html#ApiProviderFilter.invoke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.filter.ApiProviderFilter.invoke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoke an API request. Derived classes of ApiProviderFilter
+should call this method to invoke the request. This can be done
+by: ApiProviderFilter.invoke(self, ctx, method_id, input_value).</p>
+<p>This method calls the next API Provider. If the request is made to
+&#8220;get&#8221; operation of vAPI Operation Introspection service, errors are
+augmented to the method result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</li>
+<li><strong>operation_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Operation identifier</li>
+<li><strong>input_value</strong> (<a class="reference internal" href="vmware.vapi.data.html#vmware.vapi.data.value.StructValue" title="vmware.vapi.data.value.StructValue"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.data.value.StructValue</span></tt></a>) &#8211; Method input parameters</li>
+<li><strong>ctx</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ExecutionContext" title="vmware.vapi.core.ExecutionContext"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ExecutionContext</span></tt></a>) &#8211; Execution context for this method</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodResult" title="vmware.vapi.core.MethodResult"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodResult</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Result of the method invocation</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="interposer-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">interposer</span></tt> Module<a class="headerlink" href="#interposer-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-vmware.vapi.provider.introspection">
+<span id="introspection-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">introspection</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.provider.introspection" title="Permalink to this headline">¶</a></h2>
+<p>Introspection services</p>
+<dl class="class">
+<dt id="vmware.vapi.provider.introspection.AggregatorIntrospector">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">AggregatorIntrospector</tt><big>(</big><em>name</em>, <em>local_provider</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#AggregatorIntrospector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.AggregatorIntrospector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector" title="vmware.vapi.provider.introspection.ApiProviderIntrospector"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.ApiProviderIntrospector</span></tt></a></p>
+<p>Specialization of <a class="reference internal" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector" title="vmware.vapi.provider.introspection.ApiProviderIntrospector"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.ApiProviderIntrospector</span></tt></a>
+that uses data available in Aggregator Provider to process the Introspection
+service API requests</p>
+<p>Initialize AggregatorIntrospector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Name of the provider</li>
+<li><strong>local_provider</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a>) &#8211; LocalProvider that will be used to serve
+introspection requests for introspection services itself.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.AggregatorIntrospector.add_service">
+<tt class="descname">add_service</tt><big>(</big><em>service_id</em>, <em>api_provider</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#AggregatorIntrospector.add_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.AggregatorIntrospector.add_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new service to the introspector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</li>
+<li><strong>api_provider</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a>) &#8211; ApiProvider that is exposing the service</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.AggregatorIntrospector.get_checksum">
+<tt class="descname">get_checksum</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#AggregatorIntrospector.get_checksum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.AggregatorIntrospector.get_checksum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.AggregatorIntrospector.get_operation_info">
+<tt class="descname">get_operation_info</tt><big>(</big><em>service_id</em>, <em>operation_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#AggregatorIntrospector.get_operation_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.AggregatorIntrospector.get_operation_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.AggregatorIntrospector.get_operations">
+<tt class="descname">get_operations</tt><big>(</big><em>service_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#AggregatorIntrospector.get_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.AggregatorIntrospector.get_operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.AggregatorIntrospector.get_service_info">
+<tt class="descname">get_service_info</tt><big>(</big><em>service_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#AggregatorIntrospector.get_service_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.AggregatorIntrospector.get_service_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.AggregatorIntrospector.get_services">
+<tt class="descname">get_services</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#AggregatorIntrospector.get_services"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.AggregatorIntrospector.get_services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.AggregatorIntrospector.remove_service">
+<tt class="descname">remove_service</tt><big>(</big><em>service_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#AggregatorIntrospector.remove_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.AggregatorIntrospector.remove_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new service to the introspector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.provider.introspection.ApiProviderIntrospector">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">ApiProviderIntrospector</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ApiProviderIntrospector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Abstract class for fetching introspection information</p>
+<p>Initialize ApiProviderIntrospector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Name of the provider</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.ApiProviderIntrospector.get_checksum">
+<tt class="descname">get_checksum</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ApiProviderIntrospector.get_checksum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the checksum of the API information available</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Checksum of the API information available</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.ApiProviderIntrospector.get_introspection_services">
+<tt class="descname">get_introspection_services</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ApiProviderIntrospector.get_introspection_services"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_introspection_services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of introspection services</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiInterface" title="vmware.vapi.core.ApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiInterface</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of introspection services</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.ApiProviderIntrospector.get_operation_info">
+<tt class="descname">get_operation_info</tt><big>(</big><em>service_id</em>, <em>operation_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ApiProviderIntrospector.get_operation_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_operation_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the operation information</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</li>
+<li><strong>operation_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Operation identifier</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodResult" title="vmware.vapi.core.MethodResult"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodResult</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Result that contains operation information. The DataValue in the output
+represents :class:&#8217;com.vmware.vapi.std.introspection.Operation.Info&#8217;</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.ApiProviderIntrospector.get_operations">
+<tt class="descname">get_operations</tt><big>(</big><em>service_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ApiProviderIntrospector.get_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of available operations for a particular service</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodResult" title="vmware.vapi.core.MethodResult"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodResult</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Result that contains list of available operations. The DataValue
+in the output is list of StringValues containing the operation names.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.ApiProviderIntrospector.get_service_info">
+<tt class="descname">get_service_info</tt><big>(</big><em>service_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ApiProviderIntrospector.get_service_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_service_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about a particular service</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodResult" title="vmware.vapi.core.MethodResult"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodResult</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Introspection service info. The DataValue in the output
+represents :class:&#8217;com.vmware.vapi.std.introspection.Service.Info&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.ApiProviderIntrospector.get_services">
+<tt class="descname">get_services</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ApiProviderIntrospector.get_services"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector.get_services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of available services</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of available services</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.provider.introspection.IntrospectionBaseApiInterface">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">IntrospectionBaseApiInterface</tt><big>(</big><em>iface_id</em>, <em>method_defs</em>, <em>methods</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#IntrospectionBaseApiInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiInterface" title="vmware.vapi.core.ApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiInterface</span></tt></a></p>
+<p>Helper base class for all Introspection VMODL2 dynamic services</p>
+<p>Initialize the Api Interface instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>iface_id</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.InterfaceIdentifier" title="vmware.vapi.core.InterfaceIdentifier"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.InterfaceIdentifier</span></tt></a>) &#8211; Interface identifier</li>
+<li><strong>method_defs</strong> (<tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt>) &#8211; Dictionary of method identifiers to method definitions</li>
+<li><strong>methods</strong> (<tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt>) &#8211; Dictionary of method identifiers to method references</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_definition">
+<tt class="descname">get_definition</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#IntrospectionBaseApiInterface.get_definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns interface definition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">InterfaceDefinition</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Interface definition</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_identifier">
+<tt class="descname">get_identifier</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#IntrospectionBaseApiInterface.get_identifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns interface identifier</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">InterfaceIdentifier</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Interface identifier</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_method_definition">
+<tt class="descname">get_method_definition</tt><big>(</big><em>method_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#IntrospectionBaseApiInterface.get_method_definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.get_method_definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the method definition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">MethodDefinition</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Method definition</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.invoke">
+<tt class="descname">invoke</tt><big>(</big><em>ctx</em>, <em>method_id</em>, <em>input_value</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#IntrospectionBaseApiInterface.invoke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface.invoke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invokes the specified method using the execution context and
+the input provided</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ctx</strong> (<tt class="xref py py-class docutils literal"><span class="pre">ExecutionContext</span></tt>) &#8211; Execution context for this method</li>
+<li><strong>method_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">MethodIdentifier</span></tt>) &#8211; Method identifier</li>
+<li><strong>input_value</strong> (<a class="reference internal" href="vmware.vapi.data.html#vmware.vapi.data.value.StructValue" title="vmware.vapi.data.value.StructValue"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.data.value.StructValue</span></tt></a>) &#8211; Method input parameters</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">MethodResult</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Result of the method invocation</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.provider.introspection.LocalProviderIntrospector">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">LocalProviderIntrospector</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#LocalProviderIntrospector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.LocalProviderIntrospector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector" title="vmware.vapi.provider.introspection.ApiProviderIntrospector"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.ApiProviderIntrospector</span></tt></a></p>
+<p>Specialization of <a class="reference internal" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector" title="vmware.vapi.provider.introspection.ApiProviderIntrospector"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.ApiProviderIntrospector</span></tt></a>
+that uses data available in Local Provider to process the Introspection
+service API requests</p>
+<p>Initialize LocalProviderIntrospector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Name of the provider</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.LocalProviderIntrospector.add_service">
+<tt class="descname">add_service</tt><big>(</big><em>service_id</em>, <em>api_interface</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#LocalProviderIntrospector.add_service"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.LocalProviderIntrospector.add_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new service to the introspector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</li>
+<li><strong>api_interface</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiInterface" title="vmware.vapi.core.ApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiInterface</span></tt></a>) &#8211; ApiInterface corresponding to the service</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.LocalProviderIntrospector.get_checksum">
+<tt class="descname">get_checksum</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#LocalProviderIntrospector.get_checksum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_checksum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.LocalProviderIntrospector.get_operation_info">
+<tt class="descname">get_operation_info</tt><big>(</big><em>service_id</em>, <em>operation_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#LocalProviderIntrospector.get_operation_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_operation_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.LocalProviderIntrospector.get_operations">
+<tt class="descname">get_operations</tt><big>(</big><em>service_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#LocalProviderIntrospector.get_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.LocalProviderIntrospector.get_service_info">
+<tt class="descname">get_service_info</tt><big>(</big><em>service_id</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#LocalProviderIntrospector.get_service_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_service_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.introspection.LocalProviderIntrospector.get_services">
+<tt class="descname">get_services</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#LocalProviderIntrospector.get_services"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.LocalProviderIntrospector.get_services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.provider.introspection.OperationApiInterface">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">OperationApiInterface</tt><big>(</big><em>name</em>, <em>introspection_adapter</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#OperationApiInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.OperationApiInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface" title="vmware.vapi.provider.introspection.IntrospectionBaseApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.IntrospectionBaseApiInterface</span></tt></a></p>
+<p>This service exposes a list of operations to retrieve
+information about the operations present in a vAPI service</p>
+<p>Initialize OperationApiInterface</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Name of the provider</li>
+<li><strong>introspection_adapter</strong> (<a class="reference internal" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector" title="vmware.vapi.provider.introspection.ApiProviderIntrospector"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.ApiProviderIntrospector</span></tt></a>) &#8211; Adapter for fetching introspection information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.provider.introspection.ProviderApiInterface">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">ProviderApiInterface</tt><big>(</big><em>name</em>, <em>introspection_adapter</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ProviderApiInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ProviderApiInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface" title="vmware.vapi.provider.introspection.IntrospectionBaseApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.IntrospectionBaseApiInterface</span></tt></a></p>
+<p>This service provides operations to retrieve information of a
+vAPI Provider. A provider represents a vAPI endpoint that is exposing a
+collection of vAPI services.</p>
+<p>Initialize ProviderApiInterface</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Name of the provider</li>
+<li><strong>introspection_adapter</strong> (<a class="reference internal" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector" title="vmware.vapi.provider.introspection.ApiProviderIntrospector"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.ApiProviderIntrospector</span></tt></a>) &#8211; Adapter for fetching introspection information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware.vapi.provider.introspection.ServiceApiInterface">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">ServiceApiInterface</tt><big>(</big><em>name</em>, <em>introspection_adapter</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#ServiceApiInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.ServiceApiInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vmware.vapi.provider.introspection.IntrospectionBaseApiInterface" title="vmware.vapi.provider.introspection.IntrospectionBaseApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.IntrospectionBaseApiInterface</span></tt></a></p>
+<p>This service exposes operations to retrieve information about the
+services exposed by a vAPI endpoint</p>
+<p>Initialize ServiceApiInterface</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Name of the provider</li>
+<li><strong>introspection_adapter</strong> (<a class="reference internal" href="#vmware.vapi.provider.introspection.ApiProviderIntrospector" title="vmware.vapi.provider.introspection.ApiProviderIntrospector"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.provider.introspection.ApiProviderIntrospector</span></tt></a>) &#8211; Adapter for fetching introspection information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.provider.introspection.get_checksum">
+<tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">get_checksum</tt><big>(</big><em>api_services</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#get_checksum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.get_checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the checksum of services registered with LocalProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>api_services</strong> (<tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt>) &#8211; Dictionary of all the services registered with local provider
+Key is <a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.InterfaceIdentifier" title="vmware.vapi.core.InterfaceIdentifier"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.InterfaceIdentifier</span></tt></a> and value is
+<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiInterface" title="vmware.vapi.core.ApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiInterface</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">checksum of the service information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.provider.introspection.register_instance">
+<tt class="descclassname">vmware.vapi.provider.introspection.</tt><tt class="descname">register_instance</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/introspection.html#register_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.introspection.register_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Services to be registered with LocalProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiInterface" title="vmware.vapi.core.ApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiInterface</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of services to be registered with LocalProvider</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.provider.lib">
+<span id="lib-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">lib</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.provider.lib" title="Permalink to this headline">¶</a></h2>
+<p>Utility library for Provider modules</p>
+<dl class="function">
+<dt id="vmware.vapi.provider.lib.augment_method_def_with_errors">
+<tt class="descclassname">vmware.vapi.provider.lib.</tt><tt class="descname">augment_method_def_with_errors</tt><big>(</big><em>method_def</em>, <em>errors</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/lib.html#augment_method_def_with_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.lib.augment_method_def_with_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add errors reported by this ApiProviderFilter to a method definition.
+This method clones the input method definition and appends errors. It
+does not modify the parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>method_def</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodDefinition" title="vmware.vapi.core.MethodDefinition"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodDefinition</span></tt></a>) &#8211; Method definition</li>
+<li><strong>errors</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="vmware.vapi.data.html#vmware.vapi.data.definition.ErrorDefinition" title="vmware.vapi.data.definition.ErrorDefinition"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.data.definition.ErrorDefinition</span></tt></a>) &#8211; Error definitions to augment to MethodDefinition</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodDefinition" title="vmware.vapi.core.MethodDefinition"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodDefinition</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Method definition after augmenting the errors</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.provider.lib.augment_method_result_with_errors">
+<tt class="descclassname">vmware.vapi.provider.lib.</tt><tt class="descname">augment_method_result_with_errors</tt><big>(</big><em>service_id</em>, <em>operation_id</em>, <em>method_result</em>, <em>errors_to_augment</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/lib.html#augment_method_result_with_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.lib.augment_method_result_with_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new method result that is identical to <cite>method_result</cite> except that
+the <cite>errors_definition</cite> field in the <cite>output</cite> (which is of type Operation.Info
+from Introspection service) contains the errors from the Info structure in
+<cite>method_result</cite> plus the errors in <cite>errors_to_augment</cite>. This code will be
+executed only for &#8220;get&#8221; operation in vAPI Operation Introspection service.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>service_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Service identifier</li>
+<li><strong>operation_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Operation identifier</li>
+<li><strong>method_result</strong> (<a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.MethodResult" title="vmware.vapi.core.MethodResult"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.MethodResult</span></tt></a>) &#8211; Operation result</li>
+<li><strong>errors_to_augment</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="vmware.vapi.data.html#vmware.vapi.data.value.StructValue" title="vmware.vapi.data.value.StructValue"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.data.value.StructValue</span></tt></a>) &#8211; Errors to augment. These are struct values of type
+com.vmware.vapi.std.introspection.Operation.DataDefinition whose <cite>type</cite>
+field has the value ERROR
+to the DataDefinition type in Introspection service IDL.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="vmware.vapi.data.html#vmware.vapi.data.value.DataValue" title="vmware.vapi.data.value.DataValue"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.data.value.DataValue</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Output data value</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.provider.local">
+<span id="local-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">local</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.provider.local" title="Permalink to this headline">¶</a></h2>
+<p>Local Api Provider</p>
+<dl class="class">
+<dt id="vmware.vapi.provider.local.LocalProvider">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.local.</tt><tt class="descname">LocalProvider</tt><big>(</big><em>load_introspection=True</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/local.html#LocalProvider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.local.LocalProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiProvider" title="vmware.vapi.core.ApiProvider"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiProvider</span></tt></a></p>
+<p>LocalProvider is a local in-process implementation of the
+ApiProvider interface</p>
+<p>Initialize LocalProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>load_introspection</strong> (<tt class="xref py py-class docutils literal"><span class="pre">bool</span></tt>) &#8211; If true, load introspection services</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="vmware.vapi.provider.local.LocalProvider.add_interface">
+<tt class="descname">add_interface</tt><big>(</big><em>ifaces</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/local.html#LocalProvider.add_interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.local.LocalProvider.add_interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register an interface with LocalProvider</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ifaces</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="vmware.vapi.html#vmware.vapi.core.ApiInterface" title="vmware.vapi.core.ApiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.core.ApiInterface</span></tt></a>) &#8211; Interfaces to be registered</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.local.LocalProvider.invoke">
+<tt class="descname">invoke</tt><big>(</big><em>service_id</em>, <em>operation_id</em>, <em>input_value</em>, <em>ctx</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/local.html#LocalProvider.invoke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.local.LocalProvider.invoke" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.local.LocalProvider.register_by_properties">
+<tt class="descname">register_by_properties</tt><big>(</big><em>properties</em><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/local.html#LocalProvider.register_by_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.local.LocalProvider.register_by_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register set of interfaces using properties dictionary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>properties</strong> (<tt class="xref py py-class docutils literal"><span class="pre">ConfigParser.SafeConfigParser</span></tt>) &#8211; Configuration for this vAPI provider</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware.vapi.provider.local.get_provider">
+<tt class="descclassname">vmware.vapi.provider.local.</tt><tt class="descname">get_provider</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/local.html#get_provider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.local.get_provider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the singleton LocalProvider instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#vmware.vapi.provider.local.LocalProvider" title="vmware.vapi.provider.local.LocalProvider"><tt class="xref py py-class docutils literal"><span class="pre">LocalProvider</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">LocalProvider instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware.vapi.provider.services">
+<span id="services-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">services</span></tt> Module<a class="headerlink" href="#module-vmware.vapi.provider.services" title="Permalink to this headline">¶</a></h2>
+<p>Helper classes for aggregator services</p>
+<dl class="class">
+<dt id="vmware.vapi.provider.services.Stats">
+<em class="property">class </em><tt class="descclassname">vmware.vapi.provider.services.</tt><tt class="descname">Stats</tt><a class="reference internal" href="_modules/vmware/vapi/provider/services.html#Stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.services.Stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Class that provides stats hooks to ApiAggregator</p>
+<p>Initialize StatsMixin</p>
+<dl class="method">
+<dt id="vmware.vapi.provider.services.Stats.decrement_provider_count">
+<tt class="descname">decrement_provider_count</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/services.html#Stats.decrement_provider_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.services.Stats.decrement_provider_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrement the number of providers</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.services.Stats.get">
+<tt class="descname">get</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/services.html#Stats.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.services.Stats.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the stats information</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">tuple(:class:`time</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">long</span></tt>)`</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Return the init time and list of providers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware.vapi.provider.services.Stats.increment_provider_count">
+<tt class="descname">increment_provider_count</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/vmware/vapi/provider/services.html#Stats.increment_provider_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#vmware.vapi.provider.services.Stats.increment_provider_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment the number of providers</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">provider Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">provider</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.provider.aggregator"><tt class="docutils literal"><span class="pre">aggregator</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.provider.authentication"><tt class="docutils literal"><span class="pre">authentication</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.provider.filter"><tt class="docutils literal"><span class="pre">filter</span></tt> Module</a></li>
+<li><a class="reference internal" href="#interposer-module"><tt class="docutils literal"><span class="pre">interposer</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.provider.introspection"><tt class="docutils literal"><span class="pre">introspection</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.provider.lib"><tt class="docutils literal"><span class="pre">lib</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.provider.local"><tt class="docutils literal"><span class="pre">local</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-vmware.vapi.provider.services"><tt class="docutils literal"><span class="pre">services</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="vmware.vapi.protocol.server.transport.html"
+                        title="previous chapter">transport Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="vmware.vapi.security.html"
+                        title="next chapter">security Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/vmware.vapi.provider.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vmware.vapi.security.html" title="security Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="vmware.vapi.protocol.server.transport.html" title="transport Package"
+             >previous</a> |</li>
+        <li><a href="index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="vmware.html" >vmware Package</a> &raquo;</li>
+          <li><a href="vmware.vapi.html" >vapi Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

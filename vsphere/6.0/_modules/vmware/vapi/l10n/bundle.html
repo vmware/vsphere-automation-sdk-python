@@ -1,0 +1,202 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.l10n.bundle &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.l10n.bundle</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Helper classes for creation of resource bundles</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2013-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.message</span> <span class="kn">import</span> <span class="n">MessageBundle</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_message_data_sets</span><span class="p">(</span><span class="n">data_sets</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse the message data sets and extract the messages</span>
+
+<span class="sd">    :type  data_sets: :class:`list` of :class:`str`</span>
+<span class="sd">    :param data_sets: Resource bundle string extracted from the egg file</span>
+<span class="sd">    :rtype: :class:`dict` of :class:`str`, :class:`str`</span>
+<span class="sd">    :return: Dictionary of messages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">data_set</span> <span class="ow">in</span> <span class="n">data_sets</span><span class="p">:</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">data_set</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;#&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s">&#39;=&#39;</span> <span class="ow">in</span> <span class="n">message</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="c"># To use &#39;=&#39; in the value, it has to be escaped</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;\=&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Key not present for value </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Value not present for key </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="PropertiesResourceBundle"><a class="viewcode-back" href="../../../../vmware.vapi.l10n.html#vmware.vapi.l10n.bundle.PropertiesResourceBundle">[docs]</a><span class="k">class</span> <span class="nc">PropertiesResourceBundle</span><span class="p">(</span><span class="n">MessageBundle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for creating resource bundles using property files in the</span>
+<span class="sd">    distributable. i.e. egg or zip file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">property_files</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize PropertiesResourceBundle</span>
+
+<span class="sd">        :type  property_files: :class:`list` of :class:`tuple` or :class:`tuple`</span>
+<span class="sd">        :param property_files: List of property files to be processed. The tuple</span>
+<span class="sd">            should be of the form (package, resource_name). For ex: If a file named</span>
+<span class="sd">            runtime.properties is present in vmware.vapi package, the tuple to be</span>
+<span class="sd">            passed is (&#39;vmware.vapi&#39;, &#39;runtime.properties&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Importing here so that there is no dependency on pkg_resources</span>
+        <span class="c"># for modules that use other kind of MessageBundle classes</span>
+        <span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_string</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">property_files</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">property_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">property_files</span><span class="p">]</span>
+        <span class="n">bundles</span> <span class="o">=</span> <span class="p">[</span><span class="n">resource_string</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">property_files</span><span class="p">]</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">_parse_message_data_sets</span><span class="p">(</span><span class="n">bundles</span><span class="p">)</span>
+        <span class="n">MessageBundle</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="FileMessageBundle"><a class="viewcode-back" href="../../../../vmware.vapi.l10n.html#vmware.vapi.l10n.bundle.FileMessageBundle">[docs]</a><span class="k">class</span> <span class="nc">FileMessageBundle</span><span class="p">(</span><span class="n">MessageBundle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for creating resource bundles using list of files</span>
+<span class="sd">    that contain messages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_files</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize FileMessageBundle</span>
+
+<span class="sd">        :type  message_files: :class:`list` of :class:`str` or :class:`str`</span>
+<span class="sd">        :param message_files: List of message files to be processed. Each</span>
+<span class="sd">            element in the list should be a fully qualified file path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message_files</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">message_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">message_files</span><span class="p">]</span>
+        <span class="n">bundles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">message_file</span> <span class="ow">in</span> <span class="n">message_files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">message_file</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="n">bundles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">message_file</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="n">bundles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">_parse_message_data_sets</span><span class="p">(</span><span class="n">bundles</span><span class="p">)</span>
+        <span class="n">MessageBundle</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DictionaryResourceBundle"><a class="viewcode-back" href="../../../../vmware.vapi.l10n.html#vmware.vapi.l10n.bundle.DictionaryResourceBundle">[docs]</a><span class="k">class</span> <span class="nc">DictionaryResourceBundle</span><span class="p">(</span><span class="n">MessageBundle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for creating resource bundles using dictionary of messages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msgs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize DictionaryResourceBundle</span>
+
+<span class="sd">        :type  msgs: :class:`dict`</span>
+<span class="sd">        :param msgs: Message bundle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msgs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Messages should be a dictionary&#39;</span><span class="p">)</span>
+        <span class="n">MessageBundle</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msgs</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

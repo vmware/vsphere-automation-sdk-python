@@ -1,0 +1,664 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.server.asyncore_server &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.server.asyncore_server</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Asyncore server</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">asyncore</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">ssl</span>
+
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">urllib</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">queue</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.server.server_interface</span> <span class="kn">import</span> <span class="n">ServerInterface</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.addr_url_parser</span> <span class="kn">import</span> <span class="n">parse_addr_url</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.server.asyncore_http</span> <span class="kn">import</span> <span class="n">HttpFactory</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SyncWriteToAsyncWriteAdapter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.SyncWriteToAsyncWriteAdapter">[docs]</a><span class="k">class</span> <span class="nc">SyncWriteToAsyncWriteAdapter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Sync write to async write adapter &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">async_socket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sync write to async write adapter init</span>
+
+<span class="sd">        :type  async_socket: :class:`socket.socket`</span>
+<span class="sd">        :param async_socket: async socket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">async_socket</span> <span class="o">=</span> <span class="n">async_socket</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+
+        <span class="c"># Test if TCP_CORK is available on this socket</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tcp_cork</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">use_cork</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">use_cork</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="SyncWriteToAsyncWriteAdapter.tcp_cork"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.SyncWriteToAsyncWriteAdapter.tcp_cork">[docs]</a>    <span class="k">def</span> <span class="nf">tcp_cork</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        tcp cork</span>
+
+<span class="sd">        Python failed to merge small send into big packet, which is</span>
+<span class="sd">        very inefficient. Use TCP_CORK to queue partial packets to bigger</span>
+<span class="sd">        packet before sending it. Alternatively we should use writev, but</span>
+<span class="sd">        it is not available on standard python socket lib.</span>
+
+<span class="sd">        :type  enable: :class:`int`</span>
+<span class="sd">        :param enable: 1 =&gt; turn TCP_CORK on, 0 =&gt; off</span>
+<span class="sd">        :raise: :class:`socket.error` if TCP_CORK is not supported on this socket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">async_socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">TCP_CORK</span><span class="p">,</span> <span class="n">enable</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SyncWriteToAsyncWriteAdapter.write_ready"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.SyncWriteToAsyncWriteAdapter.write_ready">[docs]</a>    <span class="k">def</span> <span class="nf">write_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; write ready callback &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_socket</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cork</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tcp_cork</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buf</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">task_done</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">async_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">async_socket</span> <span class="o">=</span> <span class="bp">None</span>
+                    <span class="k">return</span>
+
+            <span class="n">data_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">bytes_send</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">bytes_send</span> <span class="o">&lt;</span> <span class="n">data_len</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buf</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">bytes_send</span><span class="p">:]</span>  <span class="c"># Save the leftover</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cork</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tcp_cork</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SyncWriteToAsyncWriteAdapter.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.SyncWriteToAsyncWriteAdapter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write the given bytes</span>
+
+<span class="sd">        :type  data: :class:`bytes`</span>
+<span class="sd">        :param data: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="ow">and</span> <span class="n">data</span><span class="p">:</span>
+            <span class="c"># NYI: Make it more efficient: e.g. direct write if marked writable</span>
+            <span class="c"># NYI: Possible to block if running out of buffer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SyncWriteToAsyncWriteAdapter.writable"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.SyncWriteToAsyncWriteAdapter.writable">[docs]</a>    <span class="k">def</span> <span class="nf">writable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Have something to write to http connection?</span>
+
+<span class="sd">        :rtype  :class:`bool`</span>
+<span class="sd">        :return True if data is ready to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buf</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">empty</span><span class="p">()))</span>
+</div>
+<div class="viewcode-block" id="SyncWriteToAsyncWriteAdapter.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.SyncWriteToAsyncWriteAdapter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_when_done</span><span class="p">()</span>
+
+        <span class="c"># Flush chunks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="SyncWriteToAsyncWriteAdapter.close_when_done"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.SyncWriteToAsyncWriteAdapter.close_when_done">[docs]</a>    <span class="k">def</span> <span class="nf">close_when_done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close when all data written &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
+            <span class="c"># No more write</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>  <span class="c"># None in queue =&gt; close eventually</span>
+</div>
+<div class="viewcode-block" id="SyncWriteToAsyncWriteAdapter.flush"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.SyncWriteToAsyncWriteAdapter.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; flush &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">writable</span><span class="p">():</span>
+            <span class="c"># Interrupt loop to indicate write ready</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c"># Flush could be called after async_socket is None. Ignore error</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">async_socket</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">loop_controller</span><span class="o">.</span><span class="n">intr</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; on delete &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; with statement enter &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; with statement exit &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection">[docs]</a><span class="k">class</span> <span class="nc">AsyncoreSslConnection</span><span class="p">(</span><span class="n">asyncore</span><span class="o">.</span><span class="n">dispatcher</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Asyncore ssl connection &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">sock_map</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">from_addr</span><span class="p">,</span> <span class="n">protocol_factory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asyncore ssl connection init</span>
+
+<span class="sd">        :type  server: :class:`vmware.vapi.server.asyncore_server.AsyncoreTcpListener`</span>
+<span class="sd">        :type  server: asyncore server</span>
+<span class="sd">        :type  sock_map: :class:`dict`</span>
+<span class="sd">        :param sock_map: Global socket map</span>
+<span class="sd">        :type  sock: :class:`socket.socket`</span>
+<span class="sd">        :param sock: connection socket</span>
+<span class="sd">        :type  from_addr: :class:`tuple`</span>
+<span class="sd">        :param from_addr: remote address bound to the socket</span>
+<span class="sd">        :type  protocol_factory: :class:`object` with method handle_accept</span>
+<span class="sd">        :param protocol_factory: protocol factory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">asyncore</span><span class="o">.</span><span class="n">dispatcher</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="nb">map</span><span class="o">=</span><span class="n">sock_map</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span> <span class="o">=</span> <span class="n">sock_map</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">from_addr</span> <span class="o">=</span> <span class="n">from_addr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_read_ready</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_write_ready</span> <span class="o">=</span> <span class="bp">False</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span> <span class="o">=</span> <span class="n">protocol_factory</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+            <span class="k">raise</span>
+
+<div class="viewcode-block" id="AsyncoreSslConnection.cleanup"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">close_socket</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        connection cleanup</span>
+
+<span class="sd">        :type  close_socket: :class:`bool`</span>
+<span class="sd">        :param close_socket: close internal socket (or not)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">del_channel</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_addr</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">close_socket</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_read_ready</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_write_ready</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection.do_handshake_continue"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.do_handshake_continue">[docs]</a>    <span class="k">def</span> <span class="nf">do_handshake_continue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; ssl do handshake continue &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">do_handshake</span><span class="p">()</span>
+            <span class="c"># No exception. Hand shake done</span>
+
+            <span class="c"># Remove ssl handler from sock map</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">del_channel</span><span class="p">()</span>
+
+            <span class="c"># Pass control to protocol factory</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span><span class="o">.</span><span class="n">handle_accept</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_addr</span><span class="p">)</span>
+
+            <span class="c"># Unref ssl handler</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">err</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSL_ERROR_WANT_READ</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_read_ready</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">elif</span> <span class="n">err</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSL_ERROR_WANT_WRITE</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_write_ready</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="c"># Write ready</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">loop_controller</span><span class="o">.</span><span class="n">intr</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># SSL exception</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">(</span><span class="n">close_socket</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="k">raise</span>
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection.handle_read"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.handle_read">[docs]</a>    <span class="k">def</span> <span class="nf">handle_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; read data available callback &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_read_ready</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_read_ready</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_handshake_continue</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection.handle_write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.handle_write">[docs]</a>    <span class="k">def</span> <span class="nf">handle_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; write ready callback &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_write_ready</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_write_ready</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_handshake_continue</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection.readable"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.readable">[docs]</a>    <span class="k">def</span> <span class="nf">readable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Can read more data?</span>
+
+<span class="sd">        :rtype  :class:`bool`</span>
+<span class="sd">        :return True if this can handle more data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_read_ready</span>
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection.writable"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.writable">[docs]</a>    <span class="k">def</span> <span class="nf">writable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Have something to write to ssl connection?</span>
+
+<span class="sd">        :rtype  :class:`bool`</span>
+<span class="sd">        :return True if data is ready to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_write_ready</span>
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection.handle_close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.handle_close">[docs]</a>    <span class="k">def</span> <span class="nf">handle_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle close callback &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">(</span><span class="n">close_socket</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection.handle_error"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.handle_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle error callback &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">(</span><span class="n">close_socket</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncoreSslConnection.handle_expt"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreSslConnection.handle_expt">[docs]</a>    <span class="k">def</span> <span class="nf">handle_expt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle exception callback &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">(</span><span class="n">close_socket</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="AsyncoreTcpListener"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpListener">[docs]</a><span class="k">class</span> <span class="nc">AsyncoreTcpListener</span><span class="p">(</span><span class="n">asyncore</span><span class="o">.</span><span class="n">dispatcher</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Asyncore tcp listener &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop_controller</span><span class="p">,</span> <span class="n">sock_map</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">ssl_args</span><span class="p">,</span> <span class="n">protocol_factory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asyncore tcp listener init</span>
+
+<span class="sd">        :type  loop_controller: :class:`AsyncoreLoopController`</span>
+<span class="sd">        :param loop_controller: loop controller</span>
+<span class="sd">        :type  sock_map: :class:`dict`</span>
+<span class="sd">        :param sock_map: Global socket map</span>
+<span class="sd">        :type  addr: :class:`tuple` of :class:`str`, :class:`int`</span>
+<span class="sd">        :param addr: tcp addr and port</span>
+<span class="sd">        :type  ssl_args: :class:`dict`</span>
+<span class="sd">        :param ssl_args: ssl arguments</span>
+<span class="sd">        :type  protocol_factory: :class:`object` with method handle_accept</span>
+<span class="sd">        :param protocol_factory: protocol factory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop_controller</span> <span class="o">=</span> <span class="n">loop_controller</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span> <span class="o">=</span> <span class="n">sock_map</span>
+        <span class="n">asyncore</span><span class="o">.</span><span class="n">dispatcher</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">)</span>
+
+        <span class="c"># Init ssl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_args</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_wrap_socket</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_ssl</span><span class="p">(</span><span class="n">ssl_args</span><span class="p">)</span>
+
+        <span class="c"># Setup server</span>
+        <span class="k">if</span> <span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;!&#39;</span><span class="p">):</span>
+            <span class="c"># Unix domain socket: hostname is &#39;!&#39; followed by the URL-encoded</span>
+            <span class="c"># socket path; socket.bind expects the path as a string argument.</span>
+            <span class="n">addr</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="n">sock_family</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sock_family</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_socket</span><span class="p">(</span><span class="n">sock_family</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_reuse_addr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="k">assert</span><span class="p">(</span><span class="n">protocol_factory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span> <span class="o">=</span> <span class="n">protocol_factory</span>
+
+<div class="viewcode-block" id="AsyncoreTcpListener.init_ssl"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpListener.init_ssl">[docs]</a>    <span class="k">def</span> <span class="nf">init_ssl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ssl_args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setup SSL arguments</span>
+
+<span class="sd">        :type  ssl_args: :class:`dict`</span>
+<span class="sd">        :param ssl_args: ssl arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl_args</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_ssl_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c"># Override ssl arguments</span>
+            <span class="k">if</span> <span class="n">ssl_args</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">ssl_args</span><span class="p">):</span>
+                    <span class="c"># func_code dose exist for callable object</span>
+                    <span class="c"># pylint: disable=E1101</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">get_function_code</span><span class="p">(</span><span class="n">ssl</span><span class="o">.</span><span class="n">wrap_socket</span><span class="p">)</span><span class="o">.</span><span class="n">co_varnames</span><span class="p">:</span>
+                        <span class="n">_ssl_args</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_ssl_args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c"># server_side is always True</span>
+                <span class="n">_ssl_args</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;server_side&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+                <span class="c"># Async handshake</span>
+                <span class="n">_ssl_args</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">&#39;do_handshake_on_connect&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ssl_args</span> <span class="o">=</span> <span class="n">_ssl_args</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssl_wrap_socket</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">wrap_socket</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="AsyncoreTcpListener.handle_accept"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpListener.handle_accept">[docs]</a>    <span class="k">def</span> <span class="nf">handle_accept</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; accept connection callback &quot;&quot;&quot;</span>
+
+        <span class="n">new_socket</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_socket</span><span class="p">,</span> <span class="n">from_addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">new_socket</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Accept failed. Client closed?&#39;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Connection from: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">from_addr</span><span class="p">)</span>
+
+            <span class="c"># Disable nagle</span>
+            <span class="c"># NYI: In theory don&#39;t need this, but response is slower without</span>
+            <span class="c">#      setting TCP_NODELAY. Bug in python 2.6 httplib?</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">new_socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">TCP_NODELAY</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Error disabling nagle: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">new_socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssl_wrap_socket</span><span class="p">(</span><span class="n">new_socket</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">ssl_args</span><span class="p">)</span>
+                <span class="n">AsyncoreSslConnection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">,</span> <span class="n">new_socket</span><span class="p">,</span>
+                                      <span class="n">from_addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span><span class="o">.</span><span class="n">handle_accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">,</span>
+                                                    <span class="n">new_socket</span><span class="p">,</span> <span class="n">from_addr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Error accepting connection: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="c"># Cleanup</span>
+            <span class="k">if</span> <span class="n">new_socket</span><span class="p">:</span>
+                <span class="n">new_socket</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SHUT_RDWR</span><span class="p">)</span>
+                <span class="n">new_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">new_socket</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="AsyncoreTcpListener.writable"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpListener.writable">[docs]</a>    <span class="k">def</span> <span class="nf">writable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Have something to write to this connection?</span>
+
+<span class="sd">        :rtype  :class:`bool`</span>
+<span class="sd">        :return True if data is ready to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="AsyncoreTcpListener.handle_close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpListener.handle_close">[docs]</a>    <span class="k">def</span> <span class="nf">handle_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle close callback &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreTcpListener.handle_error"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpListener.handle_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle error callback &quot;&quot;&quot;</span>
+        <span class="c"># Handle exception</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="AsyncoreTcpListener.handle_expt"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpListener.handle_expt">[docs]</a>    <span class="k">def</span> <span class="nf">handle_expt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle exception callback &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Accept failed. Client closed?&#39;</span><span class="p">)</span>
+
+    <span class="c">## End asyncore.dispatcher interface</span>
+
+</div></div>
+<div class="viewcode-block" id="AsyncoreLoopController"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreLoopController">[docs]</a><span class="k">class</span> <span class="nc">AsyncoreLoopController</span><span class="p">(</span><span class="n">asyncore</span><span class="o">.</span><span class="n">dispatcher</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Asyncore loop controller &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock_map</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asyncore loop controller init</span>
+
+<span class="sd">        :type  sock_map: :class:`dict`</span>
+<span class="sd">        :param sock_map: Global socket map</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Create our own contol channel</span>
+        <span class="n">sck</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">sck</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">sck</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">sck</span><span class="o">.</span><span class="n">getsockname</span><span class="p">())</span>
+        <span class="n">asyncore</span><span class="o">.</span><span class="n">dispatcher</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sck</span><span class="p">,</span> <span class="n">sock_map</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AsyncoreLoopController.intr"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreLoopController.intr">[docs]</a>    <span class="k">def</span> <span class="nf">intr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Interrupt the asyncore loop &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;i&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_error</span><span class="p">()</span>
+
+    <span class="c">## Begin asyncore.dispatcher interface</span>
+</div>
+<div class="viewcode-block" id="AsyncoreLoopController.readable"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreLoopController.readable">[docs]</a>    <span class="k">def</span> <span class="nf">readable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Can accept more data?</span>
+
+<span class="sd">        :rtype  :class:`bool`</span>
+<span class="sd">        :return True if this can handle more data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="AsyncoreLoopController.writable"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreLoopController.writable">[docs]</a>    <span class="k">def</span> <span class="nf">writable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Have something to write to this connection?</span>
+
+<span class="sd">        :rtype  :class:`bool`</span>
+<span class="sd">        :return True if data is ready to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="AsyncoreLoopController.handle_read"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreLoopController.handle_read">[docs]</a>    <span class="k">def</span> <span class="nf">handle_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; read data available callback &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_error</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreLoopController.handle_close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreLoopController.handle_close">[docs]</a>    <span class="k">def</span> <span class="nf">handle_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle close callback &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreLoopController.handle_error"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreLoopController.handle_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle error callback &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="AsyncoreLoopController.handle_expt"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreLoopController.handle_expt">[docs]</a>    <span class="k">def</span> <span class="nf">handle_expt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle exception callback &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c">## End asyncore.dispatcher interface</span>
+
+</div></div>
+<div class="viewcode-block" id="AsyncoreTcpServer"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpServer">[docs]</a><span class="k">class</span> <span class="nc">AsyncoreTcpServer</span><span class="p">(</span><span class="n">ServerInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Asyncore tcp server &quot;&quot;&quot;</span>
+
+    <span class="n">SUPPORTED_SCHEMES</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="s">&#39;https&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Asyncore tcp server init &quot;&quot;&quot;</span>
+        <span class="n">ServerInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handlers_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factories</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="AsyncoreTcpServer.register_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpServer.register_handler">[docs]</a>    <span class="k">def</span> <span class="nf">register_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">,</span> <span class="n">ssl_args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register protocol handler</span>
+
+<span class="sd">        :type  addr: :class:`str`</span>
+<span class="sd">        :param addr: addr url</span>
+<span class="sd">        :type  msg_type: :class:`str`</span>
+<span class="sd">        :param msg_type: protocol message type</span>
+<span class="sd">        :type  protocol_handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param protocol_handler: protocol handler for this addr</span>
+<span class="sd">        :type  ssl_args: :class:`dict`</span>
+<span class="sd">        :param ssl_args: ssl arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;register_handler: msg: </span><span class="si">%s</span><span class="s"> addr: </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+
+        <span class="c"># addr is in the form of url</span>
+        <span class="n">scheme</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">parse_addr_url</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">host</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">scheme</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPORTED_SCHEMES</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Unsupported url scheme: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">protocol_handler</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No protocol handler: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">scheme</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;https&#39;</span><span class="p">):</span>
+            <span class="n">ssl_args</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="n">scheme</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="s">&#39;https&#39;</span><span class="p">):</span>
+            <span class="n">protocol_factory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factories</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">protocol_factory</span><span class="p">:</span>
+                <span class="n">protocol_factory</span> <span class="o">=</span> <span class="n">HttpFactory</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factories</span><span class="p">[(</span><span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">)]</span> <span class="o">=</span> <span class="n">protocol_factory</span>
+            <span class="n">protocol_factory</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handlers_map</span><span class="p">[(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">protocol_factory</span><span class="p">,</span> <span class="n">ssl_args</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncoreTcpServer.serve_forever"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpServer.serve_forever">[docs]</a>    <span class="k">def</span> <span class="nf">serve_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Server loop &quot;&quot;&quot;</span>
+        <span class="c"># Add contol channel</span>
+        <span class="n">loop_controller</span> <span class="o">=</span> <span class="n">AsyncoreLoopController</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">addr</span><span class="p">,</span> <span class="p">(</span><span class="n">protocol_factory</span><span class="p">,</span> <span class="n">ssl_args</span><span class="p">)</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handlers_map</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Listening on: </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">ssl_args</span><span class="p">)</span>
+            <span class="n">AsyncoreTcpListener</span><span class="p">(</span><span class="n">loop_controller</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span>
+                                <span class="n">ssl_args</span><span class="p">,</span> <span class="n">protocol_factory</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">asyncore</span><span class="o">.</span><span class="n">loop</span><span class="p">(</span><span class="n">timeout</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">use_poll</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreTcpServer.shutdown"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.AsyncoreTcpServer.shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Server shutdown &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">:</span>
+            <span class="n">asyncore</span><span class="o">.</span><span class="n">close_all</span><span class="p">(</span><span class="nb">map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sock_map</span> <span class="o">=</span> <span class="bp">None</span>
+
+</div></div>
+<div class="viewcode-block" id="get_server"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_server.get_server">[docs]</a><span class="k">def</span> <span class="nf">get_server</span><span class="p">(</span><span class="n">cfg</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get asyncore server</span>
+
+<span class="sd">    :type  cfg: :class:`ConfigParser.SafeConfigParser`</span>
+<span class="sd">    :param cfg: Config parser</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.server.server_interface.ServerInterface`</span>
+<span class="sd">    :return: subclass of ServerInterface</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># Returns server with ServerInterface</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c"># NYI: Singleton</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">AsyncoreTcpServer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">server</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

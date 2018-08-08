@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.lib.std &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.lib.std</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Helper functions for manipulating vAPI runtime objects corresponding to</span>
+<span class="sd">the standard types (e.g. LocalizableMessage) and errors</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.definition</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DynamicStructDefinition</span><span class="p">,</span> <span class="n">ErrorDefinition</span><span class="p">,</span> <span class="n">ListDefinition</span><span class="p">,</span>
+    <span class="n">OptionalDefinition</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">,</span> <span class="n">StructDefinition</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+
+
+<span class="n">_ID_FIELD_NAME</span> <span class="o">=</span> <span class="s">&#39;id&#39;</span>
+<span class="n">_DEFAULT_MESSAGE_FIELD_NAME</span> <span class="o">=</span> <span class="s">&#39;default_message&#39;</span>
+<span class="n">_ARGS_FIELD_NAME</span> <span class="o">=</span> <span class="s">&#39;args&#39;</span>
+<span class="n">localizable_message_def</span> <span class="o">=</span> <span class="n">StructDefinition</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.localizable_message&#39;</span><span class="p">,</span>
+    <span class="p">((</span><span class="n">_ID_FIELD_NAME</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">()),</span>
+     <span class="p">(</span><span class="n">_DEFAULT_MESSAGE_FIELD_NAME</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">()),</span>
+     <span class="p">(</span><span class="n">_ARGS_FIELD_NAME</span><span class="p">,</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">StringDefinition</span><span class="p">()))))</span>
+
+
+<span class="n">_MESSAGES_FIELD_NAME</span> <span class="o">=</span> <span class="s">&#39;messages&#39;</span>
+<span class="n">messages_list_def</span> <span class="o">=</span> <span class="n">ListDefinition</span><span class="p">(</span><span class="n">localizable_message_def</span><span class="p">)</span>
+<span class="n">_DATA_FIELD_NAME</span> <span class="o">=</span> <span class="s">&#39;data&#39;</span>
+<span class="n">data_optional_dynamicstructure_def</span> <span class="o">=</span> <span class="n">OptionalDefinition</span><span class="p">(</span>
+    <span class="n">DynamicStructDefinition</span><span class="p">())</span>
+<span class="n">_ERROR_DEF_FIELDS</span> <span class="o">=</span> <span class="p">[(</span><span class="n">_MESSAGES_FIELD_NAME</span><span class="p">,</span> <span class="n">messages_list_def</span><span class="p">),</span>
+                     <span class="p">(</span><span class="n">_DATA_FIELD_NAME</span><span class="p">,</span> <span class="n">data_optional_dynamicstructure_def</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">make_std_error_def</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="make_std_error_def"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.std.make_std_error_def">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internal function to create a &quot;standard&quot; ErrorDefinition for use only by</span>
+<span class="sd">    the vAPI runtime.</span>
+<span class="sd">    :type  name: :class:`str`</span>
+<span class="sd">    :param args: Fully qualified name of the standard error type</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.data.definition.ErrorDefinition`</span>
+<span class="sd">    :return: ErrorDefinition containing a single message field</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ErrorDefinition</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_ERROR_DEF_FIELDS</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_make_struct_value_from_message</span><span class="p">(</span><span class="n">message</span><span class="p">):</span></div>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to create a StructValue matching the LocalizableMessage</span>
+<span class="sd">    type defined in VMODL from a Message object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">id_def</span> <span class="o">=</span> <span class="n">localizable_message_def</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">_ID_FIELD_NAME</span><span class="p">)</span>
+    <span class="n">default_message_def</span> <span class="o">=</span> <span class="n">localizable_message_def</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span>
+        <span class="n">_DEFAULT_MESSAGE_FIELD_NAME</span><span class="p">)</span>
+    <span class="n">args_def</span> <span class="o">=</span> <span class="n">localizable_message_def</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">_ARGS_FIELD_NAME</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">localizable_message_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_ID_FIELD_NAME</span><span class="p">,</span> <span class="n">id_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_DEFAULT_MESSAGE_FIELD_NAME</span><span class="p">,</span>
+                     <span class="n">default_message_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">def_msg</span><span class="p">))</span>
+    <span class="n">args_list_value</span> <span class="o">=</span> <span class="n">args_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">arg_def</span> <span class="o">=</span> <span class="n">args_def</span><span class="o">.</span><span class="n">element_type</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+        <span class="n">args_list_value</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">arg_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_ARGS_FIELD_NAME</span><span class="p">,</span> <span class="n">args_list_value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">make_error_value_from_msg_id</span><span class="p">(</span><span class="n">error_def</span><span class="p">,</span> <span class="n">msg_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="make_error_value_from_msg_id"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.std.make_error_value_from_msg_id">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an error result for a &quot;standard&quot; error</span>
+
+<span class="sd">    :type  error_def: :class:`vmware.vapi.data.type.ErrorDefinition`</span>
+<span class="sd">    :param error_def: ErrorDefintion for the error</span>
+<span class="sd">    :type  msg_id: :class:`str`</span>
+<span class="sd">    :param msg_id: Message identifier</span>
+<span class="sd">    :type  args: :class:`list` of :class:`str`</span>
+<span class="sd">    :param args: Argument list for constructing a Message</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.data.value.ErrorValue`</span>
+<span class="sd">    :return: ErrorValue containing a single message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">msg_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">error_def</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">_MESSAGES_FIELD_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">messages</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">_make_struct_value_from_message</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data_optional_dynamicstructure_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">error_value</span> <span class="o">=</span> <span class="n">error_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">error_value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_MESSAGES_FIELD_NAME</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
+    <span class="n">error_value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_DATA_FIELD_NAME</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">error_value</span>
+
+
+<span class="k">def</span> <span class="nf">make_error_value_from_msgs</span><span class="p">(</span><span class="n">error_def</span><span class="p">,</span> <span class="o">*</span><span class="n">msg_list</span><span class="p">):</span></div>
+<div class="viewcode-block" id="make_error_value_from_msgs"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.std.make_error_value_from_msgs">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an error result for a &quot;standard&quot; error</span>
+
+<span class="sd">    :type  error_def: :class:`vmware.vapi.data.type.ErrorDefinition`</span>
+<span class="sd">    :param error_def: ErrorDefintion for the error</span>
+<span class="sd">    :type  msg_list: :class:`list` of :class:`vmware.vapi.message.Message`</span>
+<span class="sd">    :param msg_list: list of localizable messages</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.data.value.ErrorValue`</span>
+<span class="sd">    :return: ErrorValue containing a single message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">error_def</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">_MESSAGES_FIELD_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msg_list</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">_make_struct_value_from_message</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data_optional_dynamicstructure_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">error_value</span> <span class="o">=</span> <span class="n">error_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">error_value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_MESSAGES_FIELD_NAME</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
+    <span class="n">error_value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_DATA_FIELD_NAME</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">error_value</span>
+
+
+<span class="k">def</span> <span class="nf">make_error_value_from_error_value_and_msgs</span><span class="p">(</span><span class="n">error_def</span><span class="p">,</span></div>
+<div class="viewcode-block" id="make_error_value_from_error_value_and_msgs"><a class="viewcode-back" href="../../../../vmware.vapi.lib.html#vmware.vapi.lib.std.make_error_value_from_error_value_and_msgs">[docs]</a>                                               <span class="n">cause</span><span class="p">,</span>
+                                               <span class="o">*</span><span class="n">msg_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an error result for a &quot;standard&quot; error from a cause ErrorValue</span>
+<span class="sd">    and an list of messages.</span>
+
+<span class="sd">    The list of message will be prepended to the messages from the cause</span>
+<span class="sd">    (if any).</span>
+
+<span class="sd">    :type  error_def: :class:`vmware.vapi.data.type.ErrorDefinition`</span>
+<span class="sd">    :param error_def: ErrorDefintion for the error</span>
+<span class="sd">    :type  cause: :class:`vmware.vapi.data.value.ErrorValue`</span>
+<span class="sd">    :param cause: Lower level ErrorValue that &quot;caused&quot; the error</span>
+<span class="sd">    :type  msg_list: :class:`list` of :class:`vmware.vapi.message.Message`</span>
+<span class="sd">    :param msg_list: list of localizable messages</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.data.value.ErrorValue`</span>
+<span class="sd">    :return: ErrorValue containing a single message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">error_def</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">_MESSAGES_FIELD_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msg_list</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">_make_struct_value_from_message</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">cause_msg_list</span> <span class="o">=</span> <span class="n">cause</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">_MESSAGES_FIELD_NAME</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">cause_msg_list</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c"># If cause doesn&#39;t have a message field or it isn&#39;t a ListValue,</span>
+        <span class="c"># just ignore it.</span>
+        <span class="k">pass</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data_optional_dynamicstructure_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">error_value</span> <span class="o">=</span> <span class="n">error_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+    <span class="n">error_value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_MESSAGES_FIELD_NAME</span><span class="p">,</span> <span class="n">messages</span><span class="p">)</span>
+    <span class="n">error_value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">_DATA_FIELD_NAME</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">error_value</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

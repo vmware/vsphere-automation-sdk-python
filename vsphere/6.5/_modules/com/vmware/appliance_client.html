@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.appliance_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.appliance_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.appliance.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="Monitoring"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring">[docs]</a><span class="k">class</span> <span class="nc">Monitoring</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ``Monitoring`` class provides methods Get and list monitoring data for</span>
+<span class="sd">    requested item.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_MonitoringStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Monitoring.FunctionType"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring.FunctionType">[docs]</a>    <span class="k">class</span> <span class="nc">FunctionType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Monitoring.FunctionType`` class Defines aggregation function</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">COUNT</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregation takes count per period (sum)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">MAX</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregation takes maximums per period</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">AVG</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregation takes average per period</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">MIN</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregation takes minimums per period</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`FunctionType` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">FunctionType</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">FunctionType</span><span class="p">(</span><span class="s">&#39;COUNT&#39;</span><span class="p">),</span>
+        <span class="n">FunctionType</span><span class="p">(</span><span class="s">&#39;MAX&#39;</span><span class="p">),</span>
+        <span class="n">FunctionType</span><span class="p">(</span><span class="s">&#39;AVG&#39;</span><span class="p">),</span>
+        <span class="n">FunctionType</span><span class="p">(</span><span class="s">&#39;MIN&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">FunctionType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.monitoring.function_type&#39;</span><span class="p">,</span>
+        <span class="n">FunctionType</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Monitoring.IntervalType"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring.IntervalType">[docs]</a>    <span class="k">class</span> <span class="nc">IntervalType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Monitoring.IntervalType`` class Defines interval between the values in</span>
+<span class="sd">        hours and mins, for which aggregation will apply</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">MINUTES30</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Thirty minutes interval between values. One week is 336 values.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HOURS2</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Two hours interval between values. One month has 360 values.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">MINUTES5</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Five minutes interval between values (finest). One day would have 288</span>
+<span class="sd">        values, one week is 2016.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DAY1</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        24 hours interval between values. One year has 365 values.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HOURS6</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Six hour interval between values. One quarter is 360 values.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`IntervalType` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">IntervalType</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">IntervalType</span><span class="p">(</span><span class="s">&#39;MINUTES30&#39;</span><span class="p">),</span>
+        <span class="n">IntervalType</span><span class="p">(</span><span class="s">&#39;HOURS2&#39;</span><span class="p">),</span>
+        <span class="n">IntervalType</span><span class="p">(</span><span class="s">&#39;MINUTES5&#39;</span><span class="p">),</span>
+        <span class="n">IntervalType</span><span class="p">(</span><span class="s">&#39;DAY1&#39;</span><span class="p">),</span>
+        <span class="n">IntervalType</span><span class="p">(</span><span class="s">&#39;HOURS6&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">IntervalType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.monitoring.interval_type&#39;</span><span class="p">,</span>
+        <span class="n">IntervalType</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Monitoring.MonitoredItemData"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring.MonitoredItemData">[docs]</a>    <span class="k">class</span> <span class="nc">MonitoredItemData</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Monitoring.MonitoredItemData`` class Structure representing monitored</span>
+<span class="sd">        item data.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">interval</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">function</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">start_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">end_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  name: :class:`str`</span>
+<span class="sd">            :param name: Monitored item IDs Ex: CPU, MEMORY, STORAGE_TOTAL</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.appliance.monitoring``. When methods return a value of</span>
+<span class="sd">                this class as a return value, the attribute will be an identifier</span>
+<span class="sd">                for the resource type: ``com.vmware.appliance.monitoring``.</span>
+<span class="sd">            :type  interval: :class:`Monitoring.IntervalType`</span>
+<span class="sd">            :param interval: interval between values in hours, minutes</span>
+<span class="sd">            :type  function: :class:`Monitoring.FunctionType`</span>
+<span class="sd">            :param function: aggregation function</span>
+<span class="sd">            :type  start_time: :class:`datetime.datetime`</span>
+<span class="sd">            :param start_time: Starting time</span>
+<span class="sd">            :type  end_time: :class:`datetime.datetime`</span>
+<span class="sd">            :param end_time: Ending time</span>
+<span class="sd">            :type  data: :class:`list` of :class:`str`</span>
+<span class="sd">            :param data: list of values</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">function</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">MonitoredItemData</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.monitoring.monitored_item_data&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.appliance.monitoring&#39;</span><span class="p">),</span>
+            <span class="s">&#39;interval&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Monitoring.IntervalType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;function&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Monitoring.FunctionType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;start_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">(),</span>
+            <span class="s">&#39;end_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">(),</span>
+            <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">MonitoredItemData</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Monitoring.MonitoredItemDataRequest"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring.MonitoredItemDataRequest">[docs]</a>    <span class="k">class</span> <span class="nc">MonitoredItemDataRequest</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Monitoring.MonitoredItemDataRequest`` class Structure representing</span>
+<span class="sd">        requested monitored item data.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">names</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">interval</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">function</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">start_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">end_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  names: :class:`list` of :class:`str`</span>
+<span class="sd">            :param names: monitored item IDs Ex: CPU, MEMORY</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must contain identifiers for the resource type:</span>
+<span class="sd">                ``com.vmware.appliance.monitoring``. When methods return a value of</span>
+<span class="sd">                this class as a return value, the attribute will contain</span>
+<span class="sd">                identifiers for the resource type:</span>
+<span class="sd">                ``com.vmware.appliance.monitoring``.</span>
+<span class="sd">            :type  interval: :class:`Monitoring.IntervalType`</span>
+<span class="sd">            :param interval: interval between values in hours, minutes</span>
+<span class="sd">            :type  function: :class:`Monitoring.FunctionType`</span>
+<span class="sd">            :param function: aggregation function</span>
+<span class="sd">            :type  start_time: :class:`datetime.datetime`</span>
+<span class="sd">            :param start_time: Starting time</span>
+<span class="sd">            :type  end_time: :class:`datetime.datetime`</span>
+<span class="sd">            :param end_time: Ending time</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">function</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">MonitoredItemDataRequest</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.monitoring.monitored_item_data_request&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;names&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+            <span class="s">&#39;interval&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Monitoring.IntervalType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;function&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Monitoring.FunctionType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;start_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">(),</span>
+            <span class="s">&#39;end_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">MonitoredItemDataRequest</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Monitoring.MonitoredItem"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring.MonitoredItem">[docs]</a>    <span class="k">class</span> <span class="nc">MonitoredItem</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``Monitoring.MonitoredItem`` class Structure representing requested</span>
+<span class="sd">        monitored item data.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">units</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">category</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">instance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  id: :class:`str`</span>
+<span class="sd">            :param id: monitored item ID Ex: CPU, MEMORY</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.appliance.monitoring``. When methods return a value of</span>
+<span class="sd">                this class as a return value, the attribute will be an identifier</span>
+<span class="sd">                for the resource type: ``com.vmware.appliance.monitoring``.</span>
+<span class="sd">            :type  name: :class:`str`</span>
+<span class="sd">            :param name: monitored item name Ex: &quot;Network write speed&quot;</span>
+<span class="sd">            :type  units: :class:`str`</span>
+<span class="sd">            :param units: Y-axis label EX: &quot;Mbps&quot;, &quot;%&quot;</span>
+<span class="sd">            :type  category: :class:`str`</span>
+<span class="sd">            :param category: category Ex: network, storage etc</span>
+<span class="sd">            :type  instance: :class:`str`</span>
+<span class="sd">            :param instance: instance name Ex: eth0</span>
+<span class="sd">            :type  description: :class:`str`</span>
+<span class="sd">            :param description: monitored item description Ex:</span>
+<span class="sd">                com.vmware.applmgmt.mon.descr.net.rx.packetRate.eth0</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">category</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">instance</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">MonitoredItem</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.monitoring.monitored_item&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.appliance.monitoring&#39;</span><span class="p">),</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;category&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;instance&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">MonitoredItem</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Monitoring.query"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">item</span><span class="p">,</span>
+              <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get monitoring data.</span>
+
+<span class="sd">        :type  item: :class:`Monitoring.MonitoredItemDataRequest`</span>
+<span class="sd">        :param item: MonitoredItemDataRequest Structure</span>
+<span class="sd">        :rtype: :class:`list` of :class:`Monitoring.MonitoredItemData`</span>
+<span class="sd">        :return: list of MonitoredItemData structure</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;query&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Monitoring.list"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get monitored items list</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`Monitoring.MonitoredItem`</span>
+<span class="sd">        :return: list of names</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Monitoring.get"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.appliance_client.Monitoring.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">stat_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get monitored item info</span>
+
+<span class="sd">        :type  stat_id: :class:`str`</span>
+<span class="sd">        :param stat_id: statistic item id</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.appliance.monitoring``.</span>
+<span class="sd">        :rtype: :class:`Monitoring.MonitoredItem`</span>
+<span class="sd">        :return: MonitoredItem structure</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;stat_id&#39;</span><span class="p">:</span> <span class="n">stat_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_MonitoringStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for query operation</span>
+        <span class="n">query_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;item&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Monitoring.MonitoredItemDataRequest&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">query_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">query_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">query_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;stat_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.appliance.monitoring&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;query&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">query_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Monitoring.MonitoredItemData&#39;</span><span class="p">)),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">query_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">query_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">query_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Monitoring.MonitoredItem&#39;</span><span class="p">)),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Monitoring.MonitoredItem&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.appliance.monitoring&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

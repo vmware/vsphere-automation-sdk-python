@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.data.serializers.introspection &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.data.serializers.introspection</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Convenient libraries for introspection data</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2013 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.definition</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IntegerDefinition</span><span class="p">,</span> <span class="n">DoubleDefinition</span><span class="p">,</span> <span class="n">BooleanDefinition</span><span class="p">,</span> <span class="n">StringDefinition</span><span class="p">,</span>
+    <span class="n">BlobDefinition</span><span class="p">,</span> <span class="n">ListDefinition</span><span class="p">,</span> <span class="n">StructDefinition</span><span class="p">,</span> <span class="n">OptionalDefinition</span><span class="p">,</span>
+    <span class="n">VoidDefinition</span><span class="p">,</span> <span class="n">OpaqueDefinition</span><span class="p">,</span> <span class="n">SecretDefinition</span><span class="p">,</span> <span class="n">ErrorDefinition</span><span class="p">,</span>
+    <span class="n">StructRefDefinition</span><span class="p">,</span> <span class="n">DynamicStructDefinition</span><span class="p">,</span> <span class="n">ReferenceResolver</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.type</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.value</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">StringValue</span><span class="p">,</span> <span class="n">ListValue</span><span class="p">,</span> <span class="n">StructValue</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.constants</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Introspection</span><span class="p">,</span> <span class="n">MAP_ENTRY</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="c"># Type map from Type constants in runtime to</span>
+<span class="c"># type constants in Introspection service</span>
+<span class="n">data_type_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="s">&#39;LONG&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="s">&#39;DOUBLE&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">:</span> <span class="s">&#39;BOOLEAN&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span> <span class="s">&#39;STRING&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">BLOB</span><span class="p">:</span> <span class="s">&#39;BINARY&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">:</span> <span class="s">&#39;LIST&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">:</span> <span class="s">&#39;STRUCTURE&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">:</span> <span class="s">&#39;OPTIONAL&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">VOID</span><span class="p">:</span> <span class="s">&#39;VOID&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">OPAQUE</span><span class="p">:</span> <span class="s">&#39;OPAQUE&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">SECRET</span><span class="p">:</span> <span class="s">&#39;SECRET&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE_REF</span><span class="p">:</span> <span class="s">&#39;STRUCTURE_REF&#39;</span><span class="p">,</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">DYNAMIC_STRUCTURE</span><span class="p">:</span> <span class="s">&#39;DYNAMIC_STRUCTURE&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c"># Type map from type enum constants in Introspection</span>
+<span class="c"># service to DataDefinition objects</span>
+<span class="n">reverse_data_type_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;LONG&#39;</span><span class="p">:</span> <span class="n">IntegerDefinition</span><span class="p">,</span>
+    <span class="s">&#39;DOUBLE&#39;</span><span class="p">:</span> <span class="n">DoubleDefinition</span><span class="p">,</span>
+    <span class="s">&#39;BOOLEAN&#39;</span><span class="p">:</span> <span class="n">BooleanDefinition</span><span class="p">,</span>
+    <span class="s">&#39;STRING&#39;</span><span class="p">:</span> <span class="n">StringDefinition</span><span class="p">,</span>
+    <span class="s">&#39;BINARY&#39;</span><span class="p">:</span> <span class="n">BlobDefinition</span><span class="p">,</span>
+    <span class="s">&#39;LIST&#39;</span><span class="p">:</span> <span class="n">ListDefinition</span><span class="p">,</span>
+    <span class="s">&#39;STRUCTURE&#39;</span><span class="p">:</span> <span class="n">StructDefinition</span><span class="p">,</span>
+    <span class="s">&#39;OPTIONAL&#39;</span><span class="p">:</span> <span class="n">OptionalDefinition</span><span class="p">,</span>
+    <span class="s">&#39;VOID&#39;</span><span class="p">:</span> <span class="n">VoidDefinition</span><span class="p">,</span>
+    <span class="s">&#39;OPAQUE&#39;</span><span class="p">:</span> <span class="n">OpaqueDefinition</span><span class="p">,</span>
+    <span class="s">&#39;SECRET&#39;</span><span class="p">:</span> <span class="n">SecretDefinition</span><span class="p">,</span>
+    <span class="s">&#39;ERROR&#39;</span><span class="p">:</span> <span class="n">ErrorDefinition</span><span class="p">,</span>
+    <span class="s">&#39;STRUCTURE_REF&#39;</span><span class="p">:</span> <span class="n">StructRefDefinition</span><span class="p">,</span>
+    <span class="s">&#39;DYNAMIC_STRUCTURE&#39;</span><span class="p">:</span> <span class="n">DynamicStructDefinition</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="convert_data_def_to_data_value"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.introspection.convert_data_def_to_data_value">[docs]</a><span class="k">def</span> <span class="nf">convert_data_def_to_data_value</span><span class="p">(</span><span class="n">data_def</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert :class:`vmware.vapi.data.definition.DataDefinition` object to</span>
+<span class="sd">    :class:`vmware.vapi.data.value.DataValue` object. The type of the object</span>
+<span class="sd">    returned is a struct value that corresponds to DataDefinition VMODL2 type</span>
+<span class="sd">    present in introspection service.</span>
+
+<span class="sd">    :type  data_def: :class:`vmware.vapi.data.definition.DataDefinition`</span>
+<span class="sd">    :param data_def: Data definition</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">    :return: Data value representing the data definition object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">StructValue</span><span class="p">(</span><span class="n">Introspection</span><span class="o">.</span><span class="n">DATA_DEFINITION</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span>
+        <span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="n">data_type_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_def</span><span class="o">.</span><span class="n">type</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">data_def</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span> <span class="ow">or</span>
+            <span class="n">data_def</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE_REF</span> <span class="ow">or</span>
+            <span class="n">data_def</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">(</span><span class="n">StringValue</span><span class="p">(</span><span class="n">data_def</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">data_def</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">OPTIONAL</span> <span class="ow">or</span>
+            <span class="n">data_def</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">LIST</span><span class="p">):</span>
+        <span class="n">element_definition</span> <span class="o">=</span> <span class="n">data_def</span><span class="o">.</span><span class="n">element_type</span>
+        <span class="n">element_value</span> <span class="o">=</span> <span class="n">convert_data_def_to_data_value</span><span class="p">(</span>
+            <span class="n">element_definition</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;element_definition&#39;</span><span class="p">,</span>
+                         <span class="n">OptionalValue</span><span class="p">(</span><span class="n">element_value</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;element_definition&#39;</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">data_def</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span> <span class="ow">or</span> <span class="n">data_def</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">ERROR</span><span class="p">):</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">ListValue</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">data_def</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">():</span>
+            <span class="n">element_definition</span> <span class="o">=</span> <span class="n">data_def</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+            <span class="n">field_pair</span> <span class="o">=</span> <span class="n">StructValue</span><span class="p">(</span><span class="n">MAP_ENTRY</span><span class="p">)</span>
+            <span class="n">field_pair</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="n">StringValue</span><span class="p">(</span><span class="n">field_name</span><span class="p">))</span>
+            <span class="n">field_pair</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span>
+                <span class="s">&#39;value&#39;</span><span class="p">,</span>
+                <span class="n">convert_data_def_to_data_value</span><span class="p">(</span><span class="n">element_definition</span><span class="p">))</span>
+            <span class="n">fields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">field_pair</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">(</span><span class="n">fields</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">,</span> <span class="n">OptionalValue</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_convert_data_value_to_data_def_int</span><span class="p">(</span><span class="n">data_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert :class:`vmware.vapi.data.value.DataValue` object that</span>
+<span class="sd">    corresponds to DataDefinition structure in introspection VMODL2 into</span>
+<span class="sd">    :class:`vmware.vapi.data.definition.DataDefinition` object using the</span>
+<span class="sd">    ReferenceResolver context.</span>
+
+<span class="sd">    ReferenceResolver is used to resolve any STRUCTURE_REF objects present in</span>
+<span class="sd">    the input value. This function registers all the STRUCTURE and</span>
+<span class="sd">    STRUCTURE_REF objects with ReferenceResolver. The caller of this function</span>
+<span class="sd">    must call &quot;resolve()&quot; on the ReferenceResolver to resolve the</span>
+<span class="sd">    StructDefinition references in StructRefDefinition</span>
+
+<span class="sd">    :type  data_value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">    :param data_value: Data value representing the data definition object</span>
+<span class="sd">    :type  ctx: :class:`vmware.vapi.data.definition.ReferenceResolver`</span>
+<span class="sd">    :param ctx: Context to resolve structure reference definitions</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.data.definition.DataDefinition`</span>
+<span class="sd">    :return: Data definition</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">type_name</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">data_def_class</span> <span class="o">=</span> <span class="n">reverse_data_type_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_name</span><span class="p">)</span>
+    <span class="c"># Primitive types</span>
+    <span class="k">if</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;VOID&#39;</span><span class="p">,</span> <span class="s">&#39;LONG&#39;</span><span class="p">,</span> <span class="s">&#39;DOUBLE&#39;</span><span class="p">,</span> <span class="s">&#39;STRING&#39;</span><span class="p">,</span> <span class="s">&#39;OPAQUE&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;DYNAMIC_STRUCTURE&#39;</span><span class="p">,</span> <span class="s">&#39;BINARY&#39;</span><span class="p">,</span> <span class="s">&#39;BOOLEAN&#39;</span><span class="p">,</span> <span class="s">&#39;SECRET&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">data_def_class</span><span class="p">()</span>
+    <span class="c"># Generic types</span>
+    <span class="k">elif</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;OPTIONAL&#39;</span><span class="p">,</span> <span class="s">&#39;LIST&#39;</span><span class="p">]:</span>
+        <span class="n">element_type_def</span> <span class="o">=</span> <span class="n">_convert_data_value_to_data_def_int</span><span class="p">(</span>
+            <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;element_definition&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_def_class</span><span class="p">(</span><span class="n">element_type_def</span><span class="p">)</span>
+    <span class="c"># Struct Ref definition</span>
+    <span class="k">elif</span> <span class="n">type_name</span> <span class="o">==</span> <span class="s">&#39;STRUCTURE_REF&#39;</span><span class="p">:</span>
+        <span class="n">data_def</span> <span class="o">=</span> <span class="n">data_def_class</span><span class="p">(</span><span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">add_reference</span><span class="p">(</span><span class="n">data_def</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_def</span>
+    <span class="c"># Structure and Error types</span>
+    <span class="k">elif</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;STRUCTURE&#39;</span><span class="p">,</span> <span class="s">&#39;ERROR&#39;</span><span class="p">]:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">field_defs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">data_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">for</span> <span class="n">field_info</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="n">field_name</span> <span class="o">=</span> <span class="n">field_info</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">field_def</span> <span class="o">=</span> <span class="n">_convert_data_value_to_data_def_int</span><span class="p">(</span>
+                <span class="n">field_info</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">),</span> <span class="n">ctx</span><span class="p">)</span>
+            <span class="n">field_defs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">field_name</span><span class="p">,</span> <span class="n">field_def</span><span class="p">))</span>
+        <span class="n">data_def</span> <span class="o">=</span> <span class="n">data_def_class</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field_defs</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">add_definition</span><span class="p">(</span><span class="n">data_def</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_def</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+            <span class="s">&#39;vapi.introspection.invalid.type&#39;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="convert_data_value_to_data_def"><a class="viewcode-back" href="../../../../../vmware.vapi.data.serializers.html#vmware.vapi.data.serializers.introspection.convert_data_value_to_data_def">[docs]</a><span class="k">def</span> <span class="nf">convert_data_value_to_data_def</span><span class="p">(</span><span class="n">data_value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert :class:`vmware.vapi.data.value.DataValue` object that</span>
+<span class="sd">    corresponds to DataDefinition structure in introspection VMODL2 into</span>
+<span class="sd">    :class:`vmware.vapi.data.definition.DataDefinition` object.</span>
+
+<span class="sd">    :type  data_value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">    :param data_value: Data value representing the data definition object</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.data.definition.DataDefinition`</span>
+<span class="sd">    :return: Data definition</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">ReferenceResolver</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_convert_data_value_to_data_def_int</span><span class="p">(</span><span class="n">data_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

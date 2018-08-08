@@ -1,0 +1,1363 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.server.asyncore_http &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.server.asyncore_http</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Asyncore http connection</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c"># Http stuff</span>
+<span class="c"># import Cookie</span>
+<span class="kn">import</span> <span class="nn">asynchat</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">posixpath</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">urllib</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">BaseHTTPServer</span>
+<span class="kn">from</span> <span class="nn">vmware</span> <span class="kn">import</span> <span class="n">vapi</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="n">_HTTP_MAX_REQUEST_SIZE</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
+
+
+<div class="viewcode-block" id="find_token"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.find_token">[docs]</a><span class="k">def</span> <span class="nf">find_token</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">token_to_find</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find token and token value from a comma separated tokens</span>
+
+<span class="sd">    :type  tokens: :class:`str`</span>
+<span class="sd">    :param tokens: comma separated tokens string</span>
+<span class="sd">    :type  token_to_find: :class:`str`</span>
+<span class="sd">    :param token_to_find: a string to find in the tokens</span>
+<span class="sd">    :rtype :class:`tuple` of :class:`str`, :class:`str` if token is found, None otherwise</span>
+<span class="sd">    :return: tuple of (token_to_find, value)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Split token with ,</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">):</span>
+        <span class="c"># Split again with ;</span>
+        <span class="n">token_and_val</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token_and_val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="n">token_to_find</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token_and_val</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">token_and_val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">token_to_find</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="log_exception"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.log_exception">[docs]</a><span class="k">def</span> <span class="nf">log_exception</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">err</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handy function to log exception with stack trace</span>
+
+<span class="sd">    :type  msg: :class:`str`</span>
+<span class="sd">    :param msg: error message</span>
+<span class="sd">    :type  err: :class:`Exception`</span>
+<span class="sd">    :param err: exception to log</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">traceback</span>
+    <span class="n">stack_trace</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">stack_trace</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GzipWriter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.GzipWriter">[docs]</a><span class="k">class</span> <span class="nc">GzipWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Gzip writer &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gzip writer init</span>
+
+<span class="sd">        :type  wfile: :class:`file`</span>
+<span class="sd">        :param wfile: file object to write to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">gzip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">wfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;wb&#39;</span><span class="p">,</span> <span class="n">compresslevel</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">org_wfile</span> <span class="o">=</span> <span class="n">wfile</span>
+
+<div class="viewcode-block" id="GzipWriter.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.GzipWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write</span>
+
+<span class="sd">        :type  buf: :class:`str`</span>
+<span class="sd">        :param buf: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GzipWriter.flush"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.GzipWriter.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; flush &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="GzipWriter.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.GzipWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c"># No more write</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">org_wfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">org_wfile</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="DeflateWriter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.DeflateWriter">[docs]</a><span class="k">class</span> <span class="nc">DeflateWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Deflate (zlib) writer &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfile</span><span class="p">,</span> <span class="n">compresslevel</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deflate (zlib) writer init</span>
+
+<span class="sd">        :type  wfile: :class:`file`</span>
+<span class="sd">        :param wfile: file object to write to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">zlib</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="n">wfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compress</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">compressobj</span><span class="p">(</span><span class="n">compresslevel</span><span class="p">,</span>
+                                         <span class="n">zlib</span><span class="o">.</span><span class="n">DEFLATED</span><span class="p">,</span>
+                                         <span class="n">zlib</span><span class="o">.</span><span class="n">MAX_WBITS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flush_flag</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">Z_SYNC_FLUSH</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_flush_flag</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">Z_FINISH</span>
+
+<div class="viewcode-block" id="DeflateWriter.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.DeflateWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write</span>
+
+<span class="sd">        :type  buf: :class:`str`</span>
+<span class="sd">        :param buf: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compress</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="DeflateWriter.flush"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.DeflateWriter.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; flush &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compress</span><span class="o">.</span><span class="n">flush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flush_flag</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DeflateWriter.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.DeflateWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compress</span><span class="o">.</span><span class="n">flush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close_flush_flag</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c"># No more write</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compress</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="AsyncChatWriteAdapter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncChatWriteAdapter">[docs]</a><span class="k">class</span> <span class="nc">AsyncChatWriteAdapter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Async chat write adapter &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat_obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Async chat write adapter init</span>
+
+<span class="sd">        :type  chat_obj: :class:`asynchat.async_chat`</span>
+<span class="sd">        :param chat_obj: async chat object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chat_obj</span> <span class="o">=</span> <span class="n">chat_obj</span>
+
+<div class="viewcode-block" id="AsyncChatWriteAdapter.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncChatWriteAdapter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write</span>
+
+<span class="sd">        :type  buf: :class:`str`</span>
+<span class="sd">        :param buf: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat_obj</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">chat_obj</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncChatWriteAdapter.flush"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncChatWriteAdapter.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; flush &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat_obj</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">chat_obj</span><span class="o">.</span><span class="n">initiate_send</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncChatWriteAdapter.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncChatWriteAdapter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">chat_obj</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">chat_obj</span><span class="o">.</span><span class="n">close_when_done</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">chat_obj</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="ChunkedMessageBodyWriter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.ChunkedMessageBodyWriter">[docs]</a><span class="k">class</span> <span class="nc">ChunkedMessageBodyWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Chunked message writer &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfile</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">4096</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Chunked message writer init</span>
+
+<span class="sd">        :type  wfile: :class:`file`</span>
+<span class="sd">        :param wfile: file object to write to</span>
+<span class="sd">        :type  chunk_size: :class:`int`</span>
+<span class="sd">        :param chunk_size: max write chunk size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="n">wfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_chunk_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_write_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; write a chunk &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_chunk_size</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">:</span>
+            <span class="n">chunk_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
+            <span class="n">leftover_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_chunk_size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">chunk_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_chunk_size</span>
+            <span class="n">leftover_bytes</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c"># Write chunk header</span>
+        <span class="n">chunk_header</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%x</span><span class="se">\r\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">chunk_size</span>
+        <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY3</span><span class="p">:</span>
+            <span class="n">chunk_header</span> <span class="o">=</span> <span class="n">chunk_header</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk_header</span><span class="p">)</span>
+
+        <span class="n">chunks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span>
+        <span class="k">if</span> <span class="n">leftover_bytes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># Split the last chunk</span>
+            <span class="n">last_chunk</span> <span class="o">=</span> <span class="n">chunks</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_chunk</span><span class="p">[:</span><span class="o">-</span><span class="n">leftover_bytes</span><span class="p">])</span>
+            <span class="n">leftover_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">last_chunk</span><span class="p">[</span><span class="o">-</span><span class="n">leftover_bytes</span><span class="p">:]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">leftover_chunks</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+
+        <span class="c"># Write chunks</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="c"># Reset state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_chunk_size</span> <span class="o">=</span> <span class="n">leftover_bytes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span> <span class="o">=</span> <span class="n">leftover_chunks</span>
+
+<div class="viewcode-block" id="ChunkedMessageBodyWriter.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.ChunkedMessageBodyWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write</span>
+
+<span class="sd">        :type  buf: :class:`str`</span>
+<span class="sd">        :param buf: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_chunk_size</span> <span class="o">+=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_chunk_size</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_chunk</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ChunkedMessageBodyWriter.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.ChunkedMessageBodyWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c"># Flush chunks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+        <span class="c"># Write ending zero bytes chunk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_chunk</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ChunkedMessageBodyWriter.flush"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.ChunkedMessageBodyWriter.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; flush &quot;&quot;&quot;</span>
+        <span class="c"># Flush buffer</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_chunk_size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_chunk</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="DataHandler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.DataHandler">[docs]</a><span class="k">class</span> <span class="nc">DataHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Async chat data handler &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Async chat data handler init</span>
+
+<span class="sd">        :type  channel: :class:`HttpRequestHandler`</span>
+<span class="sd">        :param channel: http request handler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_data_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DataHandler.clear_data"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.DataHandler.clear_data">[docs]</a>    <span class="k">def</span> <span class="nf">clear_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Clear self.data &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_size</span> <span class="o">=</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="DataHandler.set_handlers"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.DataHandler.set_handlers">[docs]</a>    <span class="k">def</span> <span class="nf">set_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">found_term_handler</span><span class="p">,</span> <span class="n">terminator</span><span class="p">,</span>
+                     <span class="n">collect_in_data_handler</span><span class="p">,</span> <span class="n">max_data_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set asynchat handlers</span>
+
+<span class="sd">        :type  found_term_handler: :class:`function`</span>
+<span class="sd">        :param found_term_handler: terminator found handler</span>
+<span class="sd">        :type  terminator: :class:`str`</span>
+<span class="sd">        :param terminator: terminator string</span>
+<span class="sd">        :type  collect_in_data_handler: :class:`function`</span>
+<span class="sd">        :param collect_in_data_handler: collect incoming data handler</span>
+<span class="sd">        :type  max_data_size: :class:`int`</span>
+<span class="sd">        :param max_data_size: max data size before abort</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">set_handlers</span><span class="p">(</span><span class="n">found_term_handler</span><span class="p">,</span> <span class="n">terminator</span><span class="p">,</span> <span class="n">collect_in_data_handler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_data_size</span> <span class="o">=</span> <span class="n">max_data_size</span>
+</div>
+<div class="viewcode-block" id="DataHandler.append_data_collect_incoming_data"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.DataHandler.append_data_collect_incoming_data">[docs]</a>    <span class="k">def</span> <span class="nf">append_data_collect_incoming_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic incoming data handler: Append data to self.data</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: incoming data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_size</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data_size</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_data_size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">request_too_large</span><span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_data_size</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c"># Append data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_size</span> <span class="o">=</span> <span class="n">data_size</span>
+
+</div></div>
+<div class="viewcode-block" id="HttpHeadersHandler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpHeadersHandler">[docs]</a><span class="k">class</span> <span class="nc">HttpHeadersHandler</span><span class="p">(</span><span class="n">DataHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Async chat http header handler &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Async chat http headers handler init</span>
+
+<span class="sd">        :type  channel: :class:`HttpRequestHandler`</span>
+<span class="sd">        :param channel: http request handler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DataHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_handlers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">http_headers_found_terminator</span><span class="p">,</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\r\n\r\n</span><span class="s">&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">append_data_collect_incoming_data</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HttpHeadersHandler.http_headers_found_terminator"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpHeadersHandler.http_headers_found_terminator">[docs]</a>    <span class="k">def</span> <span class="nf">http_headers_found_terminator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Found terminator handler &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">http_headers_end</span><span class="p">(</span><span class="n">b</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="HttpBodyHandler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpBodyHandler">[docs]</a><span class="k">class</span> <span class="nc">HttpBodyHandler</span><span class="p">(</span><span class="n">DataHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Async chat http body handler &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Async chat http body handler init</span>
+
+<span class="sd">        :type  channel: :class:`HttpRequestHandler`</span>
+<span class="sd">        :param channel: http request handler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DataHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+        <span class="c"># Max request len is 4 M</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_request_size</span> <span class="o">=</span> <span class="n">_HTTP_MAX_REQUEST_SIZE</span>
+
+<div class="viewcode-block" id="HttpBodyHandler.http_body_collect_incoming_data"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpBodyHandler.http_body_collect_incoming_data">[docs]</a>    <span class="k">def</span> <span class="nf">http_body_collect_incoming_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        incoming data handler</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: incoming data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_size</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data_size</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_request_size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">request_too_large</span><span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_request_size</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">http_body_continue</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_size</span> <span class="o">=</span> <span class="n">data_size</span>
+</div>
+<div class="viewcode-block" id="HttpBodyHandler.http_body_found_terminator"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpBodyHandler.http_body_found_terminator">[docs]</a>    <span class="k">def</span> <span class="nf">http_body_found_terminator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Found terminator handler &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">http_body_end</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="ChunkedHandler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.ChunkedHandler">[docs]</a><span class="k">class</span> <span class="nc">ChunkedHandler</span><span class="p">(</span><span class="n">HttpBodyHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Async chat http chunked handler &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Async chat http chunked handler init</span>
+
+<span class="sd">        :type  channel: :class:`HttpRequestHandler`</span>
+<span class="sd">        :param channel: http request handler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HttpBodyHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_handlers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunked_size_found_terminator</span><span class="p">,</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">append_data_collect_incoming_data</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ChunkedHandler.chunked_size_found_terminator"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.ChunkedHandler.chunked_size_found_terminator">[docs]</a>    <span class="k">def</span> <span class="nf">chunked_size_found_terminator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Found chunked size handler &quot;&quot;&quot;</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chunk_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;400: Bad chunk size: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">send_error_</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s">&#39;Bad chunk size (</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">chunk_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># Last chunk. Remove trailer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_handlers</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chunked_trailer_found_terminator</span><span class="p">,</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append_data_collect_incoming_data</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_handlers</span><span class="p">(</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">setup_chunked_handler</span><span class="p">(),</span> <span class="n">chunk_size</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>  <span class="c"># pylint: disable=W0108</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">chunked_data_collect_incoming_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_request_size</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ChunkedHandler.chunked_trailer_found_terminator"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.ChunkedHandler.chunked_trailer_found_terminator">[docs]</a>    <span class="k">def</span> <span class="nf">chunked_trailer_found_terminator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Found chunked trailer terminator handler &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\r\n</span><span class="s">&#39;</span><span class="p">:</span>
+            <span class="c"># End of chunked trailer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">http_body_found_terminator</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ChunkedHandler.chunked_data_collect_incoming_data"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.ChunkedHandler.chunked_data_collect_incoming_data">[docs]</a>    <span class="k">def</span> <span class="nf">chunked_data_collect_incoming_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        incoming data handler</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: incoming data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">http_body_collect_incoming_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="MessageHandler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.MessageHandler">[docs]</a><span class="k">class</span> <span class="nc">MessageHandler</span><span class="p">(</span><span class="n">HttpBodyHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Async chat http message handler &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">content_len</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Async chat http message handler init</span>
+
+<span class="sd">        :type  channel: :class:`HttpRequestHandler`</span>
+<span class="sd">        :param channel: http request handler</span>
+<span class="sd">        :type  content_len: :class:`int` or None</span>
+<span class="sd">        :param content_len: http content length</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HttpBodyHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">content_len</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># Read until eof</span>
+            <span class="n">content_len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_request_size</span>
+        <span class="k">elif</span> <span class="n">content_len</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">content_len</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_request_size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">request_too_large</span><span class="p">(</span><span class="n">content_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_request_size</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">content_len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">message_body_found_terminator</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_handlers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_body_found_terminator</span><span class="p">,</span> <span class="n">content_len</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">message_body_collect_incoming_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_request_size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MessageHandler.message_body_found_terminator"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.MessageHandler.message_body_found_terminator">[docs]</a>    <span class="k">def</span> <span class="nf">message_body_found_terminator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Found http message terminator handler &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">http_body_found_terminator</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MessageHandler.message_body_collect_incoming_data"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.MessageHandler.message_body_collect_incoming_data">[docs]</a>    <span class="k">def</span> <span class="nf">message_body_collect_incoming_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        incoming data handler</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: incoming data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">http_body_collect_incoming_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="HeadOfLineWriter"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter">[docs]</a><span class="k">class</span> <span class="nc">HeadOfLineWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Head of line writer &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HeadOfLineWriter.Writer"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.Writer">[docs]</a>    <span class="k">class</span> <span class="nc">Writer</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Chile writer &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Chile writer init</span>
+
+<span class="sd">            :type  parent: :class:`HeadOfLineWriter`</span>
+<span class="sd">            :param parent: Parent writer</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reply</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># Used by parent to buffer pending reply</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+<div class="viewcode-block" id="HeadOfLineWriter.Writer.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.Writer.write">[docs]</a>        <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            write</span>
+
+<span class="sd">            :type  data: :class:`str`</span>
+<span class="sd">            :param data: data to write</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HeadOfLineWriter.Writer.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.Writer.close">[docs]</a>        <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+        <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HeadOfLineWriter.Writer.flush"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.Writer.flush">[docs]</a>        <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; flush &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HeadOfLineWriter.Writer.is_closed"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.Writer.is_closed">[docs]</a>        <span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            is writer closed</span>
+
+<span class="sd">            :rtype:  :class:`bool`</span>
+<span class="sd">            :return: True if closed, False otherwise</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="bp">None</span>
+</div></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Head of line writer init</span>
+
+<span class="sd">        :type  wfile: :class:`file`</span>
+<span class="sd">        :param wfile: file object to write to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="n">wfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>  <span class="c"># Protecting writers_q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HeadOfLineWriter.new_writer"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.new_writer">[docs]</a>    <span class="k">def</span> <span class="nf">new_writer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new child writer</span>
+
+<span class="sd">        :rtype:  :class:`Writer`</span>
+<span class="sd">        :return: A new writer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Writer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">writer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">writer</span>
+</div>
+<div class="viewcode-block" id="HeadOfLineWriter.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write to child writer</span>
+
+<span class="sd">        :type  writer: :class:`Writer`</span>
+<span class="sd">        :param writer: child writer</span>
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">writer</span><span class="o">.</span><span class="n">is_closed</span><span class="p">():</span>
+            <span class="c"># Connection already closed</span>
+            <span class="k">return</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">head_conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c"># TODO: Release global lock, acquire writer lock</span>
+            <span class="k">if</span> <span class="n">writer</span> <span class="o">!=</span> <span class="n">head_conn</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">writer</span><span class="o">.</span><span class="n">reply</span><span class="p">:</span>
+                    <span class="n">writer</span><span class="o">.</span><span class="n">reply</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">reply</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flush_pending_reply</span><span class="p">(</span><span class="n">writer</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c"># logger.debug(&#39;write len %d %s&#39;, len(data), self.wfile)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;write: Failed to write </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)))</span>
+</div>
+<div class="viewcode-block" id="HeadOfLineWriter.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close a child writer</span>
+
+<span class="sd">        :type  writer: :class:`Writer`</span>
+<span class="sd">        :param writer: child writer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># close will modify writers_q. Must NOT call this while iterating</span>
+        <span class="c"># thru writers_q</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">writer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+                <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">is_closed</span><span class="p">():</span>
+                    <span class="n">head_writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">flush_pending_reply</span><span class="p">(</span><span class="n">head_writer</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="HeadOfLineWriter.flush_pending_reply"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.flush_pending_reply">[docs]</a>    <span class="k">def</span> <span class="nf">flush_pending_reply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flush pending reply</span>
+
+<span class="sd">        :type  writer: :class:`Writer`</span>
+<span class="sd">        :param writer: child writer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">writer</span><span class="o">.</span><span class="n">reply</span><span class="p">:</span>
+            <span class="n">pending_reply</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">reply</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">reply</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pending_reply</span><span class="p">)</span>
+                <span class="c"># logger.debug(&#39;write len %d %s&#39;, len(data), self.wfile)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;flush_pending_reply: Failed to write </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)))</span>
+</div>
+<div class="viewcode-block" id="HeadOfLineWriter.flush"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HeadOfLineWriter.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        flush a child writer (only possible for head of line writer)</span>
+
+<span class="sd">        :type  writer: :class:`Writer`</span>
+<span class="sd">        :param writer: child writer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># TODO: Only flush head of line writer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">head_writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writers_q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">flush_pending_reply</span><span class="p">(</span><span class="n">head_writer</span><span class="p">)</span>
+                    <span class="n">head_writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;close </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="HttpRequestHandler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler">[docs]</a><span class="k">class</span> <span class="nc">HttpRequestHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Http request handler &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">http_conn</span><span class="p">,</span> <span class="n">wfile</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Http request handler init</span>
+
+<span class="sd">        :type  http_conn: :class:`AsyncoreHttpConnection`</span>
+<span class="sd">        :param http_conn: http connection</span>
+<span class="sd">        :type  wfile: :class:`file`</span>
+<span class="sd">        :param wfile: file object to write to</span>
+<span class="sd">        :type  content_type: :class:`str`</span>
+<span class="sd">        :param content_type: request content type</span>
+<span class="sd">        :type  protocol_handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param protocol_handler: async protocol handler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Extract info from http_conn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">http_conn</span> <span class="o">=</span> <span class="n">http_conn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="n">wfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="n">content_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol_handler</span> <span class="o">=</span> <span class="n">protocol_handler</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">http_version</span> <span class="o">=</span> <span class="n">http_conn</span><span class="o">.</span><span class="n">http_version</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">http_conn</span><span class="o">.</span><span class="n">headers</span>
+
+        <span class="c"># Set static response headers</span>
+        <span class="c"># NYI: Cookies</span>
+        <span class="c"># cookies = Cookie.SimpleCookie(headers.get(&#39;cookie&#39;))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;cache-control&#39;</span><span class="p">:</span> <span class="s">&#39;no-cache&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">response_headers</span><span class="p">[</span><span class="s">&#39;content-type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_type</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gzip_response</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deflate_response</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resp_chunking</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c"># force_close_when_done</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_version</span> <span class="o">&gt;=</span> <span class="mf">1.1</span><span class="p">:</span>
+            <span class="c"># Accept-Encoding</span>
+            <span class="n">accept_encoding</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;accept-encoding&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="c"># Support gzip only for now</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gzip_response</span> <span class="o">=</span> \
+                <span class="p">(</span><span class="n">find_token</span><span class="p">(</span><span class="n">accept_encoding</span><span class="p">,</span> <span class="s">&#39;gzip&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gzip_response</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">deflate_response</span> <span class="o">=</span> \
+                    <span class="p">(</span><span class="n">find_token</span><span class="p">(</span><span class="n">accept_encoding</span><span class="p">,</span> <span class="s">&#39;deflate&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+
+            <span class="c"># Response chunking</span>
+            <span class="n">te</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;TE&#39;</span><span class="p">,</span> <span class="s">&#39;chunked&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resp_chunking</span> <span class="o">=</span> <span class="p">(</span><span class="n">find_token</span><span class="p">(</span><span class="n">te</span><span class="p">,</span> <span class="s">&#39;chunked&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;connection&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;close&#39;</span>
+
+            <span class="c"># Set static response headers</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resp_chunking</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">response_headers</span><span class="p">[</span><span class="s">&#39;transfer-encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;chunked&#39;</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gzip_response</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">response_headers</span><span class="p">[</span><span class="s">&#39;content-encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;gzip&#39;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deflate_response</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">response_headers</span><span class="p">[</span><span class="s">&#39;content-encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;deflate&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_version</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;connection&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s">&#39;keep-alive&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span> <span class="o">=</span> \
+            <span class="n">protocol_handler</span><span class="o">.</span><span class="n">get_data_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">protocol_handler</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_response_started</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="HttpRequestHandler.request_continue"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler.request_continue">[docs]</a>    <span class="k">def</span> <span class="nf">request_continue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        request data continue</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: request data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">data_ready</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HttpRequestHandler.request_end"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler.request_end">[docs]</a>    <span class="k">def</span> <span class="nf">request_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; request data ended &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_handler</span><span class="o">.</span><span class="n">data_end</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="HttpRequestHandler.write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_started</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_response_started</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_response_headers</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_continue</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HttpRequestHandler.close"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_end</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">http_conn</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HttpRequestHandler.close_http_conn_when_done"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler.close_http_conn_when_done">[docs]</a>    <span class="k">def</span> <span class="nf">close_http_conn_when_done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close the connection after all data written &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_conn</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">http_conn</span><span class="o">.</span><span class="n">close_when_done</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="HttpRequestHandler.send_response_headers"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler.send_response_headers">[docs]</a>    <span class="k">def</span> <span class="nf">send_response_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_code</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        send response headers</span>
+
+<span class="sd">        :type  response_code: :class:`int`</span>
+<span class="sd">        :param response_code: http response code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">close_connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span>
+
+            <span class="c"># Char encoding</span>
+            <span class="c"># encoding = &#39;utf-8&#39;</span>
+
+            <span class="c"># Send response code</span>
+            <span class="n">http_conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_conn</span>
+            <span class="n">http_conn</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="n">response_code</span><span class="p">)</span>
+
+            <span class="c"># NYI: cookies</span>
+            <span class="c">#for cookie in cookies:</span>
+            <span class="c">#    header_value = cookies[cookie].output(header=&#39;&#39;)</span>
+            <span class="c">#    http_conn.send_header(&#39;set-cookie&#39;, header_value)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">resp_chunking</span><span class="p">:</span>
+                <span class="n">close_connection</span> <span class="o">=</span> <span class="bp">True</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_version</span> <span class="o">&gt;=</span> <span class="mf">1.1</span><span class="p">:</span>
+                <span class="c"># Close connection?</span>
+                <span class="k">if</span> <span class="n">close_connection</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">response_headers</span><span class="p">[</span><span class="s">&#39;connection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;close&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">close_http_conn_when_done</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">close_connection</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">close_http_conn_when_done</span><span class="p">()</span>
+
+            <span class="c"># Send headers</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_headers</span><span class="p">):</span>
+                <span class="n">http_conn</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+            <span class="c"># End headers</span>
+            <span class="n">http_conn</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+
+            <span class="n">wfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span>
+            <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">4096</span>
+
+            <span class="c"># Handle chunking</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resp_chunking</span><span class="p">:</span>
+                <span class="n">wfile</span> <span class="o">=</span> <span class="n">ChunkedMessageBodyWriter</span><span class="p">(</span><span class="n">wfile</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
+
+            <span class="c"># Handle compression</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gzip_response</span><span class="p">:</span>
+                <span class="n">wfile</span> <span class="o">=</span> <span class="n">GzipWriter</span><span class="p">(</span><span class="n">wfile</span><span class="o">=</span><span class="n">wfile</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deflate_response</span><span class="p">:</span>
+                <span class="n">wfile</span> <span class="o">=</span> <span class="n">DeflateWriter</span><span class="p">(</span><span class="n">wfile</span><span class="o">=</span><span class="n">wfile</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="n">wfile</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">log_exception</span><span class="p">(</span><span class="s">&#39;Error: Send response exception&#39;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_http_conn_when_done</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="HttpRequestHandler.response_continue"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler.response_continue">[docs]</a>    <span class="k">def</span> <span class="nf">response_continue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        response data continue</span>
+
+<span class="sd">        :type  response: :class:`str`</span>
+<span class="sd">        :param response: http response data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># Send response</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+                <span class="n">wfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span>
+                <span class="n">is_str_response</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">is_str_response</span><span class="p">:</span>
+                    <span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># In theory, this should be async too...</span>
+                    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                        <span class="n">chunk</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+                            <span class="k">break</span>
+                        <span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_str_response</span><span class="p">:</span>
+                    <span class="n">response</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">log_exception</span><span class="p">(</span><span class="s">&#39;Error: Send response exception&#39;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_http_conn_when_done</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="HttpRequestHandler.response_end"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpRequestHandler.response_end">[docs]</a>    <span class="k">def</span> <span class="nf">response_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; response data end &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">log_exception</span><span class="p">(</span><span class="s">&#39;Error: Send response exception&#39;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_http_conn_when_done</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="AsyncoreHttpConnection"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection">[docs]</a><span class="k">class</span> <span class="nc">AsyncoreHttpConnection</span><span class="p">(</span><span class="n">asynchat</span><span class="o">.</span><span class="n">async_chat</span><span class="p">,</span> <span class="n">BaseHTTPServer</span><span class="o">.</span><span class="n">BaseHTTPRequestHandler</span><span class="p">):</span>  <span class="c"># pylint: disable=W0223</span>
+    <span class="sd">&quot;&quot;&quot; Async Http connection with async chat &quot;&quot;&quot;</span>
+
+    <span class="n">_HTTP_VERSION</span> <span class="o">=</span> <span class="mf">1.1</span>
+
+    <span class="c"># Override base class&#39;s protocol_version</span>
+    <span class="c"># Note: need to include accurate &#39;Content-Length&#39; in send_header()</span>
+    <span class="n">protocol_version</span> <span class="o">=</span> <span class="s">&#39;HTTP/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">_HTTP_VERSION</span><span class="p">)</span>
+
+    <span class="c"># XXX: Get around a nasty async_chat bug</span>
+    <span class="n">asynchat</span><span class="o">.</span><span class="n">async_chat</span><span class="o">.</span><span class="n">ac_in_buffer_size</span> <span class="o">=</span> <span class="n">_HTTP_MAX_REQUEST_SIZE</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">sock_map</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">from_addr</span><span class="p">,</span> <span class="n">protocol_factory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Async Http connection with async chat</span>
+
+<span class="sd">        :type  server: :class:`vmware.vapi.server.asyncore_server.AsyncoreTcpListener`</span>
+<span class="sd">        :type  server: asyncore server</span>
+<span class="sd">        :type  sock_map: :class:`dict`</span>
+<span class="sd">        :param sock_map: Global socket map</span>
+<span class="sd">        :type  sock: :class:`socket.socket`</span>
+<span class="sd">        :param sock: http connection socket</span>
+<span class="sd">        :type  from_addr: :class:`tuple`</span>
+<span class="sd">        :param from_addr: remote address bound to the socket</span>
+<span class="sd">        :type  protocol_factory: :class:`HttpFactory`</span>
+<span class="sd">        :param protocol_factory: protocol factory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">accept_read</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">asynchat</span><span class="o">.</span><span class="n">async_chat</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="nb">map</span><span class="o">=</span><span class="n">sock_map</span><span class="p">)</span>
+            <span class="n">BaseHTTPServer</span><span class="o">.</span><span class="n">BaseHTTPRequestHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span>
+                                                           <span class="n">from_addr</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server</span>
+
+            <span class="c"># Http headers handler</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_connection</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_http_headers_handler</span><span class="p">()</span>
+
+            <span class="c"># Setup rfile / wfile</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rfile</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="n">vapi</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">asyncore_server</span><span class="o">.</span><span class="n">SyncWriteToAsyncWriteAdapter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">head_of_line_writer</span> <span class="o">=</span> <span class="n">HeadOfLineWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span> <span class="o">=</span> <span class="n">protocol_factory</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="c"># Shutup pylint</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">http_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_VERSION</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+            <span class="k">raise</span>
+
+<div class="viewcode-block" id="AsyncoreHttpConnection.cleanup"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; connection cleanup &quot;&quot;&quot;</span>
+        <span class="c"># Need to cleanup from sock_map</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">del_channel</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_connection</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rfile</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head_of_line_writer</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="c">## Begin BaseHTTPServer.BaseHTTPRequestHandler interface</span>
+    <span class="c">#</span></div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.setup"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; setup: Not used &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.handle"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle: Not used &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.finish"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; finish: Not used &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c">## Handle HTTP POST</span>
+    <span class="c">#</span></div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.do_POST"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.do_POST">[docs]</a>    <span class="k">def</span> <span class="nf">do_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Handle HTTP Post &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;In do_POST: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_address</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">http_body_begin</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Done do_POST: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_address</span><span class="p">)</span>
+
+    <span class="c">## End BaseHTTPServer.BaseHTTPRequestHandler interface</span>
+
+    <span class="c">## Begin async_chat interface</span>
+    <span class="c">#</span>
+    <span class="c"># def collect_incoming_data(): pass</span>
+    <span class="c"># def found_terminator(): pass</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.setup_http_headers_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.setup_http_headers_handler">[docs]</a>    <span class="k">def</span> <span class="nf">setup_http_headers_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; setup asynchat http headers handlers &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accept_read</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">HttpHeadersHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">loop_controller</span><span class="o">.</span><span class="n">intr</span><span class="p">()</span>  <span class="c"># Wake up server</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.setup_chunked_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.setup_chunked_handler">[docs]</a>    <span class="k">def</span> <span class="nf">setup_chunked_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; setup asynchat http chunked handlers &quot;&quot;&quot;</span>
+        <span class="n">ChunkedHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.setup_message_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.setup_message_handler">[docs]</a>    <span class="k">def</span> <span class="nf">setup_message_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content_len</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; setup asynchat http message body handlers &quot;&quot;&quot;</span>
+        <span class="n">MessageHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content_len</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.set_handlers"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.set_handlers">[docs]</a>    <span class="k">def</span> <span class="nf">set_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">found_term_handler</span><span class="p">,</span> <span class="n">terminator</span><span class="p">,</span> <span class="n">collect_in_data_handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        setup asynchat handlers</span>
+
+<span class="sd">        :type  found_term_handler: :class:`function`</span>
+<span class="sd">        :param found_term_handler: terminator found handler</span>
+<span class="sd">        :type  terminator: :class:`str`</span>
+<span class="sd">        :param terminator: terminator string</span>
+<span class="sd">        :type  collect_in_data_handler: :class:`function`</span>
+<span class="sd">        :param collect_in_data_handler: collect incoming data handler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">found_terminator</span> <span class="o">=</span> <span class="n">found_term_handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_terminator</span><span class="p">(</span><span class="n">terminator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collect_incoming_data</span> <span class="o">=</span> <span class="n">collect_in_data_handler</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.http_headers_end"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.http_headers_end">[docs]</a>    <span class="k">def</span> <span class="nf">http_headers_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        http headers end callback</span>
+
+<span class="sd">        :type  headers: :class:`str`</span>
+<span class="sd">        :param headers: http headers string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rfile</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle_one_request</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">close_connection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_when_done</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.http_body_begin"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.http_body_begin">[docs]</a>    <span class="k">def</span> <span class="nf">http_body_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; request body begin &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">http_version</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c"># Get protocol handler</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;?&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;#&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="n">header_content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;content-type&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">header_content_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tokens</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content_type</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">protocol_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocol_factory</span><span class="o">.</span><span class="n">get_handler</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">protocol_handler</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_error_</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s">&#39;Path not found: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
+            <span class="c"># TODO: close connection?</span>
+            <span class="k">return</span>
+
+        <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">wfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_of_line_writer</span><span class="o">.</span><span class="n">new_writer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span> <span class="o">=</span> <span class="n">HttpRequestHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfile</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">)</span>
+
+        <span class="c"># Look for non-identity transfer-encoding before content-length</span>
+        <span class="n">req_chunking</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_version</span> <span class="o">&gt;=</span> <span class="mf">1.1</span><span class="p">:</span>
+            <span class="c"># Request chunking</span>
+            <span class="n">xfer_encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;transfer-encoding&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">req_chunking</span> <span class="o">=</span> <span class="p">(</span><span class="n">find_token</span><span class="p">(</span><span class="n">xfer_encoding</span><span class="p">,</span> <span class="s">&#39;chunked&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">req_chunking</span><span class="p">:</span>
+            <span class="c"># Setup chunked message body handler</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_chunked_handler</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Get content length from header</span>
+            <span class="n">content_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;content-length&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">content_length</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">content_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">content_length</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;400: Bad content-length: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">content_length</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">send_error_</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s">&#39;Bad content-length (</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">content_length</span><span class="p">)</span>
+                    <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">content_len</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="c"># Setup message body handler</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_message_handler</span><span class="p">(</span><span class="n">content_len</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.http_body_continue"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.http_body_continue">[docs]</a>    <span class="k">def</span> <span class="nf">http_body_continue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; request body continue &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">request_continue</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.readable"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.readable">[docs]</a>    <span class="k">def</span> <span class="nf">readable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Can read more data?</span>
+
+<span class="sd">        :rtype  :class:`bool`</span>
+<span class="sd">        :return True if this can handle more data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">accept_read</span> <span class="ow">and</span> <span class="n">asynchat</span><span class="o">.</span><span class="n">async_chat</span><span class="o">.</span><span class="n">readable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.http_body_end"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.http_body_end">[docs]</a>    <span class="k">def</span> <span class="nf">http_body_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; request body ended &quot;&quot;&quot;</span>
+        <span class="c"># To stop pipeline request, set accept_read to False until the server</span>
+        <span class="c"># can serve another request</span>
+        <span class="c"># self.accept_read = False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">request_end</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># Back to http header reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_http_headers_handler</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.send_error_"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.send_error_">[docs]</a>    <span class="k">def</span> <span class="nf">send_error_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_code</span><span class="p">,</span> <span class="n">response_txt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send http error</span>
+
+<span class="sd">        :type  response_code: :class:`int`</span>
+<span class="sd">        :param response_code: http response code</span>
+<span class="sd">        :type  response_txt: :class:`str`</span>
+<span class="sd">        :param response_txt: http response text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_error</span><span class="p">(</span><span class="n">response_code</span><span class="p">,</span> <span class="n">response_txt</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_when_done</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.request_too_large"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.request_too_large">[docs]</a>    <span class="k">def</span> <span class="nf">request_too_large</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_size</span><span class="p">,</span> <span class="n">max_data_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send request too large error</span>
+
+<span class="sd">        :type  data_size: :class:`int`</span>
+<span class="sd">        :param data_size: request data size</span>
+<span class="sd">        :type  max_data_size: :class:`int`</span>
+<span class="sd">        :param max_data_size: max request data size allowed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Request too large (</span><span class="si">%d</span><span class="s"> bytes). Max allowed is </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="n">max_data_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_error_</span><span class="p">(</span><span class="mi">413</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>  <span class="c"># 413: Request Entity Too Large</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.log_message"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.log_message">[docs]</a>    <span class="k">def</span> <span class="nf">log_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>  <span class="c"># pylint: disable=W0622</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Override the BaseHTTPServer.BaseHTTPRequestHandler method to send the</span>
+<span class="sd">        log message to the log file instead of stderr.</span>
+
+<span class="sd">        :type  format: :class:`str`</span>
+<span class="sd">        :param format string</span>
+<span class="sd">        :type  args: :class:`tuple`</span>
+<span class="sd">        :param args: format argument(s)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s"> - - </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_address</span><span class="p">,</span> <span class="n">format</span> <span class="o">%</span> <span class="n">args</span><span class="p">)</span>
+
+    <span class="c"># Apparently asynchat write is not multi-thread safe. Use our own</span></div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.handle_write"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.handle_write">[docs]</a>    <span class="k">def</span> <span class="nf">handle_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle write &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write_ready</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.writable"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.writable">[docs]</a>    <span class="k">def</span> <span class="nf">writable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Have something to write to http connection?</span>
+
+<span class="sd">        :rtype  :class:`bool`</span>
+<span class="sd">        :return True if data is ready to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">writable</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.close_when_done"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.close_when_done">[docs]</a>    <span class="k">def</span> <span class="nf">close_when_done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close the connection after all data written &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">close_when_done</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_connection</span> <span class="o">=</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.handle_error"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.handle_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle error callback &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="AsyncoreHttpConnection.handle_expt"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.AsyncoreHttpConnection.handle_expt">[docs]</a>    <span class="k">def</span> <span class="nf">handle_expt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; handle exception callback &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="HttpFactory"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpFactory">[docs]</a><span class="k">class</span> <span class="nc">HttpFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Http factory &quot;&quot;&quot;</span>
+    <span class="n">HTTP_CONTENT_MAPPING</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;json&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;xml&#39;</span><span class="p">:</span> <span class="s">&#39;text/xml&#39;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Http factory init &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="HttpFactory.abspath"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpFactory.abspath">[docs]</a>    <span class="k">def</span> <span class="nf">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get posix absolute path</span>
+
+<span class="sd">        :type  path: :class:`str`</span>
+<span class="sd">        :param path: url path</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: posix style abs path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">abspath</span> <span class="o">=</span> <span class="n">posixpath</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="c"># Strange. posixpath returns &#39;//&#39; for &#39;//&#39; but &#39;/&#39; for &#39;///&#39; (or</span>
+        <span class="c"># other variants). Explicitly check for this</span>
+        <span class="k">if</span> <span class="n">abspath</span> <span class="o">==</span> <span class="s">&#39;//&#39;</span><span class="p">:</span>
+            <span class="n">abspath</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;abspath </span><span class="si">%s</span><span class="s"> -&gt; </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">abspath</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">abspath</span>
+</div>
+<div class="viewcode-block" id="HttpFactory.add_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpFactory.add_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        add handler associated with url path and transport message</span>
+
+<span class="sd">        :type  path: :class:`str`</span>
+<span class="sd">        :param path: url path</span>
+<span class="sd">        :type  msg_type: :class:`str`</span>
+<span class="sd">        :param msg_type: message type</span>
+<span class="sd">        :type  protocol_handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param protocol_handler: async protocol handler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">HTTP_CONTENT_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">msg_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content_type</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Unsupported msg type: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">handlers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">handlers</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;add_handler </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">content_type</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span><span class="p">:</span> <span class="p">{</span><span class="n">content_type</span><span class="p">:</span> <span class="n">protocol_handler</span><span class="p">}}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">handlers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">handler</span> <span class="ow">and</span> <span class="n">handler</span> <span class="o">!=</span> <span class="n">protocol_handler</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Cannot re-register resource @ </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;add_handler </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">content_type</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+            <span class="n">handlers</span><span class="p">[</span><span class="n">content_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">protocol_handler</span>
+</div>
+<div class="viewcode-block" id="HttpFactory.get_path_handlers"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpFactory.get_path_handlers">[docs]</a>    <span class="k">def</span> <span class="nf">get_path_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get handlers for a particular url path</span>
+
+<span class="sd">        :type  path: :class:`str`</span>
+<span class="sd">        :param path: url path</span>
+<span class="sd">        :rtype: :class:`dict` of :class:`tuple` of (:class:`str`, :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`)</span>
+<span class="sd">        :return: a dict of content type to protocol handler mapping</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HttpFactory.get_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpFactory.get_handler">[docs]</a>    <span class="k">def</span> <span class="nf">get_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">content_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get handler for a particular url path and content type</span>
+
+<span class="sd">        :type  path: :class:`str`</span>
+<span class="sd">        :param path: url path</span>
+<span class="sd">        :type  content_type: :class:`str`</span>
+<span class="sd">        :param content_type: http content-type</span>
+<span class="sd">        :rtype:  :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :return: protocol handler</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">handlers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">handlers</span><span class="p">:</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">handlers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="n">handler</span>
+</div>
+<div class="viewcode-block" id="HttpFactory.handle_accept"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.asyncore_http.HttpFactory.handle_accept">[docs]</a>    <span class="k">def</span> <span class="nf">handle_accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">sock_map</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">from_addr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        handle newly accepted socket connection</span>
+
+<span class="sd">        :type  server: :class:`vmware.vapi.server.asyncore_server.AsyncoreTcpListener`</span>
+<span class="sd">        :type  server: asyncore server</span>
+<span class="sd">        :type  sock_map: :class:`dict`</span>
+<span class="sd">        :param sock_map: Global socket map</span>
+<span class="sd">        :type  sock: :class:`socket.socket`</span>
+<span class="sd">        :param sock: accepted socket</span>
+<span class="sd">        :type  from_addr: :class:`tuple`</span>
+<span class="sd">        :param from_addr: remote address bound to the socket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">AsyncoreHttpConnection</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">sock_map</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">from_addr</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

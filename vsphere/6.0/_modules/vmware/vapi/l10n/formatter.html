@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.l10n.formatter &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.l10n.formatter</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Helper classes for formatting the message for localization</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2013-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">locale</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.message</span> <span class="kn">import</span> <span class="n">MessageFormatter</span>
+
+
+<div class="viewcode-block" id="StringFormatter"><a class="viewcode-back" href="../../../../vmware.vapi.l10n.html#vmware.vapi.l10n.formatter.StringFormatter">[docs]</a><span class="k">class</span> <span class="nc">StringFormatter</span><span class="p">(</span><span class="n">MessageFormatter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Format the string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># This regex is used to split the message template into tokens</span>
+    <span class="c"># Same as the below, but all the groups are matching but non-capturing</span>
+    <span class="n">string_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+        <span class="s">&#39;(%(?:</span><span class="se">\\</span><span class="s">d+</span><span class="se">\\</span><span class="s">$)?(?:[-#+ 0,(</span><span class="se">\\</span><span class="s">&lt;]*)(?:</span><span class="se">\\</span><span class="s">d+)?(?:</span><span class="se">\\</span><span class="s">.</span><span class="se">\\</span><span class="s">d+)?(?:[tT])?(?:[a-zA-Z%]))&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c"># This is used to split a format specifier into groups</span>
+    <span class="c"># %[argument_index$][flags][width][.precision][t]conversion</span>
+    <span class="n">format_specifier</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+        <span class="s">&#39;%(</span><span class="se">\\</span><span class="s">d+</span><span class="se">\\</span><span class="s">$)?([-#+ 0,(</span><span class="se">\\</span><span class="s">&lt;]*)(</span><span class="se">\\</span><span class="s">d+)?(</span><span class="se">\\</span><span class="s">.</span><span class="se">\\</span><span class="s">d+)?([tT])?([a-zA-Z%])&#39;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_localize_datetime</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">datetime_arg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Localize a datetime object</span>
+
+<span class="sd">        :type  datetime_arg: :class:`datetime.datetime`</span>
+<span class="sd">        :param datetime_arg: Datetime object</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Localized datetime string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Importing DateTimeConverter here to avoid circular dependency</span>
+        <span class="kn">from</span> <span class="nn">vmware.vapi.bindings.datetime_helper</span> <span class="kn">import</span> <span class="n">DateTimeConverter</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datetime_arg</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">datetime_arg</span> <span class="o">=</span> <span class="n">DateTimeConverter</span><span class="o">.</span><span class="n">convert_to_datetime</span><span class="p">(</span><span class="n">datetime_arg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datetime_arg</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Argument is not a datetime&#39;</span><span class="p">)</span>
+        <span class="c"># XXX: strftime does not handle dates before 1900</span>
+        <span class="k">return</span> <span class="n">datetime_arg</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">nl_langinfo</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">D_T_FMT</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_localize_element</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">format_specifier</span><span class="p">,</span> <span class="n">argument</span><span class="p">,</span> <span class="n">grouping</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Localize one of the arguments in localizable message</span>
+
+<span class="sd">        :type  format_specifier: :class:`str`</span>
+<span class="sd">        :param format_specifier: Format specifier for the argument</span>
+<span class="sd">        :type  argument: :class:`object`</span>
+<span class="sd">        :param argument: Argument to be localized</span>
+<span class="sd">        :type  grouping: :class:`bool`</span>
+<span class="sd">        :param grouping: Indicates whether to use thousands seperater or not.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Localized string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">format_specifier</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
+                <span class="n">argument</span> <span class="o">=</span> <span class="nb">long</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">argument</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">format_specifier</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;f&#39;</span><span class="p">):</span>
+            <span class="n">argument</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">locale</span><span class="o">.</span><span class="n">format_string</span><span class="p">(</span><span class="n">format_specifier</span><span class="p">,</span> <span class="n">argument</span><span class="p">,</span> <span class="n">grouping</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_localize_string</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Localize the given string</span>
+
+<span class="sd">        :type  tokens: :class:`list` of :class:`str`</span>
+<span class="sd">        :param tokens: Tokens from the message template</span>
+<span class="sd">        :type  args: :class:`list` of :class:`object`</span>
+<span class="sd">        :param args: Arguments for the message template</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Localized message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">arg_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">format_specifier</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">4</span><span class="p">]:</span>
+                    <span class="n">dt_arg</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">arg_index</span><span class="p">]</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_localize_datetime</span><span class="p">(</span><span class="n">dt_arg</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;,&#39;</span><span class="p">:</span>
+                    <span class="c"># remove &#39;,&#39; flag from the token</span>
+                    <span class="n">groups</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+                    <span class="n">groups</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">groups</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+                    <span class="n">token</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">groups</span>
+                                     <span class="k">if</span> <span class="n">elem</span><span class="p">])</span>
+                    <span class="n">token</span> <span class="o">=</span> <span class="s">&#39;%&#39;</span> <span class="o">+</span> <span class="n">token</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">cls</span><span class="o">.</span><span class="n">_localize_element</span><span class="p">(</span><span class="n">token</span><span class="p">,</span>
+                                              <span class="n">args</span><span class="p">[</span><span class="n">arg_index</span><span class="p">],</span>
+                                              <span class="n">grouping</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">cls</span><span class="o">.</span><span class="n">_localize_element</span><span class="p">(</span><span class="n">token</span><span class="p">,</span>
+                                              <span class="n">args</span><span class="p">[</span><span class="n">arg_index</span><span class="p">]))</span>
+                <span class="n">arg_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="StringFormatter.format_msg"><a class="viewcode-back" href="../../../../vmware.vapi.l10n.html#vmware.vapi.l10n.formatter.StringFormatter.format_msg">[docs]</a>    <span class="k">def</span> <span class="nf">format_msg</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the string</span>
+
+<span class="sd">        :type  msg: :class:`str`</span>
+<span class="sd">        :param msg: Message template</span>
+<span class="sd">        :type  args: :class:`list` of :class:`object`</span>
+<span class="sd">        :param args: Arguments for the message</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Localized message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg_tokens</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">string_template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">modified_msg_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">argument_indexes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">msg_tokens</span><span class="p">):</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">format_specifier</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="c"># Check for argument index</span>
+                <span class="n">argument_index</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">argument_index</span><span class="p">:</span>
+                    <span class="c"># Extract argument index</span>
+                    <span class="n">argument_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">argument_index</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;$&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+                    <span class="c"># Remove argument index from format specifier</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+                                 <span class="k">if</span> <span class="n">elem</span><span class="p">])</span>
+                <span class="n">modified_msg_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;%&#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">modified_msg_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">modified_msg_tokens</span>
+
+        <span class="k">if</span> <span class="n">argument_indexes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">argument_indexes</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Number of argument index specifiers &#39;</span>
+                                <span class="s">&#39;do not match number of arguments&#39;</span><span class="p">)</span>
+            <span class="c"># Rearrange the arguments</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">argument_indexes</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_localize_string</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

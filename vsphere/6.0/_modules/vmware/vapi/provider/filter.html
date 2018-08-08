@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.provider.filter &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.provider.filter</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">API Provider filter</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2013 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="n">ApiProvider</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.serializers.introspection</span> <span class="kn">import</span> <span class="n">convert_data_def_to_data_value</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.provider.lib</span> <span class="kn">import</span> <span class="n">augment_method_result_with_errors</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ApiProviderFilter"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.filter.ApiProviderFilter">[docs]</a><span class="k">class</span> <span class="nc">ApiProviderFilter</span><span class="p">(</span><span class="n">ApiProvider</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ApiProviderFilter is a base class for all ApiProvider filters.</span>
+<span class="sd">    This handles all the common methods and also takes care of augmenting</span>
+<span class="sd">    errors reported by an ApiProvider filter.</span>
+
+<span class="sd">    :type next_provider: :class:`vmware.vapi.core.ApiProvider`</span>
+<span class="sd">    :ivar next_provider: Next API Provider in the chain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_provider</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">errors_to_augment</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize ApiProviderFilter</span>
+
+<span class="sd">        :type  next_provider: :class:`vmware.vapi.core.ApiProvider` or ``None``</span>
+<span class="sd">        :param next_provider: API Provider to invoke the requests</span>
+<span class="sd">        :type  errors_to_augment: :class:`list` of</span>
+<span class="sd">            :class:`vmware.vapi.data.definition.ErrorDefinition`</span>
+<span class="sd">        :param errors_to_augment: List of error definitions to be added to method</span>
+<span class="sd">            definitions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ApiProvider</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_provider</span> <span class="o">=</span> <span class="n">next_provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_defs_to_augment</span> <span class="o">=</span> <span class="n">errors_to_augment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_values_to_augment</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">convert_data_def_to_data_value</span><span class="p">(</span><span class="n">error_def</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">error_def</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_defs_to_augment</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="ApiProviderFilter.invoke"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.filter.ApiProviderFilter.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Invoke an API request. Derived classes of ApiProviderFilter</span>
+<span class="sd">        should call this method to invoke the request. This can be done</span>
+<span class="sd">        by: ApiProviderFilter.invoke(self, ctx, method_id, input_value).</span>
+
+<span class="sd">        This method calls the next API Provider. If the request is made to</span>
+<span class="sd">        &quot;get&quot; operation of vAPI Operation Introspection service, errors are</span>
+<span class="sd">        augmented to the method result.</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Method input parameters</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context for this method</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Result of the method invocation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">method_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_provider</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">augment_method_result_with_errors</span><span class="p">(</span>
+            <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">method_result</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_error_values_to_augment</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

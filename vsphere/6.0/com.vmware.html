@@ -1,0 +1,1769 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware Package &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="index.html" />
+    <link rel="up" title="com Package" href="com.html" />
+    <link rel="next" title="cis Package" href="com.vmware.cis.html" />
+    <link rel="prev" title="com Package" href="com.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="com.vmware.cis.html" title="cis Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="com.html" title="com Package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="com.html" accesskey="U">com Package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="vmware-package">
+<h1>vmware Package<a class="headerlink" href="#vmware-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="vmware.html#module-vmware" title="vmware"><tt class="xref py py-mod docutils literal"><span class="pre">vmware</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-com.vmware"></span></div>
+<div class="section" id="module-com.vmware.cis_client">
+<span id="cis-client-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">cis_client</span></tt> Module<a class="headerlink" href="#module-com.vmware.cis_client" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="com.vmware.cis_client.Session">
+<em class="property">class </em><tt class="descclassname">com.vmware.cis_client.</tt><tt class="descname">Session</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/com/vmware/cis_client.html#Session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.cis_client.Session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.VapiInterface" title="vmware.vapi.bindings.stub.VapiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Session</span></tt> class allows API clients to manage session tokens including
+creating, deleting and obtaining information about sessions.</p>
+<ul class="simple">
+<li>The <a class="reference internal" href="#com.vmware.cis_client.Session.create" title="com.vmware.cis_client.Session.create"><tt class="xref py py-func docutils literal"><span class="pre">Session.create()</span></tt></a> method creates session token in exchange for
+another authentication token.</li>
+<li>The <a class="reference internal" href="#com.vmware.cis_client.Session.delete" title="com.vmware.cis_client.Session.delete"><tt class="xref py py-func docutils literal"><span class="pre">Session.delete()</span></tt></a> method invalidates a session token.</li>
+<li>The <a class="reference internal" href="#com.vmware.cis_client.Session.get" title="com.vmware.cis_client.Session.get"><tt class="xref py py-func docutils literal"><span class="pre">Session.get()</span></tt></a> retrieves information about a session token.</li>
+</ul>
+<p>The call to the <a class="reference internal" href="#com.vmware.cis_client.Session.create" title="com.vmware.cis_client.Session.create"><tt class="xref py py-func docutils literal"><span class="pre">Session.create()</span></tt></a> method is part of the overall
+authentication process for API clients. For example, the sequence of steps
+for establishing a session with SAML token is:</p>
+<ul class="simple">
+<li>Connect to lookup service.</li>
+<li>Discover the secure token service (STS) endpoint URL.</li>
+<li>Connect to the secure token service to obtain a SAML token.</li>
+<li>Authenticate to the lookup service using the obtained SAML token.</li>
+<li>Discover the API endpoint URL from lookup service.</li>
+<li>Call the <a class="reference internal" href="#com.vmware.cis_client.Session.create" title="com.vmware.cis_client.Session.create"><tt class="xref py py-func docutils literal"><span class="pre">Session.create()</span></tt></a> method. The <a class="reference internal" href="#com.vmware.cis_client.Session.create" title="com.vmware.cis_client.Session.create"><tt class="xref py py-func docutils literal"><span class="pre">Session.create()</span></tt></a> call
+must include the SAML token.</li>
+</ul>
+<p>See the programming guide and samples for additional information about
+establishing API sessions.</p>
+<blockquote>
+<div><strong>Execution Context and Security Context</strong></div></blockquote>
+<p>To use session based authentication a client should supply the session
+token obtained through the <a class="reference internal" href="#com.vmware.cis_client.Session.create" title="com.vmware.cis_client.Session.create"><tt class="xref py py-func docutils literal"><span class="pre">Session.create()</span></tt></a> method. The client should
+add the session token in the security context when using SDK classes.
+Clients using the REST API should supply the session token as a HTTP
+header.</p>
+<blockquote>
+<div><strong>Session Lifetime</strong></div></blockquote>
+<p>A session begins with call to the <a class="reference internal" href="#com.vmware.cis_client.Session.create" title="com.vmware.cis_client.Session.create"><tt class="xref py py-func docutils literal"><span class="pre">Session.create()</span></tt></a> method to exchange
+a SAML token for a API session token. A session ends under the following
+circumstances:</p>
+<ul class="simple">
+<li>Call to the <a class="reference internal" href="#com.vmware.cis_client.Session.delete" title="com.vmware.cis_client.Session.delete"><tt class="xref py py-func docutils literal"><span class="pre">Session.delete()</span></tt></a> method.</li>
+<li>The session expires. Session expiration may be caused by one of the
+following situations:</li>
+<li>Client inactivity - For a particular session identified by client
+requests that specify the associated session ID, the lapsed time since the
+last request exceeds the maximum interval between requests.</li>
+<li>Unconditional or absolute session expiration time: At the beginning of
+the session, the session logic uses the SAML token and the system
+configuration to calculate absolute expiration time.</li>
+</ul>
+<p>When a session ends, the authentication logic will reject any subsequent
+client requests that specify that session. Any operations in progress will
+continue to completion.</p>
+<blockquote>
+<div><p><strong>Error Handling</strong></p>
+<p>The <a class="reference internal" href="#com.vmware.cis_client.Session" title="com.vmware.cis_client.Session"><tt class="xref py py-class docutils literal"><span class="pre">Session</span></tt></a> returns the following exceptions:</p>
+</div></blockquote>
+<ul class="simple">
+<li><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthenticated" title="com.vmware.vapi.std.errors_client.Unauthenticated"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt></a> exception for
+any exceptions related to the request.</li>
+<li><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt></a> exception
+for all exceptions caused by internal service failure.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration" title="vmware.vapi.bindings.stub.StubConfiguration"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt></a>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.cis_client.Session.Info">
+<em class="property">class </em><tt class="descname">Info</tt><big>(</big><em>user=None</em>, <em>created_time=None</em>, <em>last_accessed_time=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/cis_client.html#Session.Info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.cis_client.Session.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>Represents data associated with an API session.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Fully qualified name of the end user that created the session, for
+example Administrator\&#64;vsphere.local. A typical use case for
+this information is in Graphical User Interfaces (GUI) or logging
+systems to visualize the identity of the current user.</li>
+<li><strong>created_time</strong> (<tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt>) &#8211; Time when the session was created.</li>
+<li><strong>last_accessed_time</strong> (<tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt>) &#8211; Last time this session was used by passing the session key for
+invoking an API.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.cis_client.Session.create">
+<tt class="descclassname">Session.</tt><tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/com/vmware/cis_client.html#Session.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.cis_client.Session.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a session with the API. This is the equivalent of login. This
+method exchanges user credentials supplied in the security context for
+a session identifier that is to be used for authenticating subsequent
+calls. To authenticate subsequent calls clients are expected to include
+the session key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Newly created session identifier to be used for authenticating
+further requests.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthenticated" title="com.vmware.vapi.std.errors_client.Unauthenticated"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt></a> 
+if the session creation fails due to request specific issues. Due
+to the security nature of the API the details of the error are not
+disclosed.</p>
+<p>Please check the following preconditions if using a SAML token to
+authenticate:</p>
+<ul class="simple">
+<li>the supplied token is delegate-able.</li>
+<li>the time of client and server system are synchronized.</li>
+<li>the token supplied is valid.</li>
+<li>if bearer tokens are used check that system configuration allows
+the API endpoint to accept such tokens.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first last"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt></a> 
+if session creation fails due to server specific issues, for
+example connection to a back end component is failing. Due to the
+security nature of this API further details will not be disclosed
+in the exception. Please refer to component health information,
+administrative logs and product specific documentation for possible
+causes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.cis_client.Session.delete">
+<tt class="descclassname">Session.</tt><tt class="descname">delete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/com/vmware/cis_client.html#Session.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.cis_client.Session.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminates the validity of a session token. This is the equivalent of
+log out.</p>
+<blockquote>
+<div>A session identifier is expected as part of the request.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthenticated" title="com.vmware.vapi.std.errors_client.Unauthenticated"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt></a> 
+if the session id is missing from the request or the corresponding
+session object cannot be found.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt></a> 
+if session deletion fails due to server specific issues, for
+example connection to a back end component is failing. Due to the
+security nature of this API further details will not be disclosed
+in the exception. Please refer to component health information,
+administrative logs and product specific documentation for possible
+causes.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.cis_client.Session.get">
+<tt class="descclassname">Session.</tt><tt class="descname">get</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/com/vmware/cis_client.html#Session.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.cis_client.Session.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns information about the current session. This method expects a
+valid session identifier to be supplied.</p>
+<p>A side effect of invoking this method may be a change to the session&#8217;s
+last accessed time to the current time if this is supported by the
+session implementation. Invoking any other method in the API will also
+update the session&#8217;s last accessed time.</p>
+<p>This API is meant to serve the needs of various front end projects that
+may want to display the name of the user. Examples of this include
+various web based user interfaces and logging facilities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#com.vmware.cis_client.Session.Info" title="com.vmware.cis_client.Session.Info"><tt class="xref py py-class docutils literal"><span class="pre">Session.Info</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Information about the session.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthenticated" title="com.vmware.vapi.std.errors_client.Unauthenticated"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></tt></a> 
+if the session id is missing from the request or the corresponding
+session object cannot be found.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></tt></a> 
+if session retrieval fails due to server specific issues e.g.
+connection to back end component is failing. Due to the security
+nature of this API further details will not be disclosed in the
+error. Please refer to component health information, administrative
+logs and product specific documentation for possible causes.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-com.vmware.content_client">
+<span id="content-client-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">content_client</span></tt> Module<a class="headerlink" href="#module-com.vmware.content_client" title="Permalink to this headline">¶</a></h2>
+<p>The Content module provides classes and classes for configuring global settings
+and permissions, and for managing libraries in the Content Library Service.</p>
+<dl class="class">
+<dt id="com.vmware.content_client.Configuration">
+<em class="property">class </em><tt class="descclassname">com.vmware.content_client.</tt><tt class="descname">Configuration</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.VapiInterface" title="vmware.vapi.bindings.stub.VapiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Configuration</span></tt> class provides methods to configure the global
+settings of the Content Library Service.</p>
+<p>The configuration settings are used by the Content Library Service to
+control the behavior of various operations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration" title="vmware.vapi.bindings.stub.StubConfiguration"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt></a>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="com.vmware.content_client.Configuration.get">
+<tt class="descname">get</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Configuration.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Configuration.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the current configuration values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.ConfigurationModel" title="com.vmware.content_client.ConfigurationModel"><tt class="xref py py-class docutils literal"><span class="pre">ConfigurationModel</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.ConfigurationModel" title="com.vmware.content_client.ConfigurationModel"><tt class="xref py py-class docutils literal"><span class="pre">ConfigurationModel</span></tt></a> instance representing the
+configuration of the Content Library Service.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">ContentLibrary.GetConfiguration</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.Configuration.update">
+<tt class="descname">update</tt><big>(</big><em>model</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Configuration.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Configuration.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the configuration. The update is incremental. Any attribute in
+the <a class="reference internal" href="#com.vmware.content_client.ConfigurationModel" title="com.vmware.content_client.ConfigurationModel"><tt class="xref py py-class docutils literal"><span class="pre">ConfigurationModel</span></tt></a> class that is None will not be
+modified. Note that this update method doesn&#8217;t guarantee an atomic
+change of all the properties. In the case of a system crash or failure,
+some of the properties could be left unchanged while others may be
+updated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>model</strong> (<a class="reference internal" href="#com.vmware.content_client.ConfigurationModel" title="com.vmware.content_client.ConfigurationModel"><tt class="xref py py-class docutils literal"><span class="pre">ConfigurationModel</span></tt></a>) &#8211; The <a class="reference internal" href="#com.vmware.content_client.ConfigurationModel" title="com.vmware.content_client.ConfigurationModel"><tt class="xref py py-class docutils literal"><span class="pre">ConfigurationModel</span></tt></a> specifying the settings to update.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if one of the configuration properties is not within the proper
+range.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">ContentLibrary.UpdateConfiguration</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.content_client.ConfigurationModel">
+<em class="property">class </em><tt class="descclassname">com.vmware.content_client.</tt><tt class="descname">ConfigurationModel</tt><big>(</big><em>automatic_sync_enabled=None</em>, <em>automatic_sync_start_hour=None</em>, <em>automatic_sync_stop_hour=None</em>, <em>maximum_concurrent_item_syncs=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#ConfigurationModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.ConfigurationModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">ConfigurationModel</span></tt> class defines the global settings of the Content
+Library Service.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>automatic_sync_enabled</strong> (<tt class="xref py py-class docutils literal"><span class="pre">bool</span></tt>) &#8211; <p>Whether automatic synchronization is enabled.</p>
+<p>When automatic synchronization is enabled, the Content Library
+Service will automatically synchronize all subscribed libraries on
+a daily basis. Subscribed libraries with the
+<tt class="xref py py-attr docutils literal"><span class="pre">com.vmware.content.library_client.SubscriptionInfo.automatic_sync_enabled</span></tt>
+flag turned on will be synchronized every hour between
+<tt class="xref py py-attr docutils literal"><span class="pre">ConfigurationModel.automatic_sync_start_hour</span></tt> and
+<tt class="xref py py-attr docutils literal"><span class="pre">ConfigurationModel.automatic_sync_stop_hour</span></tt>.
+This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is optional for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</p>
+</li>
+<li><strong>automatic_sync_start_hour</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt>) &#8211; The hour at which the automatic synchronization will start. This
+value is between 0 (midnight) and 23 inclusive.
+This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is optional for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</li>
+<li><strong>automatic_sync_stop_hour</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt>) &#8211; The hour at which the automatic synchronization will stop. Any
+active synchronization operation will continue to run, however no
+new synchronization operations will be triggered after the stop
+hour. This value is between 0 (midnight) and 23 inclusive.
+This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is optional for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</li>
+<li><strong>maximum_concurrent_item_syncs</strong> (<tt class="xref py py-class docutils literal"><span class="pre">long</span></tt>) &#8211; <p>The maximum allowed number of library items to synchronize
+concurrently from remote libraries. This must be a positive number.
+The service may not be able to guarantee the requested concurrency
+if there is no available capacity.</p>
+<blockquote>
+<div>This setting is global across all subscribed libraries.</div></blockquote>
+<p>This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is optional for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.content_client.Library">
+<em class="property">class </em><tt class="descclassname">com.vmware.content_client.</tt><tt class="descname">Library</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Library" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.VapiInterface" title="vmware.vapi.bindings.stub.VapiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Library</span></tt> class provides methods to manage and find
+<a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a> entities.</p>
+<p>The <tt class="docutils literal"><span class="pre">Library</span></tt> class provides support for generic functionality which can
+be applied equally to all types of libraries. The functionality provided by
+this class will not affect the properties specific to the type of library.
+See also <a class="reference internal" href="#com.vmware.content_client.LocalLibrary" title="com.vmware.content_client.LocalLibrary"><tt class="xref py py-class docutils literal"><span class="pre">LocalLibrary</span></tt></a> and <a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary" title="com.vmware.content_client.SubscribedLibrary"><tt class="xref py py-class docutils literal"><span class="pre">SubscribedLibrary</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration" title="vmware.vapi.bindings.stub.StubConfiguration"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt></a>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.content_client.Library.FindSpec">
+<em class="property">class </em><tt class="descname">FindSpec</tt><big>(</big><em>name=None</em>, <em>type=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Library.FindSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Library.FindSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>Specifies the properties that can be used as a filter to find libraries.
+When multiple attributes are specified, all properties of the library must
+match the specification.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Name of the library to search. The name is case-insensitive. See
+<tt class="xref py py-attr docutils literal"><span class="pre">LibraryModel.name</span></tt>.
+If not specified any name will be searched.</li>
+<li><strong>type</strong> (<a class="reference internal" href="#com.vmware.content_client.LibraryModel.LibraryType" title="com.vmware.content_client.LibraryModel.LibraryType"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel.LibraryType</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Library type to search. See <tt class="xref py py-attr docutils literal"><span class="pre">LibraryModel.type</span></tt>.
+If not specified any library type will be searched.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.Library.RESOURCE_TYPE">
+<tt class="descclassname">Library.</tt><tt class="descname">RESOURCE_TYPE</tt><em class="property"> = 'com.vmware.content.Library'</em><a class="headerlink" href="#com.vmware.content_client.Library.RESOURCE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resource type for library.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.Library.find">
+<tt class="descclassname">Library.</tt><tt class="descname">find</tt><big>(</big><em>spec</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Library.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Library.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all the visible (as determined by authorization
+policy) libraries matching the requested <a class="reference internal" href="#com.vmware.content_client.Library.FindSpec" title="com.vmware.content_client.Library.FindSpec"><tt class="xref py py-class docutils literal"><span class="pre">Library.FindSpec</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>spec</strong> (<a class="reference internal" href="#com.vmware.content_client.Library.FindSpec" title="com.vmware.content_client.Library.FindSpec"><tt class="xref py py-class docutils literal"><span class="pre">Library.FindSpec</span></tt></a>) &#8211; Specification describing what properties to filter on.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.Library.list" title="com.vmware.content_client.Library.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.Library.list" title="com.vmware.content_client.Library.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of identifiers of all the visible libraries
+matching the given <tt class="docutils literal"><span class="pre">spec</span></tt>.
+The return value will contain identifiers for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if no properties are specified in the <tt class="docutils literal"><span class="pre">spec</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">System.Read</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.Library.get">
+<tt class="descclassname">Library.</tt><tt class="descname">get</tt><big>(</big><em>library_id</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Library.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Library.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a given <a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the library to return.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a> instance with the specified
+<tt class="docutils literal"><span class="pre">library_id</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the specified library does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires <tt class="docutils literal"><span class="pre">System.Read</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.Library.list">
+<tt class="descclassname">Library.</tt><tt class="descname">list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Library.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Library.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the identifiers of all libraries of any type in the Content
+Library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.Library.list" title="com.vmware.content_client.Library.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.Library.list" title="com.vmware.content_client.Library.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of all identifiers of all libraries in the
+Content Library.
+The return value will contain identifiers for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">System.Read</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.Library.update">
+<tt class="descclassname">Library.</tt><tt class="descname">update</tt><big>(</big><em>library_id</em>, <em>update_spec</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Library.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Library.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the properties of a library.</p>
+<p>This is an incremental update to the library. Any attribute in the
+<a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a> class that is None will not be modified.</p>
+<p>This method will only update the common properties for all library
+types. This will not, for example, update the
+<tt class="xref py py-attr docutils literal"><span class="pre">LibraryModel.publish_info</span></tt> of a local library, nor the
+<tt class="xref py py-attr docutils literal"><span class="pre">LibraryModel.subscription_info</span></tt> of a subscribed library.
+Specific properties are updated in <a class="reference internal" href="#com.vmware.content_client.LocalLibrary.update" title="com.vmware.content_client.LocalLibrary.update"><tt class="xref py py-func docutils literal"><span class="pre">LocalLibrary.update()</span></tt></a> and
+<a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary.update" title="com.vmware.content_client.SubscribedLibrary.update"><tt class="xref py py-func docutils literal"><span class="pre">SubscribedLibrary.update()</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the library to update.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</li>
+<li><strong>update_spec</strong> (<a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a>) &#8211; Specification of the new property values to set on the library.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library associated with <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="docutils literal"><span class="pre">update_spec</span></tt> is not valid.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="xref py py-attr docutils literal"><span class="pre">LibraryModel.version</span></tt> of <tt class="docutils literal"><span class="pre">update_spec</span></tt> is not equal
+to the current version of the library.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires <tt class="docutils literal"><span class="pre">ContentLibrary.UpdateLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.content_client.LibraryModel">
+<em class="property">class </em><tt class="descclassname">com.vmware.content_client.</tt><tt class="descname">LibraryModel</tt><big>(</big><em>id=None</em>, <em>creation_time=None</em>, <em>description=None</em>, <em>last_modified_time=None</em>, <em>last_sync_time=None</em>, <em>name=None</em>, <em>storage_backings=None</em>, <em>type=None</em>, <em>version=None</em>, <em>publish_info=None</em>, <em>subscription_info=None</em>, <em>server_guid=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#LibraryModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.LibraryModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>The <a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a> class represents a Content Library resource
+model.</p>
+<p>A <tt class="docutils literal"><span class="pre">LibraryModel</span></tt> is a container for a set of items which represent a
+usable set of files. The Content Library Service allows for multiple
+libraries to be created with separate authorization and sharing policies.</p>
+<p>Each <tt class="docutils literal"><span class="pre">LibraryModel</span></tt> is a container for a set of
+<a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.ItemModel" title="com.vmware.content.library_client.ItemModel"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.ItemModel</span></tt></a> instances. Each item
+is a logical object in a library, which may have multiple files.</p>
+<p>A <tt class="docutils literal"><span class="pre">LibraryModel</span></tt> may be local or subscribed. A local library has its
+source of truth about items within this Content Library Service. Items may
+be added to or removed from the library. A local library may also be
+private or published. When published, the library is exposed by a network
+endpoint and can be used by another Content Library Service for
+synchronization. A private local library cannot be used for
+synchronization.</p>
+<p>A subscribed library is a library which gets its source of truth from
+another library that may be across a network in another Content Library
+Service. A subscribed library may have a different name and metadata from
+the library to which it subscribes, but the set of library items is always
+the same as those in the source library. Library items cannot be manually
+added to a subscribed library &#8211; they can only be added by adding new items
+to the source library.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; An identifier which uniquely identifies this <tt class="docutils literal"><span class="pre">LibraryModel</span></tt>.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>. When methods return a value of this
+class as a return value, the attribute will be an identifier for
+the resource type: <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.
+This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will not
+be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt> methods.
+It is not used for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</li>
+<li><strong>creation_time</strong> (<tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt>) &#8211; The date and time when this library was created.
+This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is not used for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</li>
+<li><strong>description</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A human-readable description for this library.
+This attribute is optional for the <tt class="docutils literal"><span class="pre">create</span></tt> method. Leaving it
+None during creation will result in an empty string value. It will
+always be present in the result of a <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt> method. It
+is optional for the <tt class="docutils literal"><span class="pre">update</span></tt> method. Leaving it None during
+update indicates that the description should be left unchanged.</li>
+<li><strong>last_modified_time</strong> (<tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt>) &#8211; <p>The date and time when this library was last updated.</p>
+<p>This attribute is updated automatically when the library properties
+are changed. This attribute is not affected by adding, removing, or
+modifying a library item or its content within the library. Tagging
+the library or syncing the subscribed library does not alter this
+attribute.
+This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is not used for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</p>
+</li>
+<li><strong>last_sync_time</strong> (<tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt>) &#8211; <p>The date and time when this library was last synchronized.</p>
+<p>This attribute applies only to subscribed libraries. It is updated
+every time a synchronization is triggered on the library. The value
+is None for a local library.
+This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It is
+optional in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt> methods. It
+is not used for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</p>
+</li>
+<li><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; <p>The name of the library.</p>
+<p>A Library is identified by a human-readable name. Library names
+cannot be undefined or an empty string. Names do not have to be
+unique.
+This attribute must be provided for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is optional for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</p>
+</li>
+<li><strong>storage_backings</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.StorageBacking" title="com.vmware.content.library_client.StorageBacking"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.StorageBacking</span></tt></a>) &#8211; <p>The list of storage backings which are available for this library.</p>
+<p>A <a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.StorageBacking" title="com.vmware.content.library_client.StorageBacking"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.StorageBacking</span></tt></a> defines
+a storage location which can be used to store files for the library
+items in this library. Multiple storage locations are not currently
+supported but may become supported in future releases.
+This attribute must be provided for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is not used for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</p>
+</li>
+<li><strong>type</strong> (<a class="reference internal" href="#com.vmware.content_client.LibraryModel.LibraryType" title="com.vmware.content_client.LibraryModel.LibraryType"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel.LibraryType</span></tt></a>) &#8211; <p>The type (LOCAL, SUBSCRIBED) of this library.</p>
+<p>This value can be used to determine what additional services and
+information can be available for this library.
+This attribute must be provided for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is not used for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</p>
+</li>
+<li><strong>version</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; <p>A version number which is updated on metadata changes. This value
+allows clients to detect concurrent updates and prevent accidental
+clobbering of data.</p>
+<p>This value represents a number which is incremented every time
+library properties, such as name or description, are changed. It is
+not incremented by changes to a library item within the library,
+including adding or removing items. It is also not affected by
+tagging the library.
+This attribute is not used for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the result of a <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt> method. It
+is optional for the <tt class="docutils literal"><span class="pre">update</span></tt> method. Leaving it None during
+update indicates that you do not need to detect concurrent updates.</p>
+</li>
+<li><strong>publish_info</strong> (<a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.PublishInfo" title="com.vmware.content.library_client.PublishInfo"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.PublishInfo</span></tt></a>) &#8211; <p>Defines how this library is published so that it can be subscribed
+to by a remote subscribed library.</p>
+<p>The <a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.PublishInfo" title="com.vmware.content.library_client.PublishInfo"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.PublishInfo</span></tt></a> defines
+where and how the metadata for this local library is accessible. A
+local library is only published publically if
+<tt class="xref py py-attr docutils literal"><span class="pre">com.vmware.content.library_client.PublishInfo.published</span></tt> is
+<tt class="docutils literal"><span class="pre">true</span></tt>.
+This attribute is optional for the <tt class="docutils literal"><span class="pre">create</span></tt> and <tt class="docutils literal"><span class="pre">update</span></tt>
+methods. If not specified during creation, the default is for the
+library to not be published. If not specified during update, the
+attribute is left unchanged.</p>
+</li>
+<li><strong>subscription_info</strong> (<a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.SubscriptionInfo" title="com.vmware.content.library_client.SubscriptionInfo"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.SubscriptionInfo</span></tt></a>) &#8211; <p>Defines the subscription behavior for this Library.</p>
+<p>The <a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.SubscriptionInfo" title="com.vmware.content.library_client.SubscriptionInfo"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.SubscriptionInfo</span></tt></a>
+defines how this subscribed library synchronizes to a remote
+source. Setting the value will determine the remote source to which
+the library synchronizes, and how. Changing the subscription will
+result in synchronizing to a new source. If the new source differs
+from the old one, the old library items and data will be lost.
+Setting
+<tt class="xref py py-attr docutils literal"><span class="pre">com.vmware.content.library_client.SubscriptionInfo.automatic_sync_enabled</span></tt>
+to false will halt subscription but will not remove existing cached
+data.
+This attribute is optional for the <tt class="docutils literal"><span class="pre">create</span></tt> and <tt class="docutils literal"><span class="pre">update</span></tt>
+methods. If not specified during creation, a default will be
+created without an active subscription. If not specified during
+update, the attribute is left unchanged.</p>
+</li>
+<li><strong>server_guid</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The unique identifier of the vCenter server where the library
+exists.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.vcenter.VCenter</span></tt>. When methods return a value of this
+class as a return value, the attribute will be an identifier for
+the resource type: <tt class="docutils literal"><span class="pre">com.vmware.vcenter.VCenter</span></tt>.
+This attribute is optional for the <tt class="docutils literal"><span class="pre">create</span></tt> method. It will
+always be present in the return value of the <tt class="docutils literal"><span class="pre">get</span></tt> or <tt class="docutils literal"><span class="pre">list</span></tt>
+methods. It is not used for the <tt class="docutils literal"><span class="pre">update</span></tt> method.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.content_client.LibraryModel.LibraryType">
+<em class="property">class </em><tt class="descname">LibraryType</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#LibraryModel.LibraryType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.LibraryModel.LibraryType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.enum.Enum" title="vmware.vapi.bindings.enum.Enum"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.enum.Enum</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">LibraryModel.LibraryType</span></tt> class defines the type of a
+<a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a>.</p>
+<p>The type of a library can be used to determine which additional services
+can be performed with a library.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class represents an enumerated type in the interface language
+definition. The class contains class attributes which represent the
+values in the current version of the enumerated type. Newer versions of
+the enumerated type may contain new values. To use new values of the
+enumerated type in communication with a server that supports the newer
+version of the API, you instantiate this class. See <a class="reference internal" href="custom/rst/enumeration.html#enumeration-description"><em>enumerated
+type description page</em></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; String value for the <tt class="xref py py-class docutils literal"><span class="pre">LibraryType</span></tt> instance.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.content_client.LibraryModel.LibraryType.LOCAL">
+<tt class="descname">LOCAL</tt><em class="property"> = LibraryType(string='LOCAL')</em><a class="headerlink" href="#com.vmware.content_client.LibraryModel.LibraryType.LOCAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>The library contents are defined and stored by the local Content Library
+Service installation.</p>
+<p>A local library can be retrieved and managed via the <a class="reference internal" href="#com.vmware.content_client.LocalLibrary" title="com.vmware.content_client.LocalLibrary"><tt class="xref py py-class docutils literal"><span class="pre">LocalLibrary</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.LibraryModel.LibraryType.SUBSCRIBED">
+<tt class="descname">SUBSCRIBED</tt><em class="property"> = LibraryType(string='SUBSCRIBED')</em><a class="headerlink" href="#com.vmware.content_client.LibraryModel.LibraryType.SUBSCRIBED" title="Permalink to this definition">¶</a></dt>
+<dd><p>The library synchronizes its items and content from another published
+library.</p>
+<p>A subscribed library can be retrieved and managed via the
+<a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary" title="com.vmware.content_client.SubscribedLibrary"><tt class="xref py py-class docutils literal"><span class="pre">SubscribedLibrary</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.content_client.LocalLibrary">
+<em class="property">class </em><tt class="descclassname">com.vmware.content_client.</tt><tt class="descname">LocalLibrary</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#LocalLibrary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.LocalLibrary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.VapiInterface" title="vmware.vapi.bindings.stub.VapiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">LocalLibaray</span></tt> class manages local libraries.</p>
+<p>The <tt class="docutils literal"><span class="pre">LocalLibrary</span></tt> class provides support for creating and maintaining
+local library instances. A local library may also use the <a class="reference internal" href="#com.vmware.content_client.Library" title="com.vmware.content_client.Library"><tt class="xref py py-class docutils literal"><span class="pre">Library</span></tt></a>
+class to manage general library functionality.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration" title="vmware.vapi.bindings.stub.StubConfiguration"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt></a>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="com.vmware.content_client.LocalLibrary.create">
+<tt class="descname">create</tt><big>(</big><em>create_spec</em>, <em>client_token=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#LocalLibrary.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.LocalLibrary.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new local library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>client_token</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; A unique token generated on the client for each creation request.
+The token should be a universally unique identifier (UUID), for
+example: <tt class="docutils literal"><span class="pre">b8a2a2e3-2314-43cd-a871-6ede0f429751</span></tt>. This token can
+be used to guarantee idempotent creation.
+If not specified creation is not idempotent.</li>
+<li><strong>create_spec</strong> (<a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a>) &#8211; Specification for the new local library.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Identifier of the newly created <a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a>.
+The return value will be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="docutils literal"><span class="pre">create_spec</span></tt> is not valid.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="docutils literal"><span class="pre">client_token</span></tt> does not conform to the UUID format.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unsupported" title="com.vmware.vapi.std.errors_client.Unsupported"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unsupported</span></tt></a> 
+if using multiple storage backings.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">ContentLibrary.CreateLocalLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.LocalLibrary.delete">
+<tt class="descname">delete</tt><big>(</big><em>library_id</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#LocalLibrary.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.LocalLibrary.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the specified local library.</p>
+<p>Deleting a local library will remove the entry immediately and begin an
+asynchronous task to remove all cached content for the library. If the
+asynchronous task fails, file content may remain on the storage
+backing. This content will require manual removal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the local library to delete.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidElementType</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> is not a local library.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires
+<tt class="docutils literal"><span class="pre">ContentLibrary.DeleteLocalLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.LocalLibrary.get">
+<tt class="descname">get</tt><big>(</big><em>library_id</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#LocalLibrary.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.LocalLibrary.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a given local library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the local library to return.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a> instance associated with <tt class="docutils literal"><span class="pre">library_id</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidElementType</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> is not a local library.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires <tt class="docutils literal"><span class="pre">System.Read</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.LocalLibrary.list">
+<tt class="descname">list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#LocalLibrary.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.LocalLibrary.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the identifiers of all local libraries in the Content Library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.LocalLibrary.list" title="com.vmware.content_client.LocalLibrary.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.LocalLibrary.list" title="com.vmware.content_client.LocalLibrary.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of identifiers of all local libraries in the
+Content Library.
+The return value will contain identifiers for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">System.Read</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.LocalLibrary.update">
+<tt class="descname">update</tt><big>(</big><em>library_id</em>, <em>update_spec</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#LocalLibrary.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.LocalLibrary.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the properties of a local library.</p>
+<p>This is an incremental update to the local library. Attributes that are
+None in the update specification will be left unchanged.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the local library to update.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</li>
+<li><strong>update_spec</strong> (<a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a>) &#8211; Specification of the new property values to set on the local
+library.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidElementType</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> is not a local library.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="docutils literal"><span class="pre">update_spec</span></tt> is not valid.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="xref py py-attr docutils literal"><span class="pre">LibraryModel.version</span></tt> of <tt class="docutils literal"><span class="pre">update_spec</span></tt> is not equal
+to the current version of the library.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires
+<tt class="docutils literal"><span class="pre">ContentLibrary.UpdateLocalLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.content_client.SubscribedLibrary">
+<em class="property">class </em><tt class="descclassname">com.vmware.content_client.</tt><tt class="descname">SubscribedLibrary</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.VapiInterface" title="vmware.vapi.bindings.stub.VapiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration" title="vmware.vapi.bindings.stub.StubConfiguration"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt></a>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult">
+<em class="property">class </em><tt class="descname">ProbeResult</tt><big>(</big><em>status=None</em>, <em>ssl_thumbprint=None</em>, <em>error_messages=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.ProbeResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">SubscribedLibrary.ProbeResult</span></tt> class defines the subscription
+information probe result. This describes whether using a given subscription
+URL is successful or if there are access problems, such as SSL errors.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>status</strong> (<a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status" title="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status"><tt class="xref py py-class docutils literal"><span class="pre">SubscribedLibrary.ProbeResult.Status</span></tt></a>) &#8211; The status of probe result. This will be one of SUCCESS,
+INVALID_URL, TIMED_OUT, HOST_NOT_FOUND, RESOURCE_NOT_FOUND,
+INVALID_CREDENTIALS, CERTIFICATE_ERROR, UNKNOWN_ERROR.</li>
+<li><strong>ssl_thumbprint</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; The SSL thumbprint for the remote endpoint.
+An SSL thumbprint is only returned if the host is secured with
+SSL/TLS.</li>
+<li><strong>error_messages</strong> (<tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <a class="reference internal" href="com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage" title="com.vmware.vapi.std_client.LocalizableMessage"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std_client.LocalizableMessage</span></tt></a>) &#8211; If the probe result is in an error status, this attribute will
+contain the detailed error messages.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status">
+<em class="property">class </em><tt class="descname">Status</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.ProbeResult.Status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.enum.Enum" title="vmware.vapi.bindings.enum.Enum"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.enum.Enum</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">SubscribedLibrary.ProbeResult.Status</span></tt> class defines the error status
+constants for the probe result.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class represents an enumerated type in the interface language
+definition. The class contains class attributes which represent the
+values in the current version of the enumerated type. Newer versions of
+the enumerated type may contain new values. To use new values of the
+enumerated type in communication with a server that supports the newer
+version of the API, you instantiate this class. See <a class="reference internal" href="custom/rst/enumeration.html#enumeration-description"><em>enumerated
+type description page</em></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; String value for the <tt class="xref py py-class docutils literal"><span class="pre">Status</span></tt> instance.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.CERTIFICATE_ERROR">
+<tt class="descname">CERTIFICATE_ERROR</tt><em class="property"> = Status(string='CERTIFICATE_ERROR')</em><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.CERTIFICATE_ERROR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the provided server certificate thumbprint in
+<tt class="xref py py-attr docutils literal"><span class="pre">com.vmware.content.library_client.SubscriptionInfo.ssl_thumbprint</span></tt>
+is invalid. In this case, the returned null should be set in
+<tt class="xref py py-attr docutils literal"><span class="pre">com.vmware.content.library_client.SubscriptionInfo.ssl_thumbprint</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.HOST_NOT_FOUND">
+<tt class="descname">HOST_NOT_FOUND</tt><em class="property"> = Status(string='HOST_NOT_FOUND')</em><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.HOST_NOT_FOUND" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the host in the URL could not be found.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.INVALID_CREDENTIALS">
+<tt class="descname">INVALID_CREDENTIALS</tt><em class="property"> = Status(string='INVALID_CREDENTIALS')</em><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.INVALID_CREDENTIALS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the connection was rejected due to invalid credentials.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.INVALID_URL">
+<tt class="descname">INVALID_URL</tt><em class="property"> = Status(string='INVALID_URL')</em><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.INVALID_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the supplied URL was not valid.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.RESOURCE_NOT_FOUND">
+<tt class="descname">RESOURCE_NOT_FOUND</tt><em class="property"> = Status(string='RESOURCE_NOT_FOUND')</em><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.RESOURCE_NOT_FOUND" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the given resource at the URL was not found.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.SUCCESS">
+<tt class="descname">SUCCESS</tt><em class="property"> = Status(string='SUCCESS')</em><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.SUCCESS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the probe was successful.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.TIMED_OUT">
+<tt class="descname">TIMED_OUT</tt><em class="property"> = Status(string='TIMED_OUT')</em><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.TIMED_OUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the probe timed out while attempting to connect to the URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.UNKNOWN_ERROR">
+<tt class="descname">UNKNOWN_ERROR</tt><em class="property"> = Status(string='UNKNOWN_ERROR')</em><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status.UNKNOWN_ERROR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates an unspecified error different from the other error cases defined
+in <a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult.Status" title="com.vmware.content_client.SubscribedLibrary.ProbeResult.Status"><tt class="xref py py-class docutils literal"><span class="pre">SubscribedLibrary.ProbeResult.Status</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.SubscribedLibrary.create">
+<tt class="descclassname">SubscribedLibrary.</tt><tt class="descname">create</tt><big>(</big><em>create_spec</em>, <em>client_token=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new subscribed library.</p>
+<p>Once created, the subscribed library will be empty. If the
+<tt class="xref py py-attr docutils literal"><span class="pre">LibraryModel.subscription_info</span></tt> property is set, the Content
+Library Service will attempt to synchronize to the remote source. This
+is an asynchronous operation so the content of the published library
+may not immediately appear.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>client_token</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> or <tt class="docutils literal"><span class="pre">None</span></tt>) &#8211; Unique token generated on the client for each creation request. The
+token should be a universally unique identifier (UUID), for
+example: <tt class="docutils literal"><span class="pre">b8a2a2e3-2314-43cd-a871-6ede0f429751</span></tt>. This token can
+be used to guarantee idempotent creation.
+If not specified creation is not idempotent.</li>
+<li><strong>create_spec</strong> (<a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a>) &#8211; Specification for the new subscribed library.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Identifier of the newly created subscribed library.
+The return value will be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="docutils literal"><span class="pre">create_spec</span></tt> is not valid.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="docutils literal"><span class="pre">client_token</span></tt> does not conform to the UUID format.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unsupported" title="com.vmware.vapi.std.errors_client.Unsupported"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unsupported</span></tt></a> 
+if using multiple storage backings.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ResourceInaccessible" title="com.vmware.vapi.std.errors_client.ResourceInaccessible"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt></a> 
+if subscribing to a published library which cannot be accessed.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires
+<tt class="docutils literal"><span class="pre">ContentLibrary.CreateSubscribedLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.SubscribedLibrary.delete">
+<tt class="descclassname">SubscribedLibrary.</tt><tt class="descname">delete</tt><big>(</big><em>library_id</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the specified subscribed library.</p>
+<p>Deleting a subscribed library will remove the entry immediately and
+begin an asynchronous task to remove all cached content for the
+library. If the asynchronous task fails, file content may remain on the
+storage backing. This content will require manual removal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the subscribed library to delete.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidElementType</span></tt></a> 
+if the library referenced by <tt class="docutils literal"><span class="pre">library_id</span></tt> is not a subscribed
+library.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library referenced by <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires
+<tt class="docutils literal"><span class="pre">ContentLibrary.DeleteSubscribedLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.SubscribedLibrary.evict">
+<tt class="descclassname">SubscribedLibrary.</tt><tt class="descname">evict</tt><big>(</big><em>library_id</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.evict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.evict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evicts the cached content of an on-demand subscribed library.</p>
+<p>This method allows the cached content of a subscribed library to be
+removed to free up storage capacity. This method will only work when a
+subscribed library is synchronized on-demand.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the subscribed library whose content should be
+evicted.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidElementType</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> is not a subscribed
+library.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotAllowedInCurrentState" title="com.vmware.vapi.std.errors_client.NotAllowedInCurrentState"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> does not synchronize
+on-demand.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires
+<tt class="docutils literal"><span class="pre">ContentLibrary.EvictSubscribedLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.SubscribedLibrary.get">
+<tt class="descclassname">SubscribedLibrary.</tt><tt class="descname">get</tt><big>(</big><em>library_id</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a given subscribed library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the subscribed library to return.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a> instance that corresponds to
+<tt class="docutils literal"><span class="pre">library_id</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library associated with <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidElementType</span></tt></a> 
+if the library associated with <tt class="docutils literal"><span class="pre">library_id</span></tt> is not a subscribed
+library.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires <tt class="docutils literal"><span class="pre">System.Read</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.SubscribedLibrary.list">
+<tt class="descclassname">SubscribedLibrary.</tt><tt class="descname">list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the identifiers of all subscribed libraries in the Content
+Library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary.list" title="com.vmware.content_client.SubscribedLibrary.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary.list" title="com.vmware.content_client.SubscribedLibrary.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of identifiers of all subscribed libraries in the
+Content Library.
+The return value will contain identifiers for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">System.Read</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.SubscribedLibrary.probe">
+<tt class="descclassname">SubscribedLibrary.</tt><tt class="descname">probe</tt><big>(</big><em>subscription_info</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.probe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.probe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Probes remote library subscription information, including URL, SSL
+certificate and password. The resulting
+<a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult" title="com.vmware.content_client.SubscribedLibrary.ProbeResult"><tt class="xref py py-class docutils literal"><span class="pre">SubscribedLibrary.ProbeResult</span></tt></a> class describes whether or not
+the subscription configuration is successful.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>subscription_info</strong> (<a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.SubscriptionInfo" title="com.vmware.content.library_client.SubscriptionInfo"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.SubscriptionInfo</span></tt></a>) &#8211; The subscription info to be probed.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.SubscribedLibrary.ProbeResult" title="com.vmware.content_client.SubscribedLibrary.ProbeResult"><tt class="xref py py-class docutils literal"><span class="pre">SubscribedLibrary.ProbeResult</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The subscription info probe result.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">ContentLibrary.ProbeSubscription</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.SubscribedLibrary.sync">
+<tt class="descclassname">SubscribedLibrary.</tt><tt class="descname">sync</tt><big>(</big><em>library_id</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forces the synchronization of the subscribed library.</p>
+<p>Synchronizing a subscribed library forcefully with this method will
+perform the same synchronization behavior as would run periodically for
+the library. The
+<tt class="xref py py-attr docutils literal"><span class="pre">com.vmware.content.library_client.SubscriptionInfo.on_demand</span></tt>
+setting is respected. Calling this method on a library that is already
+in the process of synchronizing will have no effect.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the subscribed library to synchronize.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidElementType</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> is not a subscribed
+library.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if some parameter in the subscribed library subscription info is
+invalid.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ResourceInaccessible" title="com.vmware.vapi.std.errors_client.ResourceInaccessible"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt></a> 
+if the published library cannot be contacted or found.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires <tt class="docutils literal"><span class="pre">ContentLibrary.SyncLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.SubscribedLibrary.update">
+<tt class="descclassname">SubscribedLibrary.</tt><tt class="descname">update</tt><big>(</big><em>library_id</em>, <em>update_spec</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#SubscribedLibrary.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.SubscribedLibrary.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the properties of a subscribed library.</p>
+<p>This is an incremental update to the subscribed library. Attributes
+that are None in the update specification will be left unchanged.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>library_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; Identifier of the subscribed library to update.
+The parameter must be an identifier for the resource type:
+<tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt>.</li>
+<li><strong>update_spec</strong> (<a class="reference internal" href="#com.vmware.content_client.LibraryModel" title="com.vmware.content_client.LibraryModel"><tt class="xref py py-class docutils literal"><span class="pre">LibraryModel</span></tt></a>) &#8211; Specification of the new property values to set on the subscribed
+library.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidElementType" title="com.vmware.vapi.std.errors_client.InvalidElementType"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidElementType</span></tt></a> 
+if the library specified by <tt class="docutils literal"><span class="pre">library_id</span></tt> is not a subscribed
+library.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="docutils literal"><span class="pre">update_spec</span></tt> is not valid.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></tt></a> 
+if the <tt class="xref py py-attr docutils literal"><span class="pre">LibraryModel.version</span></tt> of <tt class="docutils literal"><span class="pre">update_spec</span></tt> is not equal
+to the current version of the library.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ResourceInaccessible" title="com.vmware.vapi.std.errors_client.ResourceInaccessible"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.ResourceInaccessible</span></tt></a> 
+if the subscription info is being updated but the published library
+cannot be contacted or found.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>The resource <tt class="docutils literal"><span class="pre">com.vmware.content.Library</span></tt> referenced by the
+parameter <tt class="docutils literal"><span class="pre">library_id</span></tt> requires
+<tt class="docutils literal"><span class="pre">ContentLibrary.UpdateSubscribedLibrary</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.content_client.Type">
+<em class="property">class </em><tt class="descclassname">com.vmware.content_client.</tt><tt class="descname">Type</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.VapiInterface" title="vmware.vapi.bindings.stub.VapiInterface"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Type</span></tt> class exposes the
+<a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.ItemModel" title="com.vmware.content.library_client.ItemModel"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.ItemModel</span></tt></a> types that this
+Content Library Service supports.</p>
+<p>A library item has an optional type which can be specified with the
+<tt class="xref py py-attr docutils literal"><span class="pre">com.vmware.content.library_client.ItemModel.type</span></tt> attribute. For
+items with a type that is supported by a plugin, the Content Library
+Service may understand the files which are part of the library item and can
+produce metadata for the item.</p>
+<p>In other cases, uploads may require a process in which one upload implies
+subsequent uploads. For example, an Open Virtualization Format (OVF)
+package is composed of an OVF descriptor file and the associated virtual
+disk files. Uploading an OVF descriptor can enable the Content Library
+Service to understand that the complete OVF package requires additional
+disk files, and it can set up the transfers for the disks automatically by
+adding the file entries for the disks when the OVF descriptor is uploaded.</p>
+<p>When a type is not supported by a plugin, or the type is not specified, the
+Content Library Service can handle a library item in a default way, without
+adding metadata to the item or guiding the upload process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.stub.StubConfiguration" title="vmware.vapi.bindings.stub.StubConfiguration"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></tt></a>) &#8211; Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.content_client.Type.Info">
+<em class="property">class </em><tt class="descname">Info</tt><big>(</big><em>description=None</em>, <em>name=None</em>, <em>type=None</em>, <em>vendor=None</em>, <em>version=None</em><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Type.Info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Type.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="vmware.vapi.bindings.html#vmware.vapi.bindings.struct.VapiStruct" title="vmware.vapi.bindings.struct.VapiStruct"><tt class="xref py py-class docutils literal"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></tt></a></p>
+<p>The <tt class="docutils literal"><span class="pre">Type.Info</span></tt> class describes support for a specific type of data in an
+<a class="reference internal" href="com.vmware.content.html#com.vmware.content.library_client.ItemModel" title="com.vmware.content.library_client.ItemModel"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.content.library_client.ItemModel</span></tt></a>. The <tt class="docutils literal"><span class="pre">Type.Info</span></tt> can
+be queried through the <a class="reference internal" href="#com.vmware.content_client.Type" title="com.vmware.content_client.Type"><tt class="xref py py-class docutils literal"><span class="pre">Type</span></tt></a> class. Type support describes plugins
+in the Content Library which can provide metadata on library items and help
+manage the transfer process by adding dependent files when a current file
+is added.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>description</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A description of the type support offered by the plugin.</li>
+<li><strong>name</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The name of the plugin which provides the type support.</li>
+<li><strong>type</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; <p>The type which the plugin supports.</p>
+<p>To upload a library item of the type supported by the plugin, the
+<tt class="xref py py-attr docutils literal"><span class="pre">com.vmware.content.library_client.ItemModel.type</span></tt> attribute
+of the item should be set to this value.</p>
+</li>
+<li><strong>vendor</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The name of the vendor who created the type support plugin.</li>
+<li><strong>version</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The version number of the type support plugin.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.content_client.Type.list">
+<tt class="descclassname">Type.</tt><tt class="descname">list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/com/vmware/content_client.html#Type.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#com.vmware.content_client.Type.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#com.vmware.content_client.Type.list" title="com.vmware.content_client.Type.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <a class="reference internal" href="#com.vmware.content_client.Type.Info" title="com.vmware.content_client.Type.Info"><tt class="xref py py-class docutils literal"><span class="pre">Type.Info</span></tt></a> instances which describe
+the type support plugins in this Content Library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.content_client.Type.list" title="com.vmware.content_client.Type.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <a class="reference internal" href="#com.vmware.content_client.Type.Info" title="com.vmware.content_client.Type.Info"><tt class="xref py py-class docutils literal"><span class="pre">Type.Info</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The <a class="reference internal" href="#com.vmware.content_client.Type.list" title="com.vmware.content_client.Type.list"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></a> of <a class="reference internal" href="#com.vmware.content_client.Type.Info" title="com.vmware.content_client.Type.Info"><tt class="xref py py-class docutils literal"><span class="pre">Type.Info</span></tt></a> instances which describe
+the type support plugins in this Content Library.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><tt class="xref py py-class docutils literal"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></tt></a>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <tt class="docutils literal"><span class="pre">ContentLibrary.TypeIntrospection</span></tt>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-com.vmware.vapi_client">
+<span id="vapi-client-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">vapi_client</span></tt> Module<a class="headerlink" href="#module-com.vmware.vapi_client" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">com.vmware.vapi_client</span></tt> component provides API infrastructure classes
+and standard types that can be used in the interface specification of any
+class.</p>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="com.vmware.cis.html">cis Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.cis.html#id1"><tt class="docutils literal"><span class="pre">cis</span></tt> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.cis.html#module-com.vmware.cis.tagging_client"><tt class="docutils literal"><span class="pre">tagging_client</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="com.vmware.content.html">content Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.content.html#id1"><tt class="docutils literal"><span class="pre">content</span></tt> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.content.html#module-com.vmware.content.library_client"><tt class="docutils literal"><span class="pre">library_client</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.content.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="com.vmware.content.library.html">library Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.content.library.html#id1"><tt class="docutils literal"><span class="pre">library</span></tt> Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.content.library.html#module-com.vmware.content.library.item_client"><tt class="docutils literal"><span class="pre">item_client</span></tt> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.content.library.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="com.vmware.content.library.item.html">item Package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.content.library.item.html#id1"><tt class="docutils literal"><span class="pre">item</span></tt> Package</a></li>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.content.library.item.html#module-com.vmware.content.library.item.downloadsession_client"><tt class="docutils literal"><span class="pre">downloadsession_client</span></tt> Module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.content.library.item.html#module-com.vmware.content.library.item.updatesession_client"><tt class="docutils literal"><span class="pre">updatesession_client</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="com.vmware.vapi.html">vapi Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vapi.html#id1"><tt class="docutils literal"><span class="pre">vapi</span></tt> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vapi.html#module-com.vmware.vapi.metadata_client"><tt class="docutils literal"><span class="pre">metadata_client</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vapi.html#module-com.vmware.vapi.std_client"><tt class="docutils literal"><span class="pre">std_client</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vapi.html#module-com.vmware.vapi.vcenter_client"><tt class="docutils literal"><span class="pre">vcenter_client</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vapi.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="com.vmware.vapi.metadata.html">metadata Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vapi.metadata.html#id1"><tt class="docutils literal"><span class="pre">metadata</span></tt> Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vapi.metadata.html#module-com.vmware.vapi.metadata.authentication_client"><tt class="docutils literal"><span class="pre">authentication_client</span></tt> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vapi.metadata.html#module-com.vmware.vapi.metadata.cli_client"><tt class="docutils literal"><span class="pre">cli_client</span></tt> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vapi.metadata.html#module-com.vmware.vapi.metadata.metamodel_client"><tt class="docutils literal"><span class="pre">metamodel_client</span></tt> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vapi.metadata.html#module-com.vmware.vapi.metadata.privilege_client"><tt class="docutils literal"><span class="pre">privilege_client</span></tt> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vapi.metadata.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="com.vmware.vapi.metadata.authentication.html">authentication Package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vapi.metadata.authentication.html#id1"><tt class="docutils literal"><span class="pre">authentication</span></tt> Package</a></li>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vapi.metadata.authentication.html#module-com.vmware.vapi.metadata.authentication.service_client"><tt class="docutils literal"><span class="pre">service_client</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="com.vmware.vapi.metadata.metamodel.html">metamodel Package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vapi.metadata.metamodel.html#id1"><tt class="docutils literal"><span class="pre">metamodel</span></tt> Package</a></li>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vapi.metadata.metamodel.html#module-com.vmware.vapi.metadata.metamodel.resource_client"><tt class="docutils literal"><span class="pre">resource_client</span></tt> Module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vapi.metadata.metamodel.html#module-com.vmware.vapi.metadata.metamodel.service_client"><tt class="docutils literal"><span class="pre">service_client</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="com.vmware.vapi.metadata.privilege.html">privilege Package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vapi.metadata.privilege.html#id1"><tt class="docutils literal"><span class="pre">privilege</span></tt> Package</a></li>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vapi.metadata.privilege.html#module-com.vmware.vapi.metadata.privilege.service_client"><tt class="docutils literal"><span class="pre">service_client</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="com.vmware.vapi.std.html">std Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vapi.std.html#id1"><tt class="docutils literal"><span class="pre">std</span></tt> Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vapi.std.html#module-com.vmware.vapi.std.errors_client"><tt class="docutils literal"><span class="pre">errors_client</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="com.vmware.vcenter.html">vcenter Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vcenter.html#id1"><tt class="docutils literal"><span class="pre">vcenter</span></tt> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vcenter.html#module-com.vmware.vcenter.inventory_client"><tt class="docutils literal"><span class="pre">inventory_client</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vcenter.html#module-com.vmware.vcenter.ovf_client"><tt class="docutils literal"><span class="pre">ovf_client</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">vmware Package</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">vmware</span></tt> Package</a></li>
+<li><a class="reference internal" href="#module-com.vmware.cis_client"><tt class="docutils literal"><span class="pre">cis_client</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-com.vmware.content_client"><tt class="docutils literal"><span class="pre">content_client</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-com.vmware.vapi_client"><tt class="docutils literal"><span class="pre">vapi_client</span></tt> Module</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="com.html"
+                        title="previous chapter">com Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="com.vmware.cis.html"
+                        title="next chapter">cis Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/com.vmware.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="com.vmware.cis.html" title="cis Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="com.html" title="com Package"
+             >previous</a> |</li>
+        <li><a href="index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="com.html" >com Package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

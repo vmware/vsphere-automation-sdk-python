@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vapi.std_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vapi.std_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2014 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vapi.std.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vapi.std_client`` module provides standard types that can be</span>
+<span class="sd">used in the interface specification of any class.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+
+
+<div class="viewcode-block" id="AuthenticationScheme"><a class="viewcode-back" href="../../../../com.vmware.vapi.html#com.vmware.vapi.std_client.AuthenticationScheme">[docs]</a><span class="k">class</span> <span class="nc">AuthenticationScheme</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The :class:`AuthenticationScheme` class defines constants for</span>
+<span class="sd">    authentication scheme identifiers for authentication mechanisms present in</span>
+<span class="sd">    the vAPI infrastructure shipped by VMware. </span>
+<span class="sd">    </span>
+<span class="sd">    A third party extension can define and implements it&#39;s own authentication</span>
+<span class="sd">    mechanism and define a constant in a different IDL file.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NO_AUTHENTICATION</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.std.security.no_authentication&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Indicates that the request doesn&#39;t need any authentication.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SAML_BEARER_TOKEN</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.std.security.saml_bearer_token&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Indicates that the security context in a request is using a SAML bearer token</span>
+<span class="sd">    based authentication scheme. </span>
+
+<span class="sd">    In this scheme, the following pieces of information has to be passed in the</span>
+<span class="sd">    SecurityContext structure in the execution context of the request: </span>
+
+<span class="sd">    * The scheme identifier: com.vmware.vapi.std.security.saml_bearer_token</span>
+<span class="sd">    * The token itself</span>
+
+<span class="sd">     </span>
+
+<span class="sd">     Sample security context in JSON format that matches the specification: ``{</span>
+<span class="sd">    &#39;schemeId&#39;: &#39;com.vmware.vapi.std.security.saml_bearer_token&#39;,</span>
+<span class="sd">    &#39;token&#39;: &#39;the token itself&#39;</span>
+<span class="sd">    }`` vAPI runtime provide convenient factory methods that take SAML bearer token</span>
+<span class="sd">    and to create the security context that conforms to the above mentioned format.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SAML_HOK_TOKEN</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.std.security.saml_hok_token&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Indicates that the security context in a request is using a SAML holder-of-key</span>
+<span class="sd">    token based authentication scheme. </span>
+
+<span class="sd">    In this scheme, the following pieces of information has to be passed in the</span>
+<span class="sd">    SecurityContext structure in the execution context of the request: </span>
+
+<span class="sd">    * The scheme identifier: com.vmware.vapi.std.security.saml_hok_token</span>
+<span class="sd">    * Signature of the request: This includes - algorithm used for signing the</span>
+<span class="sd">      request, SAML holder of key token and signature digest</span>
+<span class="sd">    * Request timestamp: This includes the ``created`` and ``expires`` timestamp of</span>
+<span class="sd">      the request. The timestamp should match the following format -</span>
+<span class="sd">      YYYY-MM-DDThh:mm:ss.sssZ (e.g. 1878-03-03T19:20:30.451Z).</span>
+
+<span class="sd">     </span>
+
+<span class="sd">     Sample security context in JSON format that matches the specification: ``{</span>
+<span class="sd">    &#39;schemeId&#39;: &#39;com.vmware.vapi.std.security.saml_hok_token&#39;,</span>
+<span class="sd">    &#39;signature&#39;: {</span>
+<span class="sd">    &#39;alg&#39;: &#39;RS256&#39;,</span>
+<span class="sd">    &#39;samlToken&#39;: ...,</span>
+<span class="sd">    &#39;value&#39;: ...,``, &#39;timestamp&#39;: { &#39;created&#39;: &#39;2012-10-26T12:24:18.941Z&#39;,</span>
+<span class="sd">    &#39;expires&#39;: &#39;2012-10-26T12:44:18.941Z&#39;, } } } vAPI runtime provide convenient</span>
+<span class="sd">    factory methods that take SAML holder of key token and private key to create</span>
+<span class="sd">    the security context that conforms to the above mentioned format.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SESSION_ID</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.std.security.session_id&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Indicates that the security context in a request is using a session identifier</span>
+<span class="sd">    based authentication scheme. </span>
+
+<span class="sd">    In this scheme, the following pieces of information has to be passed in the</span>
+<span class="sd">    SecurityContext structure in the execution context of the request: </span>
+
+<span class="sd">    * The scheme identifier - com.vmware.vapi.std.security.session_id</span>
+<span class="sd">    * Valid session identifier - This is usually returned by a login method of a</span>
+<span class="sd">      session manager interface for a particular vAPI service of this authentication</span>
+<span class="sd">      scheme</span>
+
+<span class="sd">     Sample security context in JSON format that matches the specification: ``{</span>
+<span class="sd">    &#39;schemeId&#39;: &#39;com.vmware.vapi.std.security.session_id&#39;,</span>
+<span class="sd">    &#39;sessionId&#39;: ....,</span>
+<span class="sd">    }`` vAPI runtime provides convenient factory methods that take session</span>
+<span class="sd">    identifier as input parameter and create a security context that conforms to</span>
+<span class="sd">    the above format.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">USER_PASSWORD</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.std.security.user_password&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Indicates that the security context in a request is using username/password</span>
+<span class="sd">    based authentication scheme. </span>
+
+<span class="sd">    In this scheme, the following pieces of information has to be passed in the</span>
+<span class="sd">    SecurityContext structure in the execution context of the request: </span>
+
+<span class="sd">    * The scheme identifier - com.vmware.vapi.std.security.user_password</span>
+<span class="sd">    * Username</span>
+<span class="sd">    * Password</span>
+
+<span class="sd">     </span>
+
+<span class="sd">     Sample security context in JSON format that matches the specification: ``{</span>
+<span class="sd">    &#39;schemeId&#39;: &#39;com.vmware.vapi.std.security.user_password&#39;,</span>
+<span class="sd">    &#39;userName&#39;: ....,</span>
+<span class="sd">    &#39;password&#39;: ...</span>
+<span class="sd">    }`` </span>
+<span class="sd">    vAPI runtime provides convenient factory methods that take username and</span>
+<span class="sd">    password as input parameters and create a security context that conforms to the</span>
+<span class="sd">    above format.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">AuthenticationScheme</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.authentication_scheme&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="p">},</span>
+    <span class="n">AuthenticationScheme</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="DynamicID"><a class="viewcode-back" href="../../../../com.vmware.vapi.html#com.vmware.vapi.std_client.DynamicID">[docs]</a><span class="k">class</span> <span class="nc">DynamicID</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``DynamicID`` class represents an identifier for a resource of an</span>
+<span class="sd">    arbitrary type.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  type: :class:`str`</span>
+<span class="sd">        :param type: The type of resource being identified (for example</span>
+<span class="sd">            ``com.acme.Person``). </span>
+<span class="sd">            </span>
+<span class="sd">            Classes that contain methods for creating and deleting resources</span>
+<span class="sd">            typically contain a class attribute specifying the resource type</span>
+<span class="sd">            for the resources being created and deleted. The API metamodel</span>
+<span class="sd">            metadata classes include a class that allows retrieving all the</span>
+<span class="sd">            known resource types.</span>
+<span class="sd">        :type  id: :class:`str`</span>
+<span class="sd">        :param id: The identifier for a resource whose type is specified by</span>
+<span class="sd">            :attr:`DynamicID.type`.</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the</span>
+<span class="sd">            attribute ``type`` must contain the actual resource type. When</span>
+<span class="sd">            methods return a value of this class as a return value, the</span>
+<span class="sd">            attribute ``type`` will contain the actual resource type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">DynamicID</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.dynamic_ID&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="p">[],</span> <span class="n">resource_type_field_name</span><span class="o">=</span><span class="s">&quot;type&quot;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="n">DynamicID</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="LocalizableMessage"><a class="viewcode-back" href="../../../../com.vmware.vapi.html#com.vmware.vapi.std_client.LocalizableMessage">[docs]</a><span class="k">class</span> <span class="nc">LocalizableMessage</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``LocalizableMessage`` class represents a localizable string or message</span>
+<span class="sd">    template. Classes include one or more localizable message templates in the</span>
+<span class="sd">    exceptions they report so that clients can display diagnostic messages in</span>
+<span class="sd">    the native language of the user. Classes can include localizable strings in</span>
+<span class="sd">    the data returned from methods to allow clients to display localized status</span>
+<span class="sd">    information in the native language of the user.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">default_message</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  id: :class:`str`</span>
+<span class="sd">        :param id: Unique identifier of the localizable string or message template. </span>
+<span class="sd">            </span>
+<span class="sd">            This identifier is typically used to retrieve a locale-specific</span>
+<span class="sd">            string or message template from a message catalog.</span>
+<span class="sd">        :type  default_message: :class:`str`</span>
+<span class="sd">        :param default_message: The value of this localizable string or message template in the</span>
+<span class="sd">            ``en_US`` (English) locale. If :attr:`LocalizableMessage.id` refers</span>
+<span class="sd">            to a message template, the default message will contain the</span>
+<span class="sd">            substituted arguments. This value can be used by clients that do</span>
+<span class="sd">            not need to display strings and messages in the native language of</span>
+<span class="sd">            the user. It could also be used as a fallback if a client is unable</span>
+<span class="sd">            to access the appropriate message catalog.</span>
+<span class="sd">        :type  args: :class:`list` of :class:`str`</span>
+<span class="sd">        :param args: Arguments to be substituted into a message template.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_message</span> <span class="o">=</span> <span class="n">default_message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">LocalizableMessage</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.std.localizable_message&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;default_message&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;args&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">LocalizableMessage</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

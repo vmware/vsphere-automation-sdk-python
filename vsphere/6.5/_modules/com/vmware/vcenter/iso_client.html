@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vcenter.iso_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vcenter.iso_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vcenter.iso.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vcenter.iso_client`` module provides classes and classes that</span>
+<span class="sd">will let its client mount or unmount an ISO image on a virtual machine as a</span>
+<span class="sd">CD-ROM.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.iso_client.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides an interface to mount and unmount an ISO image on a virtual</span>
+<span class="sd">    machine. </span>
+<span class="sd">    </span>
+<span class="sd">    This is an API that will let its client mount or unmount an ISO image on a</span>
+<span class="sd">    virtual machine as a CD-ROM. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ImageStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Image.mount"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.iso_client.Image.mount">[docs]</a>    <span class="k">def</span> <span class="nf">mount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">library_item</span><span class="p">,</span>
+              <span class="n">vm</span><span class="p">,</span>
+              <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Mounts an ISO image from a content library on a virtual machine.</span>
+
+<span class="sd">        :type  library_item: :class:`str`</span>
+<span class="sd">        :param library_item: The identifier of the library item having the ISO image to mount on</span>
+<span class="sd">            the virtual machine.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.content.library.Item``.</span>
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: The identifier of the virtual machine where the specified ISO image</span>
+<span class="sd">            will be mounted.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: The identifier of the newly created virtual CD-ROM backed by the</span>
+<span class="sd">            specified ISO image.</span>
+<span class="sd">            The return value will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.Cdrom``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If either ``vm`` or the ``library_item`` is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            If no .iso file is present on the library item.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            When the operation is not allowed on the virtual machine in its</span>
+<span class="sd">            current state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;mount&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;library_item&#39;</span><span class="p">:</span> <span class="n">library_item</span><span class="p">,</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Image.unmount"><a class="viewcode-back" href="../../../../com.vmware.vcenter.html#com.vmware.vcenter.iso_client.Image.unmount">[docs]</a>    <span class="k">def</span> <span class="nf">unmount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">vm</span><span class="p">,</span>
+                <span class="n">cdrom</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unmounts a previously mounted CD-ROM using an ISO image as a backing.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: The identifier of the virtual machine from which to unmount the</span>
+<span class="sd">            virtual CD-ROM.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  cdrom: :class:`str`</span>
+<span class="sd">        :param cdrom: The device identifier of the CD-ROM.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.Cdrom``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If the virtual machine identified by ``vm`` is not found or the</span>
+<span class="sd">            ``cdrom`` does not identify a virtual CD-ROM in the virtual</span>
+<span class="sd">            machine.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            When the operation is not allowed on the virtual machine in its</span>
+<span class="sd">            current state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;unmount&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;cdrom&#39;</span><span class="p">:</span> <span class="n">cdrom</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_ImageStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for mount operation</span>
+        <span class="n">mount_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;library_item&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.content.library.Item&#39;</span><span class="p">),</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">mount_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">mount_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">mount_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for unmount operation</span>
+        <span class="n">unmount_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;cdrom&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.Cdrom&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">unmount_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">unmount_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">unmount_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;mount&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">mount_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.Cdrom&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">mount_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">mount_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">mount_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;unmount&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">unmount_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">unmount_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">unmount_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">unmount_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.iso.image&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

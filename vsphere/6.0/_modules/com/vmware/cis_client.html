@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.cis_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.cis_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2015 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.cis.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.cis_client.Session">[docs]</a><span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Session`` class allows API clients to manage session tokens including</span>
+<span class="sd">    creating, deleting and obtaining information about sessions. </span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">    * The :func:`Session.create` method creates session token in exchange for</span>
+<span class="sd">      another authentication token.</span>
+<span class="sd">    * The :func:`Session.delete` method invalidates a session token.</span>
+<span class="sd">    * The :func:`Session.get` retrieves information about a session token.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">    The call to the :func:`Session.create` method is part of the overall</span>
+<span class="sd">    authentication process for API clients. For example, the sequence of steps</span>
+<span class="sd">    for establishing a session with SAML token is: </span>
+<span class="sd">    </span>
+<span class="sd">    * Connect to lookup service.</span>
+<span class="sd">    * Discover the secure token service (STS) endpoint URL.</span>
+<span class="sd">    * Connect to the secure token service to obtain a SAML token.</span>
+<span class="sd">    * Authenticate to the lookup service using the obtained SAML token.</span>
+<span class="sd">    * Discover the API endpoint URL from lookup service.</span>
+<span class="sd">    * Call the :func:`Session.create` method. The :func:`Session.create` call</span>
+<span class="sd">      must include the SAML token.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">    See the programming guide and samples for additional information about</span>
+<span class="sd">    establishing API sessions. </span>
+<span class="sd">    </span>
+<span class="sd">     **Execution Context and Security Context** </span>
+<span class="sd">    </span>
+<span class="sd">    To use session based authentication a client should supply the session</span>
+<span class="sd">    token obtained through the :func:`Session.create` method. The client should</span>
+<span class="sd">    add the session token in the security context when using SDK classes.</span>
+<span class="sd">    Clients using the REST API should supply the session token as a HTTP</span>
+<span class="sd">    header. </span>
+<span class="sd">    </span>
+<span class="sd">     **Session Lifetime** </span>
+<span class="sd">    </span>
+<span class="sd">    A session begins with call to the :func:`Session.create` method to exchange</span>
+<span class="sd">    a SAML token for a API session token. A session ends under the following</span>
+<span class="sd">    circumstances: </span>
+<span class="sd">    </span>
+<span class="sd">    * Call to the :func:`Session.delete` method.</span>
+<span class="sd">    * The session expires. Session expiration may be caused by one of the</span>
+<span class="sd">      following situations: </span>
+<span class="sd">    </span>
+<span class="sd">    * Client inactivity - For a particular session identified by client</span>
+<span class="sd">      requests that specify the associated session ID, the lapsed time since the</span>
+<span class="sd">      last request exceeds the maximum interval between requests.</span>
+<span class="sd">    * Unconditional or absolute session expiration time: At the beginning of</span>
+<span class="sd">      the session, the session logic uses the SAML token and the system</span>
+<span class="sd">      configuration to calculate absolute expiration time.</span>
+<span class="sd">    </span>
+<span class="sd">     </span>
+<span class="sd">    </span>
+<span class="sd">    When a session ends, the authentication logic will reject any subsequent</span>
+<span class="sd">    client requests that specify that session. Any operations in progress will</span>
+<span class="sd">    continue to completion. </span>
+<span class="sd">    </span>
+<span class="sd">     **Error Handling** </span>
+<span class="sd">    </span>
+<span class="sd">     The :class:`Session` returns the following exceptions: </span>
+<span class="sd">    </span>
+<span class="sd">    * :class:`com.vmware.vapi.std.errors_client.Unauthenticated` exception for</span>
+<span class="sd">      any exceptions related to the request.</span>
+<span class="sd">    * :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` exception</span>
+<span class="sd">      for all exceptions caused by internal service failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_SessionStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Session.Info"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.cis_client.Session.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represents data associated with an API session.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">created_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">last_accessed_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  user: :class:`str`</span>
+<span class="sd">            :param user: Fully qualified name of the end user that created the session, for</span>
+<span class="sd">                example Administrator\\\\@vsphere.local. A typical use case for</span>
+<span class="sd">                this information is in Graphical User Interfaces (GUI) or logging</span>
+<span class="sd">                systems to visualize the identity of the current user.</span>
+<span class="sd">            :type  created_time: :class:`datetime.datetime`</span>
+<span class="sd">            :param created_time: Time when the session was created.</span>
+<span class="sd">            :type  last_accessed_time: :class:`datetime.datetime`</span>
+<span class="sd">            :param last_accessed_time: Last time this session was used by passing the session key for</span>
+<span class="sd">                invoking an API.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">created_time</span> <span class="o">=</span> <span class="n">created_time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_accessed_time</span> <span class="o">=</span> <span class="n">last_accessed_time</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.cis.session.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;created_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">(),</span>
+            <span class="s">&#39;last_accessed_time&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">DateTimeType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Session.create"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.cis_client.Session.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a session with the API. This is the equivalent of login. This</span>
+<span class="sd">        method exchanges user credentials supplied in the security context for</span>
+<span class="sd">        a session identifier that is to be used for authenticating subsequent</span>
+<span class="sd">        calls. To authenticate subsequent calls clients are expected to include</span>
+<span class="sd">        the session key.</span>
+
+
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Newly created session identifier to be used for authenticating</span>
+<span class="sd">            further requests.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the session creation fails due to request specific issues. Due</span>
+<span class="sd">            to the security nature of the API the details of the error are not</span>
+<span class="sd">            disclosed. </span>
+<span class="sd">            </span>
+<span class="sd">            Please check the following preconditions if using a SAML token to</span>
+<span class="sd">            authenticate: </span>
+<span class="sd">            </span>
+<span class="sd">            * the supplied token is delegate-able.</span>
+<span class="sd">            * the time of client and server system are synchronized.</span>
+<span class="sd">            * the token supplied is valid.</span>
+<span class="sd">            * if bearer tokens are used check that system configuration allows</span>
+<span class="sd">              the API endpoint to accept such tokens.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if session creation fails due to server specific issues, for</span>
+<span class="sd">            example connection to a back end component is failing. Due to the</span>
+<span class="sd">            security nature of this API further details will not be disclosed</span>
+<span class="sd">            in the exception. Please refer to component health information,</span>
+<span class="sd">            administrative logs and product specific documentation for possible</span>
+<span class="sd">            causes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Session.delete"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.cis_client.Session.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Terminates the validity of a session token. This is the equivalent of</span>
+<span class="sd">        log out. </span>
+<span class="sd">        </span>
+<span class="sd">         A session identifier is expected as part of the request. </span>
+
+
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the session id is missing from the request or the corresponding</span>
+<span class="sd">            session object cannot be found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if session deletion fails due to server specific issues, for</span>
+<span class="sd">            example connection to a back end component is failing. Due to the</span>
+<span class="sd">            security nature of this API further details will not be disclosed</span>
+<span class="sd">            in the exception. Please refer to component health information,</span>
+<span class="sd">            administrative logs and product specific documentation for possible</span>
+<span class="sd">            causes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Session.get"><a class="viewcode-back" href="../../../com.vmware.html#com.vmware.cis_client.Session.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns information about the current session. This method expects a</span>
+<span class="sd">        valid session identifier to be supplied. </span>
+<span class="sd">        </span>
+<span class="sd">        A side effect of invoking this method may be a change to the session&#39;s</span>
+<span class="sd">        last accessed time to the current time if this is supported by the</span>
+<span class="sd">        session implementation. Invoking any other method in the API will also</span>
+<span class="sd">        update the session&#39;s last accessed time. </span>
+<span class="sd">        </span>
+<span class="sd">        This API is meant to serve the needs of various front end projects that</span>
+<span class="sd">        may want to display the name of the user. Examples of this include</span>
+<span class="sd">        various web based user interfaces and logging facilities.</span>
+
+
+<span class="sd">        :rtype: :class:`Session.Info`</span>
+<span class="sd">        :return: Information about the session.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the session id is missing from the request or the corresponding</span>
+<span class="sd">            session object cannot be found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if session retrieval fails due to server specific issues e.g.</span>
+<span class="sd">            connection to back end component is failing. Due to the security</span>
+<span class="sd">            nature of this API further details will not be disclosed in the</span>
+<span class="sd">            error. Please refer to component health information, administrative</span>
+<span class="sd">            logs and product specific documentation for possible causes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_SessionStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for create operation</span>
+        <span class="n">create_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">create_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">create_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">create_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;create&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">create_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SecretType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">create_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">create_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">create_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Session.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.cis.session&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

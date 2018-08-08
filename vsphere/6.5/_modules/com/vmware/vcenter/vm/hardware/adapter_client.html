@@ -1,0 +1,1328 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vcenter.vm.hardware.adapter_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vcenter.vm.hardware.adapter_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vcenter.vm.hardware.adapter.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``com.vmware.vcenter.vm.hardware.adapter_client`` module provides classes</span>
+<span class="sd">for managing the configuration and state of the virtual adapters belonging to a</span>
+<span class="sd">virtual machine. This includes methods for reading and manipulating the</span>
+<span class="sd">conifguration of USB adapters and host bus adapters. </span>
+
+<span class="sd">Note that classes for adapters with no configurable properties or runtime</span>
+<span class="sd">state, such as IDE and PCI adapters, are omitted.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vcenter.vm.hardware_client</span>
+
+
+<div class="viewcode-block" id="Sata"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata">[docs]</a><span class="k">class</span> <span class="nc">Sata</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Sata`` class provides methods for configuring the virtual SATA</span>
+<span class="sd">    adapters of a virtual machine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vcenter.vm.hardware.SataAdapter&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for the virtual SATA adapter device.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_SataStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Sata.Type"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Type">[docs]</a>    <span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Sata.Type`` class defines the valid emulation types for a virtual</span>
+<span class="sd">        SATA adapter.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">AHCI</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        AHCI host bus adapter.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`Type` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">Type</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;AHCI&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.sata.type&#39;</span><span class="p">,</span>
+        <span class="n">Type</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Sata.Info"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Sata.Info`` class contains information about a virtual SATA adapter.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">label</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">pci_slot_number</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  label: :class:`str`</span>
+<span class="sd">            :param label: Device label.</span>
+<span class="sd">            :type  type: :class:`Sata.Type`</span>
+<span class="sd">            :param type: Adapter type.</span>
+<span class="sd">            :type  bus: :class:`long`</span>
+<span class="sd">            :param bus: SATA bus number.</span>
+<span class="sd">            :type  pci_slot_number: :class:`long` or ``None``</span>
+<span class="sd">            :param pci_slot_number: Address of the SATA adapter on the PCI bus.</span>
+<span class="sd">                May be None if the virtual machine has never been powered on since</span>
+<span class="sd">                the adapter was created.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">bus</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pci_slot_number</span> <span class="o">=</span> <span class="n">pci_slot_number</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.sata.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Sata.Type&#39;</span><span class="p">),</span>
+            <span class="s">&#39;bus&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">(),</span>
+            <span class="s">&#39;pci_slot_number&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Sata.CreateSpec"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata.CreateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">CreateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Sata.CreateSpec`` class provides a specification for the</span>
+<span class="sd">        configuration of a newly-created virtual SATA adapter.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">pci_slot_number</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  type: :class:`Sata.Type` or ``None``</span>
+<span class="sd">            :param type: Adapter type.</span>
+<span class="sd">                If None, a guest-specific default value will be used.</span>
+<span class="sd">            :type  bus: :class:`long` or ``None``</span>
+<span class="sd">            :param bus: SATA bus number.</span>
+<span class="sd">                If None, the server will choose an available bus number; if none is</span>
+<span class="sd">                available, the request will fail.</span>
+<span class="sd">            :type  pci_slot_number: :class:`long` or ``None``</span>
+<span class="sd">            :param pci_slot_number: Address of the SATA adapter on the PCI bus.</span>
+<span class="sd">                If None, the server will choose an available address when the</span>
+<span class="sd">                virtual machine is powered on.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">bus</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pci_slot_number</span> <span class="o">=</span> <span class="n">pci_slot_number</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">CreateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.sata.create_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Sata.Type&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;bus&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">()),</span>
+            <span class="s">&#39;pci_slot_number&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">CreateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Sata.Summary"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata.Summary">[docs]</a>    <span class="k">class</span> <span class="nc">Summary</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Sata.Summary`` class contains commonly used information about a</span>
+<span class="sd">        Virtual SATA adapter.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">adapter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  adapter: :class:`str`</span>
+<span class="sd">            :param adapter: Identifier of the virtual SATA adapter.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.vcenter.vm.hardware.SataAdapter``. When methods return</span>
+<span class="sd">                a value of this class as a return value, the attribute will be an</span>
+<span class="sd">                identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.vcenter.vm.hardware.SataAdapter``.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adapter</span> <span class="o">=</span> <span class="n">adapter</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Summary</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.sata.summary&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.SataAdapter&#39;</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">Summary</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Sata.list"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">vm</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns commonly used information about the virtual SATA adapters</span>
+<span class="sd">        belonging to the virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`Sata.Summary`</span>
+<span class="sd">        :return: List of commonly used information about virtual SATA adapters.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Sata.get"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">vm</span><span class="p">,</span>
+            <span class="n">adapter</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns information about a virtual SATA adapter.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  adapter: :class:`str`</span>
+<span class="sd">        :param adapter: Virtual SATA adapter identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.SataAdapter``.</span>
+<span class="sd">        :rtype: :class:`Sata.Info`</span>
+<span class="sd">        :return: Information about the specified virtual SATA adapter.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine or virtual SATA adapter is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="n">adapter</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Sata.create"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">vm</span><span class="p">,</span>
+               <span class="n">spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a virtual SATA adapter to the virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  spec: :class:`Sata.CreateSpec`</span>
+<span class="sd">        :param spec: Specification for the new virtual SATA adapter.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Virtual SATA adapter identifier.</span>
+<span class="sd">            The return value will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.SataAdapter``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reported that the SATA adapter was created but was</span>
+<span class="sd">            unable to confirm the creation because the identifier of the new</span>
+<span class="sd">            adapter could not be determined.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            if the virtual machine is suspended</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.UnableToAllocateResource` </span>
+<span class="sd">            if there are no more available SATA buses on the virtual machine.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInUse` </span>
+<span class="sd">            if the specified SATA bus or PCI address is in use.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if the specified SATA bus or PCI address is out of bounds.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is busy performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unsupported` </span>
+<span class="sd">            if the guest operating system of the virtual machine is not</span>
+<span class="sd">            supported and spec includes None attributes that default to</span>
+<span class="sd">            guest-specific values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Sata.delete"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Sata.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">vm</span><span class="p">,</span>
+               <span class="n">adapter</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a virtual SATA adapter from the virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  adapter: :class:`str`</span>
+<span class="sd">        :param adapter: Virtual SATA adapter identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.SataAdapter``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            if the virtual machine is suspended</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine or virtual SATA adapter is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is busy performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="n">adapter</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Scsi"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi">[docs]</a><span class="k">class</span> <span class="nc">Scsi</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``Scsi`` class provides methods for configuring the virtual SCSI</span>
+<span class="sd">    adapters of a virtual machine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vcenter.vm.hardware.ScsiAdapter&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for the virtual SCSI adapter device.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ScsiStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Scsi.Type"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Type">[docs]</a>    <span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Scsi.Type`` class defines the valid emulation types for a virtual</span>
+<span class="sd">        SCSI adapter.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BUSLOGIC</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        BusLogic host bus adapter.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LSILOGIC</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        LSI Logic host bus adapter.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LSILOGICSAS</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        LSI Logic SAS 1068 host bus adapter.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PVSCSI</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Paravirtualized host bus adapter.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`Type` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">Type</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;BUSLOGIC&#39;</span><span class="p">),</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;LSILOGIC&#39;</span><span class="p">),</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;LSILOGICSAS&#39;</span><span class="p">),</span>
+        <span class="n">Type</span><span class="p">(</span><span class="s">&#39;PVSCSI&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">Type</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.scsi.type&#39;</span><span class="p">,</span>
+        <span class="n">Type</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Scsi.Sharing"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Sharing">[docs]</a>    <span class="k">class</span> <span class="nc">Sharing</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Scsi.Sharing`` class defines the valid bus sharing modes for a</span>
+<span class="sd">        virtual SCSI adapter.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">NONE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The virtual SCSI bus is not shared.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VIRTUAL</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The virtual SCSI bus is shared between two or more virtual machines. In</span>
+<span class="sd">        this case, no physical machine is involved.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PHYSICAL</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The virtual SCSI bus is shared between two or more virtual machines</span>
+<span class="sd">        residing on different physical hosts.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`Sharing` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">Sharing</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">Sharing</span><span class="p">(</span><span class="s">&#39;NONE&#39;</span><span class="p">),</span>
+        <span class="n">Sharing</span><span class="p">(</span><span class="s">&#39;VIRTUAL&#39;</span><span class="p">),</span>
+        <span class="n">Sharing</span><span class="p">(</span><span class="s">&#39;PHYSICAL&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">Sharing</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.scsi.sharing&#39;</span><span class="p">,</span>
+        <span class="n">Sharing</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Scsi.Info"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Scsi.Info`` class contains information about a virtual SCSI adapter.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">label</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">scsi</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">pci_slot_number</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">sharing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  label: :class:`str`</span>
+<span class="sd">            :param label: Device label.</span>
+<span class="sd">            :type  type: :class:`Scsi.Type`</span>
+<span class="sd">            :param type: Adapter type.</span>
+<span class="sd">            :type  scsi: :class:`com.vmware.vcenter.vm.hardware_client.ScsiAddressInfo`</span>
+<span class="sd">            :param scsi: Address of the SCSI adapter on the SCSI bus.</span>
+<span class="sd">            :type  pci_slot_number: :class:`long` or ``None``</span>
+<span class="sd">            :param pci_slot_number: Address of the SCSI adapter on the PCI bus. If the PCI address is</span>
+<span class="sd">                invalid, the server will change it when the VM is started or as the</span>
+<span class="sd">                device is hot added.</span>
+<span class="sd">                May be None if the virtual machine has never been powered on since</span>
+<span class="sd">                the adapter was created.</span>
+<span class="sd">            :type  sharing: :class:`Scsi.Sharing`</span>
+<span class="sd">            :param sharing: Bus sharing mode.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scsi</span> <span class="o">=</span> <span class="n">scsi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pci_slot_number</span> <span class="o">=</span> <span class="n">pci_slot_number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sharing</span> <span class="o">=</span> <span class="n">sharing</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.scsi.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.Type&#39;</span><span class="p">),</span>
+            <span class="s">&#39;scsi&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vcenter</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">hardware_client</span><span class="p">,</span> <span class="s">&#39;ScsiAddressInfo&#39;</span><span class="p">),</span>
+            <span class="s">&#39;pci_slot_number&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">()),</span>
+            <span class="s">&#39;sharing&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.Sharing&#39;</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Scsi.CreateSpec"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.CreateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">CreateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Scsi.CreateSpec`` class provides a specification for the</span>
+<span class="sd">        configuration of a newly-created virtual SCSI adapter.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">pci_slot_number</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">sharing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  type: :class:`Scsi.Type` or ``None``</span>
+<span class="sd">            :param type: Adapter type.</span>
+<span class="sd">                If None, a guest-specific default value will be used.</span>
+<span class="sd">            :type  bus: :class:`long` or ``None``</span>
+<span class="sd">            :param bus: SCSI bus number.</span>
+<span class="sd">                If None, the server will choose an available bus number; if none is</span>
+<span class="sd">                available, the request will fail.</span>
+<span class="sd">            :type  pci_slot_number: :class:`long` or ``None``</span>
+<span class="sd">            :param pci_slot_number: Address of the SCSI adapter on the PCI bus. If the PCI address is</span>
+<span class="sd">                invalid, the server will change it when the VM is started or as the</span>
+<span class="sd">                device is hot added.</span>
+<span class="sd">                If None, the server will choose an available address when the</span>
+<span class="sd">                virtual machine is powered on.</span>
+<span class="sd">            :type  sharing: :class:`Scsi.Sharing` or ``None``</span>
+<span class="sd">            :param sharing: Bus sharing mode.</span>
+<span class="sd">                If None, the adapter will default to :attr:`Scsi.Sharing.NONE`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bus</span> <span class="o">=</span> <span class="n">bus</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pci_slot_number</span> <span class="o">=</span> <span class="n">pci_slot_number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sharing</span> <span class="o">=</span> <span class="n">sharing</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">CreateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.scsi.create_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.Type&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;bus&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">()),</span>
+            <span class="s">&#39;pci_slot_number&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IntegerType</span><span class="p">()),</span>
+            <span class="s">&#39;sharing&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.Sharing&#39;</span><span class="p">)),</span>
+        <span class="p">},</span>
+        <span class="n">CreateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Scsi.UpdateSpec"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.UpdateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">UpdateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Scsi.UpdateSpec`` class describes the updates to be made to the</span>
+<span class="sd">        configuration of a virtual SCSI adapter.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">sharing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  sharing: :class:`Scsi.Sharing` or ``None``</span>
+<span class="sd">            :param sharing: Bus sharing mode. </span>
+<span class="sd">                </span>
+<span class="sd">                This attribute may only be modified if the virtual machine is not</span>
+<span class="sd">                powered on.</span>
+<span class="sd">                If None, the value is unchanged.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sharing</span> <span class="o">=</span> <span class="n">sharing</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">UpdateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.scsi.update_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;sharing&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.Sharing&#39;</span><span class="p">)),</span>
+        <span class="p">},</span>
+        <span class="n">UpdateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Scsi.Summary"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.Summary">[docs]</a>    <span class="k">class</span> <span class="nc">Summary</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The ``Scsi.Summary`` class contains commonly used information about a</span>
+<span class="sd">        Virtual SCSI adapter.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">adapter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  adapter: :class:`str`</span>
+<span class="sd">            :param adapter: Identifier of the virtual SCSI adapter.</span>
+<span class="sd">                When clients pass a value of this class as a parameter, the</span>
+<span class="sd">                attribute must be an identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.vcenter.vm.hardware.ScsiAdapter``. When methods return</span>
+<span class="sd">                a value of this class as a return value, the attribute will be an</span>
+<span class="sd">                identifier for the resource type:</span>
+<span class="sd">                ``com.vmware.vcenter.vm.hardware.ScsiAdapter``.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adapter</span> <span class="o">=</span> <span class="n">adapter</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Summary</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.scsi.summary&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.ScsiAdapter&#39;</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="n">Summary</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Scsi.list"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">vm</span><span class="p">,</span>
+             <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns commonly used information about the virtual SCSI adapters</span>
+<span class="sd">        belonging to the virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :rtype: :class:`list` of :class:`Scsi.Summary`</span>
+<span class="sd">        :return: List of commonly used information about virtual SCSI adapters.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Scsi.get"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">vm</span><span class="p">,</span>
+            <span class="n">adapter</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns information about a virtual SCSI adapter.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  adapter: :class:`str`</span>
+<span class="sd">        :param adapter: Virtual SCSI adapter identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.ScsiAdapter``.</span>
+<span class="sd">        :rtype: :class:`Scsi.Info`</span>
+<span class="sd">        :return: Information about the specified virtual SCSI adapter.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine or virtual SCSI adapter is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="n">adapter</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Scsi.create"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">vm</span><span class="p">,</span>
+               <span class="n">spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a virtual SCSI adapter to the virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  spec: :class:`Scsi.CreateSpec`</span>
+<span class="sd">        :param spec: Specification for the new virtual SCSI adapter.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: Virtual SCSI adapter identifier.</span>
+<span class="sd">            The return value will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.ScsiAdapter``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reported that the SCSI adapter was created but was</span>
+<span class="sd">            unable to confirm the creation because the identifier of the new</span>
+<span class="sd">            adapter could not be determined.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            if the virtual machine is suspended</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.UnableToAllocateResource` </span>
+<span class="sd">            if there are no more available SCSI buses on the virtual machine.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInUse` </span>
+<span class="sd">            if the specified SCSI bus is in use.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            if the specified SATA bus or PCI address is out of bounds.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is busy performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unsupported` </span>
+<span class="sd">            if the guest operating system of the virtual machine is not</span>
+<span class="sd">            supported and spec includes None attributes that default to</span>
+<span class="sd">            guest-specific values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Scsi.update"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">vm</span><span class="p">,</span>
+               <span class="n">adapter</span><span class="p">,</span>
+               <span class="n">spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the configuration of a virtual SCSI adapter.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  adapter: :class:`str`</span>
+<span class="sd">        :param adapter: Virtual SCSI adapter identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.ScsiAdapter``.</span>
+<span class="sd">        :type  spec: :class:`Scsi.UpdateSpec`</span>
+<span class="sd">        :param spec: Specification for updating the virtual SCSI adapter.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine or virtual SCSI adapter is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            if one or more of the attributes specified in the ``spec``</span>
+<span class="sd">            parameter cannot be modified due to the current power state of the</span>
+<span class="sd">            virtual machine or the connection state of the virtual SCSI</span>
+<span class="sd">            adapter.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is busy performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;update&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="n">adapter</span><span class="p">,</span>
+                            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Scsi.delete"><a class="viewcode-back" href="../../../../../../com.vmware.vcenter.vm.hardware.html#com.vmware.vcenter.vm.hardware.adapter_client.Scsi.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">vm</span><span class="p">,</span>
+               <span class="n">adapter</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a virtual SCSI adapter from the virtual machine.</span>
+
+<span class="sd">        :type  vm: :class:`str`</span>
+<span class="sd">        :param vm: Virtual machine identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``VirtualMachine``.</span>
+<span class="sd">        :type  adapter: :class:`str`</span>
+<span class="sd">        :param adapter: Virtual SCSI adapter identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vcenter.vm.hardware.ScsiAdapter``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            if the system reports an error while responding to the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotAllowedInCurrentState` </span>
+<span class="sd">            if the virtual machine is suspended</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            if the virtual machine or virtual SCSI adapter is not found.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceBusy` </span>
+<span class="sd">            if the virtual machine is busy performing another operation.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ResourceInaccessible` </span>
+<span class="sd">            if the virtual machine&#39;s configuration state cannot be accessed.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.ServiceUnavailable` </span>
+<span class="sd">            if the system is unable to communicate with a service to complete</span>
+<span class="sd">            the request.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthenticated` </span>
+<span class="sd">            if the user can not be authenticated.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Unauthorized` </span>
+<span class="sd">            if the user doesn&#39;t have the required privileges.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="n">vm</span><span class="p">,</span>
+                            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="n">adapter</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_SataStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.SataAdapter&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for create operation</span>
+        <span class="n">create_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Sata.CreateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">create_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unable_to_allocate_resource&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;UnableToAllocateResource&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_in_use&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInUse&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unsupported&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unsupported&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">create_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">create_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.SataAdapter&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Sata.Summary&#39;</span><span class="p">)),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Sata.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;create&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">create_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.SataAdapter&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">create_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">create_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">create_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.sata&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_ScsiStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.ScsiAdapter&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for create operation</span>
+        <span class="n">create_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.CreateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">create_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unable_to_allocate_resource&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;UnableToAllocateResource&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_in_use&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInUse&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unsupported&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unsupported&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">create_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">create_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for update operation</span>
+        <span class="n">update_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.ScsiAdapter&#39;</span><span class="p">),</span>
+            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.UpdateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">update_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">update_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">update_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;vm&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;VirtualMachine&#39;</span><span class="p">),</span>
+            <span class="s">&#39;adapter&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.ScsiAdapter&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_allowed_in_current_state&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotAllowedInCurrentState&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_busy&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceBusy&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.resource_inaccessible&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ResourceInaccessible&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.service_unavailable&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;ServiceUnavailable&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthenticated&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthenticated&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.unauthorized&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Unauthorized&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.Summary&#39;</span><span class="p">)),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Scsi.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;create&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">create_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.ScsiAdapter&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">create_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">create_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">create_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;update&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">update_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">update_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">update_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">update_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vcenter.vm.hardware.adapter.scsi&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

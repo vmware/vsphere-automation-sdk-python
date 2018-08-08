@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.protocol.common.transport.chunking &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.protocol.common.transport.chunking</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Chunking helpers</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012 VMware, Inc.  All rights reserved. -- VMware Con fidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="n">DEFAULT_CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="n">DEFAULT_CHUNK_WINDOWS_SIZE</span> <span class="o">=</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">DEFAULT_CHUNK_SIZE</span>
+<span class="n">DEFAULT_WRAP_AROUND_ID</span> <span class="o">=</span> <span class="mi">4294967296</span>
+
+
+<div class="viewcode-block" id="CrazyChunkWriter"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.CrazyChunkWriter">[docs]</a><span class="k">class</span> <span class="nc">CrazyChunkWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Testing class for chunking &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunked_write_cb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Testing class for chunking init</span>
+
+<span class="sd">        :type  chunked_write_cb: function</span>
+<span class="sd">        :param chunked_write_cb: write callback</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reordered_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_cb</span> <span class="o">=</span> <span class="n">chunked_write_cb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dup_prop_precentage</span> <span class="o">=</span> <span class="mi">20</span>
+
+        <span class="kn">import</span> <span class="nn">random</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random</span> <span class="o">=</span> <span class="n">random</span>
+
+<div class="viewcode-block" id="CrazyChunkWriter.chunked_write_cb"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.CrazyChunkWriter.chunked_write_cb">[docs]</a>    <span class="k">def</span> <span class="nf">chunked_write_cb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_id</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Chunked write callback. Send chunk in random order / dup</span>
+
+<span class="sd">        :type  chunk_id: :class:`int`</span>
+<span class="sd">        :param chunk_id: Chunk id</span>
+<span class="sd">        :type  fin: :class:`bool`</span>
+<span class="sd">        :param fin: fin bit</span>
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: chunked data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_cb</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reordered_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">chunk_id</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">fin</span><span class="p">:</span>
+            <span class="n">rand_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reordered_chunks</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">rand_order</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">rand_order</span><span class="p">:</span>
+                <span class="n">chunk_id</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reordered_chunks</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_write_cb</span><span class="p">(</span><span class="n">chunk_id</span><span class="o">=</span><span class="n">chunk_id</span><span class="p">,</span> <span class="n">fin</span><span class="o">=</span><span class="n">fin</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+                <span class="c"># Once in a while, send a dup</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dup_prop_precentage</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">send_random_dup</span><span class="p">()</span>
+                <span class="c"># TODO; Test wrap around</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reordered_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_cb</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="CrazyChunkWriter.send_random_dup"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.CrazyChunkWriter.send_random_dup">[docs]</a>    <span class="k">def</span> <span class="nf">send_random_dup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Send random duplicated packet &quot;&quot;&quot;</span>
+        <span class="n">dup_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reordered_chunks</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">chunk_id</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reordered_chunks</span><span class="p">[</span><span class="n">dup_idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_cb</span><span class="p">(</span><span class="n">chunk_id</span><span class="o">=</span><span class="n">chunk_id</span><span class="p">,</span> <span class="n">fin</span><span class="o">=</span><span class="n">fin</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="BufferedChunker"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.BufferedChunker">[docs]</a><span class="k">class</span> <span class="nc">BufferedChunker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Buffered chunker &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunked_write_cb</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">DEFAULT_CHUNK_SIZE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Buffered chunker init</span>
+
+<span class="sd">        :type  chunked_write_cb: function</span>
+<span class="sd">        :param chunked_write_cb: chunked write callback</span>
+<span class="sd">        :type  chunk_size: :class:`int`</span>
+<span class="sd">        :param chunk_size: chunk size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrap_around_id</span> <span class="o">=</span> <span class="n">DEFAULT_WRAP_AROUND_ID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunked_write_cb</span> <span class="o">=</span> <span class="n">chunked_write_cb</span>
+
+    <span class="k">def</span> <span class="nf">_write_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fin</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal write a chunk</span>
+
+<span class="sd">        :type  fin: :class:`bool`</span>
+<span class="sd">        :param fin: fin bit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunked_write_cb</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">:</span>
+            <span class="n">leftover_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">leftover_bytes</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">chunks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf</span>
+        <span class="k">if</span> <span class="n">leftover_bytes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># Split the last chunk</span>
+            <span class="n">last_chunk</span> <span class="o">=</span> <span class="n">chunks</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_chunk</span><span class="p">[:</span><span class="o">-</span><span class="n">leftover_bytes</span><span class="p">])</span>
+            <span class="n">leftover_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">last_chunk</span><span class="p">[</span><span class="o">-</span><span class="n">leftover_bytes</span><span class="p">:]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">leftover_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># Write chunks</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunked_write_cb</span><span class="p">(</span><span class="n">chunk_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_id</span><span class="p">,</span> <span class="n">fin</span><span class="o">=</span><span class="n">fin</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_id</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap_around_id</span>
+
+        <span class="c"># Reset state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span> <span class="o">=</span> <span class="n">leftover_bytes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf</span> <span class="o">=</span> <span class="n">leftover_chunks</span>
+
+<div class="viewcode-block" id="BufferedChunker.write"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.BufferedChunker.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write</span>
+
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: data to write</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">data_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span> <span class="o">+=</span> <span class="n">data_len</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf_size</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_chunk</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="BufferedChunker.flush"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.BufferedChunker.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; flush &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_chunk</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; internal close &quot;&quot;&quot;</span>
+        <span class="c"># Make sure it send the fin bit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_chunk</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunked_write_cb</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="BufferedChunker.close"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.BufferedChunker.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; close &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="ChunksHandler"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.ChunksHandler">[docs]</a><span class="k">class</span> <span class="nc">ChunksHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Chunk handler &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">chunks_ready_cb</span><span class="p">,</span>
+                 <span class="n">chunks_abort_cb</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">chunk_window_buf</span><span class="o">=</span><span class="n">DEFAULT_CHUNK_WINDOWS_SIZE</span><span class="p">,</span>
+                 <span class="n">wrap_around_id</span><span class="o">=</span><span class="n">DEFAULT_WRAP_AROUND_ID</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Chunk handler init</span>
+
+<span class="sd">        :type  chunks_ready_cb: function</span>
+<span class="sd">        :param chunks_ready_cb: Chunk ready callback</span>
+<span class="sd">        :type  chunks_abort_cb: function</span>
+<span class="sd">        :param chunks_abort_cb: Chunk abort callback</span>
+<span class="sd">        :type  chunk_window_buf: :class:`int`</span>
+<span class="sd">        :param chunk_window_buf: Chunk windows buffer size (in bytes)</span>
+<span class="sd">        :type  wrap_around_id: :class:`int`</span>
+<span class="sd">        :param wrap_around_id: Chunk wrap around id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrap_around_id</span> <span class="o">=</span> <span class="n">wrap_around_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_window_width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">wrap_around_id</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_window_buf</span> <span class="o">=</span> <span class="n">chunk_window_buf</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunks_ready_cb</span> <span class="o">=</span> <span class="n">chunks_ready_cb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunks_abort_cb</span> <span class="o">=</span> <span class="n">chunks_abort_cb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_in_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Chunk id in current receive windows</span>
+
+<span class="sd">        :type  chunk_id: :class:`int`</span>
+<span class="sd">        :param chunk_id: Chunk id</span>
+<span class="sd">        :rtype: :class:`bool`</span>
+<span class="sd">        :return: True if chunk id in current receive window</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">right_window_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_window_width</span>
+        <span class="k">if</span> <span class="n">right_window_id</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap_around_id</span><span class="p">:</span>
+            <span class="c"># Handle wrap around of id</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">chunk_id</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="ow">and</span>
+                <span class="n">chunk_id</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap_around_id</span><span class="p">)</span> <span class="ow">or</span>
+               <span class="p">(</span><span class="n">chunk_id</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">right_window_id</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap_around_id</span><span class="p">))):</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="p">((</span><span class="n">chunk_id</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="ow">and</span>
+              <span class="n">chunk_id</span> <span class="o">&lt;</span> <span class="n">right_window_id</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="ChunksHandler.add_chunk"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.ChunksHandler.add_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">add_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_id</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        got a chunk, add to handler</span>
+
+<span class="sd">        :type  chunk_id: :class:`int`</span>
+<span class="sd">        :param chunk_id: Chunk id</span>
+<span class="sd">        :type  fin: :class:`bool`</span>
+<span class="sd">        :param fin: fin bit</span>
+<span class="sd">        :type  data: :class:`str`</span>
+<span class="sd">        :param data: chunked data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Reassemble the chunked body</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="o">==</span> <span class="n">chunk_id</span><span class="p">:</span>
+            <span class="c"># Expecting this chunk_id, push msg up</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chunks_ready_cb</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">done</span><span class="o">=</span><span class="n">fin</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">wrap_around_id</span>
+
+            <span class="c"># Don&#39;t push buffered chunks up after fin</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">fin</span><span class="p">:</span>
+                <span class="n">chunk_tuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">chunk_tuple</span><span class="p">:</span>
+                    <span class="n">fin</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">chunk_tuple</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">chunks_ready_cb</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">done</span><span class="o">=</span><span class="n">fin</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">wrap_around_id</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">chunk_window_buf</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">fin</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="n">done</span> <span class="o">=</span> <span class="n">fin</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_range</span><span class="p">(</span><span class="n">chunk_id</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_window_buf</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+                <span class="c"># Don&#39;t allow duplicated chunk</span>
+                <span class="k">if</span> <span class="n">chunk_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span><span class="p">[</span><span class="n">chunk_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">fin</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">chunk_window_buf</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># Duplicated chunk</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;add_chunk: Duplicated chunk (</span><span class="si">%d</span><span class="s">)&#39;</span><span class="p">,</span> <span class="n">chunk_id</span><span class="p">)</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># If chunk windows is full, log and bail out</span>
+                <span class="c"># Call chunks abort</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunks_abort_cb</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">chunks_abort_cb</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chunks</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;add_chunk: Not enough buffer (</span><span class="si">%d</span><span class="s">)&#39;</span> <span class="o">+</span>
+                               <span class="s">&#39;Expected chunk </span><span class="si">%d</span><span class="s"> never show up&#39;</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">chunk_window_buf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_chunk_id</span><span class="p">)</span>
+                <span class="k">assert</span><span class="p">(</span><span class="n">done</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Chunk id totally outside tolerable windows range. Done</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;add_chunk: Chunk id outside range (</span><span class="si">%d</span><span class="s">)&#39;</span><span class="p">,</span> <span class="n">chunk_id</span><span class="p">)</span>
+            <span class="k">assert</span><span class="p">(</span><span class="n">done</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">done</span>
+
+</div></div>
+<div class="viewcode-block" id="ChunkedMsgAccumulator"><a class="viewcode-back" href="../../../../../../vmware.vapi.protocol.common.transport.html#vmware.vapi.protocol.common.transport.chunking.ChunkedMsgAccumulator">[docs]</a><span class="k">class</span> <span class="nc">ChunkedMsgAccumulator</span><span class="p">(</span><span class="n">ChunksHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Chunked message accumulator &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">completed_msg_cb</span><span class="p">,</span> <span class="n">aborted_msg_cb</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Chunked message accumulator init</span>
+
+<span class="sd">        :type  completed_msg_cb: function</span>
+<span class="sd">        :param completed_msg_cb: message completed callback</span>
+<span class="sd">        :type  aborted_msg_cb: function</span>
+<span class="sd">        :param completed_msg_cb: message aborted callback</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ChunksHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">chunks_ready_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_accumulate_response</span><span class="p">,</span>
+                               <span class="n">chunks_abort_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_abort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_completed_msg_cb</span> <span class="o">=</span> <span class="n">completed_msg_cb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_aborted_msg_cb</span> <span class="o">=</span> <span class="n">aborted_msg_cb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_msg_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">_accumulate_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">done</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accumulated chunked msg cb</span>
+<span class="sd">        Send the completed msg up after all chunks arrived</span>
+
+<span class="sd">        :type  body: :class:`str`</span>
+<span class="sd">        :param body: chunked response message to accumulate</span>
+<span class="sd">        :type  done: :class:`bool`</span>
+<span class="sd">        :param done: response message done or not</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_completed_msg_cb</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">body</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_msg_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_msg_chunks</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_completed_msg_cb</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_completed_msg_cb</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">_abort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Chunks abort callback &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aborted_msg_cb</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_aborted_msg_cb</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

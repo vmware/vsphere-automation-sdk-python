@@ -1,0 +1,846 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.bindings.converter &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.bindings.converter</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Type converter to/from vAPI runtime data model to Python native data model</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012-2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.type</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BindingTypeVisitor</span><span class="p">,</span> <span class="n">OptionalType</span><span class="p">,</span> <span class="n">MAP_KEY_FIELD</span><span class="p">,</span>
+    <span class="n">MAP_VALUE_FIELD</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="p">(</span><span class="n">VapiError</span><span class="p">,</span> <span class="n">UnresolvedError</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.datetime_helper</span> <span class="kn">import</span> <span class="n">DateTimeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.uri_helper</span> <span class="kn">import</span> <span class="n">URIValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.converter</span> <span class="kn">import</span> <span class="n">Converter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.value</span> <span class="kn">import</span> <span class="n">DataValue</span><span class="p">,</span> <span class="n">StructValue</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PythonToVapiVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor">[docs]</a><span class="k">class</span> <span class="nc">PythonToVapiVisitor</span><span class="p">(</span><span class="n">BindingTypeVisitor</span><span class="p">):</span>  <span class="c"># pylint: disable=W0223</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visitor to convert from Python native value to vAPI DataValue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize PythonToVapiVisitor</span>
+
+<span class="sd">        :type  value: :class:`object`</span>
+<span class="sd">        :param value: Native python value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;VoidType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_void</span><span class="p">,</span>
+            <span class="s">&#39;IntegerType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;DoubleType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;StringType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;SecretType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;BooleanType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;BlobType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;OptionalType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_optional</span><span class="p">,</span>
+            <span class="s">&#39;ListType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+            <span class="s">&#39;SetType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_set</span><span class="p">,</span>
+            <span class="s">&#39;MapType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_map</span><span class="p">,</span>
+            <span class="s">&#39;StructType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_struct</span><span class="p">,</span>
+            <span class="s">&#39;ErrorType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_error</span><span class="p">,</span>
+            <span class="s">&#39;ReferenceType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_reference</span><span class="p">,</span>
+            <span class="s">&#39;OpaqueType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_opaque</span><span class="p">,</span>
+            <span class="s">&#39;DynamicStructType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_dynamic_struct</span><span class="p">,</span>
+            <span class="s">&#39;AnyErrorType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_any_error</span><span class="p">,</span>
+            <span class="s">&#39;DateTimeType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_date_time</span><span class="p">,</span>
+            <span class="s">&#39;URIType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_uri</span><span class="p">,</span>
+            <span class="s">&#39;EnumType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_enum</span><span class="p">,</span>
+            <span class="s">&#39;IdType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">BindingTypeVisitor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PythonToVapiVisitor.visit"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit">[docs]</a>    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span><span class="p">[</span><span class="n">class_name</span><span class="p">]</span>
+        <span class="n">method</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.get_out_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.get_out_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_out_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the vAPI DataValue converted from the Python native value</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: vAPI DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_primitive"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">visit_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a primitive type python value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.BindingType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a void value (i.e. None)</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.VoidType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.voiddef.expect.null&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_opaque"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_opaque">[docs]</a>    <span class="k">def</span> <span class="nf">visit_opaque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an opaque value. Don&#39;t do any conversion.</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.OpaqueType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="n">DataValue</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.unexpected.python.type&#39;</span><span class="p">,</span>
+                 <span class="n">DataValue</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a list value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.ListType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+        <span class="n">elt_typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">element_type</span>
+        <span class="k">for</span> <span class="n">elt_value</span> <span class="ow">in</span> <span class="n">in_value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">elt_value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">elt_typ</span><span class="p">)</span>
+            <span class="n">out_value</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_set"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_set">[docs]</a>    <span class="k">def</span> <span class="nf">visit_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a python set</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.SetType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.invalid&#39;</span><span class="p">,</span>
+                <span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_map"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_map">[docs]</a>    <span class="k">def</span> <span class="nf">visit_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a python dict</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.MapType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+        <span class="n">struct_def</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">element_type</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">in_value</span><span class="p">):</span>
+            <span class="n">struct_val</span> <span class="o">=</span> <span class="n">struct_def</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">k</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">key_type</span><span class="p">)</span>
+            <span class="n">struct_val</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">MAP_KEY_FIELD</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">value_type</span><span class="p">)</span>
+            <span class="n">struct_val</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">MAP_VALUE_FIELD</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+            <span class="n">out_value</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">struct_val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+</div>
+    <span class="k">def</span> <span class="nf">_visit_vapi_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an instance of VapiStruct class</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.StructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: vAPI Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+        <span class="n">field_names</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">field_names</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="c"># If self._in_value is None and field type is not</span>
+                <span class="c"># optional, raise an error</span>
+                <span class="n">field_type</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_type</span><span class="p">,</span> <span class="n">OptionalType</span><span class="p">)</span> <span class="ow">and</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">AttributeError</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.bindings.typeconverter.struct.missing.field&#39;</span><span class="p">,</span>
+                    <span class="n">field</span><span class="p">,</span> <span class="n">typ</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.bindings.typeconverter.struct.invalid.field&#39;</span><span class="p">,</span>
+                    <span class="n">field</span><span class="p">,</span> <span class="n">typ</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">out_value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+
+    <span class="k">def</span> <span class="nf">_visit_python_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an instance of Python native dictionary</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.StructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: vAPI Data value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+        <span class="n">field_names</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">field_names</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.bindings.typeconverter.dict.missing.key&#39;</span><span class="p">,</span>
+                    <span class="n">field</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+            <span class="n">out_value</span><span class="o">.</span><span class="n">set_field</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a struct value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.StructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="n">VapiStruct</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_visit_vapi_struct</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+            <span class="c"># Validating the constraints in the struct value</span>
+            <span class="c"># before sending it over the wire. The validation does</span>
+            <span class="c"># not happen during initialization of VapiStruct or</span>
+            <span class="c"># StructValue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">validate_struct_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_visit_python_dict</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.unexpected.struct.type&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an error value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.ErrorType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="n">VapiError</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_visit_vapi_struct</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.unexpected.error.type&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_dynamic_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_dynamic_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_dynamic_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit any struct value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.DynamicStructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;VapiStruct&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">get_struct_value</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;VapiError&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">get_error_value</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="n">VapiStruct</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_visit_vapi_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">get_binding_type</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="n">StructValue</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.unexpected.python.type&#39;</span><span class="p">,</span>
+                 <span class="n">StructValue</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_any_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_any_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_any_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit any error value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.AnyErrorType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="n">UnresolvedError</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">get_error_value</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="n">VapiError</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_visit_vapi_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">get_binding_type</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.unexpected.python.type&#39;</span><span class="p">,</span>
+                 <span class="n">VapiError</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an optional value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.OptionalType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_date_time"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_date_time">[docs]</a>    <span class="k">def</span> <span class="nf">visit_date_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a datetime value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.DateTimeType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dt_str</span> <span class="o">=</span> <span class="n">DateTimeConverter</span><span class="o">.</span><span class="n">convert_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="n">dt_str</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_uri"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_uri">[docs]</a>    <span class="k">def</span> <span class="nf">visit_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an URI value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.UriType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">URIValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_reference"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_reference">[docs]</a>    <span class="k">def</span> <span class="nf">visit_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a reference type</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.ReferenceType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">resolved_type</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PythonToVapiVisitor.visit_enum"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.PythonToVapiVisitor.visit_enum">[docs]</a>    <span class="k">def</span> <span class="nf">visit_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a enum type python value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.EnumType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+            <span class="c"># TODO: Verify if the value is instance of actual binding</span>
+            <span class="c"># class</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.unexpected.python.type&#39;</span><span class="p">,</span>
+                <span class="n">Enum</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="c"># Convert from vmware.vapi.bindings.Enum instance to string value</span>
+        <span class="n">enum_string_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="n">enum_string_value</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="VapiToPythonVisitor"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor">[docs]</a><span class="k">class</span> <span class="nc">VapiToPythonVisitor</span><span class="p">(</span><span class="n">BindingTypeVisitor</span><span class="p">):</span>  <span class="c"># pylint: disable=W0223</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visitor to convert from vAPI DataValue to Python native value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">resolver</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize VapiToPythonVisitor</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: vAPI DataValue to be converted</span>
+<span class="sd">        :type  resolver: :class:`vmware.vapi.bindings.common.NameToTypeResolver` or</span>
+<span class="sd">            ``None``</span>
+<span class="sd">        :param resolver: Type resolver</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolver</span> <span class="o">=</span> <span class="n">resolver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;VoidType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_void</span><span class="p">,</span>
+            <span class="s">&#39;IntegerType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;DoubleType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;StringType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_string</span><span class="p">,</span>
+            <span class="s">&#39;SecretType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;BooleanType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;BlobType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+            <span class="s">&#39;OptionalType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_optional</span><span class="p">,</span>
+            <span class="s">&#39;ListType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_list</span><span class="p">,</span>
+            <span class="s">&#39;SetType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_set</span><span class="p">,</span>
+            <span class="s">&#39;MapType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_map</span><span class="p">,</span>
+            <span class="s">&#39;StructType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_struct</span><span class="p">,</span>
+            <span class="s">&#39;ErrorType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_error</span><span class="p">,</span>
+            <span class="s">&#39;ReferenceType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_reference</span><span class="p">,</span>
+            <span class="s">&#39;OpaqueType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_opaque</span><span class="p">,</span>
+            <span class="s">&#39;DynamicStructType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_dynamic_struct</span><span class="p">,</span>
+            <span class="s">&#39;AnyErrorType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_any_error</span><span class="p">,</span>
+            <span class="s">&#39;DateTimeType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_date_time</span><span class="p">,</span>
+            <span class="s">&#39;URIType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_uri</span><span class="p">,</span>
+            <span class="s">&#39;EnumType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_enum</span><span class="p">,</span>
+            <span class="s">&#39;IdType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit_primitive</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">BindingTypeVisitor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VapiToPythonVisitor.visit"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit">[docs]</a>    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_map</span><span class="p">[</span><span class="n">class_name</span><span class="p">]</span>
+        <span class="n">method</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.get_out_value"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.get_out_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_out_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the Python native value converted from the vAPI DataValue</span>
+
+<span class="sd">        :rtype: :class:`object`</span>
+<span class="sd">        :return: Native python value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_primitive"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">visit_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit one of the primitive DataValues</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.BindingType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">value</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_void"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_void">[docs]</a>    <span class="k">def</span> <span class="nf">visit_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Since there is no VoidValue, just return None</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.VoidType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_string"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_string">[docs]</a>    <span class="k">def</span> <span class="nf">visit_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit StringValue</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.StringType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">UnicodeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">value</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_opaque"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_opaque">[docs]</a>    <span class="k">def</span> <span class="nf">visit_opaque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Since there is no OpaqueValue, don&#39;t do any conversion</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.OpaqueType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+</div>
+    <span class="k">def</span> <span class="nf">_visit_list_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a ListValue element</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: element value</span>
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.ListType`</span>
+<span class="sd">        :param typ: Binding type of the element</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_list"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_list">[docs]</a>    <span class="k">def</span> <span class="nf">visit_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a ListValue</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.ListType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">elt_typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">element_type</span>
+        <span class="n">in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_visit_list_element</span><span class="p">(</span><span class="n">elt_value</span><span class="p">,</span> <span class="n">elt_typ</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">elt_value</span> <span class="ow">in</span> <span class="n">in_value</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_set"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_set">[docs]</a>    <span class="k">def</span> <span class="nf">visit_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a List Value. This ListValue must represent a set i.e. there must not be any duplicate elements</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.SetType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">elt_typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">element_type</span>
+        <span class="n">in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">elt_value</span> <span class="ow">in</span> <span class="n">in_value</span><span class="p">:</span>
+            <span class="n">elt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visit_list_element</span><span class="p">(</span><span class="n">elt_value</span><span class="p">,</span> <span class="n">elt_typ</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">out_value</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.bindings.typeconverter.set.duplicate.element&#39;</span><span class="p">,</span>
+                    <span class="n">elt</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">out_value</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">elt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_map"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_map">[docs]</a>    <span class="k">def</span> <span class="nf">visit_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a List Value. This ListValue must represent a map. Each element</span>
+<span class="sd">        of the ListValue is a StructValue with two fields, namely &#39;key&#39; and &#39;value&#39;.</span>
+<span class="sd">        The &#39;key&#39; field represents the key of the map and the &#39;value&#39; field</span>
+<span class="sd">        represents the value of the map. Also, since this represents a map, there</span>
+<span class="sd">        should not be duplicate keys.</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.MapType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="n">key_typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">key_type</span>
+        <span class="n">value_typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">value_type</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">elt_value</span> <span class="ow">in</span> <span class="n">in_value</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visit_struct_field</span><span class="p">(</span><span class="n">elt_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">MAP_KEY_FIELD</span><span class="p">),</span>
+                                           <span class="n">key_typ</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">out_value</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.bindings.typeconverter.map.duplicate.key&#39;</span><span class="p">,</span>
+                    <span class="n">key</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visit_struct_field</span><span class="p">(</span><span class="n">elt_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">MAP_VALUE_FIELD</span><span class="p">),</span>
+                                             <span class="n">value_typ</span><span class="p">)</span>
+            <span class="n">out_value</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span>
+</div>
+    <span class="k">def</span> <span class="nf">_visit_struct_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a field of a StructValue</span>
+
+<span class="sd">        :type  value: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param value: field value</span>
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.StructType`</span>
+<span class="sd">        :param typ: Binding type of the struct field</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span>
+
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit StructValue</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.StructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span>
+        <span class="n">out_value</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">typ_field_names</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">()</span>
+        <span class="n">value_field_names</span> <span class="o">=</span> <span class="n">in_value</span><span class="o">.</span><span class="n">get_field_names</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">typ_field_names</span><span class="p">:</span>
+            <span class="n">pep_name</span> <span class="o">=</span> <span class="n">Converter</span><span class="o">.</span><span class="n">canonical_to_pep</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+            <span class="n">field_type</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+            <span class="c"># When the request is converted from DataValue to Native value</span>
+            <span class="c"># on the server side:</span>
+            <span class="c"># - if the client - server version matches: we wont hit this case</span>
+            <span class="c"># - if new client talks to old server, runtime would have</span>
+            <span class="c">#   raised InvalidArgument error if there are unexpected optional</span>
+            <span class="c">#   fields</span>
+            <span class="c"># - if old client talks to new server, runtime adds the missing</span>
+            <span class="c">#   optional fields, so we wont hit this case</span>
+            <span class="c">#</span>
+            <span class="c"># When the response is converted from DataValue to Native value</span>
+            <span class="c"># on the client side:</span>
+            <span class="c"># - if the client - server version matches: we wont hit this case</span>
+            <span class="c"># - if new client talks to old server,  client bindings should</span>
+            <span class="c">#   tolerate the absence of expected optional properties. So,</span>
+            <span class="c">#   we have to set it to None!</span>
+            <span class="c"># - if old client talks to new server, we will visit all the known</span>
+            <span class="c">#   fields here and the unexpected fields are added to the VapiStruct</span>
+            <span class="c">#   object</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field_type</span><span class="p">,</span> <span class="n">OptionalType</span><span class="p">)</span> <span class="ow">and</span>
+                    <span class="ow">not</span> <span class="n">in_value</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)):</span>
+                <span class="n">out_value</span><span class="p">[</span><span class="n">pep_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out_value</span><span class="p">[</span><span class="n">pep_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visit_struct_field</span><span class="p">(</span>
+                    <span class="n">in_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">),</span> <span class="n">field_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="n">in_value</span>
+
+        <span class="n">struct_class</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">binding_class</span>
+        <span class="k">if</span> <span class="n">struct_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">struct_class</span><span class="o">.</span><span class="n">validate_struct_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">struct_class</span><span class="p">(</span><span class="o">**</span><span class="n">out_value</span><span class="p">)</span>
+
+            <span class="c"># Fields present in struct value but not in struct binding type.</span>
+            <span class="n">unexpected_field_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">value_field_names</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">typ_field_names</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">unexpected_field_names</span><span class="p">:</span>
+                <span class="n">unexpected_fields</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">unexpected_field_names</span><span class="p">:</span>
+                    <span class="n">unexpected_fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">in_value</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span><span class="o">.</span><span class="n">_set_unexpected_fields</span><span class="p">(</span><span class="n">unexpected_fields</span><span class="p">)</span>  <span class="c"># pylint: disable=E1103,W0212</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">out_value</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_dynamic_struct"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_dynamic_struct">[docs]</a>    <span class="k">def</span> <span class="nf">visit_dynamic_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit StructValue to convert it into the base VapiStruct</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.DynamicStructType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">VapiStruct</span><span class="p">(</span><span class="n">struct_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_any_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_any_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_any_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit ErrorValue to convert it into the base VapiError</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.AnyErrorType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">typ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolver</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolver</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">typ</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">UnresolvedError</span><span class="p">({},</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">typ</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_error"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_error">[docs]</a>    <span class="k">def</span> <span class="nf">visit_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit ErrorValue</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.ErrorType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visit_struct</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_optional"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_optional">[docs]</a>    <span class="k">def</span> <span class="nf">visit_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit OptionalValue</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.OptionalType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_date_time"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_date_time">[docs]</a>    <span class="k">def</span> <span class="nf">visit_date_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a datetime value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.DateTimeType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">DateTimeConverter</span><span class="o">.</span><span class="n">convert_to_datetime</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_uri"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_uri">[docs]</a>    <span class="k">def</span> <span class="nf">visit_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an URI value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.UriType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">uri_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">URIValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">uri_string</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">uri_string</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_enum"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_enum">[docs]</a>    <span class="k">def</span> <span class="nf">visit_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit an Enum value</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.EnumType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">enum_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_value</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">typ</span><span class="o">.</span><span class="n">binding_class</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">binding_class</span><span class="p">,</span> <span class="n">enum_string</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">binding_class</span><span class="p">(</span><span class="n">enum_string</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_out_value</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="n">enum_string</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="VapiToPythonVisitor.visit_reference"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.VapiToPythonVisitor.visit_reference">[docs]</a>    <span class="k">def</span> <span class="nf">visit_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visit a reference type</span>
+
+<span class="sd">        :type  typ: :class:`vmware.vapi.binding.type.ReferenceType`</span>
+<span class="sd">        :param typ: Binding type of the value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">typ</span><span class="o">.</span><span class="n">resolved_type</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="TypeConverter"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.TypeConverter">[docs]</a><span class="k">class</span> <span class="nc">TypeConverter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converter class that converts values from vAPI data model to Python native</span>
+<span class="sd">    data model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TypeConverter.convert_to_python"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.TypeConverter.convert_to_python">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_python</span><span class="p">(</span><span class="n">vapi_val</span><span class="p">,</span> <span class="n">binding_type</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts vAPI DataValue to Python native value</span>
+
+<span class="sd">        :type  vapi_val: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :param vapi_val: vAPI DataValue to be converted</span>
+<span class="sd">        :type  binding_type: :class:`vmware.vapi.bindings.type.BindingType`</span>
+<span class="sd">        :param binding_type: BindingType for the value</span>
+<span class="sd">        :type  resolver: :class:`vmware.vapi.bindings.common.NameToTypeResolver` or</span>
+<span class="sd">            ``None``</span>
+<span class="sd">        :param resolver: Type resolver</span>
+<span class="sd">        :rtype: :class:`object`</span>
+<span class="sd">        :return: Python native value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span> <span class="o">=</span> <span class="n">VapiToPythonVisitor</span><span class="p">(</span><span class="n">vapi_val</span><span class="p">,</span> <span class="n">resolver</span><span class="p">)</span>
+        <span class="n">binding_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">visitor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TypeConverter.convert_to_vapi"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.converter.TypeConverter.convert_to_vapi">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_vapi</span><span class="p">(</span><span class="n">py_val</span><span class="p">,</span> <span class="n">binding_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts Python native value to vAPI DataValue</span>
+
+<span class="sd">        :type  py_val: :class:`object`</span>
+<span class="sd">        :param py_val: Python native value to be converted</span>
+<span class="sd">        :type  binding_type: :class:`vmware.vapi.bindings.type.BindingType`</span>
+<span class="sd">        :param binding_type: BindingType for the value</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.data.value.DataValue`</span>
+<span class="sd">        :return: vAPI DataValue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visitor</span> <span class="o">=</span> <span class="n">PythonToVapiVisitor</span><span class="p">(</span><span class="n">py_val</span><span class="p">)</span>
+        <span class="n">binding_type</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">visitor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="n">get_out_value</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

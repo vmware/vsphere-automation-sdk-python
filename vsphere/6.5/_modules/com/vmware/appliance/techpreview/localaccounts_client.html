@@ -1,0 +1,624 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.appliance.techpreview.localaccounts_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.appliance.techpreview.localaccounts_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.appliance.techpreview.localaccounts.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+
+
+<div class="viewcode-block" id="User"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User">[docs]</a><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ``User`` class provides methods Perform operations on local user account.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_UserStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="User.UserAccountStatus"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.UserAccountStatus">[docs]</a>    <span class="k">class</span> <span class="nc">UserAccountStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``User.UserAccountStatus`` class Defines status of user accounts</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">disabled</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The user account is disabled.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">enabled</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The user account is enabled.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`UserAccountStatus` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">UserAccountStatus</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">UserAccountStatus</span><span class="p">(</span><span class="s">&#39;disabled&#39;</span><span class="p">),</span>
+        <span class="n">UserAccountStatus</span><span class="p">(</span><span class="s">&#39;enabled&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">UserAccountStatus</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.localaccounts.user.user_account_status&#39;</span><span class="p">,</span>
+        <span class="n">UserAccountStatus</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="User.UserPasswordStatus"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.UserPasswordStatus">[docs]</a>    <span class="k">class</span> <span class="nc">UserPasswordStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``User.UserPasswordStatus`` class Defines state of user password</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">notset</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        No password has been set</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">expired</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The password has expired.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The password is still valid.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`UserPasswordStatus` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">UserPasswordStatus</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">UserPasswordStatus</span><span class="p">(</span><span class="s">&#39;notset&#39;</span><span class="p">),</span>
+        <span class="n">UserPasswordStatus</span><span class="p">(</span><span class="s">&#39;expired&#39;</span><span class="p">),</span>
+        <span class="n">UserPasswordStatus</span><span class="p">(</span><span class="s">&#39;valid&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">UserPasswordStatus</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.localaccounts.user.user_password_status&#39;</span><span class="p">,</span>
+        <span class="n">UserPasswordStatus</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="User.UserRole"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.UserRole">[docs]</a>    <span class="k">class</span> <span class="nc">UserRole</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``User.UserRole`` class Defines user roles for appliance</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This class represents an enumerated type in the interface language</span>
+<span class="sd">            definition. The class contains class attributes which represent the</span>
+<span class="sd">            values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">            the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">            enumerated type in communication with a server that supports the newer</span>
+<span class="sd">            version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">            type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">admin</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Able to configure the appliance.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">operator</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Able to read the appliance configuration.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">superAdmin</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Able to configure the appliance, manage local accounts and use the BASH</span>
+<span class="sd">        shell</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  string: :class:`str`</span>
+<span class="sd">            :param string: String value for the :class:`UserRole` instance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+    <span class="n">UserRole</span><span class="o">.</span><span class="n">_set_values</span><span class="p">([</span>
+        <span class="n">UserRole</span><span class="p">(</span><span class="s">&#39;admin&#39;</span><span class="p">),</span>
+        <span class="n">UserRole</span><span class="p">(</span><span class="s">&#39;operator&#39;</span><span class="p">),</span>
+        <span class="n">UserRole</span><span class="p">(</span><span class="s">&#39;superAdmin&#39;</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">UserRole</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.localaccounts.user.user_role&#39;</span><span class="p">,</span>
+        <span class="n">UserRole</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="User.UserConfigGet"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.UserConfigGet">[docs]</a>    <span class="k">class</span> <span class="nc">UserConfigGet</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``User.UserConfigGet`` class Structure defines a user configuration for</span>
+<span class="sd">        user.get API.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">role</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">fullname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">passwordstatus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">email</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  username: :class:`str`</span>
+<span class="sd">            :param username: User login name</span>
+<span class="sd">            :type  role: :class:`User.UserRole`</span>
+<span class="sd">            :param role: User roles</span>
+<span class="sd">            :type  fullname: :class:`str`</span>
+<span class="sd">            :param fullname: User full name</span>
+<span class="sd">            :type  status: :class:`User.UserAccountStatus`</span>
+<span class="sd">            :param status: Shows whether the user account is enabled or disabled.</span>
+<span class="sd">            :type  passwordstatus: :class:`User.UserPasswordStatus`</span>
+<span class="sd">            :param passwordstatus: Shows whether the user account is still valid or expired.</span>
+<span class="sd">            :type  email: :class:`str`</span>
+<span class="sd">            :param email: Email address of the local account.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">role</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fullname</span> <span class="o">=</span> <span class="n">fullname</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passwordstatus</span> <span class="o">=</span> <span class="n">passwordstatus</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">UserConfigGet</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.localaccounts.user.user_config_get&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserRole&#39;</span><span class="p">),</span>
+            <span class="s">&#39;fullname&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserAccountStatus&#39;</span><span class="p">),</span>
+            <span class="s">&#39;passwordstatus&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserPasswordStatus&#39;</span><span class="p">),</span>
+            <span class="s">&#39;email&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">UserConfigGet</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="User.UserConfig"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.UserConfig">[docs]</a>    <span class="k">class</span> <span class="nc">UserConfig</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``User.UserConfig`` class Structure that defines a new user configuration</span>
+<span class="sd">        for CLI.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">role</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">fullname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">email</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  username: :class:`str`</span>
+<span class="sd">            :param username: User login name</span>
+<span class="sd">            :type  role: :class:`User.UserRole`</span>
+<span class="sd">            :param role: User roles</span>
+<span class="sd">            :type  fullname: :class:`str`</span>
+<span class="sd">            :param fullname: User full name</span>
+<span class="sd">            :type  status: :class:`User.UserAccountStatus`</span>
+<span class="sd">            :param status: Enabled status of the local account</span>
+<span class="sd">            :type  email: :class:`str`</span>
+<span class="sd">            :param email: email of the local account</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">role</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fullname</span> <span class="o">=</span> <span class="n">fullname</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">UserConfig</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.localaccounts.user.user_config&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserRole&#39;</span><span class="p">),</span>
+            <span class="s">&#39;fullname&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserAccountStatus&#39;</span><span class="p">),</span>
+            <span class="s">&#39;email&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="n">UserConfig</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="User.NewUserConfig"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.NewUserConfig">[docs]</a>    <span class="k">class</span> <span class="nc">NewUserConfig</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        ``User.NewUserConfig`` class Structure that defines a new user</span>
+<span class="sd">        configuration.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">role</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">fullname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">email</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  username: :class:`str`</span>
+<span class="sd">            :param username: User login name</span>
+<span class="sd">            :type  role: :class:`User.UserRole` or ``None``</span>
+<span class="sd">            :param role: User roles. The default role is operator.</span>
+<span class="sd">                role Default role is operator</span>
+<span class="sd">            :type  password: :class:`str`</span>
+<span class="sd">            :param password: User login password In Interactive mode, provide --password as part</span>
+<span class="sd">                of the command, and enter the value on the prompt. When accessed</span>
+<span class="sd">                remotely, provide --password value as part the command.</span>
+<span class="sd">            :type  fullname: :class:`str` or ``None``</span>
+<span class="sd">            :param fullname: User full name</span>
+<span class="sd">                fullname Optional full name for a person</span>
+<span class="sd">            :type  email: :class:`str` or ``None``</span>
+<span class="sd">            :param email: Email address of the local account.</span>
+<span class="sd">                email Optional email</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">=</span> <span class="n">role</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fullname</span> <span class="o">=</span> <span class="n">fullname</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">NewUserConfig</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.appliance.techpreview.localaccounts.user.new_user_config&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserRole&#39;</span><span class="p">)),</span>
+            <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">SecretType</span><span class="p">(),</span>
+            <span class="s">&#39;fullname&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;email&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">NewUserConfig</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="User.delete"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">username</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete a local user account.</span>
+
+<span class="sd">        :type  username: :class:`str`</span>
+<span class="sd">        :param username: User login name.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="User.add"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new local user account.</span>
+
+<span class="sd">        :type  config: :class:`User.NewUserConfig`</span>
+<span class="sd">        :param config: User configuration.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;add&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="User.set"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update local user account properties role, full name, enabled status</span>
+<span class="sd">        and password</span>
+
+<span class="sd">        :type  config: :class:`User.UserConfig`</span>
+<span class="sd">        :param config: User configuration.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;set&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="User.list"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List of local accounts</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`User.UserConfigGet`</span>
+<span class="sd">        :return: User configuration.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="User.get"><a class="viewcode-back" href="../../../../../com.vmware.appliance.techpreview.html#com.vmware.appliance.techpreview.localaccounts_client.User.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">username</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the local user account information.</span>
+
+<span class="sd">        :type  username: :class:`str`</span>
+<span class="sd">        :param username: User login name.</span>
+<span class="sd">        :rtype: :class:`User.UserConfigGet`</span>
+<span class="sd">        :return: local user account information</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.Error` </span>
+<span class="sd">            Generic error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_UserStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for add operation</span>
+        <span class="n">add_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.NewUserConfig&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">add_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">add_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">add_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for set operation</span>
+        <span class="n">set_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserConfig&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">set_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">set_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">set_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.error&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;Error&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;add&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">add_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">add_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">add_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">add_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">set_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">set_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">set_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">set_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserConfigGet&#39;</span><span class="p">)),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;User.UserConfigGet&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.appliance.techpreview.localaccounts.user&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

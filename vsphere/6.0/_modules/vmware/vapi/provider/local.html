@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.provider.local &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.provider.local</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Local Api Provider</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2011-2013 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ApiInterface</span><span class="p">,</span> <span class="n">ApiProvider</span><span class="p">,</span> <span class="n">MethodResult</span><span class="p">,</span> <span class="n">MethodIdentifier</span><span class="p">,</span>
+    <span class="n">InterfaceIdentifier</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.definition</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DataDefinition</span><span class="p">,</span> <span class="n">StructDefinition</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.type</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.lib.std</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_error_value_from_error_value_and_msgs</span><span class="p">,</span>
+    <span class="n">make_error_value_from_msg_id</span><span class="p">,</span>
+    <span class="n">make_error_value_from_msgs</span><span class="p">,</span>
+    <span class="n">make_std_error_def</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.serializers.introspection</span> <span class="kn">import</span> <span class="n">convert_data_def_to_data_value</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.settings.sections</span> <span class="kn">import</span> <span class="n">ENDPOINT</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.skeleton</span> <span class="kn">import</span> <span class="n">VapiInterface</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.provider</span> <span class="kn">import</span> <span class="n">introspection</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.provider.lib</span> <span class="kn">import</span> <span class="n">augment_method_result_with_errors</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LocalProvider"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.local.LocalProvider">[docs]</a><span class="k">class</span> <span class="nc">LocalProvider</span><span class="p">(</span><span class="n">ApiProvider</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    LocalProvider is a local in-process implementation of the</span>
+<span class="sd">    ApiProvider interface</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># XXX These error definitions should be eliminated when we figure out</span>
+    <span class="c">#     where/how to get the error definitions used by the local provider</span>
+    <span class="n">_internal_server_error_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.errors.internal_server_error&#39;</span><span class="p">)</span>
+    <span class="n">_invalid_argument_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">)</span>
+    <span class="n">_operation_not_found_def</span> <span class="o">=</span> <span class="n">make_std_error_def</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.std.errors.operation_not_found&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">load_introspection</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize LocalProvider</span>
+
+<span class="sd">        :type  load_introspection: :class:`bool`</span>
+<span class="sd">        :param load_introspection: If true, load introspection services</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ApiProvider</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s">&quot;LocalProvider&quot;</span>
+        <span class="c"># key = service id, value = api interface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_introspector</span> <span class="o">=</span> <span class="n">introspection</span><span class="o">.</span><span class="n">LocalProviderIntrospector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">load_introspection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_interface</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_introspector</span><span class="o">.</span><span class="n">get_introspection_services</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_defs_to_augment</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_argument_def</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_operation_not_found_def</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="c"># these are the errors that should be augmented</span>
+        <span class="c"># when `get` operation is invoked on</span>
+        <span class="c"># com.vmware.vapi.std.introspection.Operation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_values_to_augment</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">convert_data_def_to_data_value</span><span class="p">(</span><span class="n">error_def</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">error_def</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_defs_to_augment</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="LocalProvider.register_by_properties"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.local.LocalProvider.register_by_properties">[docs]</a>    <span class="k">def</span> <span class="nf">register_by_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register set of interfaces using properties dictionary</span>
+
+<span class="sd">        :type  properties: :class:`ConfigParser.SafeConfigParser`</span>
+<span class="sd">        :param properties: Configuration for this vAPI provider</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">properties</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;provider.name&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;provider.name&#39;</span><span class="p">)</span>
+
+        <span class="n">services</span> <span class="o">=</span> <span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="s">&#39;local.interfaces&#39;</span><span class="p">)</span>
+        <span class="n">services</span> <span class="o">=</span> <span class="n">services</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">services</span><span class="p">:</span>
+            <span class="n">service</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">service</span><span class="p">:</span>
+
+                <span class="c"># Get the service specific configuration from the properties</span>
+                <span class="n">service_cfg</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">properties</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">service</span><span class="p">):</span>
+                    <span class="n">service_cfg</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">service</span><span class="p">))</span>
+
+                <span class="n">fn</span> <span class="o">=</span> <span class="s">&quot;register_instance&quot;</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">locals</span><span class="p">(),</span> <span class="p">[</span><span class="n">fn</span><span class="p">])</span>
+                    <span class="n">register_fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+
+                    <span class="c"># XXX: Remove the if condition once all the implementations</span>
+                    <span class="c"># have been updated to use the new cfg parameter</span>
+                    <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">register_fn</span><span class="p">)</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+                        <span class="n">ifaces</span> <span class="o">=</span> <span class="n">register_fn</span><span class="p">(</span><span class="n">service_cfg</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ifaces</span> <span class="o">=</span> <span class="n">register_fn</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_interface</span><span class="p">(</span><span class="n">ifaces</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">stack_trace</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Could not add service </span><span class="si">%s</span><span class="s"> due to </span><span class="si">%s</span><span class="s">&#39;</span>
+                                    <span class="o">%</span> <span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">stack_trace</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="LocalProvider.add_interface"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.local.LocalProvider.add_interface">[docs]</a>    <span class="k">def</span> <span class="nf">add_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifaces</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register an interface with LocalProvider</span>
+
+<span class="sd">        :type  ifaces: :class:`list` of :class:`vmware.vapi.core.ApiInterface`</span>
+<span class="sd">        :param ifaces: Interfaces to be registered</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ifaces</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">ifaces</span> <span class="o">=</span> <span class="p">[</span><span class="n">ifaces</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">iface</span> <span class="ow">in</span> <span class="n">ifaces</span><span class="p">:</span>
+            <span class="c"># iface could be VapiInterface if bindings layer is registering</span>
+            <span class="c"># it&#39;s interfaces. In that case, extract the skeleton from</span>
+            <span class="c"># VapiInterface</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iface</span><span class="p">,</span> <span class="n">VapiInterface</span><span class="p">):</span>
+                <span class="n">api_iface</span> <span class="o">=</span> <span class="n">iface</span><span class="o">.</span><span class="n">api_interface</span>
+            <span class="c"># In Dynamic providers, where ApiInterface is implemented directly</span>
+            <span class="c"># instead of using bindings, an instance of ApiInterface is passed</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iface</span><span class="p">,</span> <span class="n">ApiInterface</span><span class="p">):</span>
+                <span class="n">api_iface</span> <span class="o">=</span> <span class="n">iface</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                    <span class="s">&#39;Could not register the interface </span><span class="si">%s</span><span class="s">. It has to be either &#39;</span>
+                    <span class="s">&#39;an instance of vmware.vapi.bindings.VapiInterface or &#39;</span>
+                    <span class="s">&#39;an instance of vmware.vapi.core.ApiInterface&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">iface</span><span class="o">.</span><span class="n">__class__</span><span class="p">))</span>
+
+            <span class="n">service_id</span> <span class="o">=</span> <span class="n">api_iface</span><span class="o">.</span><span class="n">get_identifier</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">service_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_map</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Service already registered: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">service_id</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Registering service: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">service_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_service_map</span><span class="p">[</span><span class="n">service_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_iface</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_introspector</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_introspector</span><span class="o">.</span><span class="n">add_service</span><span class="p">(</span><span class="n">service_id</span><span class="p">,</span> <span class="n">api_iface</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_validate_error</span><span class="p">(</span><span class="n">error_value</span><span class="p">,</span> <span class="n">method_definition</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate the error_value is allowed to be reported by the method</span>
+<span class="sd">        described by method_definition.</span>
+
+<span class="sd">        :type  error_value: :class:`vmware.vapi.data.value.ErrorValue`</span>
+<span class="sd">        :param error_value: Error value to validate</span>
+<span class="sd">        :type  method_definition: :class:`vmware.vapi.core.MethodDefinition`</span>
+<span class="sd">        :param method_definition: definition of the method to validate against.</span>
+<span class="sd">        :rtype: :class:`vmware.vapi.message.Message` or None</span>
+<span class="sd">        :return: the messages describing the validation failure or None if</span>
+<span class="sd">                 validation succeeded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">error_def</span> <span class="o">=</span> <span class="n">method_definition</span><span class="o">.</span><span class="n">get_error_definition</span><span class="p">(</span><span class="n">error_value</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">error_def</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">method_id</span> <span class="o">=</span> <span class="n">method_definition</span><span class="o">.</span><span class="n">get_identifier</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Method </span><span class="si">%s</span><span class="s"> reported the error </span><span class="si">%s</span><span class="s"> which is not in &quot;</span>
+                         <span class="o">+</span> <span class="s">&quot;MethodDefinition&quot;</span><span class="p">,</span>
+                         <span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">error_value</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                    <span class="s">&#39;vapi.method.status.errors.invalid&#39;</span><span class="p">,</span>
+                    <span class="n">error_value</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">()))</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">message</span><span class="p">]</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">error_def</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">error_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">messages</span>
+
+    <span class="k">def</span> <span class="nf">_invoke_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal implementation of InvokeMethod</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: Service identifier</span>
+<span class="sd">        :type  operation_id: :class:`str`</span>
+<span class="sd">        :param operation_id: Operation identifier</span>
+<span class="sd">        :type  ctx: :class:`vmware.vapi.core.ExecutionContext`</span>
+<span class="sd">        :param ctx: Execution context for this method</span>
+<span class="sd">        :type  input_value: :class:`vmware.vapi.data.value.StructValue`</span>
+<span class="sd">        :param input_value: Method input parameters</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.core.MethodResult`</span>
+<span class="sd">        :return: Result of the method invocation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Step 0: Verify input types</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">input_value</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">input_value</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Type</span><span class="o">.</span><span class="n">STRUCTURE</span><span class="p">)):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Invalid inputs&quot;</span><span class="p">)</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msg_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_argument_def</span><span class="p">,</span> <span class="s">&#39;vapi.method.input.invalid&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+        <span class="n">iface_id</span> <span class="o">=</span> <span class="n">InterfaceIdentifier</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="n">method_id</span> <span class="o">=</span> <span class="n">MethodIdentifier</span><span class="p">(</span><span class="n">iface_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">)</span>
+
+        <span class="c"># Step 1: Get method definition</span>
+        <span class="n">iface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">iface</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Could not find service: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">service_id</span><span class="p">)</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msg_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_operation_not_found_def</span><span class="p">,</span>
+                <span class="s">&#39;vapi.method.input.invalid.interface&#39;</span><span class="p">,</span>
+                <span class="n">service_id</span><span class="p">)</span>
+            <span class="k">return</span>  <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+        <span class="n">method_def</span> <span class="o">=</span> <span class="n">iface</span><span class="o">.</span><span class="n">get_method_definition</span><span class="p">(</span><span class="n">method_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">method_def</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Could not find method </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msg_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_operation_not_found_def</span><span class="p">,</span>
+                <span class="s">&#39;vapi.method.input.invalid.method&#39;</span><span class="p">,</span>
+                <span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+        <span class="n">input_def</span> <span class="o">=</span> <span class="n">method_def</span><span class="o">.</span><span class="n">get_input_definition</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_def</span><span class="p">,</span> <span class="n">StructDefinition</span><span class="p">):</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msg_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span>
+                <span class="s">&#39;vapi.method.input.invalid.definition&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+        <span class="n">output_def</span> <span class="o">=</span> <span class="n">method_def</span><span class="o">.</span><span class="n">get_output_definition</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_def</span><span class="p">,</span> <span class="n">DataDefinition</span><span class="p">):</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msg_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span>
+                <span class="s">&#39;vapi.method.output.invalid.definition&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+        <span class="c"># Step 2: Validate input with input def</span>
+        <span class="n">input_def</span><span class="o">.</span><span class="n">complete_value</span><span class="p">(</span><span class="n">input_value</span><span class="p">)</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">input_def</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">input_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">messages</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Input validation failed for method </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                         <span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_argument_def</span><span class="p">,</span> <span class="o">*</span><span class="n">messages</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+
+        <span class="c"># Step 3: Execute method</span>
+        <span class="n">method_result</span> <span class="o">=</span> <span class="n">iface</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">method_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">)</span>
+
+        <span class="c"># Step 4: Validate output with output def or error against errors set</span>
+        <span class="k">if</span> <span class="n">method_result</span><span class="o">.</span><span class="n">success</span><span class="p">():</span>
+            <span class="n">messages</span> <span class="o">=</span> <span class="n">output_def</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">method_result</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">messages</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Output validation failed for method </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                             <span class="n">method_id</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+                <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msgs</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span> <span class="o">*</span><span class="n">messages</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">method_result</span><span class="o">.</span><span class="n">error</span>
+            <span class="n">messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_error</span><span class="p">(</span><span class="n">error_value</span><span class="p">,</span> <span class="n">method_def</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">messages</span><span class="p">:</span>
+                <span class="n">new_error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_error_value_and_msgs</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span>
+                    <span class="n">error_value</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">messages</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">new_error_value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">method_result</span>
+
+<div class="viewcode-block" id="LocalProvider.invoke"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.local.LocalProvider.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Started: Service: </span><span class="si">%s</span><span class="s">, Operation: </span><span class="si">%s</span><span class="s">, Ctx: </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                    <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">method_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke_int</span><span class="p">(</span>
+                <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">input_value</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">method_result</span><span class="o">.</span><span class="n">success</span><span class="p">():</span>
+                <span class="n">method_result</span> <span class="o">=</span> <span class="n">augment_method_result_with_errors</span><span class="p">(</span>
+                    <span class="n">service_id</span><span class="p">,</span>
+                    <span class="n">operation_id</span><span class="p">,</span>
+                    <span class="n">method_result</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_error_values_to_augment</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;Error in invoking </span><span class="si">%s</span><span class="s"> in </span><span class="si">%s</span><span class="s"> - </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                             <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">error_value</span> <span class="o">=</span> <span class="n">make_error_value_from_msg_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_internal_server_error_def</span><span class="p">,</span>
+                <span class="s">&#39;vapi.method.invoke.exception&#39;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">method_result</span> <span class="o">=</span> <span class="n">MethodResult</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="n">error_value</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Finished: Service: </span><span class="si">%s</span><span class="s">. Operation </span><span class="si">%s</span><span class="s">, Ctx: </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                    <span class="n">service_id</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">method_result</span>
+
+
+<span class="c"># Singleton LocalProvider instance</span></div></div>
+<span class="n">_local_provider</span> <span class="o">=</span> <span class="n">LocalProvider</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_provider"><a class="viewcode-back" href="../../../../vmware.vapi.provider.html#vmware.vapi.provider.local.get_provider">[docs]</a><span class="k">def</span> <span class="nf">get_provider</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the singleton LocalProvider instance</span>
+
+<span class="sd">    :rtype: :class:`LocalProvider`</span>
+<span class="sd">    :return: LocalProvider instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_local_provider</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

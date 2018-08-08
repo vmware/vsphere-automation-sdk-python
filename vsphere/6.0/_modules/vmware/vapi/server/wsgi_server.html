@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.server.wsgi_server &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.server.wsgi_server</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Wsgi Server</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2014 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.server.server_interface</span> <span class="kn">import</span> <span class="n">ServerInterface</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WsgiApplication"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.wsgi_server.WsgiApplication">[docs]</a><span class="k">class</span> <span class="nc">WsgiApplication</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Python WSGI application. For more details about WSGI</span>
+<span class="sd">    specification, see PEP 333.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_handler_map</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize WsgiApplication</span>
+
+<span class="sd">        :type  msg_handler_map: :class:`dict` of :class:`str` and</span>
+<span class="sd">            :class:`vmware.vapi.protocol.server.api_handler.ApiHandler`</span>
+<span class="sd">        :param msg_handler_map: Map of content type to the message</span>
+<span class="sd">            handler for that content type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_msg_handler_map</span> <span class="o">=</span> <span class="n">msg_handler_map</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The implementation of WsgiApplication</span>
+
+<span class="sd">        :type  environ: :class:`dict`</span>
+<span class="sd">        :param environ: Dictionary object containing CGI-style environment</span>
+<span class="sd">            variables.</span>
+<span class="sd">        :type  start_response: :class:`func`</span>
+<span class="sd">        :param start_response: Callable accepting status code, response headers</span>
+<span class="sd">            and exc_info.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;CONTENT_TYPE&#39;</span><span class="p">)</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_handler_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">handler</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="s">&#39;400 Bad Request&#39;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="s">&#39;200 OK&#39;</span>
+                <span class="c"># NYI: Check content length</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;wsgi.input&#39;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="s">&#39;500 Internal Server Error&#39;</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;CONTENT_TYPE&#39;</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="WsgiServer"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.wsgi_server.WsgiServer">[docs]</a><span class="k">class</span> <span class="nc">WsgiServer</span><span class="p">(</span><span class="n">ServerInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Server wrapper class for Wsgi application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SUPPORTED_SCHEMES</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="s">&#39;https&#39;</span><span class="p">)</span>
+    <span class="n">HTTP_CONTENT_MAPPING</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;json&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;xml&#39;</span><span class="p">:</span> <span class="s">&#39;text/xml&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize WsgiServer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_protocol_handler_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ServerInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WsgiServer.register_handler"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.wsgi_server.WsgiServer.register_handler">[docs]</a>    <span class="k">def</span> <span class="nf">register_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">,</span> <span class="n">protocol_handler</span><span class="p">,</span> <span class="n">ssl_args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register protocol handler</span>
+
+<span class="sd">        :type  addr: :class:`str`</span>
+<span class="sd">        :param addr: addr url</span>
+<span class="sd">        :type  msg_type: :class:`str`</span>
+<span class="sd">        :param msg_type: protocol message type</span>
+<span class="sd">        :type  protocol_handler: :class:`vmware.vapi.protocol.server.transport.async_protocol_handler.AsyncProtocolHandler`</span>
+<span class="sd">        :param protocol_handler: protocol handler for this addr</span>
+<span class="sd">        :type  ssl_args: :class:`dict`</span>
+<span class="sd">        :param ssl_args: ssl arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">protocol_handler</span><span class="p">)</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">HTTP_CONTENT_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">msg_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">content_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Unsupported msg type: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">msg_type</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_protocol_handler_map</span><span class="p">[</span><span class="n">content_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">protocol_handler</span>
+</div>
+<div class="viewcode-block" id="WsgiServer.get_wsgi_application"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.wsgi_server.WsgiServer.get_wsgi_application">[docs]</a>    <span class="k">def</span> <span class="nf">get_wsgi_application</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the WSGI application.</span>
+
+<span class="sd">        :rtype: :class:`vmware.vapi.server.wsgi_server.WsgiApplication`</span>
+<span class="sd">        :return: WSGI application.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">WsgiApplication</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_protocol_handler_map</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="WsgiServer.serve_forever"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.wsgi_server.WsgiServer.serve_forever">[docs]</a>    <span class="k">def</span> <span class="nf">serve_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="WsgiServer.shutdown"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.wsgi_server.WsgiServer.shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+</div></div>
+<div class="viewcode-block" id="get_server"><a class="viewcode-back" href="../../../../vmware.vapi.server.html#vmware.vapi.server.wsgi_server.get_server">[docs]</a><span class="k">def</span> <span class="nf">get_server</span><span class="p">(</span><span class="n">cfg</span><span class="p">):</span>  <span class="c"># pylint: disable=W0613</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get wsgi server</span>
+
+<span class="sd">    :type  cfg: :class:`ConfigParser.SafeConfigParser`</span>
+<span class="sd">    :param cfg: Config parser</span>
+<span class="sd">    :rtype: :class:`vmware.vapi.server.server_interface.ServerInterface`</span>
+<span class="sd">    :return: subclass of ServerInterface</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">WsgiServer</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

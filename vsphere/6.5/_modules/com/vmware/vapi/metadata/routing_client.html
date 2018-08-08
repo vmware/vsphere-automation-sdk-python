@@ -1,0 +1,1150 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vapi.metadata.routing_client &mdash; vSphere Automation SDK for Python 6.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '6.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="vSphere Automation SDK for Python 6.5.0 documentation" href="../../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vapi.metadata.routing_client</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2016 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vapi.metadata.routing.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.std.errors_client</span>
+<span class="kn">import</span> <span class="nn">com.vmware.vapi.metadata_client</span>
+
+
+<div class="viewcode-block" id="ComponentData"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.ComponentData">[docs]</a><span class="k">class</span> <span class="nc">ComponentData</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Routing information of the vAPI component along with its checksum</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">fingerprint</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  info: :class:`ComponentInfo`</span>
+<span class="sd">        :param info: Routing information of the vAPI component</span>
+<span class="sd">        :type  fingerprint: :class:`str`</span>
+<span class="sd">        :param fingerprint: Fingerprint of metadata of a vAPI component</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">fingerprint</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">ComponentData</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.routing.component_data&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;info&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ComponentInfo&#39;</span><span class="p">),</span>
+        <span class="s">&#39;fingerprint&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+    <span class="p">},</span>
+    <span class="n">ComponentData</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ComponentInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.ComponentInfo">[docs]</a><span class="k">class</span> <span class="nc">ComponentInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Information about a vAPI component that contains routing information For an</span>
+<span class="sd">    explanation of routing information within components, see</span>
+<span class="sd">    :class:`Component`</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">packages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  packages: :class:`dict` of :class:`str` and :class:`PackageInfo`</span>
+<span class="sd">        :param packages: Routing information of all the vAPI packages. The key in the map is</span>
+<span class="sd">            the ID of the package and the value in the map is the routing</span>
+<span class="sd">            information for the package For an explanation of routing</span>
+<span class="sd">            information within packages, see :class:`Package`</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the key in</span>
+<span class="sd">            the attribute :class:`dict` must be an identifier for the resource</span>
+<span class="sd">            type: ``com.vmware.vapi.package``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the key in the attribute</span>
+<span class="sd">            :class:`dict` will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.package``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packages</span> <span class="o">=</span> <span class="n">packages</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">ComponentInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.routing.component_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;packages&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;PackageInfo&#39;</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ComponentInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="OperationInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.OperationInfo">[docs]</a><span class="k">class</span> <span class="nc">OperationInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Information about a vAPI operation that contains routing information. For</span>
+<span class="sd">    an explanation of containment within operations, see null</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">routing_info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  routing_info: :class:`RoutingInfo`</span>
+<span class="sd">        :param routing_info: The routing information assigned for this operation. For an</span>
+<span class="sd">            explanation of routing information, see :class:`RoutingInfo`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">routing_info</span> <span class="o">=</span> <span class="n">routing_info</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">OperationInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.routing.operation_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;routing_info&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;RoutingInfo&#39;</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="n">OperationInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="PackageInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.PackageInfo">[docs]</a><span class="k">class</span> <span class="nc">PackageInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Information about a vAPI package containing routing information. </span>
+<span class="sd">    </span>
+<span class="sd">    For an explanation of routing information within packages, see</span>
+<span class="sd">    :class:`Package`</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">routing_info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">services</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  routing_info: :class:`RoutingInfo`</span>
+<span class="sd">        :param routing_info: The routing information to be used for all the operations present</span>
+<span class="sd">            in this package. If a particular operation has no explicit routing</span>
+<span class="sd">            information defined in the routing definition file, this routing</span>
+<span class="sd">            info will be used for enforcing routing.</span>
+<span class="sd">        :type  services: :class:`dict` of :class:`str` and :class:`ServiceInfo`</span>
+<span class="sd">        :param services: Information about all services in this package that contain routing</span>
+<span class="sd">            information. The key in the map is the ID of the service and the</span>
+<span class="sd">            value in the map is the routing information for the service For an</span>
+<span class="sd">            explanation of routing information within service, see</span>
+<span class="sd">            :class:`Service`</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the key in</span>
+<span class="sd">            the attribute :class:`dict` must be an identifier for the resource</span>
+<span class="sd">            type: ``com.vmware.vapi.service``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the key in the attribute</span>
+<span class="sd">            :class:`dict` will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">routing_info</span> <span class="o">=</span> <span class="n">routing_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">services</span> <span class="o">=</span> <span class="n">services</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">PackageInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.routing.package_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;routing_info&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;RoutingInfo&#39;</span><span class="p">),</span>
+        <span class="s">&#39;services&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ServiceInfo&#39;</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">PackageInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="RoutingInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.RoutingInfo">[docs]</a><span class="k">class</span> <span class="nc">RoutingInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Routing information</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">routing_path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">routing_strategy</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">operation_hints</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">id_types</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  routing_path: :class:`str`</span>
+<span class="sd">        :param routing_path: The initial version of the routing info allowed routing by single</span>
+<span class="sd">            parameter. Clients requested allowing them to place more than one</span>
+<span class="sd">            parameters so that the routing is performed by the first non-null</span>
+<span class="sd">            argument in the list. To achieve that we have added method</span>
+<span class="sd">            com.vmware.vapi.metadata.RoutingInfo#getRoutingPaths() which should</span>
+<span class="sd">            be preferred over</span>
+<span class="sd">            com.vmware.vapi.metadata.RoutingInfo#getRoutingPath() which is</span>
+<span class="sd">            deprecated. The deprecated method will return string representation</span>
+<span class="sd">            of the comma-separated list of ids, while the</span>
+<span class="sd">            com.vmware.vapi.metadata.RoutingInfo#getRoutingPaths() will return</span>
+<span class="sd">            instance of ``java.util.List&lt;String&gt;`` containing the ids.</span>
+<span class="sd">        :type  routing_strategy: :class:`str`</span>
+<span class="sd">        :param routing_strategy: The routingStrategy is the actual strategy, based on which will be</span>
+<span class="sd">            performed the routing. If the routingStrategy is IDROUTE, in</span>
+<span class="sd">            :attr:`RoutingInfo.routing_path` must be assigned the id for the</span>
+<span class="sd">            routing. There are also default strategies like IDFIRSTROUTE, LOCAL</span>
+<span class="sd">            for which there is no need to specify routingPath. The name of</span>
+<span class="sd">            these strategies is clear about where we should look for an ID to</span>
+<span class="sd">            route, or if we need ID at all.</span>
+<span class="sd">        :type  operation_hints: :class:`list` of :class:`str`</span>
+<span class="sd">        :param operation_hints: This is comma-separated list of hints from the input ini file. Here</span>
+<span class="sd">            the user must mention the type of the invoked method, e.g.</span>
+<span class="sd">            HINTS(create) or HINTS(delete). In the future we expect this field</span>
+<span class="sd">            to contain other hints also e.g. HINTS(create,lazy).</span>
+<span class="sd">        :type  id_types: :class:`dict` of :class:`str` and :class:`str`</span>
+<span class="sd">        :param id_types: This is map of specifically predefined resource types in the</span>
+<span class="sd">            routing metadata. For example id types that do not require storage</span>
+<span class="sd">            in the Inventory Service. Those type of objects are called</span>
+<span class="sd">            &#39;positioned&#39; - it is well known in advance where those objects will</span>
+<span class="sd">            be routed, because their ids contain VC server guid. Example:</span>
+<span class="sd">            Content Library Sessions are considered transient objects that do</span>
+<span class="sd">            not need to be persisted in the IS. Routing ini file must contain</span>
+<span class="sd">            section: [types] com.vmware.content.DownloadSession=positioned The</span>
+<span class="sd">            map therefore will contain: {{&quot;com.vmware.content.DownloadSession&quot;,</span>
+<span class="sd">            &quot;positioned&quot;}} Note: This should not be final solution. To avoid</span>
+<span class="sd">            duplication, currently this map will be stored only in one</span>
+<span class="sd">            RoutingInfo object across the whole ProductModel. In the future, it</span>
+<span class="sd">            might be moved to a common place as ComponentInfo, for example.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">routing_path</span> <span class="o">=</span> <span class="n">routing_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">routing_strategy</span> <span class="o">=</span> <span class="n">routing_strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operation_hints</span> <span class="o">=</span> <span class="n">operation_hints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_types</span> <span class="o">=</span> <span class="n">id_types</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">RoutingInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.routing.routing_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;routing_path&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;routing_strategy&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;operation_hints&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;id_types&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">RoutingInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="ServiceInfo"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.ServiceInfo">[docs]</a><span class="k">class</span> <span class="nc">ServiceInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Information about a vAPI service that has routing information A service is</span>
+<span class="sd">    said to contain routing information if any of its operations have routing</span>
+<span class="sd">    information</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">routing_info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">operations</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  routing_info: :class:`RoutingInfo`</span>
+<span class="sd">        :param routing_info: The routing information to be used for all the operations present</span>
+<span class="sd">            in this service. If a particular operation has no explicit routing</span>
+<span class="sd">            information defined in the routing definition file, this routing</span>
+<span class="sd">            info will be used for enforcing routing.</span>
+<span class="sd">        :type  operations: :class:`dict` of :class:`str` and :class:`OperationInfo`</span>
+<span class="sd">        :param operations: Information about all operations in this service that contain</span>
+<span class="sd">            routing Information. The key in the map is the ID of the operation</span>
+<span class="sd">            and the value in the map is the routing information for this</span>
+<span class="sd">            operation. </span>
+<span class="sd">            </span>
+<span class="sd">            For an explanation of routing information within operations, see</span>
+<span class="sd">            null</span>
+<span class="sd">            When clients pass a value of this class as a parameter, the key in</span>
+<span class="sd">            the attribute :class:`dict` must be an identifier for the resource</span>
+<span class="sd">            type: ``com.vmware.vapi.operation``. When methods return a value of</span>
+<span class="sd">            this class as a return value, the key in the attribute</span>
+<span class="sd">            :class:`dict` will be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.operation``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">routing_info</span> <span class="o">=</span> <span class="n">routing_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="n">operations</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">ServiceInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.routing.service_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;routing_info&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;RoutingInfo&#39;</span><span class="p">),</span>
+        <span class="s">&#39;operations&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">MapType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(),</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;OperationInfo&#39;</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">ServiceInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Component"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Component">[docs]</a><span class="k">class</span> <span class="nc">Component</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Operations to retrieve information about the routing information in a vAPI</span>
+<span class="sd">    component. A Component is said to contain routing information if any of its</span>
+<span class="sd">    packages, services or methods contain routing information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.component&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for vAPI Component.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ComponentStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Component.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Component.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List all the vAPI components that contain operations which have routing</span>
+<span class="sd">        information.</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: list of fully qualified component names</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.component``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Component.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Component.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">component_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the routing information for a vAPI component</span>
+
+<span class="sd">        :type  component_id: :class:`str`</span>
+<span class="sd">        :param component_id:  fully qualified component name</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.component``.</span>
+<span class="sd">        :rtype: :class:`ComponentData`</span>
+<span class="sd">        :return: routing information for the vAPI component</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             If the component name does not exist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;component_id&#39;</span><span class="p">:</span> <span class="n">component_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Component.fingerprint"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Component.fingerprint">[docs]</a>    <span class="k">def</span> <span class="nf">fingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">component_id</span><span class="p">,</span>
+                    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checksum of all routing metadata for a vAPI component on the server</span>
+
+<span class="sd">        :type  component_id: :class:`str`</span>
+<span class="sd">        :param component_id:  fully qualified component name</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.component``.</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: checksum of routing metadata for a vAPI component</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             If the component name does not exist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;fingerprint&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;component_id&#39;</span><span class="p">:</span> <span class="n">component_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Package"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Package">[docs]</a><span class="k">class</span> <span class="nc">Package</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Operations to retrieve information about routing information in a vAPI</span>
+<span class="sd">    package A Package is said to contain routing information if there is a</span>
+<span class="sd">    default RoutingInfo assigned to all operations within a package or if one</span>
+<span class="sd">    of the operations within this package has explicit routing information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.package&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for vAPI package.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_PackageStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Package.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Package.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List of all vAPI packages that have routing information</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: list of fully qualified package names</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.package``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Package.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Package.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">package_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the routing information for a vAPI package</span>
+
+<span class="sd">        :type  package_id: :class:`str`</span>
+<span class="sd">        :param package_id: fully qualified package name</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.package``.</span>
+<span class="sd">        :rtype: :class:`PackageInfo`</span>
+<span class="sd">        :return: routing information for the vAPI package</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If the package name does not exist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;package_id&#39;</span><span class="p">:</span> <span class="n">package_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Service"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Service">[docs]</a><span class="k">class</span> <span class="nc">Service</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Operations to retrieve information about routing information of a vAPI</span>
+<span class="sd">    service</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.service&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for vAPI Service.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_ServiceStub</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Service.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Service.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get list of all vAPI services that have operations with routing</span>
+<span class="sd">        information</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: list of fully qualified service names</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Service.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Service.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">service_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the routing information for a vAPI service</span>
+
+<span class="sd">        :type  service_id: :class:`str`</span>
+<span class="sd">        :param service_id: fully qualified service name</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.service``.</span>
+<span class="sd">        :rtype: :class:`ServiceInfo`</span>
+<span class="sd">        :return: identifier information for the vAPI service</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If the service name does not exist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="n">service_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source">[docs]</a><span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="n">VapiInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Operations to manage the metadata sources for routing information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RESOURCE_TYPE</span> <span class="o">=</span> <span class="s">&quot;com.vmware.vapi.metadata.source&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resource type for vAPI metadata source.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  config: :class:`vmware.vapi.bindings.stub.StubConfiguration`</span>
+<span class="sd">        :param config: Configuration to be used for creating the stub.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">VapiInterface</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">_SourceStub</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Source.Info"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source.Info">[docs]</a>    <span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Metadata source info.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;type&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;FILE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;filepath&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;REMOTE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;address&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">filepath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">address</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  description: :class:`str`</span>
+<span class="sd">            :param description: Description of the source.</span>
+<span class="sd">            :type  type: :class:`com.vmware.vapi.metadata_client.SourceType`</span>
+<span class="sd">            :param type: Type of the metadata source.</span>
+<span class="sd">            :type  filepath: :class:`str`</span>
+<span class="sd">            :param filepath: Absolute file path of the file that has the metadata information.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is null.</span>
+<span class="sd">            :type  address: :class:`str`</span>
+<span class="sd">            :param address: URI of the remote vAPI endpoint. This should be of the format</span>
+<span class="sd">                http(s):IP:port/namespace.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is null.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">Info</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.metadata.routing.source.info&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">metadata_client</span><span class="p">,</span> <span class="s">&#39;SourceType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;filepath&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">URIType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">Info</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Source.CreateSpec"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source.CreateSpec">[docs]</a>    <span class="k">class</span> <span class="nc">CreateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Metadata source create spec.</span>
+
+<span class="sd">        .. tip::</span>
+<span class="sd">            The arguments are used to initialize data attributes with the same</span>
+<span class="sd">            names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">UnionValidator</span><span class="p">(</span>
+                <span class="s">&#39;type&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s">&#39;FILE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;filepath&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                    <span class="s">&#39;REMOTE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;address&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">filepath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">address</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :type  description: :class:`str`</span>
+<span class="sd">            :param description: English language human readable description of the source.</span>
+<span class="sd">            :type  type: :class:`com.vmware.vapi.metadata_client.SourceType`</span>
+<span class="sd">            :param type: Type of the metadata source.</span>
+<span class="sd">            :type  filepath: :class:`str`</span>
+<span class="sd">            :param filepath: Absolute file path of the metamodel metadata file that has the</span>
+<span class="sd">                metamodel information about one component element.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is</span>
+<span class="sd">                :attr:`com.vmware.vapi.metadata_client.SourceType.FILE`.</span>
+<span class="sd">            :type  address: :class:`str`</span>
+<span class="sd">            :param address: Connection information of the remote server. This should be of the</span>
+<span class="sd">                format http(s)://IP:port/namespace. </span>
+<span class="sd">                </span>
+<span class="sd">                The remote server should contain the classes in</span>
+<span class="sd">                :mod:`com.vmware.vapi.metadata.metamodel_client` module. It could</span>
+<span class="sd">                expose metamodel information of one or more components.</span>
+<span class="sd">                This attribute is optional and it is only relevant when the value</span>
+<span class="sd">                of ``type`` is</span>
+<span class="sd">                :attr:`com.vmware.vapi.metadata_client.SourceType.REMOTE`.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+            <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+    <span class="n">CreateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+        <span class="s">&#39;com.vmware.vapi.metadata.routing.source.create_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">metadata_client</span><span class="p">,</span> <span class="s">&#39;SourceType&#39;</span><span class="p">),</span>
+            <span class="s">&#39;filepath&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+            <span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">URIType</span><span class="p">()),</span>
+        <span class="p">},</span>
+        <span class="n">CreateSpec</span><span class="p">,</span>
+        <span class="bp">False</span><span class="p">,</span>
+        <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="Source.create"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">source_id</span><span class="p">,</span>
+               <span class="n">spec</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new metadata source.</span>
+
+<span class="sd">        :type  source_id: :class:`str`</span>
+<span class="sd">        :param source_id:  metadata source identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.source``.</span>
+<span class="sd">        :type  spec: :class:`Source.CreateSpec`</span>
+<span class="sd">        :param spec:  create specification.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.AlreadyExists` </span>
+<span class="sd">             If the metadata source identifier is already present.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            If type of the source specified in \\\\@{link CreateSpec#type} is</span>
+<span class="sd">            invalid.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            If the file specified in \\\\@{link CreateSpec#filepath} is not a</span>
+<span class="sd">            valid json file.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.InvalidArgument` </span>
+<span class="sd">            If the URI specified in \\\\@{link CreateSpec#address} is</span>
+<span class="sd">            unreachable or not a vAPI compatible server.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">            If the file specified in \\\\@{link CreateSpec#filepath} does not</span>
+<span class="sd">            exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Source.delete"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">source_id</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete a metadata source.</span>
+
+<span class="sd">        :type  source_id: :class:`str`</span>
+<span class="sd">        :param source_id:  Metadata source identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.source``.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             If the metadata source identifier is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;delete&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Source.get"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">source_id</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the details about a metadata source.</span>
+
+<span class="sd">        :type  source_id: :class:`str`</span>
+<span class="sd">        :param source_id:  Metadata source identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.source``.</span>
+<span class="sd">        :rtype: :class:`Source.Info`</span>
+<span class="sd">        :return: Metadata source info.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             If the metadata source identifier is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Source.list"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List all the metadata sources.</span>
+
+
+<span class="sd">        :rtype: :class:`list` of :class:`str`</span>
+<span class="sd">        :return: List of all metadata sources.</span>
+<span class="sd">            The return value will contain identifiers for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.source``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Source.reload"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">source_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reload metadata from all the sources or of a particular source.</span>
+
+<span class="sd">        :type  source_id: :class:`str` or ``None``</span>
+<span class="sd">        :param source_id:  Metadata source identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.source``.</span>
+<span class="sd">             If unspecified, all the sources are reloaded</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             If the metadata source identifier is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;reload&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div>
+<div class="viewcode-block" id="Source.fingerprint"><a class="viewcode-back" href="../../../../../com.vmware.vapi.metadata.html#com.vmware.vapi.metadata.routing_client.Source.fingerprint">[docs]</a>    <span class="k">def</span> <span class="nf">fingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">source_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the fingerprint of all the sources or of a particular source.</span>
+
+<span class="sd">        :type  source_id: :class:`str` or ``None``</span>
+<span class="sd">        :param source_id:  Metadata source identifier.</span>
+<span class="sd">            The parameter must be an identifier for the resource type:</span>
+<span class="sd">            ``com.vmware.vapi.metadata.source``.</span>
+<span class="sd">             If unspecified, fingerprint of all the sources is returned</span>
+<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :return: fingerprint of all the sources or of a particular source.</span>
+<span class="sd">        :raise: :class:`com.vmware.vapi.std.errors_client.NotFound` </span>
+<span class="sd">             If the metadata source identifier is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="s">&#39;fingerprint&#39;</span><span class="p">,</span>
+                            <span class="p">{</span>
+                            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="n">source_id</span><span class="p">,</span>
+                            <span class="p">})</span>
+</div></div>
+<span class="k">class</span> <span class="nc">_ComponentStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;component_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.component&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for fingerprint operation</span>
+        <span class="n">fingerprint_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;component_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.component&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">fingerprint_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">fingerprint_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">fingerprint_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ComponentData&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;fingerprint&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">fingerprint_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">fingerprint_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">fingerprint_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">fingerprint_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.routing.component&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_PackageStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;package_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.package&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;PackageInfo&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.routing.package&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_ServiceStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;service_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.service&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;ServiceInfo&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.routing.service&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_SourceStub</span><span class="p">(</span><span class="n">ApiInterfaceStub</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="c"># properties for create operation</span>
+        <span class="n">create_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.source&#39;</span><span class="p">),</span>
+            <span class="s">&#39;spec&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Source.CreateSpec&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">create_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.already_exists&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;AlreadyExists&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.invalid_argument&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;InvalidArgument&#39;</span><span class="p">),</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">create_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">create_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for delete operation</span>
+        <span class="n">delete_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.source&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">delete_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">delete_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">delete_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for get operation</span>
+        <span class="n">get_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">(</span><span class="n">resource_types</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.source&#39;</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="n">get_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">get_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">get_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for list operation</span>
+        <span class="n">list_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">list_error_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">list_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">list_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for reload operation</span>
+        <span class="n">reload_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="p">})</span>
+        <span class="n">reload_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">reload_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">reload_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="c"># properties for fingerprint operation</span>
+        <span class="n">fingerprint_input_type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span><span class="s">&#39;operation-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+        <span class="p">})</span>
+        <span class="n">fingerprint_error_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;com.vmware.vapi.std.errors.not_found&#39;</span><span class="p">:</span>
+                <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">com</span><span class="o">.</span><span class="n">vmware</span><span class="o">.</span><span class="n">vapi</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">errors_client</span><span class="p">,</span> <span class="s">&#39;NotFound&#39;</span><span class="p">),</span>
+
+        <span class="p">}</span>
+        <span class="n">fingerprint_input_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+        <span class="n">fingerprint_output_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">]</span>
+
+        <span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;create&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">create_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">create_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">create_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">create_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;delete&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">delete_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">delete_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">delete_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">get_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;Source.Info&#39;</span><span class="p">),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">get_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">get_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">get_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">list_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ListType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">IdType</span><span class="p">()),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">list_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">list_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">list_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;reload&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">reload_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">VoidType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">reload_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">reload_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">reload_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s">&#39;fingerprint&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;input_type&#39;</span><span class="p">:</span> <span class="n">fingerprint_input_type</span><span class="p">,</span>
+                <span class="s">&#39;output_type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+                <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">fingerprint_error_dict</span><span class="p">,</span>
+                <span class="s">&#39;input_validator_list&#39;</span><span class="p">:</span> <span class="n">fingerprint_input_validator_list</span><span class="p">,</span>
+                <span class="s">&#39;output_validator_list&#39;</span><span class="p">:</span> <span class="n">fingerprint_output_validator_list</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">ApiInterfaceStub</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iface_name</span><span class="o">=</span><span class="s">&#39;com.vmware.vapi.metadata.routing.source&#39;</span><span class="p">,</span>
+                                  <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                  <span class="n">operations</span><span class="o">=</span><span class="n">operations</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">vSphere Automation SDK for Python 6.5.0 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

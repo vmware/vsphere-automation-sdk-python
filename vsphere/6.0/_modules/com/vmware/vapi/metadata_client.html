@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>com.vmware.vapi.metadata_client &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for com.vmware.vapi.metadata_client</h1><div class="highlight"><pre>
+<span class="c">#---------------------------------------------------------------------------</span>
+<span class="c"># Copyright 2014 VMware, Inc.  All rights reserved.</span>
+
+<span class="c"># AUTO GENERATED FILE -- DO NOT MODIFY!</span>
+<span class="c">#</span>
+<span class="c"># vAPI stub file for package com.vmware.vapi.metadata.</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The :mod:`com.vmware.vapi.metadata_client` module provides metadata classes.</span>
+<span class="sd">These are classes that provide different facets of API information. Clients can</span>
+<span class="sd">use these classes to: </span>
+
+<span class="sd">* Discover APIs available in the infrastructure.</span>
+<span class="sd">* Fetch metadata that can be used to build presentation layers like CLI, REST,</span>
+<span class="sd">  etc.</span>
+<span class="sd">* Fetch authentication and authorization metadata.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc.&#39;</span>
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s">&#39;restructuredtext en&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings</span> <span class="kn">import</span> <span class="nb">type</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.converter</span> <span class="kn">import</span> <span class="n">TypeConverter</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.error</span> <span class="kn">import</span> <span class="n">VapiError</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.struct</span> <span class="kn">import</span> <span class="n">VapiStruct</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.stub</span> <span class="kn">import</span> <span class="n">VapiInterface</span><span class="p">,</span> <span class="n">ApiInterfaceStub</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.bindings.common</span> <span class="kn">import</span> <span class="n">raise_core_exception</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.data.validator</span> <span class="kn">import</span> <span class="n">UnionValidator</span><span class="p">,</span> <span class="n">HasFieldsOfValidator</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+
+<div class="viewcode-block" id="SourceType"><a class="viewcode-back" href="../../../../com.vmware.vapi.html#com.vmware.vapi.metadata_client.SourceType">[docs]</a><span class="k">class</span> <span class="nc">SourceType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``SourceType`` class defines the types of sources for API metadata. You</span>
+<span class="sd">    specify the type of source when adding a metadata source to a metadata</span>
+<span class="sd">    service.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This class represents an enumerated type in the interface language</span>
+<span class="sd">        definition. The class contains class attributes which represent the</span>
+<span class="sd">        values in the current version of the enumerated type. Newer versions of</span>
+<span class="sd">        the enumerated type may contain new values. To use new values of the</span>
+<span class="sd">        enumerated type in communication with a server that supports the newer</span>
+<span class="sd">        version of the API, you instantiate this class. See :ref:`enumerated</span>
+<span class="sd">        type description page &lt;enumeration_description&gt;`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FILE</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Indicates the metadata source is a JSON file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">REMOTE</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Indicates the metadata source is a remote server.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  string: :class:`str`</span>
+<span class="sd">        :param string: String value for the :class:`SourceType` instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Enum</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</div>
+<span class="n">SourceType</span><span class="o">.</span><span class="n">FILE</span> <span class="o">=</span> <span class="n">SourceType</span><span class="p">(</span><span class="s">&#39;FILE&#39;</span><span class="p">)</span>
+<span class="n">SourceType</span><span class="o">.</span><span class="n">REMOTE</span> <span class="o">=</span> <span class="n">SourceType</span><span class="p">(</span><span class="s">&#39;REMOTE&#39;</span><span class="p">)</span>
+<span class="n">SourceType</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">EnumType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.source_type&#39;</span><span class="p">,</span>
+    <span class="n">SourceType</span><span class="p">))</span>
+
+
+
+
+<div class="viewcode-block" id="SourceCreateSpec"><a class="viewcode-back" href="../../../../com.vmware.vapi.html#com.vmware.vapi.metadata_client.SourceCreateSpec">[docs]</a><span class="k">class</span> <span class="nc">SourceCreateSpec</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``SourceCreateSpec`` class contains the registration information for a</span>
+<span class="sd">    metadata source.</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">UnionValidator</span><span class="p">(</span>
+            <span class="s">&#39;type&#39;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s">&#39;FILE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;filepath&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                <span class="s">&#39;REMOTE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;address&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">filepath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">address</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  description: :class:`str`</span>
+<span class="sd">        :param description: English language human readable description of the source.</span>
+<span class="sd">        :type  type: :class:`SourceType`</span>
+<span class="sd">        :param type: Type of the metadata source.</span>
+<span class="sd">        :type  filepath: :class:`str`</span>
+<span class="sd">        :param filepath: Absolute file path of the metamodel metadata file that has the</span>
+<span class="sd">            metamodel information about one component element.</span>
+<span class="sd">            This attribute is optional and it is only relevant when the value</span>
+<span class="sd">            of ``type`` is :attr:`SourceType.FILE`.</span>
+<span class="sd">        :type  address: :class:`str`</span>
+<span class="sd">        :param address: Connection information of the remote server. This should be of the</span>
+<span class="sd">            format http(s)://IP:port/namespace. </span>
+<span class="sd">            </span>
+<span class="sd">            The remote server should contain the classes in</span>
+<span class="sd">            :mod:`com.vmware.vapi.metadata.metamodel_client` module. It could</span>
+<span class="sd">            expose metamodel information of one or more components.</span>
+<span class="sd">            This attribute is optional and it is only relevant when the value</span>
+<span class="sd">            of ``type`` is :attr:`SourceType.REMOTE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">SourceCreateSpec</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.source_create_spec&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">(),</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;SourceType&#39;</span><span class="p">),</span>
+        <span class="s">&#39;filepath&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;address&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">URIType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">SourceCreateSpec</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+
+
+
+<div class="viewcode-block" id="SourceInfo"><a class="viewcode-back" href="../../../../com.vmware.vapi.html#com.vmware.vapi.metadata_client.SourceInfo">[docs]</a><span class="k">class</span> <span class="nc">SourceInfo</span><span class="p">(</span><span class="n">VapiStruct</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Metadata source info</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        The arguments are used to initialize data attributes with the same</span>
+<span class="sd">        names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_validator_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">UnionValidator</span><span class="p">(</span>
+            <span class="s">&#39;type&#39;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s">&#39;FILE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;file_name&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+                <span class="s">&#39;REMOTE&#39;</span> <span class="p">:</span> <span class="p">[(</span><span class="s">&#39;remote_addr&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;msg_protocol&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)],</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">file_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">remote_addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">msg_protocol</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type  type: :class:`SourceType`</span>
+<span class="sd">        :param type: Type of the metadata source</span>
+<span class="sd">        :type  file_name: :class:`str`</span>
+<span class="sd">        :param file_name: Name of the metadata source file</span>
+<span class="sd">            This attribute is optional and it is only relevant when the value</span>
+<span class="sd">            of ``type`` is :attr:`SourceType.FILE`.</span>
+<span class="sd">        :type  remote_addr: :class:`str`</span>
+<span class="sd">        :param remote_addr: Address of the remote metadata source</span>
+<span class="sd">            This attribute is optional and it is only relevant when the value</span>
+<span class="sd">            of ``type`` is :attr:`SourceType.REMOTE`.</span>
+<span class="sd">        :type  msg_protocol: :class:`str`</span>
+<span class="sd">        :param msg_protocol: Message protocol to be used</span>
+<span class="sd">            This attribute is optional and it is only relevant when the value</span>
+<span class="sd">            of ``type`` is :attr:`SourceType.REMOTE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remote_addr</span> <span class="o">=</span> <span class="n">remote_addr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msg_protocol</span> <span class="o">=</span> <span class="n">msg_protocol</span>
+        <span class="n">VapiStruct</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<span class="n">SourceInfo</span><span class="o">.</span><span class="n">_set_binding_type</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StructType</span><span class="p">(</span>
+    <span class="s">&#39;com.vmware.vapi.metadata.source_info&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">ReferenceType</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">],</span> <span class="s">&#39;SourceType&#39;</span><span class="p">),</span>
+        <span class="s">&#39;file_name&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;remote_addr&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+        <span class="s">&#39;msg_protocol&#39;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">OptionalType</span><span class="p">(</span><span class="nb">type</span><span class="o">.</span><span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">},</span>
+    <span class="n">SourceInfo</span><span class="p">,</span>
+    <span class="bp">False</span><span class="p">,</span>
+    <span class="bp">None</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

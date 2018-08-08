@@ -1,0 +1,219 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vmware.vapi.bindings.uri_helper &mdash; vCloud Suite SDK for Python 6.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/vapitheme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '6.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="vCloud Suite SDK for Python 6.0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for vmware.vapi.bindings.uri_helper</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Utility library for validating IRI that conform to RFC 3987</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;VMware, Inc&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&#39;Copyright 2012-2013 VMware, Inc.  All rights reserved. -- VMware Confidential&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+
+<span class="kn">from</span> <span class="nn">vmware.vapi.exception</span> <span class="kn">import</span> <span class="n">CoreException</span>
+<span class="kn">from</span> <span class="nn">vmware.vapi.l10n.runtime</span> <span class="kn">import</span> <span class="n">message_factory</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="URIValidator"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.uri_helper.URIValidator">[docs]</a><span class="k">class</span> <span class="nc">URIValidator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper class for validation of IRI&#39;s</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># The regex is taken from RFC 3987 (IRI)</span>
+    <span class="c"># Note 1: RFC 3987 (IRI) uses HEXDIG</span>
+    <span class="c">#         HEXDIG is specified in RFC 2234 is [0-9][A-F]</span>
+    <span class="c">#         RFC 2396 allows HEXDIG to be [0-9][A-F][a-f]</span>
+    <span class="c">#         So, in this regex, HEXDIG uses the RFC 2396 standard</span>
+    <span class="n">_rules</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;IRI_reference&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{IRI}|{irelative_ref})&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;IRI&#39;</span><span class="p">,</span> <span class="s">r&quot;{absolute_IRI}(?:\#{ifragment})?&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;absolute_IRI&#39;</span><span class="p">,</span> <span class="s">r&quot;{scheme}:{ihier_part}(?:\?{iquery})?&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;irelative_ref&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">r&quot;(?:{irelative_part}&quot;</span>
+                           <span class="s">r&quot;(?:\?{iquery})?(?:\#{ifragment})?)&quot;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;ihier_part&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">r&quot;(?://{iauthority}{ipath_abempty}&quot;</span>
+                        <span class="s">r&quot;|{ipath_absolute}|{ipath_rootless}|{ipath_empty})&quot;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;irelative_part&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">r&quot;(?://{iauthority}{ipath_abempty}&quot;</span>
+                            <span class="s">r&quot;|{ipath_absolute}|{ipath_noscheme}|{ipath_empty})&quot;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;iauthority&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{iuserinfo}@)?{ihost}(?::{port})?&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;iuserinfo&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{iunreserved}|{pct_encoded}|{sub_delims}|:)*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ihost&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{IP_literal}|{IPv4address}|{ireg_name})&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&#39;ireg_name&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{iunreserved}|{pct_encoded}|{sub_delims})*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ipath&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">r&quot;(?:{ipath_abempty}|{ipath_absolute}|{ipath_noscheme}&quot;</span>
+                   <span class="s">r&quot;|{ipath_rootless}|{ipath_empty})&quot;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;ipath_empty&#39;</span><span class="p">,</span> <span class="s">r&quot;&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ipath_rootless&#39;</span><span class="p">,</span> <span class="s">r&quot;{isegment_nz}(?:/{isegment})*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ipath_noscheme&#39;</span><span class="p">,</span> <span class="s">r&quot;{isegment_nz_nc}(?:/{isegment})*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ipath_absolute&#39;</span><span class="p">,</span> <span class="s">r&quot;/(?:{isegment_nz}(?:/{isegment})*)?&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ipath_abempty&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:/{isegment})*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;isegment_nz_nc&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{iunreserved}|{pct_encoded}|{sub_delims}|@)+&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;isegment_nz&#39;</span><span class="p">,</span> <span class="s">r&quot;{ipchar}+&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;isegment&#39;</span><span class="p">,</span> <span class="s">r&quot;{ipchar}*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;iquery&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{ipchar}|{iprivate}|/|\?)*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ifragment&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{ipchar}|/|\?)*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ipchar&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{iunreserved}|{pct_encoded}|{sub_delims}|:|@)&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;iunreserved&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:[a-zA-Z0-9._~-]|{ucschar})&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;iprivate&#39;</span><span class="p">,</span> <span class="s">r&quot;[\uE000-\uF8FF]&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;ucschar&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">r&quot;[\xA0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]&quot;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;scheme&#39;</span><span class="p">,</span> <span class="s">r&quot;[a-zA-Z][a-zA-Z0-9+.-]*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;port&#39;</span><span class="p">,</span> <span class="s">r&quot;[0-9]*&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;IP_literal&#39;</span><span class="p">,</span> <span class="s">r&quot;\[(?:{IPv6address}|{IPvFuture})\]&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;IPv6address&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">r&quot;(?:                             (?:{h16}:){{6}} {ls32}&quot;</span>
+                         <span class="s">r&quot;|                            :: (?:{h16}:){{5}} {ls32}&quot;</span>
+                         <span class="s">r&quot;|                    {h16}?  :: (?:{h16}:){{4}} {ls32}&quot;</span>
+                         <span class="s">r&quot;| (?:(?:{h16}:)?     {h16})? :: (?:{h16}:){{3}} {ls32}&quot;</span>
+                         <span class="s">r&quot;| (?:(?:{h16}:){{,2}}{h16})? :: (?:{h16}:){{2}} {ls32}&quot;</span>
+                         <span class="s">r&quot;| (?:(?:{h16}:){{,3}}{h16})? :: (?:{h16}:)      {ls32}&quot;</span>
+                         <span class="s">r&quot;| (?:(?:{h16}:){{,4}}{h16})? ::                 {ls32}&quot;</span>
+                         <span class="s">r&quot;| (?:(?:{h16}:){{,5}}{h16})? ::                 {h16} &quot;</span>
+                         <span class="s">r&quot;| (?:(?:{h16}:){{,6}}{h16})? ::                      )&quot;</span>
+                         <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;ls32&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{h16}:{h16}|{IPv4address})&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;h16&#39;</span><span class="p">,</span> <span class="s">r&quot;[0-9A-Fa-f]{{1,4}}&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;IPv4address&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{dec_octet}\.){{3}}{dec_octet}&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;dec_octet&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;IPvFuture&#39;</span><span class="p">,</span> <span class="s">r&quot;v[0-9A-Fa-f]+\.(?:{unreserved}|{sub_delims}|:)+&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;unreserved&#39;</span><span class="p">,</span> <span class="s">r&quot;[a-zA-Z0-9_.~-]&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;reserved&#39;</span><span class="p">,</span> <span class="s">r&quot;(?:{gen_delims}|{sub_delims})&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;pct_encoded&#39;</span><span class="p">,</span> <span class="s">r&quot;%[0-9A-Fa-f][0-9A-Fa-f]&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;gen_delims&#39;</span><span class="p">,</span> <span class="s">r&quot;[:/?#[\]@]&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;sub_delims&#39;</span><span class="p">,</span> <span class="s">r&quot;[!$&amp;&#39;()*+,;=]&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="c"># Use a dictionary to save the compiled regexs</span>
+    <span class="n">compiled_regex</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c"># Just compute the regex for IRI&#39;s now.</span>
+    <span class="k">for</span> <span class="n">rule_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;IRI&#39;</span><span class="p">,</span> <span class="s">&#39;IRI_reference&#39;</span><span class="p">]:</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">compiled_regex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rule_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">regex</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">final_regex</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">_rules</span><span class="p">):</span>
+                <span class="n">final_regex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">final_regex</span><span class="p">)</span>
+
+            <span class="n">regex_str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;^%(&#39;</span><span class="p">,</span> <span class="n">rule_type</span><span class="p">,</span> <span class="s">&#39;)s$&#39;</span><span class="p">])</span>
+            <span class="n">regex_str</span> <span class="o">=</span> <span class="n">regex_str</span> <span class="o">%</span> <span class="n">final_regex</span>
+
+            <span class="c"># ``\u`` and ``\U`` escapes must be preprocessed</span>
+            <span class="c"># http://bugs.python.org/issue3665</span>
+            <span class="n">unicode_wrap</span> <span class="o">=</span> <span class="s">&#39;u&quot;&quot;&quot;{0}&quot;&quot;&quot;&#39;</span>
+            <span class="n">regex_str</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">unicode_wrap</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regex_str</span><span class="p">))</span>
+
+            <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex_str</span><span class="p">)</span>
+            <span class="n">compiled_regex</span><span class="p">[</span><span class="n">rule_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">regex</span>
+    <span class="k">del</span> <span class="n">_rules</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="URIValidator.validate"><a class="viewcode-back" href="../../../../vmware.vapi.bindings.html#vmware.vapi.bindings.uri_helper.URIValidator.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">iri</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate the given IRI string</span>
+
+<span class="sd">        :type  iri: :class:`str`</span>
+<span class="sd">        :param iri: IRI string to be validated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Input could be an absolute or relative IRI string, validate</span>
+        <span class="c"># it against both of them</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">for</span> <span class="n">iri_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;IRI&#39;</span><span class="p">,</span> <span class="s">&#39;IRI_reference&#39;</span><span class="p">]:</span>
+            <span class="n">regex</span> <span class="o">=</span> <span class="n">URIValidator</span><span class="o">.</span><span class="n">compiled_regex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">iri_type</span><span class="p">)</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">iri</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">message_factory</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span>
+                <span class="s">&#39;vapi.bindings.typeconverter.uri.invalid.format&#39;</span><span class="p">,</span>
+                <span class="nb">repr</span><span class="p">(</span><span class="n">iri</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">CoreException</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">vCloud Suite SDK for Python 6.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, VMware, Inc..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
