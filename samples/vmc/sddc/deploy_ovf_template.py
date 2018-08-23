@@ -18,7 +18,7 @@ __vcenter_version__ = 'VMware Cloud on AWS'
 
 from com.vmware.content.library_client import Item
 from com.vmware.vcenter.ovf_client import LibraryItem
-from com.vmware.vcenter_client import ResourcePool
+from com.vmware.vcenter_client import ResourcePool, Folder
 from vmware.vapi.vsphere.client import create_vsphere_client
 
 from samples.vsphere.common import sample_cli, sample_util
@@ -34,24 +34,37 @@ class DeployOvfTemplate:
     """
 
     def __init__(self):
+
+        self.vm_name = 'deployed-vm-' + str(generate_random_uuid())
+
         parser = sample_cli.build_arg_parser()
+        parser.add_argument('--libitemname',
+                            required=True,
+                            help='(Required) The name of the library item to deploy. '
+                                 'The library item should contain an OVF package.')
+
+        parser.add_argument('--vmname',
+                            default=self.vm_name,
+                            help='(Optional) The name of the Virtual Machine to be deployed. '
+                                 'Default: "{}"'.format(self.vm_name))
 
         parser.add_argument('--resourcepoolname',
                             default='Compute-ResourcePool',
-                            help='The name of the resource pool to be used.')
+                            help='(Optional) The name of the resource pool to be used. '
+                                 'Default: "Compute-ResourcePool"')
 
-        parser.add_argument('--libitemname',
-                            required=True,
-                            help='The name of the library item to deploy.'
-                                 'The library item should contain an OVF package.')
+        parser.add_argument('--foldername',
+                            default='Workloads',
+                            help='(Optional) The name of the folder to be used. '
+                                 'Default: "Workloads"')
 
         args = sample_util.process_cli_args(parser.parse_args())
 
         self.vm_id = None
-        self.vm_name = 'deployed-vm-' + str(generate_random_uuid())
-
         self.lib_item_name = args.libitemname
+        self.vm_name = args.vmname
         self.resourcepoolname = args.resourcepoolname
+        self.foldername = args.foldername
         self.cleardata = args.cleardata
 
         # Connect to vAPI Endpoint on vCenter Server
@@ -61,16 +74,27 @@ class DeployOvfTemplate:
 
     def deploy_ovf_template(self):
 
-        # Build the deployment target with resource pool ID
-        filter_spec = ResourcePool.FilterSpec(names=set([self.resourcepoolname]))
-        resource_pool_summaries = self.client.vcenter.ResourcePool.list(filter_spec)
+        # Build the deployment target with resource pool ID and folder ID
+        rp_filter_spec = ResourcePool.FilterSpec(names=set([self.resourcepoolname]))
+        resource_pool_summaries = self.client.vcenter.ResourcePool.list(rp_filter_spec)
         if not resource_pool_summaries:
             raise ValueError("Resource pool with name '{}' not found".
                              format(self.resourcepoolname))
         resource_pool_id = resource_pool_summaries[0].resource_pool
         print('Resource pool ID: {}'.format(resource_pool_id))
+
+        folder_filter_spec = Folder.FilterSpec(names=set([self.foldername]))
+        folder_summaries = self.client.vcenter.Folder.list(folder_filter_spec)
+        if not folder_summaries:
+            raise ValueError("Folder with name '{}' not found".
+                             format(self.foldername))
+        folder_id = folder_summaries[0].folder
+        print('Folder ID: {}'.format(folder_id))
+
         deployment_target = LibraryItem.DeploymentTarget(
-            resource_pool_id=resource_pool_id)
+            resource_pool_id=resource_pool_id,
+            folder_id=folder_id
+        )
 
         # Find the library item
         find_spec = Item.FindSpec(name=self.lib_item_name)
@@ -108,8 +132,8 @@ class DeployOvfTemplate:
 
         # The type and ID of the target deployment is available in the deployment result.
         if result.succeeded:
-            print('Deployment successful. Result resource: {}, ID: {}'
-                  .format(result.resource_id.type, result.resource_id.id))
+            print('Deployment successful. VM Name: "{}", ID: "{}"'
+                  .format(self.vm_name, result.resource_id.id))
             self.vm_id = result.resource_id.id
             error = result.error
             if error is not None:
