@@ -25,6 +25,7 @@ from samples.vsphere.common.ssl_helper import get_unverified_session
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
 
+
 class ListServices(object):
     """
     Demonstrates the details of vCenter Services
@@ -35,8 +36,7 @@ class ListServices(object):
         - vCenter Server
     """
 
-
-    def  __init__(self):
+    def __init__(self):
         # Create argument parser for standard inputs:
         # server, username, password and skipverification
         parser = sample_cli.build_arg_parser()
@@ -51,10 +51,11 @@ class ListServices(object):
                                             username=args.username,
                                             password=args.password,
                                             session=session)
+
     def run(self):
         services_list = self.client.vcenter.services.Service.list_details()
         table = []
-        for key,value in services_list.items():
+        for key, value in services_list.items():
             row = [key,
                    value.name_key,
                    value.health,
@@ -62,11 +63,13 @@ class ListServices(object):
                    value.startup_type]
             table.append(row)
         headers = ["Service Name", "Service Name Key", "Service Health", "Service Status", "Service Startup Type"]
-        print(tabulate(table,headers))
+        print(tabulate(table, headers))
+
 
 def main():
     list_services = ListServices()
     list_services.run()
+
 
 if __name__ == '__main__':
     main()

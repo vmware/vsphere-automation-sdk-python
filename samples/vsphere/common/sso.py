@@ -15,7 +15,7 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2013, 2016, 2017 VMware, Inc. All rights reserved.'
 
 
-#Standard library imports.
+# Standard library imports.
 import six.moves.http_client
 import re
 from six import PY3
@@ -33,7 +33,7 @@ from pyVmomi import ThumbprintMismatchException
 from uuid import uuid4
 from io import BytesIO
 from six.moves.urllib.parse import urlparse
-#Third-party imports.
+# Third-party imports.
 from lxml import etree
 from OpenSSL import crypto
 import ssl
@@ -41,6 +41,7 @@ import ssl
 UTF_8 = 'utf-8'
 SHA256 = 'sha256'
 SHA512 = 'sha512'
+
 
 def _extract_certificate(cert):
     '''
@@ -72,6 +73,7 @@ class SoapException(Exception):
     '''
     Exception raised in case of STS request failure.
     '''
+
     def __init__(self, soap_msg, fault_code, fault_string):
         '''
         Initializer for SoapException.
@@ -104,6 +106,7 @@ class SSOHTTPSConnection(six.moves.http_client.HTTPSConnection):
     '''
     An HTTPS class that verifies server's certificate on connect.
     '''
+
     def __init__(self, *args, **kwargs):
         '''
         Initializer.  See httplib.HTTPSConnection for other arguments
@@ -154,7 +157,7 @@ class SSOHTTPSConnection(six.moves.http_client.HTTPSConnection):
                 self.sock.close()
                 self.sock = None
                 raise ThumbprintMismatchException(
-                   expected=self.server_thumbprint, actual=thumbprint)
+                    expected=self.server_thumbprint, actual=thumbprint)
 
     def connect(self):
         '''
@@ -407,7 +410,8 @@ class SsoAuthenticator(object):
         @rtype: C{str}
         @return: The SAML assertion.
         '''
-        import sspi, win32api
+        import sspi
+        import win32api
         spn = "sts/%s.com" % win32api.GetDomainName()
         sspiclient = sspi.ClientAuth("Kerberos", targetspn=spn)
         in_buf = None
@@ -467,7 +471,8 @@ class SsoAuthenticator(object):
         @rtype: C{str}
         @return: The SAML assertion in Unicode.
         '''
-        import kerberos, platform
+        import kerberos
+        import platform
         service = 'host@%s' % platform.node()
         _, context = kerberos.authGSSClientInit(service, 0)
         challenge = ''
@@ -533,7 +538,7 @@ class SsoAuthenticator(object):
                             token_duration, delegatable, renewable)
         else:
             raise Exception("Currently, not supported on this platform")
-            ## TODO Remove this exception once SSO supports validation of tickets
+            # TODO Remove this exception once SSO supports validation of tickets
             #       generated against host machines
             # saml_token = self._get_bearer_saml_assertion_lin(request_duration, token_duration, delegatable)
         return saml_token
@@ -647,13 +652,14 @@ class SsoAuthenticator(object):
                 {'saml2': "urn:oasis:names:tc:SAML:2.0:assertion"}),
             pretty_print=False).decode(UTF_8)
 
+
 class SecurityTokenRequest(object):
     '''
     SecurityTokenRequest class handles the serialization of request to the STS
     for a SAML token.
     '''
 
-    #pylint: disable=R0902
+    # pylint: disable=R0902
     def __init__(self,
                  username=None,
                  password=None,
@@ -699,8 +705,7 @@ class SecurityTokenRequest(object):
         self._expires = time.strftime(TIME_FORMAT,
                                       time.gmtime(current + token_duration))
         self._request_expires = time.strftime(TIME_FORMAT,
-                                              time.gmtime(current +
-                                                          request_duration))
+                                              time.gmtime(current + request_duration))
         self._timestamp = TIMESTAMP_TEMPLATE % self.__dict__
         self._username = escape(username) if username else username
         self._password = escape(password) if password else password
@@ -714,9 +719,9 @@ class SecurityTokenRequest(object):
         self._binary_exchange = None
         self._public_key = None
         if gss_binary_token:
-            self._binary_exchange =  BINARY_EXCHANGE_TEMPLATE % gss_binary_token
-        #The following are populated later. Set to None here to keep in-line
-        #with PEP8.
+            self._binary_exchange = BINARY_EXCHANGE_TEMPLATE % gss_binary_token
+        # The following are populated later. Set to None here to keep in-line
+        # with PEP8.
         self._binary_security_token = None
         self._hok_token = hok_token
         self._key_type = None
@@ -730,7 +735,7 @@ class SecurityTokenRequest(object):
         self._xml = None
         self._request_digest = None
 
-        #These will only be populated if requesting an HoK token.
+        # These will only be populated if requesting an HoK token.
         if self._private_key_file:
             with open(self._private_key_file) as fp:
                 self._private_key = fp.read()
@@ -942,14 +947,16 @@ def _load_private_key(der_key):
     for key_type in ('PRIVATE KEY', 'RSA PRIVATE KEY'):
         try:
             return crypto.load_privatekey(crypto.FILETYPE_PEM,
-                                          '-----BEGIN ' + key_type + '-----\n' +
-                                          base64.encodestring(der_key).decode(UTF_8) +
-                                          '-----END ' + key_type + '-----\n',
+                                          '-----BEGIN {}-----\n{}-----END {}-----\n'.format(
+                                              key_type,
+                                              base64.encodestring(der_key).decode(UTF_8),
+                                              key_type),
                                           b'')
         except (crypto.Error, ValueError):
             pass
     # We could try 'ENCRYPTED PRIVATE KEY' here - but we do not know passphrase.
     raise
+
 
 def _sign(private_key, data, digest=SHA256):
     '''
@@ -972,6 +979,7 @@ def _sign(private_key, data, digest=SHA256):
     pkey = _load_private_key(_extract_certificate(private_key))
     return base64.b64encode(crypto.sign(pkey, data, digest))
 
+
 def _canonicalize(xml_string):
     '''
     Given an xml string, canonicalize the string per
@@ -988,6 +996,7 @@ def _canonicalize(xml_string):
     string = BytesIO()
     tree.write_c14n(string, exclusive=True, with_comments=False)
     return string.getvalue().decode(UTF_8)
+
 
 def _extract_element(xml, element_name, namespace):
     '''
@@ -1042,9 +1051,9 @@ def _make_hash_sha512(data):
 
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.987Z"
 
-#The SAML token requests usually contain an xmldsig which guarantees that the
-#message hasn't been tampered with during the transport. The following
-#SIGNED_INFO_TEMPLATE is used to construct the signedinfo part of the signature.
+# The SAML token requests usually contain an xmldsig which guarantees that the
+# message hasn't been tampered with during the transport. The following
+# SIGNED_INFO_TEMPLATE is used to construct the signedinfo part of the signature.
 SIGNED_INFO_TEMPLATE = """\
 <ds:SignedInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
 <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
@@ -1066,11 +1075,11 @@ SIGNED_INFO_TEMPLATE = """\
 </ds:SignedInfo>
 """
 
-#The following template is used as the container for signed info in WS-Trust
-#SOAP requests signed with the SAML token. It contains the digest of the
-#signed info, signed with the private key of the Solution user and contains a
-#reference to the actual SAML token which contains the solution user's public
-#key.
+# The following template is used as the container for signed info in WS-Trust
+# SOAP requests signed with the SAML token. It contains the digest of the
+# signed info, signed with the private key of the Solution user and contains a
+# reference to the actual SAML token which contains the solution user's public
+# key.
 REQUEST_SIGNATURE_TEMPLATE = """\
 <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
 %(_signed_info)s
@@ -1084,9 +1093,9 @@ REQUEST_SIGNATURE_TEMPLATE = """\
 </ds:KeyInfo>
 </ds:Signature>"""
 
-#The following template is used as a signed info container for the actual SAML
-#token requests requesting a SAML token. It contains the digest of the signed
-#info signed with the Service User's private key.
+# The following template is used as a signed info container for the actual SAML
+# token requests requesting a SAML token. It contains the digest of the signed
+# info signed with the Service User's private key.
 SIGNATURE_TEMPLATE = """\
 <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="%(_signature_id)s">
 %(_signed_info)s
@@ -1098,7 +1107,7 @@ SIGNATURE_TEMPLATE = """\
 </ds:KeyInfo>
 </ds:Signature>"""
 
-#The following template is used to construct the token requests to the STS.
+# The following template is used to construct the token requests to the STS.
 REQUEST_TEMPLATE = """\
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
 <SOAP-ENV:Header>
@@ -1128,7 +1137,7 @@ REQUEST_TEMPLATE = """\
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>"""
 
-#The following template is used to construct the token-by-token requests to the STS.
+# The following template is used to construct the token-by-token requests to the STS.
 REQUEST_TEMPLATE_TOKEN_BY_TOKEN = """\
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
 <SOAP-ENV:Header>
@@ -1185,8 +1194,8 @@ GSS_REQUEST_TEMPLATE = """\
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>"""
 
-#Template container for the service user's public key when requesting an HoK
-#token.
+# Template container for the service user's public key when requesting an HoK
+# token.
 BINARY_SECURITY_TOKEN_TEMPLATE = """\
 <ns2:BinarySecurityToken xmlns:ns1="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
                          xmlns:ns2="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
@@ -1195,19 +1204,19 @@ BINARY_SECURITY_TOKEN_TEMPLATE = """\
                          ns1:Id="%(_security_token_id)s">%(_binary_security_token)s</ns2:BinarySecurityToken>
 """
 
-#Template container for user's credentials when requesting a bearer token.
+# Template container for user's credentials when requesting a bearer token.
 USERNAME_TOKEN_TEMPLATE = """\
 <ns2:UsernameToken xmlns:ns2="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
 <ns2:Username>%(_username)s</ns2:Username>
 <ns2:Password>%(_password)s</ns2:Password>
 </ns2:UsernameToken>"""
 
-#Template containing the anchor to the signature.
+# Template containing the anchor to the signature.
 USE_KEY_TEMPLATE = """\
 <UseKey Sig="%(_signature_id)s"/>"""
 
-#The follwoing template is used to create a timestamp for the various messages.
-#The timestamp is used to indicate the duration of the request itself.
+# The follwoing template is used to create a timestamp for the various messages.
+# The timestamp is used to indicate the duration of the request itself.
 TIMESTAMP_TEMPLATE = """\
 <ns3:Timestamp xmlns:ns3="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" ns3:Id="%(_timestamp_id)s">
 <ns3:Created>%(_created)s</ns3:Created><ns3:Expires>%(_request_expires)s</ns3:Expires></ns3:Timestamp>"""

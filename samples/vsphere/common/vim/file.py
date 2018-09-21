@@ -19,7 +19,7 @@ from samples.vsphere.common.vim.inventory import get_datastore_mo
 
 from samples.vsphere.common.vim import datastore_file
 
-datastore_path_regex = re.compile('\[(.+)\]\s?(.*)')
+datastore_path_regex = re.compile(br'\[(.+)\]\s?(.*)')
 
 
 def parse_datastore_path(datastore_path):

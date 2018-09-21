@@ -87,11 +87,11 @@ def run():
 
     print('\n# Example: Create SCSI adapter with defaults')
     scsi_create_spec = Scsi.CreateSpec()
-    scsi =  client.vcenter.vm.hardware.adapter.Scsi.create(vm, scsi_create_spec)
+    scsi = client.vcenter.vm.hardware.adapter.Scsi.create(vm, scsi_create_spec)
     print('vm.hardware.adapter.Scsi.create({}, {}) -> {}'.
           format(vm, scsi_create_spec, scsi))
     scsis_to_delete.append(scsi)
-    scsi_info =  client.vcenter.vm.hardware.adapter.Scsi.get(vm, scsi)
+    scsi_info = client.vcenter.vm.hardware.adapter.Scsi.get(vm, scsi)
     print('vm.hardware.adapter.Scsi.get({}, {}) -> {}'.
           format(vm, scsi, pp(scsi_info)))
 
@@ -112,7 +112,7 @@ def run():
     client.vcenter.vm.hardware.adapter.Scsi.update(vm, scsi, scsi_update_spec)
     print('vm.hardware.adapter.Scsi.update({}, {}, {})'.
           format(vm, scsi, scsi_create_spec))
-    scsi_info =  client.vcenter.vm.hardware.adapter.Scsi.get(vm, scsi)
+    scsi_info = client.vcenter.vm.hardware.adapter.Scsi.get(vm, scsi)
     print('vm.hardware.adapter.Scsi.get({}, {}) -> {}'.
           format(vm, scsi, pp(scsi_info)))
 

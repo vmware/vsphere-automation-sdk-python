@@ -58,6 +58,7 @@ def setup(context=None):
                                        password=password,
                                        session=session)
 
+
 def run():
     global vm
     vm = get_vm(client, vm_name)

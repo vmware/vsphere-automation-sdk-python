@@ -128,5 +128,6 @@ def main():
     log_forwarding.setup()
     log_forwarding.run()
 
+
 if __name__ == '__main__':
     main()
