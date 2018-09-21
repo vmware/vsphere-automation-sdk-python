@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vcenter.vm package &mdash; vSphere Automation SDK for Python 6.8.0 documentation</title>
+  <title>com.vmware.vcenter.vm package &mdash; vSphere Automation SDK for Python 6.8.1 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -59,7 +58,7 @@
             
             
               <div class="version">
-                6.8.0
+                6.8.1
               </div>
             
           
@@ -193,6 +192,114 @@
 </div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-com.vmware.vcenter.vm.compute_client">
+<span id="com-vmware-vcenter-vm-compute-client-module"></span><h2>com.vmware.vcenter.vm.compute_client module<a class="headerlink" href="#module-com.vmware.vcenter.vm.compute_client" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.vm.compute_client</span></code> module provides classes for
+quering the status of compute policies on virtual machines.</p>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.compute_client.Policies">
+<em class="property">class </em><code class="descclassname">com.vmware.vcenter.vm.compute_client.</code><code class="descname">Policies</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.compute_client.Policies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Policies</span></code> class provides methods to query the status of policies on
+virtual machines. <strong>Warning:</strong> This class is available as technical
+preview. It may be changed in a future release.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.compute_client.Policies.Info">
+<em class="property">class </em><code class="descname">Info</code><span class="sig-paren">(</span><em>status=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.compute_client.Policies.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Policies.Info</span></code> class contains information about the compliance of a
+virtual machine with a compute policy. <strong>Warning:</strong> This class is available
+as technical preview. It may be changed in a future release.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<a class="reference internal" href="com.vmware.vcenter.compute.html#com.vmware.vcenter.compute.policies_client.Status.Compliance" title="com.vmware.vcenter.compute.policies_client.Status.Compliance"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies_client.Status.Compliance</span></code></a>) – The compliance status of the policy on a specified object.
+<strong>Warning:</strong> This attribute is available as technical preview. It
+may be changed in a future release.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.compute_client.Policies.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>vm</em>, <em>policy</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.compute_client.Policies.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns information about the compliance of a virtual machine with a
+compute policy. <strong>Warning:</strong> This method is available as technical
+preview. It may be changed in a future release.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the virtual machine to query the status for.
+The parameter must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">VirtualMachine</span></code>.</li>
+<li><strong>policy</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the policy to query the status for.
+The parameter must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.Policy</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.vcenter.vm.compute_client.Policies.Info" title="com.vmware.vcenter.vm.compute_client.Policies.Info"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policies.Info</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Information about the compliance of the specified virtual machine
+with the specified compute policy.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+if a virtual machine with the given identifier does not exist, or
+if a policy with the given identifier does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+if the user doesn’t have the required privileges.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <code class="docutils literal notranslate"><span class="pre">System.Read</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.compute_client.StubFactory">
+<em class="property">class </em><code class="descclassname">com.vmware.vcenter.vm.compute_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.compute_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
+<p>Initialize StubFactoryBase</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-com.vmware.vcenter.vm.guest_client">
 <span id="com-vmware-vcenter-vm-guest-client-module"></span><h2>com.vmware.vcenter.vm.guest_client module<a class="headerlink" href="#module-com.vmware.vcenter.vm.guest_client" title="Permalink to this headline">¶</a></h2>
@@ -6545,7 +6652,7 @@ accessed.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'6.8.0',
+            VERSION:'6.8.1',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -6556,13 +6663,11 @@ accessed.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

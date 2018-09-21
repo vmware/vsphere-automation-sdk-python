@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc.orgs package &mdash; VMware Cloud on AWS Console API 1.2.0 documentation</title>
+  <title>com.vmware.vmc.orgs package &mdash; VMware Cloud on AWS Console API 1.3.0 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -59,7 +58,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.3.0
               </div>
             
           
@@ -226,7 +225,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.dns_client">com.vmware.vmc.orgs.sddcs.dns_client module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.mgw_client">com.vmware.vmc.orgs.sddcs.mgw_client module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.networking_client">com.vmware.vmc.orgs.sddcs.networking_client module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.networks_client">com.vmware.vmc.orgs.sddcs.networks_client module</a></li>
 </ul>
 </li>
@@ -252,7 +251,7 @@
 </table>
 <dl class="method">
 <dt id="com.vmware.vmc.orgs.account_link_client.CompatibleSubnets.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>linked_account_id=None</em>, <em>region=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.CompatibleSubnets.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>linked_account_id=None</em>, <em>region=None</em>, <em>sddc=None</em>, <em>force_refresh=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.CompatibleSubnets.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a customer’s compatible subnets for account linking</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -262,6 +261,9 @@
 <li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
 <li><strong>linked_account_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The linked connected account identifier (optional)</li>
 <li><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The region of the cloud resources to work in (optional)</li>
+<li><strong>sddc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – sddc (optional)</li>
+<li><strong>force_refresh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – When true, forces the mappings for datacenters to be refreshed for
+the connected account. (optional)</li>
 </ul>
 </td>
 </tr>
@@ -324,7 +326,7 @@ Unauthorized</td>
 </table>
 <dl class="method">
 <dt id="com.vmware.vmc.orgs.account_link_client.CompatibleSubnetsAsync.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>linked_account_id=None</em>, <em>region=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.CompatibleSubnetsAsync.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>linked_account_id=None</em>, <em>region=None</em>, <em>sddc=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.CompatibleSubnetsAsync.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a customer’s compatible subnets for account linking via a task.
 The information is returned as a member of the task (found in
 task.params[‘subnet_list_result’] when you are notified it is
@@ -338,6 +340,7 @@ complete), and it’s documented under ref
 <li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
 <li><strong>linked_account_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The linked connected account identifier (optional)</li>
 <li><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The region of the cloud resources to work in (optional)</li>
+<li><strong>sddc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – sddc (optional)</li>
 </ul>
 </td>
 </tr>
@@ -581,6 +584,111 @@ Unauthorized</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-com.vmware.vmc.orgs.reservations_client">
+<span id="com-vmware-vmc-orgs-reservations-client-module"></span><h2>com.vmware.vmc.orgs.reservations_client module<a class="headerlink" href="#module-com.vmware.vmc.orgs.reservations_client" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="com.vmware.vmc.orgs.reservations_client.Mw">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.orgs.reservations_client.</code><code class="descname">Mw</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.reservations_client.Mw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="com.vmware.vmc.orgs.reservations_client.Mw.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>reservation</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.reservations_client.Mw.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the maintenance window for this SDDC</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
+<li><strong>reservation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Reservation Identifier (required)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.MaintenanceWindowGet" title="com.vmware.vmc.model_client.MaintenanceWindowGet"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.MaintenanceWindowGet</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.vmc.model.MaintenanceWindowGet</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Access not allowed to the operation for the current user</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vmc.orgs.reservations_client.Mw.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>org</em>, <em>reservation</em>, <em>window</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.reservations_client.Mw.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>update the maintenance window for this SDDC</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
+<li><strong>reservation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Reservation Identifier (required)</li>
+<li><strong>window</strong> (<a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.MaintenanceWindow" title="com.vmware.vmc.model_client.MaintenanceWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.MaintenanceWindow</span></code></a>) – Maintenance Window (required)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.MaintenanceWindow" title="com.vmware.vmc.model_client.MaintenanceWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.MaintenanceWindow</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.vmc.model.MaintenanceWindow</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+The reservation is not in a state that’s valid for updates</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ConcurrentChange</span></code> 
+Conflict with exiting reservation</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Access not allowed to the operation for the current user</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.orgs.reservations_client.StubFactory">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.orgs.reservations_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.reservations_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
+<p>Initialize StubFactoryBase</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-com.vmware.vmc.orgs.sddcs_client">
 <span id="com-vmware-vmc-orgs-sddcs-client-module"></span><h2>com.vmware.vmc.orgs.sddcs_client module<a class="headerlink" href="#module-com.vmware.vmc.orgs.sddcs_client" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -598,7 +706,7 @@ Unauthorized</p>
 <dl class="method">
 <dt id="com.vmware.vmc.orgs.sddcs_client.Clusters.create">
 <code class="descname">create</code><span class="sig-paren">(</span><em>org</em>, <em>sddc</em>, <em>cluster_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.sddcs_client.Clusters.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a cluster in the target sddc</p>
+<dd><p>Creates a new cluster in customers sddcs with passed clusterConfig.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1092,6 +1200,159 @@ Unauthorized</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-com.vmware.vmc.orgs.tbrs_client">
+<span id="com-vmware-vmc-orgs-tbrs-client-module"></span><h2>com.vmware.vmc.orgs.tbrs_client module<a class="headerlink" href="#module-com.vmware.vmc.orgs.tbrs_client" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="com.vmware.vmc.orgs.tbrs_client.Reservation">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.orgs.tbrs_client.</code><code class="descname">Reservation</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.tbrs_client.Reservation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="com.vmware.vmc.orgs.tbrs_client.Reservation.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>org</em>, <em>sddc_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.tbrs_client.Reservation.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retreive all reservations for all SDDCs in this org</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
+<li><strong>sddc_state</strong> (<a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.SddcStateRequest" title="com.vmware.vmc.model_client.SddcStateRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.SddcStateRequest</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – SDDCs and/or states to query (optional)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.ReservationWindow" title="com.vmware.vmc.model_client.ReservationWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.ReservationWindow</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Bad Call</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.orgs.tbrs_client.StubFactory">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.orgs.tbrs_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.tbrs_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
+<p>Initialize StubFactoryBase</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.orgs.tbrs_client.SupportWindow">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.orgs.tbrs_client.</code><code class="descname">SupportWindow</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.tbrs_client.SupportWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="com.vmware.vmc.orgs.tbrs_client.SupportWindow.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.tbrs_client.SupportWindow.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all available support windows</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.SupportWindow" title="com.vmware.vmc.model_client.SupportWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.SupportWindow</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Invalid request</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+No support windows are available</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vmc.orgs.tbrs_client.SupportWindow.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>org</em>, <em>id</em>, <em>sddc_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.tbrs_client.SupportWindow.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move Sddc to new support window</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
+<li><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Target Support Window ID (required)</li>
+<li><strong>sddc_id</strong> (<a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.SddcId" title="com.vmware.vmc.model_client.SddcId"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.SddcId</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – SDDC to move (optional)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.SupportWindow" title="com.vmware.vmc.model_client.SupportWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.SupportWindow</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.vmc.model.SupportWindow</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Invalid request</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Feature does not exist</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -1136,7 +1397,7 @@ Unauthorized</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.0',
+            VERSION:'1.3.0',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1147,13 +1408,11 @@ Unauthorized</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

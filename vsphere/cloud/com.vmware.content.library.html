@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.content.library package &mdash; vSphere Automation SDK for Python 6.8.0 documentation</title>
+  <title>com.vmware.content.library package &mdash; vSphere Automation SDK for Python 6.8.1 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -59,7 +58,7 @@
             
             
               <div class="version">
-                6.8.0
+                6.8.1
               </div>
             
           
@@ -679,6 +678,20 @@ type description page</span></a>.</p>
 <dd><p>Checksum algorithm: SHA-1</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="com.vmware.content.library.item_client.File.ChecksumAlgorithm.SHA256">
+<code class="descname">SHA256</code><em class="property"> = ChecksumAlgorithm(string='SHA256')</em><a class="headerlink" href="#com.vmware.content.library.item_client.File.ChecksumAlgorithm.SHA256" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checksum algorithm: SHA-256. This class attribute was added in vSphere API
+6.8.1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.content.library.item_client.File.ChecksumAlgorithm.SHA512">
+<code class="descname">SHA512</code><em class="property"> = ChecksumAlgorithm(string='SHA512')</em><a class="headerlink" href="#com.vmware.content.library.item_client.File.ChecksumAlgorithm.SHA512" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checksum algorithm: SHA-512. This class attribute was added in vSphere API
+6.8.1</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -696,7 +709,8 @@ names.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>algorithm</strong> (<a class="reference internal" href="#com.vmware.content.library.item_client.File.ChecksumAlgorithm" title="com.vmware.content.library.item_client.File.ChecksumAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">File.ChecksumAlgorithm</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The checksum algorithm (SHA1, MD5) used to calculate the checksum.
+<li><strong>algorithm</strong> (<a class="reference internal" href="#com.vmware.content.library.item_client.File.ChecksumAlgorithm" title="com.vmware.content.library.item_client.File.ChecksumAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">File.ChecksumAlgorithm</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The checksum algorithm (SHA1, MD5, SHA256, SHA512) used to
+calculate the checksum.
 If not specified the default checksum algorithm is
 <a class="reference internal" href="#com.vmware.content.library.item_client.File.ChecksumAlgorithm.SHA1" title="com.vmware.content.library.item_client.File.ChecksumAlgorithm.SHA1"><code class="xref py py-attr docutils literal notranslate"><span class="pre">File.ChecksumAlgorithm.SHA1</span></code></a>.</li>
 <li><strong>checksum</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The checksum value calculated with
@@ -1506,11 +1520,63 @@ referenced by the parameter <code class="docutils literal notranslate"><span cla
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="com.vmware.content.library.item_client.UpdateSession.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>update_session_id</em>, <em>update_spec</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.content.library.item_client.UpdateSession.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the properties of an update session.</p>
+<p>This is an incremental update to the update session. Any attribute in
+the <a class="reference internal" href="#com.vmware.content.library.item_client.UpdateSessionModel" title="com.vmware.content.library.item_client.UpdateSessionModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">UpdateSessionModel</span></code></a> class that is None will not be
+modified.</p>
+<p>This method will only update the property
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">UpdateSessionModel.warning_behavior</span></code> of the update session. This
+will not, for example, update the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">UpdateSessionModel.library_item_id</span></code> or
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">UpdateSessionModel.state</span></code> of an update session.</p>
+<p>This method requires the session to be in the
+<a class="reference internal" href="#com.vmware.content.library.item_client.UpdateSessionModel.State.ACTIVE" title="com.vmware.content.library.item_client.UpdateSessionModel.State.ACTIVE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">UpdateSessionModel.State.ACTIVE</span></code></a> state.. This method was added
+in vSphere API 6.8.1</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>update_session_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifer of the update session that should be updated.
+The parameter must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.content.library.item.UpdateSession</span></code>.</li>
+<li><strong>update_spec</strong> (<a class="reference internal" href="#com.vmware.content.library.item_client.UpdateSessionModel" title="com.vmware.content.library.item_client.UpdateSessionModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">UpdateSessionModel</span></code></a>) – Specification for the new property values to be set on the update
+session.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+if the update session does not exist.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></code> 
+if the update session is not in the
+<a class="reference internal" href="#com.vmware.content.library.item_client.UpdateSessionModel.State.ACTIVE" title="com.vmware.content.library.item_client.UpdateSessionModel.State.ACTIVE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">UpdateSessionModel.State.ACTIVE</span></code></a> state.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></code> 
+if the update session specification is not valid.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code>
+if you do not have all of the privileges described as follows:</p>
+<ul class="last simple">
+<li>Method execution requires <code class="docutils literal notranslate"><span class="pre">System.Anonymous</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="com.vmware.content.library.item_client.UpdateSessionModel">
-<em class="property">class </em><code class="descclassname">com.vmware.content.library.item_client.</code><code class="descname">UpdateSessionModel</code><span class="sig-paren">(</span><em>id=None</em>, <em>library_item_id=None</em>, <em>library_item_content_version=None</em>, <em>error_message=None</em>, <em>client_progress=None</em>, <em>state=None</em>, <em>expiration_time=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.content.library.item_client.UpdateSessionModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.content.library.item_client.</code><code class="descname">UpdateSessionModel</code><span class="sig-paren">(</span><em>id=None</em>, <em>library_item_id=None</em>, <em>library_item_content_version=None</em>, <em>error_message=None</em>, <em>client_progress=None</em>, <em>state=None</em>, <em>expiration_time=None</em>, <em>preview_info=None</em>, <em>warning_behavior=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.content.library.item_client.UpdateSessionModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">UpdateSessionModel</span></code> class provides information on an active
 <a class="reference internal" href="#com.vmware.content.library.item_client.UpdateSession" title="com.vmware.content.library.item_client.UpdateSession"><code class="xref py py-class docutils literal notranslate"><span class="pre">UpdateSession</span></code></a> resource.</p>
@@ -1565,7 +1631,7 @@ This attribute is not used for the <code class="docutils literal notranslate"><s
 always be present in the return value of the <code class="docutils literal notranslate"><span class="pre">get</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code>
 methods. It is not used for the <code class="docutils literal notranslate"><span class="pre">update</span></code> method.</li>
 <li><strong>state</strong> (<a class="reference internal" href="#com.vmware.content.library.item_client.UpdateSessionModel.State" title="com.vmware.content.library.item_client.UpdateSessionModel.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">UpdateSessionModel.State</span></code></a>) – The current state (ACTIVE, DONE, ERROR, CANCELED) of the update
-session.
+session. This attribute was added in vSphere API 6.8.1
 This attribute is not used for the <code class="docutils literal notranslate"><span class="pre">create</span></code> method. It will
 always be present in the return value of the <code class="docutils literal notranslate"><span class="pre">get</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code>
 methods. It is not used for the <code class="docutils literal notranslate"><span class="pre">update</span></code> method.</li>
@@ -1574,6 +1640,19 @@ is guaranteed not to expire earlier than this time.
 This attribute is not used for the <code class="docutils literal notranslate"><span class="pre">create</span></code> method. It will
 always be present in the return value of the <code class="docutils literal notranslate"><span class="pre">get</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code>
 methods. It is not used for the <code class="docutils literal notranslate"><span class="pre">update</span></code> method.</li>
+<li><strong>preview_info</strong> (<a class="reference internal" href="com.vmware.content.library.item.html#com.vmware.content.library.item.updatesession_client.PreviewInfo" title="com.vmware.content.library.item.updatesession_client.PreviewInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.content.library.item.updatesession_client.PreviewInfo</span></code></a>) – A preview of the files currently being uploaded in the session.
+This property will be set only when the session is in the
+<a class="reference internal" href="#com.vmware.content.library.item_client.UpdateSessionModel.State.ACTIVE" title="com.vmware.content.library.item_client.UpdateSessionModel.State.ACTIVE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">UpdateSessionModel.State.ACTIVE</span></code></a>. This attribute was added
+in vSphere API 6.8.1
+This attribute is optional and it is only relevant when the value
+of <code class="docutils literal notranslate"><span class="pre">state</span></code> is <a class="reference internal" href="#com.vmware.content.library.item_client.UpdateSessionModel.State.ACTIVE" title="com.vmware.content.library.item_client.UpdateSessionModel.State.ACTIVE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">UpdateSessionModel.State.ACTIVE</span></code></a>.</li>
+<li><strong>warning_behavior</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="com.vmware.content.library.item.html#com.vmware.content.library.item.updatesession_client.WarningBehavior" title="com.vmware.content.library.item.updatesession_client.WarningBehavior"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.content.library.item.updatesession_client.WarningBehavior</span></code></a>) – Indicates the update session behavior if warnings are raised in the
+session preview. Any warning which is raised by session preview but
+not ignored by the client will, by default, fail the update
+session. This attribute was added in vSphere API 6.8.1
+This attribute is optional for the <code class="docutils literal notranslate"><span class="pre">create</span></code> method. It is
+optional in the return value of the <code class="docutils literal notranslate"><span class="pre">get</span></code> or <code class="docutils literal notranslate"><span class="pre">list</span></code> methods. It
+is optional for the <code class="docutils literal notranslate"><span class="pre">update</span></code> method.</li>
 </ul>
 </td>
 </tr>
@@ -1677,7 +1756,7 @@ Library Service at this stage.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'6.8.0',
+            VERSION:'6.8.1',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1688,13 +1767,11 @@ Library Service at this stage.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

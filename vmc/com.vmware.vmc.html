@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc package &mdash; VMware Cloud on AWS Console API 1.2.0 documentation</title>
+  <title>com.vmware.vmc package &mdash; VMware Cloud on AWS Console API 1.3.0 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -59,7 +58,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.3.0
               </div>
             
           
@@ -226,7 +225,7 @@
 </li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.dns_client">com.vmware.vmc.orgs.sddcs.dns_client module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.mgw_client">com.vmware.vmc.orgs.sddcs.mgw_client module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.networking_client">com.vmware.vmc.orgs.sddcs.networking_client module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.networks_client">com.vmware.vmc.orgs.sddcs.networks_client module</a></li>
 </ul>
 </li>
@@ -234,7 +233,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#module-com.vmware.vmc.orgs.account_link_client">com.vmware.vmc.orgs.account_link_client module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#module-com.vmware.vmc.orgs.reservations_client">com.vmware.vmc.orgs.reservations_client module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#module-com.vmware.vmc.orgs.sddcs_client">com.vmware.vmc.orgs.sddcs_client module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#module-com.vmware.vmc.orgs.tbrs_client">com.vmware.vmc.orgs.tbrs_client module</a></li>
 </ul>
 </li>
 </ul>
@@ -546,7 +547,7 @@ names.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>customer_available_zones</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>vpc_map</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.struct.VapiStruct</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>vpc_map</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <a class="reference internal" href="#com.vmware.vmc.model_client.VpcInfoSubnets" title="com.vmware.vmc.model_client.VpcInfoSubnets"><code class="xref py py-class docutils literal notranslate"><span class="pre">VpcInfoSubnets</span></code></a>) or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 </ul>
 </td>
 </tr>
@@ -655,8 +656,8 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="com.vmware.vmc.model_client.AwsOrgConfiguration">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">AwsOrgConfiguration</code><span class="sig-paren">(</span><em>provider='AWS'</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsOrgConfiguration" title="Permalink to this definition">¶</a></dt>
+<dt id="com.vmware.vmc.model_client.AwsKmsInfo">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">AwsKmsInfo</code><span class="sig-paren">(</span><em>amazon_resource_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsKmsInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -667,13 +668,7 @@ names.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
-<ul class="simple">
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.OrgConfiguration.PROVIDER_AWS" title="com.vmware.vmc.model_client.OrgConfiguration.PROVIDER_AWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">OrgConfiguration.PROVIDER_AWS</span></code></a></li>
-</ul>
-<blockquote>
-<div>Discriminator for provider specific properties</div></blockquote>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>amazon_resource_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The ARN associated with the customer master key for this cluster.</td>
 </tr>
 </tbody>
 </table>
@@ -681,7 +676,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.AwsSddcConfig">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">AwsSddcConfig</code><span class="sig-paren">(</span><em>region=None</em>, <em>vpc_name=None</em>, <em>name=None</em>, <em>account_link_sddc_config=None</em>, <em>vpc_cidr=None</em>, <em>num_hosts=None</em>, <em>sddc_type=None</em>, <em>vxlan_subnet=None</em>, <em>account_link_config=None</em>, <em>provider='AWS'</em>, <em>sso_domain=None</em>, <em>sddc_template_id=None</em>, <em>deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsSddcConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">AwsSddcConfig</code><span class="sig-paren">(</span><em>region=None</em>, <em>name=None</em>, <em>account_link_sddc_config=None</em>, <em>vpc_cidr=None</em>, <em>num_hosts=None</em>, <em>sddc_type=None</em>, <em>vxlan_subnet=None</em>, <em>account_link_config=None</em>, <em>provider='AWS'</em>, <em>sso_domain=None</em>, <em>sddc_template_id=None</em>, <em>deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsSddcConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -694,7 +689,6 @@ names.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </li>
-<li><strong>vpc_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </li>
 <li><strong>account_link_sddc_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.AccountLinkSddcConfig" title="com.vmware.vmc.model_client.AccountLinkSddcConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccountLinkSddcConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A list of the SDDC linking configurations to use.</li>
 <li><strong>vpc_cidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS VPC IP range. Only prefix of 16 or 20 is currently supported.</li>
@@ -773,7 +767,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.AwsSddcResourceConfig">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">AwsSddcResourceConfig</code><span class="sig-paren">(</span><em>account_link_sddc_config=None</em>, <em>public_ip_pool=None</em>, <em>region=None</em>, <em>vpc_info=None</em>, <em>max_num_public_ip=None</em>, <em>vpc_info_peered_agent=None</em>, <em>backup_restore_bucket=None</em>, <em>nsxt=None</em>, <em>mgw_id=None</em>, <em>nsx_mgr_url=None</em>, <em>psc_management_ip=None</em>, <em>psc_url=None</em>, <em>cgws=None</em>, <em>availability_zones=None</em>, <em>management_ds=None</em>, <em>custom_properties=None</em>, <em>cloud_password=None</em>, <em>provider='AWS'</em>, <em>clusters=None</em>, <em>vc_management_ip=None</em>, <em>sddc_networks=None</em>, <em>cloud_username=None</em>, <em>esx_hosts=None</em>, <em>nsx_mgr_management_ip=None</em>, <em>vc_instance_id=None</em>, <em>esx_cluster_id=None</em>, <em>vc_public_ip=None</em>, <em>vc_url=None</em>, <em>sddc_manifest=None</em>, <em>vxlan_subnet=None</em>, <em>cloud_user_group=None</em>, <em>management_rp=None</em>, <em>witness_availability_zone=None</em>, <em>sso_domain=None</em>, <em>deployment_type=None</em>, <em>dns_with_management_vm_private_ip=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsSddcResourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">AwsSddcResourceConfig</code><span class="sig-paren">(</span><em>backup_restore_bucket=None</em>, <em>public_ip_pool=None</em>, <em>vpc_info=None</em>, <em>kms_vpc_endpoint=None</em>, <em>max_num_public_ip=None</em>, <em>account_link_sddc_config=None</em>, <em>region=None</em>, <em>vsan_encryption_config=None</em>, <em>vpc_info_peered_agent=None</em>, <em>mgmt_appliance_network_name=None</em>, <em>dns_with_management_vm_private_ip=None</em>, <em>nsxt=None</em>, <em>mgw_id=None</em>, <em>nsx_mgr_url=None</em>, <em>psc_management_ip=None</em>, <em>psc_url=None</em>, <em>cgws=None</em>, <em>availability_zones=None</em>, <em>management_ds=None</em>, <em>nsx_api_public_endpoint_url=None</em>, <em>custom_properties=None</em>, <em>cloud_password=None</em>, <em>provider='AWS'</em>, <em>clusters=None</em>, <em>vc_management_ip=None</em>, <em>sddc_networks=None</em>, <em>cloud_username=None</em>, <em>esx_hosts=None</em>, <em>nsx_mgr_management_ip=None</em>, <em>vc_instance_id=None</em>, <em>esx_cluster_id=None</em>, <em>vc_public_ip=None</em>, <em>vc_url=None</em>, <em>sddc_manifest=None</em>, <em>vxlan_subnet=None</em>, <em>cloud_user_group=None</em>, <em>management_rp=None</em>, <em>witness_availability_zone=None</em>, <em>esx_host_subnet=None</em>, <em>sso_domain=None</em>, <em>deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsSddcResourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -785,13 +779,18 @@ names.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>account_link_sddc_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.SddcLinkConfig" title="com.vmware.vmc.model_client.SddcLinkConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SddcLinkConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>public_ip_pool</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.SddcPublicIp" title="com.vmware.vmc.model_client.SddcPublicIp"><code class="xref py py-class docutils literal notranslate"><span class="pre">SddcPublicIp</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>vpc_info</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.VpcInfo" title="com.vmware.vmc.model_client.VpcInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">VpcInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>max_num_public_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – maximum number of public IP that user can allocate.</li>
-<li><strong>vpc_info_peered_agent</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.VpcInfo" title="com.vmware.vmc.model_client.VpcInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">VpcInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>backup_restore_bucket</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>public_ip_pool</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.SddcPublicIp" title="com.vmware.vmc.model_client.SddcPublicIp"><code class="xref py py-class docutils literal notranslate"><span class="pre">SddcPublicIp</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>vpc_info</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.VpcInfo" title="com.vmware.vmc.model_client.VpcInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">VpcInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>kms_vpc_endpoint</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.KmsVpcEndpoint" title="com.vmware.vmc.model_client.KmsVpcEndpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">KmsVpcEndpoint</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>max_num_public_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – maximum number of public IP that user can allocate.</li>
+<li><strong>account_link_sddc_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.SddcLinkConfig" title="com.vmware.vmc.model_client.SddcLinkConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SddcLinkConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>vsan_encryption_config</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.VsanEncryptionConfig" title="com.vmware.vmc.model_client.VsanEncryptionConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">VsanEncryptionConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>vpc_info_peered_agent</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.VpcInfo" title="com.vmware.vmc.model_client.VpcInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">VpcInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>mgmt_appliance_network_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Name for management appliance network.</li>
+<li><strong>dns_with_management_vm_private_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – if true, use the private IP addresses to register DNS records for
+the management VMs</li>
 <li><strong>nsxt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – if true, NSX-T UI is enabled.</li>
 <li><strong>mgw_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Management Gateway Id</li>
 <li><strong>nsx_mgr_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – URL of the NSX Manager</li>
@@ -802,6 +801,7 @@ names.</p>
 SDDCs will have hosts provisioned over two availability zones while
 SingleAZ SDDCs will provision over one.</li>
 <li><strong>management_ds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The ManagedObjectReference of the management Datastore</li>
+<li><strong>nsx_api_public_endpoint_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – nsx api entire base url</li>
 <li><strong>custom_properties</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>cloud_password</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Password for vCenter SDDC administrator</li>
 <li><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
@@ -832,17 +832,16 @@ in <a class="reference internal" href="#com.vmware.vmc.model_client.Cluster" tit
 <li><strong>management_rp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>witness_availability_zone</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Availability zone where the witness node is provisioned for a
 MultiAZ SDDC. This is null for a SingleAZ SDDC.</li>
+<li><strong>esx_host_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – ESX host subnet</li>
 <li><strong>sso_domain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The SSO domain name to use for vSphere users</li>
 <li><strong>deployment_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLEAZ" title="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLEAZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.DEPLOYMENT_TYPE_SINGLEAZ</span></code></a></li>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTIAZ" title="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTIAZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.DEPLOYMENT_TYPE_MULTIAZ</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLE_AZ" title="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLE_AZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.DEPLOYMENT_TYPE_SINGLE_AZ</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTI_AZ" title="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTI_AZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.DEPLOYMENT_TYPE_MULTI_AZ</span></code></a></li>
 </ul>
 <blockquote>
 <div>Denotes if this is a SingleAZ SDDC or a MultiAZ SDDC.</div></blockquote>
 </li>
-<li><strong>dns_with_management_vm_private_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – if true, use the private IP addresses to register DNS records for
-the management VMs</li>
 </ul>
 </td>
 </tr>
@@ -1009,7 +1008,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.Cluster">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>cluster_name=None</em>, <em>esx_host_list=None</em>, <em>cluster_id='Cluster'</em>, <em>cluster_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Cluster" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>esx_host_list=None</em>, <em>cluster_state=None</em>, <em>cluster_name=None</em>, <em>aws_kms_info=None</em>, <em>cluster_id='Cluster'</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Cluster" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -1021,9 +1020,7 @@ names.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cluster_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>esx_host_list</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.AwsEsxHost" title="com.vmware.vmc.model_client.AwsEsxHost"><code class="xref py py-class docutils literal notranslate"><span class="pre">AwsEsxHost</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>cluster_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </li>
 <li><strong>cluster_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.Cluster.CLUSTER_STATE_DEPLOYING" title="com.vmware.vmc.model_client.Cluster.CLUSTER_STATE_DEPLOYING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Cluster.CLUSTER_STATE_DEPLOYING</span></code></a></li>
@@ -1032,6 +1029,9 @@ names.</p>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.Cluster.CLUSTER_STATE_FAILED" title="com.vmware.vmc.model_client.Cluster.CLUSTER_STATE_FAILED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Cluster.CLUSTER_STATE_FAILED</span></code></a></li>
 </ul>
 </li>
+<li><strong>cluster_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>aws_kms_info</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.AwsKmsInfo" title="com.vmware.vmc.model_client.AwsKmsInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">AwsKmsInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS Key Management Service information associated with this cluster</li>
+<li><strong>cluster_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </li>
 </ul>
 </td>
 </tr>
@@ -1105,6 +1105,231 @@ names.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ConnectivityAgentValidation">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ConnectivityAgentValidation</code><span class="sig-paren">(</span><em>type=None</em>, <em>ports=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_PING" title="com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_PING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityAgentValidation.TYPE_PING</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_TRACEROUTE" title="com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_TRACEROUTE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityAgentValidation.TYPE_TRACEROUTE</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_DNS" title="com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_DNS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityAgentValidation.TYPE_DNS</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_CONNECTIVITY" title="com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_CONNECTIVITY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityAgentValidation.TYPE_CONNECTIVITY</span></code></a></li>
+</ul>
+<p>type of connectivity test, i.e. PING, TRACEROUTE, DNS,
+CONNECTIVITY. For CONNECTIVITY test only, please specify the ports
+to be tested against.</p>
+</li>
+<li><strong>ports</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – TCP ports ONLY for CONNECTIVITY tests.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_CONNECTIVITY">
+<code class="descname">TYPE_CONNECTIVITY</code><em class="property"> = 'CONNECTIVITY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_CONNECTIVITY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_DNS">
+<code class="descname">TYPE_DNS</code><em class="property"> = 'DNS'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_DNS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_PING">
+<code class="descname">TYPE_PING</code><em class="property"> = 'PING'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_PING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_TRACEROUTE">
+<code class="descname">TYPE_TRACEROUTE</code><em class="property"> = 'TRACEROUTE'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation.TYPE_TRACEROUTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationGroup">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ConnectivityValidationGroup</code><span class="sig-paren">(</span><em>id=None</em>, <em>name=None</em>, <em>sub_groups=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationGroup.ID_HLM" title="com.vmware.vmc.model_client.ConnectivityValidationGroup.ID_HLM"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationGroup.ID_HLM</span></code></a></li>
+</ul>
+<blockquote>
+<div>test group id, currently, only HLM.</div></blockquote>
+</li>
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Name of the test group.</li>
+<li><strong>sub_groups</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup" title="com.vmware.vmc.model_client.ConnectivityValidationSubGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectivityValidationSubGroup</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of sub groups.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationGroup.ID_HLM">
+<code class="descname">ID_HLM</code><em class="property"> = 'HLM'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationGroup.ID_HLM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationGroups">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ConnectivityValidationGroups</code><span class="sig-paren">(</span><em>groups=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>groups</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationGroup" title="com.vmware.vmc.model_client.ConnectivityValidationGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectivityValidationGroup</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of groups.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationInput">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ConnectivityValidationInput</code><span class="sig-paren">(</span><em>id=None</em>, <em>value=None</em>, <em>label=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOSTNAME" title="com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOSTNAME"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationInput.ID_HOSTNAME</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOST_IP" title="com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOST_IP"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationInput.ID_HOST_IP</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOSTNAME_OR_IP" title="com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOSTNAME_OR_IP"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationInput.ID_HOSTNAME_OR_IP</span></code></a></li>
+</ul>
+<p>input value type, i.e. HOSTNAME_OR_IP, HOST_IP, HOSTNAME. Accept
+FQDN or IP address as input value when id = HOSTNAME_OR_IP, accept
+FQDN ONLY when id = HOSTNAME, accept IP address ONLY when id =
+HOST_IP.</p>
+</li>
+<li><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – the FQDN or IP address to run the test against, use
+\#primary-dns or \#secondary-dns as the on-prem
+primary/secondary DNS server IP.</li>
+<li><strong>label</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (Optional, for UI display only) input value label.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOSTNAME">
+<code class="descname">ID_HOSTNAME</code><em class="property"> = 'HOSTNAME'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOSTNAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOSTNAME_OR_IP">
+<code class="descname">ID_HOSTNAME_OR_IP</code><em class="property"> = 'HOSTNAME_OR_IP'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOSTNAME_OR_IP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOST_IP">
+<code class="descname">ID_HOST_IP</code><em class="property"> = 'HOST_IP'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationInput.ID_HOST_IP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationSubGroup">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ConnectivityValidationSubGroup</code><span class="sig-paren">(</span><em>inputs=None</em>, <em>tests=None</em>, <em>label=None</em>, <em>help=None</em>, <em>id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>inputs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationInput" title="com.vmware.vmc.model_client.ConnectivityValidationInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectivityValidationInput</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of user inputs for the sub group.</li>
+<li><strong>tests</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityAgentValidation" title="com.vmware.vmc.model_client.ConnectivityAgentValidation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConnectivityAgentValidation</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of connectivity tests.</li>
+<li><strong>label</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Name of the sub-group.</li>
+<li><strong>help</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Help text.</li>
+<li><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_PRIMARY_DNS" title="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_PRIMARY_DNS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationSubGroup.ID_PRIMARY_DNS</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_SECONDARY_DNS" title="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_SECONDARY_DNS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationSubGroup.ID_SECONDARY_DNS</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_VCENTER" title="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_VCENTER"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationSubGroup.ID_ONPREM_VCENTER</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_PSC" title="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_PSC"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationSubGroup.ID_ONPREM_PSC</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ACTIVE_DIRECTORY" title="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ACTIVE_DIRECTORY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationSubGroup.ID_ACTIVE_DIRECTORY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_ESX" title="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_ESX"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ConnectivityValidationSubGroup.ID_ONPREM_ESX</span></code></a></li>
+</ul>
+<p>subGroup id, i.e. PRIMARY_DNS, SECONDARY_DNS, ONPREM_VCENTER,
+ONPREM_PSC, ACTIVE_DIRECTORY, and ONPREM_ESX.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ACTIVE_DIRECTORY">
+<code class="descname">ID_ACTIVE_DIRECTORY</code><em class="property"> = 'ACTIVE_DIRECTORY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ACTIVE_DIRECTORY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_ESX">
+<code class="descname">ID_ONPREM_ESX</code><em class="property"> = 'ONPREM_ESX'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_ESX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_PSC">
+<code class="descname">ID_ONPREM_PSC</code><em class="property"> = 'ONPREM_PSC'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_PSC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_VCENTER">
+<code class="descname">ID_ONPREM_VCENTER</code><em class="property"> = 'ONPREM_VCENTER'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_ONPREM_VCENTER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_PRIMARY_DNS">
+<code class="descname">ID_PRIMARY_DNS</code><em class="property"> = 'PRIMARY_DNS'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_PRIMARY_DNS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_SECONDARY_DNS">
+<code class="descname">ID_SECONDARY_DNS</code><em class="property"> = 'SECONDARY_DNS'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ConnectivityValidationSubGroup.ID_SECONDARY_DNS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1778,7 +2003,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.EsxConfig">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">EsxConfig</code><span class="sig-paren">(</span><em>num_hosts=None</em>, <em>availability_zone=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.EsxConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">EsxConfig</code><span class="sig-paren">(</span><em>availability_zone=None</em>, <em>esxs=None</em>, <em>cluster_id=None</em>, <em>num_hosts=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.EsxConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -1790,9 +2015,12 @@ names.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – </li>
 <li><strong>availability_zone</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Availability zone where the hosts should be provisioned. (Can be
 specified only for privileged host operations).</li>
+<li><strong>esxs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>cluster_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – An optional cluster id if the esxs operation has to be on a
+specific cluster.</li>
+<li><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – </li>
 </ul>
 </td>
 </tr>
@@ -2827,6 +3055,30 @@ parameter.</li>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.KmsVpcEndpoint">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">KmsVpcEndpoint</code><span class="sig-paren">(</span><em>vpc_endpoint_id=None</em>, <em>network_interface_ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.KmsVpcEndpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>vpc_endpoint_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The identifier of the VPC endpoint created to AWS Key Management
+Service</li>
+<li><strong>network_interface_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.L2Extension">
 <em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">L2Extension</code><span class="sig-paren">(</span><em>tunnel_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.L2Extension" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
@@ -2862,7 +3114,7 @@ names.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Enable (true) or disable (false) L2 VPN.</li>
-<li><strong>sites</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.Site" title="com.vmware.vmc.model_client.Site"><code class="xref py py-class docutils literal notranslate"><span class="pre">Site</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Array of L2 vpn site config.</li>
+<li><strong>sites</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.Site" title="com.vmware.vmc.model_client.Site"><code class="xref py py-class docutils literal notranslate"><span class="pre">Site</span></code></a>) – Array of L2 vpn site config.</li>
 <li><strong>listener_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Public uplink ip address. IP of external interface on which L2VPN
 service listens to.</li>
 </ul>
@@ -3122,6 +3374,170 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindow">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">MaintenanceWindow</code><span class="sig-paren">(</span><em>day_of_week=None</em>, <em>hour_of_day=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>day_of_week</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_SUNDAY" title="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_SUNDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindow.DAY_OF_WEEK_SUNDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_MONDAY" title="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_MONDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindow.DAY_OF_WEEK_MONDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_TUESDAY" title="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_TUESDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindow.DAY_OF_WEEK_TUESDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_WEDNESDAY" title="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_WEDNESDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindow.DAY_OF_WEEK_WEDNESDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_THURSDAY" title="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_THURSDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindow.DAY_OF_WEEK_THURSDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_FRIDAY" title="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_FRIDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindow.DAY_OF_WEEK_FRIDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_SATURDAY" title="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_SATURDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindow.DAY_OF_WEEK_SATURDAY</span></code></a></li>
+</ul>
+</li>
+<li><strong>hour_of_day</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_FRIDAY">
+<code class="descname">DAY_OF_WEEK_FRIDAY</code><em class="property"> = 'FRIDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_FRIDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_MONDAY">
+<code class="descname">DAY_OF_WEEK_MONDAY</code><em class="property"> = 'MONDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_MONDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_SATURDAY">
+<code class="descname">DAY_OF_WEEK_SATURDAY</code><em class="property"> = 'SATURDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_SATURDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_SUNDAY">
+<code class="descname">DAY_OF_WEEK_SUNDAY</code><em class="property"> = 'SUNDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_SUNDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_THURSDAY">
+<code class="descname">DAY_OF_WEEK_THURSDAY</code><em class="property"> = 'THURSDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_THURSDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_TUESDAY">
+<code class="descname">DAY_OF_WEEK_TUESDAY</code><em class="property"> = 'TUESDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_TUESDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_WEDNESDAY">
+<code class="descname">DAY_OF_WEEK_WEDNESDAY</code><em class="property"> = 'WEDNESDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindow.DAY_OF_WEEK_WEDNESDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowEntry">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">MaintenanceWindowEntry</code><span class="sig-paren">(</span><em>in_maintenance_window=None</em>, <em>reservation_schedule=None</em>, <em>reservation_id=None</em>, <em>in_maintenance_mode=None</em>, <em>sddc_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>in_maintenance_window</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – true if the SDDC is in the defined Mainentance Window</li>
+<li><strong>reservation_schedule</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.ReservationSchedule" title="com.vmware.vmc.model_client.ReservationSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReservationSchedule</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>reservation_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – ID for reservation format: uuid</li>
+<li><strong>in_maintenance_mode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – true if the SDDC is currently undergoing maintenance</li>
+<li><strong>sddc_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – SDDC ID for this reservation format: uuid</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowGet">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">MaintenanceWindowGet</code><span class="sig-paren">(</span><em>day_of_week=None</em>, <em>hour_of_day=None</em>, <em>duration_min=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowGet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>day_of_week</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_SUNDAY" title="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_SUNDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindowGet.DAY_OF_WEEK_SUNDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_MONDAY" title="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_MONDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindowGet.DAY_OF_WEEK_MONDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_TUESDAY" title="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_TUESDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindowGet.DAY_OF_WEEK_TUESDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_WEDNESDAY" title="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_WEDNESDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindowGet.DAY_OF_WEEK_WEDNESDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_THURSDAY" title="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_THURSDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindowGet.DAY_OF_WEEK_THURSDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_FRIDAY" title="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_FRIDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindowGet.DAY_OF_WEEK_FRIDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_SATURDAY" title="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_SATURDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MaintenanceWindowGet.DAY_OF_WEEK_SATURDAY</span></code></a></li>
+</ul>
+</li>
+<li><strong>hour_of_day</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>duration_min</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_FRIDAY">
+<code class="descname">DAY_OF_WEEK_FRIDAY</code><em class="property"> = 'FRIDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_FRIDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_MONDAY">
+<code class="descname">DAY_OF_WEEK_MONDAY</code><em class="property"> = 'MONDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_MONDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_SATURDAY">
+<code class="descname">DAY_OF_WEEK_SATURDAY</code><em class="property"> = 'SATURDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_SATURDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_SUNDAY">
+<code class="descname">DAY_OF_WEEK_SUNDAY</code><em class="property"> = 'SUNDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_SUNDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_THURSDAY">
+<code class="descname">DAY_OF_WEEK_THURSDAY</code><em class="property"> = 'THURSDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_THURSDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_TUESDAY">
+<code class="descname">DAY_OF_WEEK_TUESDAY</code><em class="property"> = 'TUESDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_TUESDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_WEDNESDAY">
+<code class="descname">DAY_OF_WEEK_WEDNESDAY</code><em class="property"> = 'WEDNESDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.MaintenanceWindowGet.DAY_OF_WEEK_WEDNESDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.ManagementGatewayTemplate">
 <em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ManagementGatewayTemplate</code><span class="sig-paren">(</span><em>public_ip=None</em>, <em>primary_dns=None</em>, <em>secondary_dns=None</em>, <em>firewall_rules=None</em>, <em>vpns=None</em>, <em>subnet_cidr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ManagementGatewayTemplate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
@@ -3326,8 +3742,8 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="com.vmware.vmc.model_client.NetworkingTemplate">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">NetworkingTemplate</code><span class="sig-paren">(</span><em>management_gateway_templates=None</em>, <em>compute_gateway_templates=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.NetworkingTemplate" title="Permalink to this definition">¶</a></dt>
+<dt id="com.vmware.vmc.model_client.NetworkTemplate">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">NetworkTemplate</code><span class="sig-paren">(</span><em>management_gateway_templates=None</em>, <em>compute_gateway_templates=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.NetworkTemplate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -3629,36 +4045,6 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="com.vmware.vmc.model_client.OrgConfiguration">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">OrgConfiguration</code><span class="sig-paren">(</span><em>provider='OrgConfiguration'</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.OrgConfiguration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">The arguments are used to initialize data attributes with the same
-names.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
-<ul class="simple">
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.OrgConfiguration.PROVIDER_AWS" title="com.vmware.vmc.model_client.OrgConfiguration.PROVIDER_AWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">OrgConfiguration.PROVIDER_AWS</span></code></a></li>
-</ul>
-<blockquote>
-<div>Discriminator for provider specific properties</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="com.vmware.vmc.model_client.OrgConfiguration.PROVIDER_AWS">
-<code class="descname">PROVIDER_AWS</code><em class="property"> = 'AWS'</em><a class="headerlink" href="#com.vmware.vmc.model_client.OrgConfiguration.PROVIDER_AWS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="com.vmware.vmc.model_client.OrgProperties">
 <em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">OrgProperties</code><span class="sig-paren">(</span><em>values=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.OrgProperties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
@@ -3679,7 +4065,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.Organization">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Organization</code><span class="sig-paren">(</span><em>updated=None</em>, <em>user_id=None</em>, <em>updated_by_user_id=None</em>, <em>created=None</em>, <em>version=None</em>, <em>updated_by_user_name=None</em>, <em>user_name=None</em>, <em>id=None</em>, <em>org_type=None</em>, <em>display_name=None</em>, <em>name=None</em>, <em>sla=None</em>, <em>project_state=None</em>, <em>properties=None</em>, <em>cloud_configurations=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Organization" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Organization</code><span class="sig-paren">(</span><em>updated=None</em>, <em>user_id=None</em>, <em>updated_by_user_id=None</em>, <em>created=None</em>, <em>version=None</em>, <em>updated_by_user_name=None</em>, <em>user_name=None</em>, <em>id=None</em>, <em>org_type=None</em>, <em>properties=None</em>, <em>project_state=None</em>, <em>name=None</em>, <em>display_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Organization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -3700,27 +4086,15 @@ names.</p>
 <li><strong>user_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – User name that last updated this record</li>
 <li><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Unique ID for this entity</li>
 <li><strong>org_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – ORG_TYPE to be associated with the org</li>
-<li><strong>display_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>sla</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
-<ul>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.Organization.SLA_CUSTOMER" title="com.vmware.vmc.model_client.Organization.SLA_CUSTOMER"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Organization.SLA_CUSTOMER</span></code></a></li>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.Organization.SLA_THIRD_PARTY_PARTNER" title="com.vmware.vmc.model_client.Organization.SLA_THIRD_PARTY_PARTNER"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Organization.SLA_THIRD_PARTY_PARTNER</span></code></a></li>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.Organization.SLA_SECOND_PARTY_PARTNER" title="com.vmware.vmc.model_client.Organization.SLA_SECOND_PARTY_PARTNER"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Organization.SLA_SECOND_PARTY_PARTNER</span></code></a></li>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.Organization.SLA_INTERNAL_CUSTOMER" title="com.vmware.vmc.model_client.Organization.SLA_INTERNAL_CUSTOMER"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Organization.SLA_INTERNAL_CUSTOMER</span></code></a></li>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.Organization.SLA_VMC_INTERNAL" title="com.vmware.vmc.model_client.Organization.SLA_VMC_INTERNAL"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Organization.SLA_VMC_INTERNAL</span></code></a></li>
-</ul>
-<blockquote>
-<div>SLA to be associated with the org</div></blockquote>
-</li>
+<li><strong>properties</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.OrgProperties" title="com.vmware.vmc.model_client.OrgProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrgProperties</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>project_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.Organization.PROJECT_STATE_CREATED" title="com.vmware.vmc.model_client.Organization.PROJECT_STATE_CREATED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Organization.PROJECT_STATE_CREATED</span></code></a></li>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.Organization.PROJECT_STATE_DELETED" title="com.vmware.vmc.model_client.Organization.PROJECT_STATE_DELETED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Organization.PROJECT_STATE_DELETED</span></code></a></li>
 </ul>
 </li>
-<li><strong>properties</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.OrgProperties" title="com.vmware.vmc.model_client.OrgProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrgProperties</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>cloud_configurations</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <a class="reference internal" href="#com.vmware.vmc.model_client.AwsOrgConfiguration" title="com.vmware.vmc.model_client.AwsOrgConfiguration"><code class="xref py py-class docutils literal notranslate"><span class="pre">AwsOrgConfiguration</span></code></a>) or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A Map of provider to OrgConfiguration Model.</li>
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>display_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 </ul>
 </td>
 </tr>
@@ -3734,31 +4108,6 @@ names.</p>
 <dl class="attribute">
 <dt id="com.vmware.vmc.model_client.Organization.PROJECT_STATE_DELETED">
 <code class="descname">PROJECT_STATE_DELETED</code><em class="property"> = 'DELETED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Organization.PROJECT_STATE_DELETED" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="com.vmware.vmc.model_client.Organization.SLA_CUSTOMER">
-<code class="descname">SLA_CUSTOMER</code><em class="property"> = 'CUSTOMER'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Organization.SLA_CUSTOMER" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="com.vmware.vmc.model_client.Organization.SLA_INTERNAL_CUSTOMER">
-<code class="descname">SLA_INTERNAL_CUSTOMER</code><em class="property"> = 'INTERNAL_CUSTOMER'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Organization.SLA_INTERNAL_CUSTOMER" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="com.vmware.vmc.model_client.Organization.SLA_SECOND_PARTY_PARTNER">
-<code class="descname">SLA_SECOND_PARTY_PARTNER</code><em class="property"> = 'SECOND_PARTY_PARTNER'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Organization.SLA_SECOND_PARTY_PARTNER" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="com.vmware.vmc.model_client.Organization.SLA_THIRD_PARTY_PARTNER">
-<code class="descname">SLA_THIRD_PARTY_PARTNER</code><em class="property"> = 'THIRD_PARTY_PARTNER'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Organization.SLA_THIRD_PARTY_PARTNER" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="com.vmware.vmc.model_client.Organization.SLA_VMC_INTERNAL">
-<code class="descname">SLA_VMC_INTERNAL</code><em class="property"> = 'VMC_INTERNAL'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Organization.SLA_VMC_INTERNAL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -3895,7 +4244,7 @@ names.</p>
 <li><strong>cln</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The service change set number.</li>
 <li><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The service API version.</li>
 <li><strong>build</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The service build number.</li>
-<li><strong>service</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
+<li><strong>service</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.PopServiceInfo.SERVICE_OS" title="com.vmware.vmc.model_client.PopServiceInfo.SERVICE_OS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">PopServiceInfo.SERVICE_OS</span></code></a></li>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.PopServiceInfo.SERVICE_AGENT" title="com.vmware.vmc.model_client.PopServiceInfo.SERVICE_AGENT"><code class="xref py py-attr docutils literal notranslate"><span class="pre">PopServiceInfo.SERVICE_AGENT</span></code></a></li>
@@ -4035,6 +4384,205 @@ names.</p>
 <li><strong>queries</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.Reservation">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Reservation</code><span class="sig-paren">(</span><em>duration=None</em>, <em>rid=None</em>, <em>create_time=None</em>, <em>start_time=None</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Reservation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>duration</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Duration - required for reservation in maintenance window format:
+int64</li>
+<li><strong>rid</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Reservation ID format: uuid</li>
+<li><strong>create_time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Optional</li>
+<li><strong>start_time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Start time of a reservation format: date-time</li>
+<li><strong>metadata</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Optional</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ReservationInMw">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ReservationInMw</code><span class="sig-paren">(</span><em>rid=None</em>, <em>week_of=None</em>, <em>create_time=None</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationInMw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rid</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Reservation ID format: uuid</li>
+<li><strong>week_of</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – SUNDAY of the week that maintenance is scheduled, ISO format date</li>
+<li><strong>create_time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Optional format: date-time</li>
+<li><strong>metadata</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Optional</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ReservationSchedule">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ReservationSchedule</code><span class="sig-paren">(</span><em>day_of_week=None</em>, <em>hour_of_day=None</em>, <em>duration_min=None</em>, <em>version=None</em>, <em>reservations=None</em>, <em>reservations_mw=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>day_of_week</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_SUNDAY" title="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_SUNDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationSchedule.DAY_OF_WEEK_SUNDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_MONDAY" title="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_MONDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationSchedule.DAY_OF_WEEK_MONDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_TUESDAY" title="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_TUESDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationSchedule.DAY_OF_WEEK_TUESDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_WEDNESDAY" title="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_WEDNESDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationSchedule.DAY_OF_WEEK_WEDNESDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_THURSDAY" title="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_THURSDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationSchedule.DAY_OF_WEEK_THURSDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_FRIDAY" title="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_FRIDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationSchedule.DAY_OF_WEEK_FRIDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_SATURDAY" title="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_SATURDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationSchedule.DAY_OF_WEEK_SATURDAY</span></code></a></li>
+</ul>
+</li>
+<li><strong>hour_of_day</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>duration_min</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>reservations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.Reservation" title="com.vmware.vmc.model_client.Reservation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reservation</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>reservations_mw</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.ReservationInMw" title="com.vmware.vmc.model_client.ReservationInMw"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReservationInMw</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_FRIDAY">
+<code class="descname">DAY_OF_WEEK_FRIDAY</code><em class="property"> = 'FRIDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_FRIDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_MONDAY">
+<code class="descname">DAY_OF_WEEK_MONDAY</code><em class="property"> = 'MONDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_MONDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_SATURDAY">
+<code class="descname">DAY_OF_WEEK_SATURDAY</code><em class="property"> = 'SATURDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_SATURDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_SUNDAY">
+<code class="descname">DAY_OF_WEEK_SUNDAY</code><em class="property"> = 'SUNDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_SUNDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_THURSDAY">
+<code class="descname">DAY_OF_WEEK_THURSDAY</code><em class="property"> = 'THURSDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_THURSDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_TUESDAY">
+<code class="descname">DAY_OF_WEEK_TUESDAY</code><em class="property"> = 'TUESDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_TUESDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_WEDNESDAY">
+<code class="descname">DAY_OF_WEEK_WEDNESDAY</code><em class="property"> = 'WEDNESDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationSchedule.DAY_OF_WEEK_WEDNESDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ReservationWindow">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ReservationWindow</code><span class="sig-paren">(</span><em>reservation_state=None</em>, <em>maintenance_properties=None</em>, <em>reserve_id=None</em>, <em>start_hour=None</em>, <em>sddc_id=None</em>, <em>manifest_id=None</em>, <em>duration_hours=None</em>, <em>start_date=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>reservation_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_SCHEDULED" title="com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_SCHEDULED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationWindow.RESERVATION_STATE_SCHEDULED</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_RUNNING" title="com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_RUNNING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationWindow.RESERVATION_STATE_RUNNING</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_CANCELED" title="com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_CANCELED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationWindow.RESERVATION_STATE_CANCELED</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_COMPLETED" title="com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_COMPLETED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ReservationWindow.RESERVATION_STATE_COMPLETED</span></code></a></li>
+</ul>
+</li>
+<li><strong>maintenance_properties</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.ReservationWindowMaintenanceProperties" title="com.vmware.vmc.model_client.ReservationWindowMaintenanceProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReservationWindowMaintenanceProperties</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>reserve_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>start_hour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>sddc_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>manifest_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>duration_hours</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>start_date</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_CANCELED">
+<code class="descname">RESERVATION_STATE_CANCELED</code><em class="property"> = 'CANCELED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_CANCELED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_COMPLETED">
+<code class="descname">RESERVATION_STATE_COMPLETED</code><em class="property"> = 'COMPLETED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_COMPLETED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_RUNNING">
+<code class="descname">RESERVATION_STATE_RUNNING</code><em class="property"> = 'RUNNING'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_RUNNING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_SCHEDULED">
+<code class="descname">RESERVATION_STATE_SCHEDULED</code><em class="property"> = 'SCHEDULED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationWindow.RESERVATION_STATE_SCHEDULED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ReservationWindowMaintenanceProperties">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">ReservationWindowMaintenanceProperties</code><span class="sig-paren">(</span><em>status=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ReservationWindowMaintenanceProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Status of upgrade, if any</td>
 </tr>
 </tbody>
 </table>
@@ -4288,6 +4836,25 @@ SingleAZ.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.SddcId">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SddcId</code><span class="sig-paren">(</span><em>sddc_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sddc_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Sddc ID format: UUID</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.SddcLinkConfig">
 <em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SddcLinkConfig</code><span class="sig-paren">(</span><em>customer_subnet_ids=None</em>, <em>connected_account_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcLinkConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
@@ -4488,7 +5055,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.SddcResourceConfig">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SddcResourceConfig</code><span class="sig-paren">(</span><em>nsxt=None</em>, <em>mgw_id=None</em>, <em>nsx_mgr_url=None</em>, <em>psc_management_ip=None</em>, <em>psc_url=None</em>, <em>cgws=None</em>, <em>availability_zones=None</em>, <em>management_ds=None</em>, <em>custom_properties=None</em>, <em>cloud_password=None</em>, <em>provider='SddcResourceConfig'</em>, <em>clusters=None</em>, <em>vc_management_ip=None</em>, <em>sddc_networks=None</em>, <em>cloud_username=None</em>, <em>esx_hosts=None</em>, <em>nsx_mgr_management_ip=None</em>, <em>vc_instance_id=None</em>, <em>esx_cluster_id=None</em>, <em>vc_public_ip=None</em>, <em>vc_url=None</em>, <em>sddc_manifest=None</em>, <em>vxlan_subnet=None</em>, <em>cloud_user_group=None</em>, <em>management_rp=None</em>, <em>witness_availability_zone=None</em>, <em>sso_domain=None</em>, <em>deployment_type=None</em>, <em>dns_with_management_vm_private_ip=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcResourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SddcResourceConfig</code><span class="sig-paren">(</span><em>mgmt_appliance_network_name=None</em>, <em>dns_with_management_vm_private_ip=None</em>, <em>nsxt=None</em>, <em>mgw_id=None</em>, <em>nsx_mgr_url=None</em>, <em>psc_management_ip=None</em>, <em>psc_url=None</em>, <em>cgws=None</em>, <em>availability_zones=None</em>, <em>management_ds=None</em>, <em>nsx_api_public_endpoint_url=None</em>, <em>custom_properties=None</em>, <em>cloud_password=None</em>, <em>provider='SddcResourceConfig'</em>, <em>clusters=None</em>, <em>vc_management_ip=None</em>, <em>sddc_networks=None</em>, <em>cloud_username=None</em>, <em>esx_hosts=None</em>, <em>nsx_mgr_management_ip=None</em>, <em>vc_instance_id=None</em>, <em>esx_cluster_id=None</em>, <em>vc_public_ip=None</em>, <em>vc_url=None</em>, <em>sddc_manifest=None</em>, <em>vxlan_subnet=None</em>, <em>cloud_user_group=None</em>, <em>management_rp=None</em>, <em>witness_availability_zone=None</em>, <em>esx_host_subnet=None</em>, <em>sso_domain=None</em>, <em>deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcResourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -4500,6 +5067,9 @@ names.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mgmt_appliance_network_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Name for management appliance network.</li>
+<li><strong>dns_with_management_vm_private_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – if true, use the private IP addresses to register DNS records for
+the management VMs</li>
 <li><strong>nsxt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – if true, NSX-T UI is enabled.</li>
 <li><strong>mgw_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Management Gateway Id</li>
 <li><strong>nsx_mgr_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – URL of the NSX Manager</li>
@@ -4510,6 +5080,7 @@ names.</p>
 SDDCs will have hosts provisioned over two availability zones while
 SingleAZ SDDCs will provision over one.</li>
 <li><strong>management_ds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The ManagedObjectReference of the management Datastore</li>
+<li><strong>nsx_api_public_endpoint_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – nsx api entire base url</li>
 <li><strong>custom_properties</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>cloud_password</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Password for vCenter SDDC administrator</li>
 <li><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
@@ -4540,30 +5111,29 @@ in <a class="reference internal" href="#com.vmware.vmc.model_client.Cluster" tit
 <li><strong>management_rp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>witness_availability_zone</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Availability zone where the witness node is provisioned for a
 MultiAZ SDDC. This is null for a SingleAZ SDDC.</li>
+<li><strong>esx_host_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – ESX host subnet</li>
 <li><strong>sso_domain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The SSO domain name to use for vSphere users</li>
 <li><strong>deployment_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLEAZ" title="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLEAZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.DEPLOYMENT_TYPE_SINGLEAZ</span></code></a></li>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTIAZ" title="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTIAZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.DEPLOYMENT_TYPE_MULTIAZ</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLE_AZ" title="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLE_AZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.DEPLOYMENT_TYPE_SINGLE_AZ</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTI_AZ" title="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTI_AZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.DEPLOYMENT_TYPE_MULTI_AZ</span></code></a></li>
 </ul>
 <blockquote>
 <div>Denotes if this is a SingleAZ SDDC or a MultiAZ SDDC.</div></blockquote>
 </li>
-<li><strong>dns_with_management_vm_private_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – if true, use the private IP addresses to register DNS records for
-the management VMs</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTIAZ">
-<code class="descname">DEPLOYMENT_TYPE_MULTIAZ</code><em class="property"> = 'MultiAZ'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTIAZ" title="Permalink to this definition">¶</a></dt>
+<dt id="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTI_AZ">
+<code class="descname">DEPLOYMENT_TYPE_MULTI_AZ</code><em class="property"> = 'MULTI_AZ'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_MULTI_AZ" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLEAZ">
-<code class="descname">DEPLOYMENT_TYPE_SINGLEAZ</code><em class="property"> = 'SingleAZ'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLEAZ" title="Permalink to this definition">¶</a></dt>
+<dt id="com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLE_AZ">
+<code class="descname">DEPLOYMENT_TYPE_SINGLE_AZ</code><em class="property"> = 'SINGLE_AZ'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcResourceConfig.DEPLOYMENT_TYPE_SINGLE_AZ" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -4574,8 +5144,58 @@ the management VMs</li>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.SddcStateRequest">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SddcStateRequest</code><span class="sig-paren">(</span><em>sddcs=None</em>, <em>states=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcStateRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sddcs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>states</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcStateRequest.STATES_SCHEDULED" title="com.vmware.vmc.model_client.SddcStateRequest.STATES_SCHEDULED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcStateRequest.STATES_SCHEDULED</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcStateRequest.STATES_RUNNING" title="com.vmware.vmc.model_client.SddcStateRequest.STATES_RUNNING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcStateRequest.STATES_RUNNING</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcStateRequest.STATES_CANCELED" title="com.vmware.vmc.model_client.SddcStateRequest.STATES_CANCELED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcStateRequest.STATES_CANCELED</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcStateRequest.STATES_COMPLETED" title="com.vmware.vmc.model_client.SddcStateRequest.STATES_COMPLETED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcStateRequest.STATES_COMPLETED</span></code></a></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SddcStateRequest.STATES_CANCELED">
+<code class="descname">STATES_CANCELED</code><em class="property"> = 'CANCELED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcStateRequest.STATES_CANCELED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SddcStateRequest.STATES_COMPLETED">
+<code class="descname">STATES_COMPLETED</code><em class="property"> = 'COMPLETED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcStateRequest.STATES_COMPLETED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SddcStateRequest.STATES_RUNNING">
+<code class="descname">STATES_RUNNING</code><em class="property"> = 'RUNNING'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcStateRequest.STATES_RUNNING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SddcStateRequest.STATES_SCHEDULED">
+<code class="descname">STATES_SCHEDULED</code><em class="property"> = 'SCHEDULED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcStateRequest.STATES_SCHEDULED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.SddcTemplate">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SddcTemplate</code><span class="sig-paren">(</span><em>updated=None</em>, <em>user_id=None</em>, <em>updated_by_user_id=None</em>, <em>created=None</em>, <em>version=None</em>, <em>updated_by_user_name=None</em>, <em>user_name=None</em>, <em>id=None</em>, <em>name=None</em>, <em>tenant_id=None</em>, <em>source_sddc_id=None</em>, <em>state=None</em>, <em>num_hosts=None</em>, <em>public_ips=None</em>, <em>vpc_cidr=None</em>, <em>provider=None</em>, <em>vc_public_ip=None</em>, <em>sso_domain=None</em>, <em>networking_template=None</em>, <em>region=None</em>, <em>vc_url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcTemplate" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SddcTemplate</code><span class="sig-paren">(</span><em>updated=None</em>, <em>user_id=None</em>, <em>updated_by_user_id=None</em>, <em>created=None</em>, <em>version=None</em>, <em>updated_by_user_name=None</em>, <em>user_name=None</em>, <em>id=None</em>, <em>account_link_sddc_configs=None</em>, <em>state=None</em>, <em>network_template=None</em>, <em>name=None</em>, <em>source_sddc_id=None</em>, <em>org_id=None</em>, <em>sddc=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcTemplate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -4595,11 +5215,10 @@ names.</p>
 <li><strong>updated_by_user_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – User name that last updated this record</li>
 <li><strong>user_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – User name that last updated this record</li>
 <li><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Unique ID for this entity</li>
-<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – name for SDDC configuration template</li>
-<li><strong>tenant_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>source_sddc_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>account_link_sddc_configs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.AccountLinkSddcConfig" title="com.vmware.vmc.model_client.AccountLinkSddcConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccountLinkSddcConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A list of the SDDC linking configurations to use.</li>
 <li><strong>state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcTemplate.STATE_INITIALIZING" title="com.vmware.vmc.model_client.SddcTemplate.STATE_INITIALIZING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcTemplate.STATE_INITIALIZING</span></code></a></li>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcTemplate.STATE_AVAILABLE" title="com.vmware.vmc.model_client.SddcTemplate.STATE_AVAILABLE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcTemplate.STATE_AVAILABLE</span></code></a></li>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcTemplate.STATE_INUSE" title="com.vmware.vmc.model_client.SddcTemplate.STATE_INUSE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcTemplate.STATE_INUSE</span></code></a></li>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcTemplate.STATE_APPLIED" title="com.vmware.vmc.model_client.SddcTemplate.STATE_APPLIED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcTemplate.STATE_APPLIED</span></code></a></li>
@@ -4608,29 +5227,16 @@ names.</p>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcTemplate.STATE_FAILED" title="com.vmware.vmc.model_client.SddcTemplate.STATE_FAILED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcTemplate.STATE_FAILED</span></code></a></li>
 </ul>
 </li>
-<li><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>public_ips</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.SddcPublicIp" title="com.vmware.vmc.model_client.SddcPublicIp"><code class="xref py py-class docutils literal notranslate"><span class="pre">SddcPublicIp</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>vpc_cidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
-<ul>
-<li><a class="reference internal" href="#com.vmware.vmc.model_client.SddcTemplate.PROVIDER_AWS" title="com.vmware.vmc.model_client.SddcTemplate.PROVIDER_AWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcTemplate.PROVIDER_AWS</span></code></a></li>
-</ul>
-</li>
-<li><strong>vc_public_ip</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.SddcPublicIp" title="com.vmware.vmc.model_client.SddcPublicIp"><code class="xref py py-class docutils literal notranslate"><span class="pre">SddcPublicIp</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>sso_domain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>networking_template</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.NetworkingTemplate" title="com.vmware.vmc.model_client.NetworkingTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkingTemplate</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>vc_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>network_template</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.NetworkTemplate" title="com.vmware.vmc.model_client.NetworkTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkTemplate</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – name for SDDC configuration template</li>
+<li><strong>source_sddc_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>org_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>sddc</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.Sddc" title="com.vmware.vmc.model_client.Sddc"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sddc</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="com.vmware.vmc.model_client.SddcTemplate.PROVIDER_AWS">
-<code class="descname">PROVIDER_AWS</code><em class="property"> = 'AWS'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcTemplate.PROVIDER_AWS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="attribute">
 <dt id="com.vmware.vmc.model_client.SddcTemplate.STATE_APPLIED">
 <code class="descname">STATE_APPLIED</code><em class="property"> = 'APPLIED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcTemplate.STATE_APPLIED" title="Permalink to this definition">¶</a></dt>
@@ -4654,6 +5260,11 @@ names.</p>
 <dl class="attribute">
 <dt id="com.vmware.vmc.model_client.SddcTemplate.STATE_FAILED">
 <code class="descname">STATE_FAILED</code><em class="property"> = 'FAILED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcTemplate.STATE_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SddcTemplate.STATE_INITIALIZING">
+<code class="descname">STATE_INITIALIZING</code><em class="property"> = 'INITIALIZING'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcTemplate.STATE_INITIALIZING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -4909,6 +5520,39 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.SubnetInfo">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SubnetInfo</code><span class="sig-paren">(</span><em>compatible=None</em>, <em>connected_account_id=None</em>, <em>region_name=None</em>, <em>availability_zone=None</em>, <em>subnet_id=None</em>, <em>subnet_cidr_block=None</em>, <em>note=None</em>, <em>vpc_id=None</em>, <em>vpc_cidr_block=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SubnetInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>compatible</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Is this customer subnet compatible with the SDDC?</li>
+<li><strong>connected_account_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The ID of the connected account this subnet is from.</li>
+<li><strong>region_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The region this subnet is from.</li>
+<li><strong>availability_zone</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The availability zone (customer-centric) this subnet is in.</li>
+<li><strong>subnet_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The ID of the subnet.</li>
+<li><strong>subnet_cidr_block</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The CIDR block of the subnet.</li>
+<li><strong>note</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Why a subnet is marked as not compatible. May be blank if
+compatible.</li>
+<li><strong>vpc_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The ID of the VPC this subnet resides in.</li>
+<li><strong>vpc_cidr_block</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The CIDR block of the VPC containing this subnet.</li>
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The name of the subnet. This is either the tagged name or the
+default AWS id it was given.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.Subnets">
 <em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Subnets</code><span class="sig-paren">(</span><em>subnets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Subnets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
@@ -4952,6 +5596,7 @@ names.</p>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.SubscriptionDetails.STATUS_CANCELLED" title="com.vmware.vmc.model_client.SubscriptionDetails.STATUS_CANCELLED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SubscriptionDetails.STATUS_CANCELLED</span></code></a></li>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.SubscriptionDetails.STATUS_EXPIRED" title="com.vmware.vmc.model_client.SubscriptionDetails.STATUS_EXPIRED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SubscriptionDetails.STATUS_EXPIRED</span></code></a></li>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.SubscriptionDetails.STATUS_PENDING_PROVISIONING" title="com.vmware.vmc.model_client.SubscriptionDetails.STATUS_PENDING_PROVISIONING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SubscriptionDetails.STATUS_PENDING_PROVISIONING</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SubscriptionDetails.STATUS_ORDER_SUBMITTED" title="com.vmware.vmc.model_client.SubscriptionDetails.STATUS_ORDER_SUBMITTED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SubscriptionDetails.STATUS_ORDER_SUBMITTED</span></code></a></li>
 </ul>
 </li>
 <li><strong>anniversary_billing_date</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
@@ -4999,6 +5644,11 @@ names.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SubscriptionDetails.STATUS_ORDER_SUBMITTED">
+<code class="descname">STATUS_ORDER_SUBMITTED</code><em class="property"> = 'ORDER_SUBMITTED'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SubscriptionDetails.STATUS_ORDER_SUBMITTED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="com.vmware.vmc.model_client.SubscriptionDetails.STATUS_PENDING_PROVISIONING">
 <code class="descname">STATUS_PENDING_PROVISIONING</code><em class="property"> = 'PENDING_PROVISIONING'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SubscriptionDetails.STATUS_PENDING_PROVISIONING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -5033,8 +5683,81 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.SupportWindow">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">SupportWindow</code><span class="sig-paren">(</span><em>start_day=None</em>, <em>seats=None</em>, <em>sddcs=None</em>, <em>duration_hours=None</em>, <em>start_hour=None</em>, <em>support_window_id=None</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SupportWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>start_day</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_MONDAY" title="com.vmware.vmc.model_client.SupportWindow.START_DAY_MONDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SupportWindow.START_DAY_MONDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_TUESDAY" title="com.vmware.vmc.model_client.SupportWindow.START_DAY_TUESDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SupportWindow.START_DAY_TUESDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_WEDNESDAY" title="com.vmware.vmc.model_client.SupportWindow.START_DAY_WEDNESDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SupportWindow.START_DAY_WEDNESDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_THURSDAY" title="com.vmware.vmc.model_client.SupportWindow.START_DAY_THURSDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SupportWindow.START_DAY_THURSDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_FRIDAY" title="com.vmware.vmc.model_client.SupportWindow.START_DAY_FRIDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SupportWindow.START_DAY_FRIDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_SATURDAY" title="com.vmware.vmc.model_client.SupportWindow.START_DAY_SATURDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SupportWindow.START_DAY_SATURDAY</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_SUNDAY" title="com.vmware.vmc.model_client.SupportWindow.START_DAY_SUNDAY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SupportWindow.START_DAY_SUNDAY</span></code></a></li>
+</ul>
+</li>
+<li><strong>seats</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>sddcs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – SDDCs in this window format: UUID</li>
+<li><strong>duration_hours</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>start_hour</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>support_window_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>metadata</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.struct.VapiStruct</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SupportWindow.START_DAY_FRIDAY">
+<code class="descname">START_DAY_FRIDAY</code><em class="property"> = 'FRIDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_FRIDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SupportWindow.START_DAY_MONDAY">
+<code class="descname">START_DAY_MONDAY</code><em class="property"> = 'MONDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_MONDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SupportWindow.START_DAY_SATURDAY">
+<code class="descname">START_DAY_SATURDAY</code><em class="property"> = 'SATURDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_SATURDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SupportWindow.START_DAY_SUNDAY">
+<code class="descname">START_DAY_SUNDAY</code><em class="property"> = 'SUNDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_SUNDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SupportWindow.START_DAY_THURSDAY">
+<code class="descname">START_DAY_THURSDAY</code><em class="property"> = 'THURSDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_THURSDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SupportWindow.START_DAY_TUESDAY">
+<code class="descname">START_DAY_TUESDAY</code><em class="property"> = 'TUESDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_TUESDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SupportWindow.START_DAY_WEDNESDAY">
+<code class="descname">START_DAY_WEDNESDAY</code><em class="property"> = 'WEDNESDAY'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SupportWindow.START_DAY_WEDNESDAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.Task">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>updated=None</em>, <em>user_id=None</em>, <em>updated_by_user_id=None</em>, <em>created=None</em>, <em>version=None</em>, <em>updated_by_user_name=None</em>, <em>user_name=None</em>, <em>id=None</em>, <em>status=None</em>, <em>resource_id=None</em>, <em>start_time=None</em>, <em>service_errors=None</em>, <em>sub_status=None</em>, <em>task_type=None</em>, <em>task_progress_phases=None</em>, <em>error_message=None</em>, <em>org_id=None</em>, <em>progress_percent=None</em>, <em>estimated_remaining_minutes=None</em>, <em>params=None</em>, <em>end_time=None</em>, <em>phase_in_progress=None</em>, <em>task_version=None</em>, <em>resource_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Task" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>updated=None</em>, <em>user_id=None</em>, <em>updated_by_user_id=None</em>, <em>created=None</em>, <em>version=None</em>, <em>updated_by_user_name=None</em>, <em>user_name=None</em>, <em>id=None</em>, <em>status=None</em>, <em>estimated_remaining_minutes=None</em>, <em>localized_error_message=None</em>, <em>resource_id=None</em>, <em>task_version=None</em>, <em>start_resource_entity_version=None</em>, <em>sub_status=None</em>, <em>task_type=None</em>, <em>start_time=None</em>, <em>task_progress_phases=None</em>, <em>error_message=None</em>, <em>org_id=None</em>, <em>end_resource_entity_version=None</em>, <em>service_errors=None</em>, <em>org_type=None</em>, <em>parent_task_id=None</em>, <em>params=None</em>, <em>progress_percent=None</em>, <em>phase_in_progress=None</em>, <em>resource_type=None</em>, <em>end_time=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -5063,23 +5786,31 @@ names.</p>
 <li><a class="reference internal" href="#com.vmware.vmc.model_client.Task.STATUS_CANCELED" title="com.vmware.vmc.model_client.Task.STATUS_CANCELED"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Task.STATUS_CANCELED</span></code></a></li>
 </ul>
 </li>
+<li><strong>estimated_remaining_minutes</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Estimated remaining time in minute of the task execution, &lt; 0 means
+no estimation for the task. format: int32</li>
+<li><strong>localized_error_message</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>resource_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – UUID of resources task is acting upon</li>
-<li><strong>start_time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>service_errors</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.ServiceError" title="com.vmware.vmc.model_client.ServiceError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceError</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Service errors returned from SDDC services.</li>
+<li><strong>task_version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>start_resource_entity_version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Entity version of the resource at the start of the task. This is
+only set for some task types. format: int32</li>
 <li><strong>sub_status</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>task_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>start_time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>task_progress_phases</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.TaskProgressPhase" title="com.vmware.vmc.model_client.TaskProgressPhase"><code class="xref py py-class docutils literal notranslate"><span class="pre">TaskProgressPhase</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Task progress phases involved in current task execution</li>
 <li><strong>error_message</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>org_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>progress_percent</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Estimated progress percentage the task executed format: int32</li>
-<li><strong>estimated_remaining_minutes</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Estimated remaining time in minute of the task execution, &lt; 0 means
-no estimation for the task. format: int32</li>
+<li><strong>end_resource_entity_version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Entity version of the resource at the end of the task. This is only
+set for some task types. format: int32</li>
+<li><strong>service_errors</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.ServiceError" title="com.vmware.vmc.model_client.ServiceError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceError</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Service errors returned from SDDC services.</li>
+<li><strong>org_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>parent_task_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If this task was created by another task - this provides the
+linkage. Mostly for debugging.</li>
 <li><strong>params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.struct.VapiStruct</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
-<li><strong>end_time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>progress_percent</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Estimated progress percentage the task executed format: int32</li>
 <li><strong>phase_in_progress</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The current in progress phase ID in the task execution, if none in
 progress, empty string returned.</li>
-<li><strong>task_version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>resource_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Type of resource being acted upon</li>
+<li><strong>end_time</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 </ul>
 </td>
 </tr>
@@ -5189,6 +5920,25 @@ names.</p>
 <li><strong>inherited</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.VmcLocale">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">VmcLocale</code><span class="sig-paren">(</span><em>locale=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.VmcLocale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The locale to be used for translating responses for the session</td>
 </tr>
 </tbody>
 </table>
@@ -5306,8 +6056,34 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.VpcInfoSubnets">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">VpcInfoSubnets</code><span class="sig-paren">(</span><em>vpc_id=None</em>, <em>cidr_block=None</em>, <em>description=None</em>, <em>subnets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.VpcInfoSubnets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>vpc_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The ID of the VPC these subnets belong to.</li>
+<li><strong>cidr_block</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The overall CIDR block of the VPC. This is the AWS primary CIDR
+block.</li>
+<li><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The description of the VPC; usually it’s name or id.</li>
+<li><strong>subnets</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.SubnetInfo" title="com.vmware.vmc.model_client.SubnetInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubnetInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.Vpn">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Vpn</code><span class="sig-paren">(</span><em>version=None</em>, <em>on_prem_gateway_ip=None</em>, <em>on_prem_network_cidr=None</em>, <em>pfs_enabled=None</em>, <em>id=None</em>, <em>channel_status=None</em>, <em>on_prem_nat_ip=None</em>, <em>name=None</em>, <em>internal_network_ids=None</em>, <em>tunnel_statuses=None</em>, <em>encryption=None</em>, <em>enabled=None</em>, <em>state=None</em>, <em>dh_group=None</em>, <em>authentication=None</em>, <em>pre_shared_key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Vpn" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">Vpn</code><span class="sig-paren">(</span><em>version=None</em>, <em>on_prem_gateway_ip=None</em>, <em>on_prem_network_cidr=None</em>, <em>pfs_enabled=None</em>, <em>id=None</em>, <em>channel_status=None</em>, <em>on_prem_nat_ip=None</em>, <em>name=None</em>, <em>internal_network_ids=None</em>, <em>tunnel_statuses=None</em>, <em>encryption=None</em>, <em>enabled=None</em>, <em>state=None</em>, <em>dh_group=None</em>, <em>authentication=None</em>, <em>pre_shared_key=None</em>, <em>ike_option=None</em>, <em>digest_algorithm=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Vpn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -5364,6 +6140,18 @@ names.</p>
 </ul>
 </li>
 <li><strong>pre_shared_key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>ike_option</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.Vpn.IKE_OPTION_IKEV1" title="com.vmware.vmc.model_client.Vpn.IKE_OPTION_IKEV1"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Vpn.IKE_OPTION_IKEV1</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.Vpn.IKE_OPTION_IKEV2" title="com.vmware.vmc.model_client.Vpn.IKE_OPTION_IKEV2"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Vpn.IKE_OPTION_IKEV2</span></code></a></li>
+</ul>
+</li>
+<li><strong>digest_algorithm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
+<ul>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.Vpn.DIGEST_ALGORITHM_SHA1" title="com.vmware.vmc.model_client.Vpn.DIGEST_ALGORITHM_SHA1"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Vpn.DIGEST_ALGORITHM_SHA1</span></code></a></li>
+<li><a class="reference internal" href="#com.vmware.vmc.model_client.Vpn.DIGEST_ALGORITHM_SHA_256" title="com.vmware.vmc.model_client.Vpn.DIGEST_ALGORITHM_SHA_256"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Vpn.DIGEST_ALGORITHM_SHA_256</span></code></a></li>
+</ul>
+</li>
 </ul>
 </td>
 </tr>
@@ -5410,6 +6198,16 @@ names.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="com.vmware.vmc.model_client.Vpn.DIGEST_ALGORITHM_SHA1">
+<code class="descname">DIGEST_ALGORITHM_SHA1</code><em class="property"> = 'SHA1'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Vpn.DIGEST_ALGORITHM_SHA1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.Vpn.DIGEST_ALGORITHM_SHA_256">
+<code class="descname">DIGEST_ALGORITHM_SHA_256</code><em class="property"> = 'SHA_256'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Vpn.DIGEST_ALGORITHM_SHA_256" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="com.vmware.vmc.model_client.Vpn.ENCRYPTION_AES">
 <code class="descname">ENCRYPTION_AES</code><em class="property"> = 'AES'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Vpn.ENCRYPTION_AES" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -5432,6 +6230,16 @@ names.</p>
 <dl class="attribute">
 <dt id="com.vmware.vmc.model_client.Vpn.ENCRYPTION_UNKNOWN">
 <code class="descname">ENCRYPTION_UNKNOWN</code><em class="property"> = 'UNKNOWN'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Vpn.ENCRYPTION_UNKNOWN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.Vpn.IKE_OPTION_IKEV1">
+<code class="descname">IKE_OPTION_IKEV1</code><em class="property"> = 'IKEV1'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Vpn.IKE_OPTION_IKEV1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.Vpn.IKE_OPTION_IKEV2">
+<code class="descname">IKE_OPTION_IKEV2</code><em class="property"> = 'IKEV2'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Vpn.IKE_OPTION_IKEV2" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -5583,6 +6391,29 @@ names.</p>
 </table>
 </dd></dl>
 
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.VsanEncryptionConfig">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.model_client.</code><code class="descname">VsanEncryptionConfig</code><span class="sig-paren">(</span><em>port=None</em>, <em>certificate=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.VsanEncryptionConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>port</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Port to connect to AWS Key Management Service</li>
+<li><strong>certificate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Public certificate used to connect to AWS Key Management Service</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-com.vmware.vmc.orgs_client">
 <span id="com-vmware-vmc-orgs-client-module"></span><h2>com.vmware.vmc.orgs_client module<a class="headerlink" href="#module-com.vmware.vmc.orgs_client" title="Permalink to this headline">¶</a></h2>
@@ -5599,8 +6430,8 @@ names.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="com.vmware.vmc.orgs_client.AccountLink.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>org</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.AccountLink.create" title="Permalink to this definition">¶</a></dt>
+<dt id="com.vmware.vmc.orgs_client.AccountLink.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.AccountLink.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a link that can be used on a customer’s account to start the
 linking process.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -5702,6 +6533,44 @@ Forbidden</td>
 Organization doesn’t exist</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.orgs_client.Reservations">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.orgs_client.</code><code class="descname">Reservations</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.Reservations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="com.vmware.vmc.orgs_client.Reservations.list">
+<code class="descname">list</code><span class="sig-paren">(</span><em>org</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.Reservations.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all reservations for this org</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#com.vmware.vmc.orgs_client.Reservations.list" title="com.vmware.vmc.orgs_client.Reservations.list"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="#com.vmware.vmc.model_client.MaintenanceWindowEntry" title="com.vmware.vmc.model_client.MaintenanceWindowEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.MaintenanceWindowEntry</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Access not allowed to the operation for the current user</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
 Unauthorized</td>
 </tr>
 </tbody>
@@ -5862,7 +6731,7 @@ Unauthorized</p>
 
 <dl class="method">
 <dt id="com.vmware.vmc.orgs_client.Sddcs.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>org</em>, <em>sddc</em>, <em>retain_configuration=None</em>, <em>template_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.Sddcs.delete" title="Permalink to this definition">¶</a></dt>
+<code class="descname">delete</code><span class="sig-paren">(</span><em>org</em>, <em>sddc</em>, <em>retain_configuration=None</em>, <em>template_name=None</em>, <em>force=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.Sddcs.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete SDDC</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -5871,12 +6740,15 @@ Unauthorized</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
 <li><strong>sddc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Sddc Identifier. (required)</li>
-<li><strong>retain_configuration</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If = ‘true’, the SDDC’s configuration is retained as a template for
+<li><strong>retain_configuration</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If = ‘true’, the SDDC’s configuration is retained as a template for
 later use. This flag is applicable only to SDDCs in ACTIVE state.
 (optional)</li>
 <li><strong>template_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Only applicable when retainConfiguration is also set to ‘true’.
 When set, this value will be used as the name of the SDDC
 configuration template generated. (optional)</li>
+<li><strong>force</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If = ‘true’, will delete forcefully. Beware: do not use the force
+flag if there is a chance an active provisioning or deleting task
+is running against this SDDC. This option is restricted. (optional)</li>
 </ul>
 </td>
 </tr>
@@ -6045,49 +6917,6 @@ Unauthorized</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="com.vmware.vmc.orgs_client.Subscriptions.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>org</em>, <em>subscription</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.Subscriptions.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates subscription cancellation. Returns Task object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
-<li><strong>subscription</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – SubscriptionId for an sddc. (required)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#com.vmware.vmc.model_client.Task" title="com.vmware.vmc.model_client.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.Task</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.vmc.model.Task</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
-Bad Request. Check if the subscription id is still valid and if the
-Sddc is in a state that can be deleted. More information will be
-available in the error_messages field.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
-Server error. Check retryable flag to see if request should be
-retried.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
-Forbidden</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
-Unauthorized</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="com.vmware.vmc.orgs_client.Subscriptions.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>subscription</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.Subscriptions.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get subscription details for a given subscription id</p>
@@ -6183,7 +7012,7 @@ Unauthorized</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
-<li><strong>task</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – task Id (required)</li>
+<li><strong>task</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Task identifier (required)</li>
 </ul>
 </td>
 </tr>
@@ -6220,16 +7049,18 @@ Unauthorized</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
 <li><strong>filter</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Filter expression Binary Operators: ‘eq’, ‘ne’, ‘lt’, ‘gt’, ‘le’,
-‘ge’ Nested attributes are composed using ‘.’ Dates must be
-formatted as YYYY-MM-DD Strings should enclosed in single quotes,
-escape single quote with two single quotes The special literal
-‘created’ will be mapped to the time the resource was first
-created. NOTE: currently only ANDs of ORs is implemented. NOTE2:
-currently only range operators are implemented for created date.
-Examples: - $filter=(created gt ‘2016-08-09’) and (org_id eq
-278710ff4e-6b6d-4d4e-aefb-ca637f38609e) - $filter=(created eq
-‘2016-08-09’) - $filter=(created gt ‘2016-08-09’) and (sddc.status
-eq ‘READY’) (optional)</li>
+‘ge’, ‘mul’, ‘div’, ‘mod’, ‘sub’, ‘add’ Unary Operators: ‘not’, ‘-‘
+(minus) String Operators: ‘startswith’, ‘endswith’, ‘length’,
+‘contains’, ‘tolower’, ‘toupper’, Nested attributes are composed
+using ‘.’ Dates must be formatted as YYYY-MM-DD Strings should
+enclosed in single quotes, escape single quote with two single
+quotes The special literal ‘created’ will be mapped to the time the
+resource was first created. NOTE: currently only ANDs of ORs is
+implemented. NOTE2: currently only range operators are implemented
+for created date. Examples: - $filter=(created gt 2016-08-09) and
+(org_id eq 278710ff4e-6b6d-4d4e-aefb-ca637f38609e) -
+$filter=(created eq 2016-08-09) - $filter=(created gt 2016-08-09)
+and (sddc.status eq ‘READY’) (optional)</li>
 </ul>
 </td>
 </tr>
@@ -6264,7 +7095,7 @@ monitored to determine subsequent status.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
-<li><strong>task</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – task Id (required)</li>
+<li><strong>task</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Task identifier (required)</li>
 <li><strong>action</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If = ‘cancel’, task will be canceled (optional)</li>
 </ul>
 </td>
@@ -6342,7 +7173,7 @@ Unauthorized</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.0',
+            VERSION:'1.3.0',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -6353,13 +7184,11 @@ Unauthorized</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {
