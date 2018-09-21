@@ -59,6 +59,7 @@ def setup(context=None):
                                        password=password,
                                        session=session)
 
+
 def run():
     # * Floppy images must be pre-existing.  This API does not expose
     #   a way to create new floppy images.

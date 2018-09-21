@@ -48,7 +48,6 @@ class BackupSchedule(object):
 
         self._schedule_id = 'test_schedule'
 
-
     def setup(self):
         parser = sample_cli.build_arg_parser()
 
@@ -153,6 +152,7 @@ def main():
     schedule = BackupSchedule()
     schedule.setup()
     schedule.run()
+
 
 if __name__ == '__main__':
     main()
