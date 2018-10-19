@@ -232,7 +232,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#module-com.vmware.vmc.orgs.account_link_client">com.vmware.vmc.orgs.account_link_client module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#module-com.vmware.vmc.orgs.reservations_client">com.vmware.vmc.orgs.reservations_client module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#module-com.vmware.vmc.orgs.sddcs_client">com.vmware.vmc.orgs.sddcs_client module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#module-com.vmware.vmc.orgs.tbrs_client">com.vmware.vmc.orgs.tbrs_client module</a></li>
@@ -1239,9 +1238,8 @@ FQDN or IP address as input value when id = HOSTNAME_OR_IP, accept
 FQDN ONLY when id = HOSTNAME, accept IP address ONLY when id =
 HOST_IP.</p>
 </li>
-<li><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – the FQDN or IP address to run the test against, use
-\#primary-dns or \#secondary-dns as the on-prem
-primary/secondary DNS server IP.</li>
+<li><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – the FQDN or IP address to run the test against, use #primary-dns
+or #secondary-dns as the on-prem primary/secondary DNS server IP.</li>
 <li><strong>label</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (Optional, for UI display only) input value label.</li>
 </ul>
 </td>
@@ -6418,38 +6416,6 @@ names.</p>
 <div class="section" id="module-com.vmware.vmc.orgs_client">
 <span id="com-vmware-vmc-orgs-client-module"></span><h2>com.vmware.vmc.orgs_client module<a class="headerlink" href="#module-com.vmware.vmc.orgs_client" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="com.vmware.vmc.orgs_client.AccountLink">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.orgs_client.</code><code class="descname">AccountLink</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.AccountLink" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="com.vmware.vmc.orgs_client.AccountLink.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>org</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.AccountLink.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a link that can be used on a customer’s account to start the
-linking process.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></code> 
-Generic Error</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="com.vmware.vmc.orgs_client.OfferInstances">
 <em class="property">class </em><code class="descclassname">com.vmware.vmc.orgs_client.</code><code class="descname">OfferInstances</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs_client.OfferInstances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
@@ -6959,8 +6925,8 @@ Not Found</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
-<li><strong>offer_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Offer Type \* `ON_DEMAND` - on-demand subscription \*
-`TERM` - term subscription \* All subscriptions if not
+<li><strong>offer_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Offer Type * `ON_DEMAND` - on-demand subscription *
+`TERM` - term subscription * All subscriptions if not
 specified (optional)</li>
 </ul>
 </td>
@@ -7151,7 +7117,7 @@ Unauthorized</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, VMware, Inc..
+        &copy; Copyright 2018, VMware, Inc.
 
     </p>
   </div>
@@ -7170,21 +7136,14 @@ Unauthorized</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.3.0',
-            LANGUAGE:'en',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
