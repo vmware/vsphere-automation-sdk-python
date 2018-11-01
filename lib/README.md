@@ -8,6 +8,7 @@ vapi_runtime	                      | vAPI runtime responsible for serialization/
 vapi_vmc_client                     | Handles VMC CSP authentication process
 vapi_client_bindings                | Client stubs for vSphere Automation APIs
 vmc_client_bindings                 | Client stubs for VMware Cloud Services APIs
+nsx-python-sdk                      | Client stubs for VMware NSX-T APIs
 nsx-policy-python-sdk               | Client stubs for VMware NSX-T Policy APIs
 vmc-app-python-sdk                  | Client stubs for VMware NSX-T VMC app APIs (for AWS underlay management)
 vapi-common-client                  | Common client code libraries
