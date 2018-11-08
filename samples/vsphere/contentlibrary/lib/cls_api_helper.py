@@ -119,7 +119,8 @@ class ClsApiHelper(object):
         print('Library item created id: {0}'.format(library_item_id))
 
         # Upload an iso file to above library item, use the filename as the item_filename
-        iso_files_map = self.get_iso_file_map(item_filename=iso_filename, disk_filename=iso_filename)
+        iso_files_map = self.get_iso_file_map(item_filename=iso_filename,
+                                              disk_filename=iso_filename)
         self.upload_files(library_item_id=library_item_id, files_map=iso_files_map)
         print('Uploaded iso file to library item {0}'.format(library_item_id))
         return library_item_id
@@ -130,6 +131,21 @@ class ClsApiHelper(object):
                                                      self.ISO_FILE_RELATIVE_DIR + disk_filename))
         iso_files_map[item_filename] = iso_file_path
         return iso_files_map
+
+    def get_ova_file_map(self, relative_path, local_filename):
+        """
+        Get OVA file paths to be used during uploads.
+
+        :param relative_path: directory path under contentlibrary/resources for ova file
+        :param local_filename: name of the file on local disk under resources directory
+        :return: mapping of item's filename to full path for the file on local disk
+        """
+        ova_file_map = {}
+        item_filename = os.path.basename(local_filename)
+        ova_file_path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                     relative_path, local_filename))
+        ova_file_map[item_filename] = ova_file_path
+        return ova_file_map
 
     def get_libraryitem_spec(self, client_token, name, description, library_id, library_item_type):
         """
