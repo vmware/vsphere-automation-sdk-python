@@ -58,6 +58,11 @@ Example pip install command on Mac OSX.
 pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file:///Users/strefethen/github/vsphere-automation-sdk-python/lib
 ```
 
+Example pip install command on Windows. 
+
+```cmd
+pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file:\\\C:\Users\strefethen\github\vsphere-automation-sdk-python\lib
+```
 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2
 
