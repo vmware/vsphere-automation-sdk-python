@@ -108,6 +108,8 @@ Type "help", "copyright", "credits" or "license" for more information.
 ...]
 ```
 
+**NOTE:** If you are using Bash, be sure to use single quote for username and password to preserve the values. If you use double quote, you will have to escape special characters, such as "$". See [Bash manual](http://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html) 
+
 ### Connect to VMware Cloud on AWS
 
 ```python
