@@ -24,8 +24,8 @@ def get_obj(content, vimtype, name):
      Get the vsphere managed object associated with a given text name
     """
     obj = None
-    container = content.viewManager.CreateContainerView(content.rootFolder,
-                                                        vimtype, True)
+    container = content.viewManager.CreateContainerView(
+        content.rootFolder, vimtype, True)
     _views.append(container)
     for c in container.view:
         if c.name == name:
@@ -39,8 +39,8 @@ def get_obj_by_moId(content, vimtype, moid):
     Get the vsphere managed object by moid value
     """
     obj = None
-    container = content.viewManager.CreateContainerView(content.rootFolder,
-                                                        vimtype, True)
+    container = content.viewManager.CreateContainerView(
+        content.rootFolder, vimtype, True)
     _views.append(container)
     for c in container.view:
         if c._GetMoId() == moid:
@@ -76,7 +76,8 @@ def poweron_vm(content, mo):
         wait_for_tasks(content, [mo.PowerOn()])
         print('{0} powered on successfully'.format(mo._GetMoId()))
     except Exception:
-        print('Unexpected error while powering on vm {0}'.format(mo._GetMoId()))
+        print('Unexpected error while powering on vm {0}'.format(
+            mo._GetMoId()))
         return False
     return True
 
@@ -93,8 +94,8 @@ def poweroff_vm(content, mo):
         wait_for_tasks(content, [mo.PowerOff()])
         print('{0} powered off successfully'.format(mo._GetMoId()))
     except Exception:
-        print(
-            'Unexpected error while powering off vm {0}'.format(mo._GetMoId()))
+        print('Unexpected error while powering off vm {0}'.format(
+            mo._GetMoId()))
         return False
     return True
 
@@ -106,10 +107,11 @@ def wait_for_tasks(content, tasks):
     taskList = [str(task) for task in tasks]
 
     # Create filter
-    objSpecs = [vmodl.query.PropertyCollector.ObjectSpec(obj=task) for task in
-                tasks]
-    propSpec = vmodl.query.PropertyCollector.PropertySpec(type=vim.Task,
-                                                          pathSet=[], all=True)
+    objSpecs = [
+        vmodl.query.PropertyCollector.ObjectSpec(obj=task) for task in tasks
+    ]
+    propSpec = vmodl.query.PropertyCollector.PropertySpec(
+        type=vim.Task, pathSet=[], all=True)
     filterSpec = vmodl.query.PropertyCollector.FilterSpec()
     filterSpec.objectSet = objSpecs
     filterSpec.propSet = [propSpec]
@@ -145,6 +147,15 @@ def wait_for_tasks(content, tasks):
     finally:
         if task_filter:
             task_filter.Destroy()
+
+
+def get_cluster_name_by_id(content, name):
+    cluster_obj = get_obj(content, [vim.ClusterComputeResource], name)
+    if cluster_obj is not None:
+        self.mo_id = cluster_obj._GetMoId()
+        print('Cluster MoId: {0}'.format(self.mo_id))
+    else:
+        print('Cluster: {0} not found'.format(self.cluster_name))
 
 
 def __destroy_container_views():
