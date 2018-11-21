@@ -7,7 +7,7 @@
 
 - [ ] I am using the [latest SDK version](https://github.com/vmware/vsphere-automation-sdk-python/releases)
 - [ ] This API is compatible with my vCenter version (You can get the info from '__vcenter_version__' in each sample)
-- [ ] I have searched [existing issues](https://github.com/vmware/vsphere-automation-sdk-python/issues?utf8=%E2%9C%93&q=is%3Aissue) and [Common Issues Wiki](https://github.com/vmware/vsphere-automation-sdk-python/wiki/Common-Issues)
+- [ ] I have searched [existing issues](https://github.com/vmware/vsphere-automation-sdk-python/issues?utf8=%E2%9C%93&q=is%3Aissue) and [Troubleshooting wiki](https://github.com/vmware/vsphere-automation-sdk-python/wiki/Troubleshooting)
 
 ## Environment
 - sdk package version: 
