@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2017, 2018. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2017, 2018, 2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -16,11 +15,9 @@
 __author__ = 'VMware, Inc.'
 __vcenter_version__ = '6.7+'
 
-
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
 from samples.vsphere.common import vapiconnect
-from tabulate import tabulate
 
 from com.vmware.appliance.logging_client import Forwarding
 
@@ -45,18 +42,18 @@ class LogForwarding(object):
     def setup(self):
         parser = sample_cli.build_arg_parser()
 
-        parser.add_argument('--loghost',
-                            required=True,
-                            action='store',
-                            help='The log host')
-        parser.add_argument('--port',
-                            required=True,
-                            action='store',
-                            help='The log host port number')
-        parser.add_argument('--protocol',
-                            required=True,
-                            action='store',
-                            help='The log host protocol (TCP/UDP/TLS)')
+        parser.add_argument(
+            '--loghost', required=True, action='store', help='The log host')
+        parser.add_argument(
+            '--port',
+            required=True,
+            action='store',
+            help='The log host port number')
+        parser.add_argument(
+            '--protocol',
+            required=True,
+            action='store',
+            help='The log host protocol (TCP/UDP/TLS)')
 
         args = sample_util.process_cli_args(parser.parse_args())
         self.loghost = args.loghost
@@ -65,10 +62,10 @@ class LogForwarding(object):
 
         # Connect to vAPI services
         self.stub_config = vapiconnect.connect(
-                                    host=args.server,
-                                    user=args.username,
-                                    pwd=args.password,
-                                    skip_verification=args.skipverification)
+            host=args.server,
+            user=args.username,
+            pwd=args.password,
+            skip_verification=args.skipverification)
 
         self.log_forwarding_client = Forwarding(self.stub_config)
 
@@ -86,38 +83,36 @@ class LogForwarding(object):
         self.update_log_forwarding()
 
     def set_log_forwarding(self):
-        log_forwarding_config = [Forwarding.Config(hostname=self.loghost,
-                                                   port=self.port,
-                                                   protocol=self.protocol)]
+        log_forwarding_config = [
+            Forwarding.Config(
+                hostname=self.loghost, port=self.port, protocol=self.protocol)
+        ]
         self.log_forwarding_client.set(log_forwarding_config)
 
     def get_log_forwarding(self):
         configs = self.log_forwarding_client.get()
 
-        print("\nLog forwarding configurations:")
-        table = [[cfg.hostname, cfg.port, cfg.protocol] for cfg in configs]
-        headers = ["Loghost", "Port", "Protocol"]
-        print(tabulate(table, headers))
+        for cfg in configs:
+            print('Loghost: {}, Port: {}, Protocol: {}'.format(
+                cfg.hostname, cfg.port, cfg.protocol))
 
     def test_log_forwarding(self):
         test_response = self.log_forwarding_client.test(True)
 
         print("\nLog forwarding test response:")
-        table = [[resp.hostname,
-                  resp.state,
-                  resp.message.default_message if resp.message else None]
-                 for resp in test_response]
-        headers = ["Loghost", "State", "Message"]
-        print(tabulate(table, headers))
+        for resp in test_response:
+            print('Loghost: {}, State: {}, Message: {}'.format(
+                resp.hostname, resp.state,
+                resp.message.default_message if resp.message else None))
 
     def update_log_forwarding(self):
         # Read log forwarding configuration
         log_forwarding_config = self.log_forwarding_client.get()
 
         # Delete the newly added configuration
-        log_forwarding_config = list(filter(
-                                    lambda cfg: cfg.hostname != self.loghost,
-                                    log_forwarding_config))
+        log_forwarding_config = list(
+            filter(lambda cfg: cfg.hostname != self.loghost,
+                   log_forwarding_config))
 
         # Apply the modified log forwarding configuration
         self.log_forwarding_client.set(log_forwarding_config)

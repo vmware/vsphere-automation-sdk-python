@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2017. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2017, 2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -14,7 +14,6 @@
 __author__ = 'VMware, Inc.'
 
 from time import sleep
-from tabulate import tabulate
 
 from com.vmware.vmc.model_client import Task
 
@@ -44,8 +43,8 @@ def wait_for_task(task_client, org_id, task_id, interval_sec=60):
             print('\nTask {} cancelled'.format(task_id))
             return False
         else:
-            print("Estimated time remaining: {} minutes".
-                  format(task.estimated_remaining_minutes))
+            print("Estimated time remaining: {} minutes".format(
+                task.estimated_remaining_minutes))
             sleep(interval_sec)
 
 
@@ -56,9 +55,7 @@ def list_all_tasks(task_client, org_id):
     :param org_id: organization id
     """
     tasks = task_client.list(org_id)
-    headers = ['ID', 'Status', 'Progress', 'Started', 'User']
-    table = []
     for task in tasks:
-        table.append([task.id, task.status, task.progress_percent,
-                      task.start_time, task.user_name])
-    print(tabulate(table, headers))
+        print('ID: {}, Status: {}, Progress: {}, Started: {}, User: {}'.format(
+            task.id, task.status, task.progress_percent, task.start_time,
+            task.user_name))

@@ -16,8 +16,8 @@
 __author__ = 'VMware, Inc.'
 
 import argparse
-from com.vmware.vmc.model_client import *
-from tabulate import tabulate
+
+from com.vmware.vmc.model_client import DnsForwarders
 from vmware.vapi.vmc.client import create_vmc_client
 
 
@@ -162,9 +162,7 @@ class DNSCrud(object):
     def print_output(self, dns):
         # DNS IP address might be empty
         ips = getattr(dns.forwarders, 'ip_address', [])
-
-        result = [[dns.name, ips]]
-        print(tabulate(result, ['Name', 'IP Addresses']))
+        print('Name: {}, IP Addresses: {}'.format(dns.name, ips))
 
 
 def main():

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 * *******************************************************
 * Copyright (c) VMware, Inc. 2018. All Rights Reserved.
@@ -16,8 +15,8 @@
 __author__ = 'VMware, Inc.'
 
 import argparse
-from com.vmware.vmc.model_client import *
-from tabulate import tabulate
+
+from com.vmware.vmc.model_client import Ipsec, IpsecSite, IpsecSites, Subnets
 from vmware.vapi.vmc.client import create_vmc_client
 
 
@@ -33,51 +32,60 @@ class IpsecVPNsCrud(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('-r', '--refresh-token',
-                            required=True,
-                            help='VMware Cloud API refresh token')
+        parser.add_argument(
+            '-r',
+            '--refresh-token',
+            required=True,
+            help='VMware Cloud API refresh token')
 
-        parser.add_argument('-o', '--org-id',
-                            required=True,
-                            help='Organization identifier.')
+        parser.add_argument(
+            '-o', '--org-id', required=True, help='Organization identifier.')
 
-        parser.add_argument('-s', '--sddc-id',
-                            required=True,
-                            help='Sddc Identifier.')
+        parser.add_argument(
+            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
 
-        parser.add_argument('--use-compute-gateway',
-                            action='store_true',
-                            default=False,
-                            help='Use compute gateway. Default is using '
-                                 'management gateway')
+        parser.add_argument(
+            '--use-compute-gateway',
+            action='store_true',
+            default=False,
+            help='Use compute gateway. Default is using '
+            'management gateway')
 
-        parser.add_argument('--vpn-name',
-                            default='Sample IPsec VPN',
-                            help='Name of the new VPN')
+        parser.add_argument(
+            '--vpn-name',
+            default='Sample IPsec VPN',
+            help='Name of the new VPN')
 
-        parser.add_argument('--public-ip',
-                            default='10.10.10.10',
-                            help='IP (IPv4) address or FQDN of the Peer')
+        parser.add_argument(
+            '--public-ip',
+            default='10.10.10.10',
+            help='IP (IPv4) address or FQDN of the Peer')
 
-        parser.add_argument('--private-ip',
-                            default='192.168.10.10',
-                            help='Local IP of the IPsec Site')
+        parser.add_argument(
+            '--private-ip',
+            default='192.168.10.10',
+            help='Local IP of the IPsec Site')
 
-        parser.add_argument('--remote-networks',
-                            default='192.168.20.10/24',
-                            help='Peer subnets for which VPN is configured')
+        parser.add_argument(
+            '--remote-networks',
+            default='192.168.20.10/24',
+            help='Peer subnets for which VPN is configured')
 
-        parser.add_argument('--local-networks',
-                            default='192.168.30.10/24',
-                            help='Local subnets for which VPN is configured')
+        parser.add_argument(
+            '--local-networks',
+            default='192.168.30.10/24',
+            help='Local subnets for which VPN is configured')
 
-        parser.add_argument('--key',
-                            default='00000000',
-                            help='Pre Shared Key for the IPsec Site')
+        parser.add_argument(
+            '--key',
+            default='00000000',
+            help='Pre Shared Key for the IPsec Site')
 
-        parser.add_argument('-c', '--cleardata',
-                            action='store_true',
-                            help='Clean up after sample run')
+        parser.add_argument(
+            '-c',
+            '--cleardata',
+            action='store_true',
+            help='Clean up after sample run')
         args = parser.parse_args()
 
         self.edge_id = None
@@ -98,18 +106,18 @@ class IpsecVPNsCrud(object):
         # Check if the organization exists
         orgs = self.vmc_client.Orgs.list()
         if self.org_id not in [org.id for org in orgs]:
-            raise ValueError("Org with ID {} doesn't exist".format(self.org_id))
+            raise ValueError("Org with ID {} doesn't exist".format(
+                self.org_id))
 
         # Check if the SDDC exists
         sddcs = self.vmc_client.orgs.Sddcs.list(self.org_id)
         if self.sddc_id not in [sddc.id for sddc in sddcs]:
-            raise ValueError("SDDC with ID {} doesn't exist in org {}".
-                             format(self.sddc_id, self.org_id))
+            raise ValueError("SDDC with ID {} doesn't exist in org {}".format(
+                self.sddc_id, self.org_id))
 
         print('\n# Setup: List network gateway edges:')
         edges = self.vmc_client.orgs.sddcs.networks.Edges.get(
-            org=self.org_id,
-            sddc=self.sddc_id,
+            org=self.org_id, sddc=self.sddc_id,
             edge_type='gatewayServices').edge_page.data
 
         print('  Management Gateway ID: {}'.format(edges[0].id))
@@ -134,8 +142,7 @@ class IpsecVPNsCrud(object):
             enabled=True,
             local_subnets=Subnets(subnets=[self.local_networks]))
 
-        ipsec = Ipsec(enabled=True,
-                      sites=IpsecSites(sites=[ipsec_site]))
+        ipsec = Ipsec(enabled=True, sites=IpsecSites(sites=[ipsec_site]))
 
         # TODO: Find out how to add ipsec networks.
         self.vmc_client.orgs.sddcs.networks.edges.ipsec.Config.update(
@@ -157,9 +164,7 @@ class IpsecVPNsCrud(object):
         updated_name = 'Updated ' + self.vpn_name
 
         ipsec = self.vmc_client.orgs.sddcs.networks.edges.ipsec.Config.get(
-            org=self.org_id,
-            sddc=self.sddc_id,
-            edge_id=self.edge_id)
+            org=self.org_id, sddc=self.sddc_id, edge_id=self.edge_id)
 
         for site in ipsec.sites.sites:
             if site.name == self.vpn_name:
@@ -178,32 +183,26 @@ class IpsecVPNsCrud(object):
     def delete_vpn(self):
         if self.cleanup:
             self.vmc_client.orgs.sddcs.networks.edges.ipsec.Config.delete(
-                org=self.org_id,
-                sddc=self.sddc_id,
-                edge_id=self.edge_id)
-            print('\n# Example: IPsec VPN {} is deleted'.
-                  format(self.vpn_name))
+                org=self.org_id, sddc=self.sddc_id, edge_id=self.edge_id)
+            print('\n# Example: IPsec VPN {} is deleted'.format(self.vpn_name))
 
     def get_vpn_by_name(self, name):
         sites = self.vmc_client.orgs.sddcs.networks.edges.ipsec.Config.get(
-            org=self.org_id,
-            sddc=self.sddc_id,
+            org=self.org_id, sddc=self.sddc_id,
             edge_id=self.edge_id).sites.sites
 
         for site in sites:
             if site.name == name:
                 return site
         else:
-            raise Exception("Can't find IPsec VPN with name {}".
-                            format(self.vpn_name))
+            raise Exception("Can't find IPsec VPN with name {}".format(
+                self.vpn_name))
 
     def print_output(self, site):
-        result = [[site.name, site.site_id, site.peer_ip, site.peer_id,
-                   site.peer_subnets, site.local_ip, site.local_subnets]]
-
-        print(tabulate(result, ['Name', 'ID', 'Public IPs', 'Private IP',
-                                'Remote Networks', 'Local Gateway IP',
-                                'Local Network']))
+        print(
+            'Name: {}, ID: {}, Public IPs: {}, Private IP: {}, Remote Networks: {}, Local Gateway IP: {}, Local Network {}'
+            .format(site.name, site.site_id, site.peer_ip, site.peer_id,
+                    site.peer_subnets, site.local_ip, site.local_subnets))
 
 
 def main():

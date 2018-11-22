@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 * *******************************************************
 * Copyright (c) VMware, Inc. 2018. All Rights Reserved.
@@ -21,7 +20,6 @@ import argparse
 from com.vmware.vapi.std.errors_client import NotFound
 from com.vmware.vmc.model_client import ErrorResponse
 from six.moves.urllib import parse
-from tabulate import tabulate
 from vmware.vapi.vmc.client import create_vmc_client
 from vmware.vapi.vsphere.client import create_vsphere_client
 
@@ -38,17 +36,17 @@ class ConnectTovSphereWithDefaultCredentials(object):
 
     def __init__(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('-r', '--refresh-token',
-                            required=True,
-                            help='VMware Cloud API refresh token')
+        parser.add_argument(
+            '-r',
+            '--refresh-token',
+            required=True,
+            help='VMware Cloud API refresh token')
 
-        parser.add_argument('-o', '--org-id',
-                            required=True,
-                            help='Organization identifier.')
+        parser.add_argument(
+            '-o', '--org-id', required=True, help='Organization identifier.')
 
-        parser.add_argument('-s', '--sddc-id',
-                            required=True,
-                            help='Sddc Identifier.')
+        parser.add_argument(
+            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
         args = parser.parse_args()
 
         self.refresh_token = args.refresh_token
@@ -59,12 +57,14 @@ class ConnectTovSphereWithDefaultCredentials(object):
 
         # Connect to VMware Cloud on AWS
         vmc_client = create_vmc_client(self.refresh_token)
-        print('\n# Example: Successfully login to VMware Cloud on AWS instance')
+        print(
+            '\n# Example: Successfully login to VMware Cloud on AWS instance')
 
         # Check if the organization exists
         orgs = vmc_client.Orgs.list()
         if self.org_id not in [org.id for org in orgs]:
-            raise ValueError("Org with ID {} doesn't exist".format(self.org_id))
+            raise ValueError("Org with ID {} doesn't exist".format(
+                self.org_id))
 
         # Check if the SDDC exists
         try:
@@ -78,18 +78,20 @@ class ConnectTovSphereWithDefaultCredentials(object):
 
         # Connect to vSphere client using the initial cloud admin credentials.
         # Please use the new credentials to login after you reset the default one.
-        vsphere_client = create_vsphere_client(server,
-                                               username=sddc.resource_config.cloud_username,
-                                               password=sddc.resource_config.cloud_password)
-        print("\n# Example: Successfully connect to vCenter at '{}'".format(server))
+        vsphere_client = create_vsphere_client(
+            server,
+            username=sddc.resource_config.cloud_username,
+            password=sddc.resource_config.cloud_password)
+        print("\n# Example: Successfully connect to vCenter at '{}'".format(
+            server))
 
         # List VMs in the vSphere instance
         vms = vsphere_client.vcenter.VM.list()
-        table = []
-        for vm_summary in vms:
-            table.append([vm_summary.vm, vm_summary.name])
+
         print('\n# Example: List VMs in the vSphere')
-        print(tabulate(table, ['VM ID', 'VM Name']))
+        for vm_summary in vms:
+            print('VM ID: {}, VM Name: {}'.format(vm_summary.vm,
+                                                  vm_summary.name))
 
 
 def main():
