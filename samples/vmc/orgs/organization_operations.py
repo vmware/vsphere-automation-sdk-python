@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2017. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2017, 2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -18,7 +17,6 @@ __author__ = 'VMware, Inc.'
 import requests
 import argparse
 import atexit
-from tabulate import tabulate
 
 from vmware.vapi.vmc.client import create_vmc_client
 
@@ -41,9 +39,11 @@ class OperationsOnOrganizations(object):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-        parser.add_argument('-r', '--refresh-token',
-                            required=True,
-                            help='VMware Cloud API refresh token')
+        parser.add_argument(
+            '-r',
+            '--refresh-token',
+            required=True,
+            help='VMware Cloud API refresh token')
 
         self.refresh_token = parser.parse_args().refresh_token
 
@@ -59,25 +59,21 @@ class OperationsOnOrganizations(object):
             raise ValueError('The sample requires at least one org associated'
                              'with the calling user')
         print("\n# Example: List organizations")
-        table = []
         for org in orgs:
-            table.append([org.id, org.display_name])
-        print(tabulate(table, ['ID', 'Display Name']))
+            print('ID: {}, Display Name: {}'.format(org.id, org.display_name))
 
         self.org = orgs[0]
 
     def get_org_detail(self):
         org = self.org
-        print('\n# Example: List details of the first organization {}:'.
-              format(org.id))
+        print('\n# Example: List details of the first organization {}:'.format(
+            org.id))
 
-        headers = ['ID', 'Display Name', 'Name', 'Created', 'Updated',
-                   'Project State', 'SLA']
-        data = [org.id, org.display_name, org.name,
-                org.created.strftime('%m/%d/%Y'),
-                org.updated.strftime('%m/%d/%Y'),
-                org.project_state, org.sla]
-        print(tabulate([data], headers))
+        print(
+            'ID: {}, Display Name: {}, Name: {}, Created: {}, Updated: {}, Project State: {}'
+            .format(org.id, org.display_name, org.name,
+                    org.created.strftime('%m/%d/%Y'),
+                    org.updated.strftime('%m/%d/%Y'), org.project_state))
 
 
 def main():

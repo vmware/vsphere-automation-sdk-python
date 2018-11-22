@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 * *******************************************************
 * Copyright (c) VMware, Inc. 2018. All Rights Reserved.
@@ -16,8 +15,10 @@
 __author__ = 'VMware, Inc.'
 
 import argparse
-from com.vmware.vmc.model_client import *
-from tabulate import tabulate
+
+from com.vmware.vmc.model_client import (AddressFWSourceDestination,
+                                         Application, FirewallRules,
+                                         Nsxfirewallrule, Nsxfirewallservice)
 from vmware.vapi.vmc.client import create_vmc_client
 
 
@@ -33,31 +34,35 @@ class FirewallRulesCrud(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('-r', '--refresh-token',
-                            required=True,
-                            help='VMware Cloud API refresh token')
+        parser.add_argument(
+            '-r',
+            '--refresh-token',
+            required=True,
+            help='VMware Cloud API refresh token')
 
-        parser.add_argument('-o', '--org-id',
-                            required=True,
-                            help='Organization identifier.')
+        parser.add_argument(
+            '-o', '--org-id', required=True, help='Organization identifier.')
 
-        parser.add_argument('-s', '--sddc-id',
-                            required=True,
-                            help='Sddc Identifier.')
+        parser.add_argument(
+            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
 
-        parser.add_argument('--rule-name',
-                            default='Sample Firewall Rule',
-                            help='Name of the new firewall rule')
+        parser.add_argument(
+            '--rule-name',
+            default='Sample Firewall Rule',
+            help='Name of the new firewall rule')
 
-        parser.add_argument('--use-compute-gateway',
-                            action='store_true',
-                            default=False,
-                            help='Use compute gateway. Default is using '
-                                 'management gateway')
+        parser.add_argument(
+            '--use-compute-gateway',
+            action='store_true',
+            default=False,
+            help='Use compute gateway. Default is using '
+            'management gateway')
 
-        parser.add_argument('-c', '--cleardata',
-                            action='store_true',
-                            help='Clean up after sample run')
+        parser.add_argument(
+            '-c',
+            '--cleardata',
+            action='store_true',
+            help='Clean up after sample run')
         args = parser.parse_args()
 
         self.edge_id = None
@@ -74,13 +79,14 @@ class FirewallRulesCrud(object):
         # Check if the organization exists
         orgs = self.vmc_client.Orgs.list()
         if self.org_id not in [org.id for org in orgs]:
-            raise ValueError("Org with ID {} doesn't exist".format(self.org_id))
+            raise ValueError("Org with ID {} doesn't exist".format(
+                self.org_id))
 
         # Check if the SDDC exists
         sddcs = self.vmc_client.orgs.Sddcs.list(self.org_id)
         if self.sddc_id not in [sddc.id for sddc in sddcs]:
-            raise ValueError("SDDC with ID {} doesn't exist in org {}".
-                             format(self.sddc_id, self.org_id))
+            raise ValueError("SDDC with ID {} doesn't exist in org {}".format(
+                self.sddc_id, self.org_id))
 
     def create_firewall_rule(self):
 
@@ -91,8 +97,7 @@ class FirewallRulesCrud(object):
 
         print('# List network gateway edges:')
         edges = self.vmc_client.orgs.sddcs.networks.Edges.get(
-            org=self.org_id,
-            sddc=self.sddc_id,
+            org=self.org_id, sddc=self.sddc_id,
             edge_type='gatewayServices').edge_page.data
 
         print('  Management Gateway ID: {}'.format(edges[0].id))
@@ -104,8 +109,10 @@ class FirewallRulesCrud(object):
         # Construct an destination object for the new firewall rule
         # You can use one of following destination IP addresses
         # IPs for vCenter
-        ip_address = [sddc.resource_config.vc_public_ip,
-                      sddc.resource_config.vc_management_ip]
+        ip_address = [
+            sddc.resource_config.vc_public_ip,
+            sddc.resource_config.vc_management_ip
+        ]
 
         # TODO: IPs for ESXi
         # TODO: IPs for Site Recovery Manager
@@ -121,24 +128,27 @@ class FirewallRulesCrud(object):
             vnic_group_id=[])
 
         # Construct a new NSX firewall rule object
-        self.nfwr = Nsxfirewallrule(rule_type='user',
-                                    name=self.rule_name,
-                                    enabled=True,
-                                    action='accept',
-                                    source=AddressFWSourceDestination(
-                                        exclude=False,
-                                        ip_address=['any'],
-                                        grouping_object_id=[],
-                                        vnic_group_id=[]),
-                                    destination=destination,
-                                    logging_enabled=False,
-                                    application=Application(
-                                        application_id=[],
-                                        service=[Nsxfirewallservice(
-                                            source_port=['any'],
-                                            protocol='TCP',
-                                            port=['443'],
-                                            icmp_type=None)]))
+        self.nfwr = Nsxfirewallrule(
+            rule_type='user',
+            name=self.rule_name,
+            enabled=True,
+            action='accept',
+            source=AddressFWSourceDestination(
+                exclude=False,
+                ip_address=['any'],
+                grouping_object_id=[],
+                vnic_group_id=[]),
+            destination=destination,
+            logging_enabled=False,
+            application=Application(
+                application_id=[],
+                service=[
+                    Nsxfirewallservice(
+                        source_port=['any'],
+                        protocol='TCP',
+                        port=['443'],
+                        icmp_type=None)
+                ]))
 
         self.vmc_client.orgs.sddcs.networks.edges.firewall.config.Rules.add(
             org=self.org_id,
@@ -152,9 +162,7 @@ class FirewallRulesCrud(object):
 
         print('\n# Example: List basic firewall rule specs')
         fw_config = self.vmc_client.orgs.sddcs.networks.edges.firewall.Config.get(
-            org=self.org_id,
-            sddc=self.sddc_id,
-            edge_id=self.edge_id)
+            org=self.org_id, sddc=self.sddc_id, edge_id=self.edge_id)
 
         fw_rules = fw_config.firewall_rules.firewall_rules
 
@@ -163,8 +171,8 @@ class FirewallRulesCrud(object):
                 self.rule_id = r.rule_id
                 break
         else:
-            raise Exception("Can't find firewall rule with name {}".
-                            format(self.rule_name))
+            raise Exception("Can't find firewall rule with name {}".format(
+                self.rule_name))
 
         rule = self.vmc_client.orgs.sddcs.networks.edges.firewall.config.Rules.get(
             org=self.org_id,
@@ -205,18 +213,16 @@ class FirewallRulesCrud(object):
                 sddc=self.sddc_id,
                 edge_id=self.edge_id,
                 rule_id=self.rule_id)
-            print('\n# Example: Firewall rule {} is deleted'.
-                  format(self.rule_name))
+            print('\n# Example: Firewall rule {} is deleted'.format(
+                self.rule_name))
 
     def print_output(self, rule):
-        result = [[rule.name, rule.action, rule.source.ip_address,
-                   rule.destination.ip_address,
-                   rule.application.service[0].protocol,
-                   rule.application.service[0].port]]
-
-        print(tabulate(result, ['Name', 'Action', 'Source IPs',
-                                'Destination IPs', 'Service Protocol',
-                                'Service Port']))
+        print(
+            'Name: {}, Action: {}, Source IPs: {}, Destination IPs: {},Service Protocol: {}, Service Port: {}'
+            .format(rule.name, rule.action, rule.source.ip_address,
+                    rule.destination.ip_address,
+                    rule.application.service[0].protocol,
+                    rule.application.service[0].port))
 
 
 def main():

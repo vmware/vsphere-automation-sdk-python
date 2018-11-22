@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 * *******************************************************
 * Copyright (c) VMware, Inc. 2018. All Rights Reserved.
@@ -16,8 +15,7 @@
 __author__ = 'VMware, Inc.'
 
 import argparse
-from com.vmware.vmc.model_client import *
-from tabulate import tabulate
+from com.vmware.vmc.model_client import Nsxnatrule, NatRules
 from vmware.vapi.vmc.client import create_vmc_client
 
 
@@ -33,32 +31,36 @@ class NatRuleCrud(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('-r', '--refresh-token',
-                            required=True,
-                            help='VMware Cloud API refresh token')
+        parser.add_argument(
+            '-r',
+            '--refresh-token',
+            required=True,
+            help='VMware Cloud API refresh token')
 
-        parser.add_argument('-o', '--org-id',
-                            required=True,
-                            help='Organization identifier.')
+        parser.add_argument(
+            '-o', '--org-id', required=True, help='Organization identifier.')
 
-        parser.add_argument('-s', '--sddc-id',
-                            required=True,
-                            help='Sddc Identifier.')
+        parser.add_argument(
+            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
 
-        parser.add_argument('--public-ip',
-                            help='Public IP range for the NAT rule')
+        parser.add_argument(
+            '--public-ip', help='Public IP range for the NAT rule')
 
-        parser.add_argument('--rule-description',
-                            default='Sample NAT rule',
-                            help='Description for the rule')
+        parser.add_argument(
+            '--rule-description',
+            default='Sample NAT rule',
+            help='Description for the rule')
 
-        parser.add_argument('--internal-ip',
-                            default='192.168.200.1/24',
-                            help='NAT rule subnet')
+        parser.add_argument(
+            '--internal-ip',
+            default='192.168.200.1/24',
+            help='NAT rule subnet')
 
-        parser.add_argument('-c', '--cleardata',
-                            action='store_true',
-                            help='Clean up after sample run')
+        parser.add_argument(
+            '-c',
+            '--cleardata',
+            action='store_true',
+            help='Clean up after sample run')
         args = parser.parse_args()
 
         self.network_id = None
@@ -77,17 +79,17 @@ class NatRuleCrud(object):
         # Check if the organization exists
         orgs = self.vmc_client.Orgs.list()
         if self.org_id not in [org.id for org in orgs]:
-            raise ValueError("Org with ID {} doesn't exist".format(self.org_id))
+            raise ValueError("Org with ID {} doesn't exist".format(
+                self.org_id))
 
         # Check if the SDDC exists
         sddcs = self.vmc_client.orgs.Sddcs.list(self.org_id)
         if self.sddc_id not in [sddc.id for sddc in sddcs]:
-            raise ValueError("SDDC with ID {} doesn't exist in org {}".
-                             format(self.sddc_id, self.org_id))
+            raise ValueError("SDDC with ID {} doesn't exist in org {}".format(
+                self.sddc_id, self.org_id))
 
         edges = self.vmc_client.orgs.sddcs.networks.Edges.get(
-            org=self.org_id,
-            sddc=self.sddc_id,
+            org=self.org_id, sddc=self.sddc_id,
             edge_type='gatewayServices').edge_page.data
         print('\n# Setup: Compute Gateway ID: {}'.format(edges[1].id))
         self.edge_id = edges[1].id
@@ -107,16 +109,17 @@ class NatRuleCrud(object):
         print('\n# Example: Add a NAT rule to the compute gateway')
 
         # Construct a new NSX NAT rule spec
-        rule = Nsxnatrule(vnic='0',
-                          rule_type='user',
-                          action='dnat',  # Supported types are DNAT|SNAT
-                          protocol='tcp',
-                          description=self.rule_description,
-                          original_address=self.public_ip,
-                          original_port='443',
-                          translated_address=self.internal_ip,
-                          translated_port='443',
-                          enabled=True)
+        rule = Nsxnatrule(
+            vnic='0',
+            rule_type='user',
+            action='dnat',  # Supported types are DNAT|SNAT
+            protocol='tcp',
+            description=self.rule_description,
+            original_address=self.public_ip,
+            original_port='443',
+            translated_address=self.internal_ip,
+            translated_port='443',
+            enabled=True)
 
         self.vmc_client.orgs.sddcs.networks.edges.nat.config.Rules.add(
             org=self.org_id,
@@ -129,8 +132,7 @@ class NatRuleCrud(object):
     def get_net_rule(self):
         print('\n# Example: List all NAT rules')
         rules = self.vmc_client.orgs.sddcs.networks.edges.nat.Config.get(
-            org=self.org_id,
-            sddc=self.sddc_id,
+            org=self.org_id, sddc=self.sddc_id,
             edge_id=self.edge_id).rules.nat_rules_dtos
         self.print_output(rules)
 
@@ -161,13 +163,12 @@ class NatRuleCrud(object):
                 sddc=self.sddc_id,
                 edge_id=self.edge_id,
                 rule_id=self.rule_id)
-            print('\n# Example: NAT rule "{}" is deleted'.
-                  format(self.rule_description))
+            print('\n# Example: NAT rule "{}" is deleted'.format(
+                self.rule_description))
 
     def get_nat_rules_by_description(self, description):
         rules = self.vmc_client.orgs.sddcs.networks.edges.nat.Config.get(
-            org=self.org_id,
-            sddc=self.sddc_id,
+            org=self.org_id, sddc=self.sddc_id,
             edge_id=self.edge_id).rules.nat_rules_dtos
         result = []
         for rule in rules:
@@ -176,14 +177,12 @@ class NatRuleCrud(object):
         return result
 
     def print_output(self, rules):
-        table = []
         for rule in rules:
-            table.append([rule.description, rule.rule_id, rule.action,
-                          rule.original_address, rule.original_port,
-                          rule.translated_address, rule.translated_port])
-        print(tabulate(table, ['Description', 'Rule ID', 'Action',
-                               'Public IP', 'Public Ports',
-                               'Internal IP', 'Internal Ports']))
+            print(
+                'Description: {}, Rule ID: {}, Action: {}, Public IP: {}, Public Ports: {}, Internal IP: {}, Internal Ports: {}'
+                .format(rule.description, rule.rule_id, rule.action,
+                        rule.original_address, rule.original_port,
+                        rule.translated_address, rule.translated_port))
 
 
 def main():

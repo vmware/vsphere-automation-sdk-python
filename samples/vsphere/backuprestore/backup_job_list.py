@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 * *******************************************************
 * Copyright (c) VMware, Inc. 2017. All Rights Reserved.
@@ -17,7 +16,6 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2017 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.7+'
 
-from tabulate import tabulate
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
 from samples.vsphere.common import vapiconnect
@@ -28,8 +26,7 @@ class BackupJobList(object):
     """
     Demonstrates backup job list operation
 
-    Retrieves backup job details from vCenter and prints the data in
-    tabular format
+    Retrieves backup job details from vCenter and prints the data
 
     Prerequisites:
         - vCenter
@@ -46,25 +43,21 @@ class BackupJobList(object):
 
         # Connect to vAPI services
         self.stub_config = vapiconnect.connect(
-                                    host=args.server,
-                                    user=args.username,
-                                    pwd=args.password,
-                                    skip_verification=args.skipverification)
+            host=args.server,
+            user=args.username,
+            pwd=args.password,
+            skip_verification=args.skipverification)
 
     def run(self):
         details_client = Details(self.stub_config)
         job_list = details_client.list()
 
-        table = []
         for info in job_list.values():
-            row = [info.start_time.strftime("%b %d %Y %H:%M"),
-                   info.duration,
-                   info.type,
-                   info.status,
-                   info.location]
-            table.append(row)
-        headers = ["Start time", "Duration", "Type", "Status", "Location"]
-        print(tabulate(table, headers))
+            print(
+                'Start time: {}, Duration: {}, Type: {}, Status: {}, Location: {}'
+                .format(
+                    info.start_time.strftime("%b %d %Y %H:%M"), info.duration,
+                    info.type, info.status, info.location))
 
 
 def main():

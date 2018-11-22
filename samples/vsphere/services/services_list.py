@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2016. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2016, 2018. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -16,8 +15,6 @@
 __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2018 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.7+'
-
-from tabulate import tabulate
 
 from vmware.vapi.vsphere.client import create_vsphere_client
 from samples.vsphere.common.ssl_helper import get_unverified_session
@@ -47,23 +44,19 @@ class ListServices(object):
         session = get_unverified_session() if args.skipverification else None
 
         # Connect to vSphere client
-        self.client = create_vsphere_client(server=args.server,
-                                            username=args.username,
-                                            password=args.password,
-                                            session=session)
+        self.client = create_vsphere_client(
+            server=args.server,
+            username=args.username,
+            password=args.password,
+            session=session)
 
     def run(self):
         services_list = self.client.vcenter.services.Service.list_details()
-        table = []
         for key, value in services_list.items():
-            row = [key,
-                   value.name_key,
-                   value.health,
-                   value.state,
-                   value.startup_type]
-            table.append(row)
-        headers = ["Service Name", "Service Name Key", "Service Health", "Service Status", "Service Startup Type"]
-        print(tabulate(table, headers))
+            print(
+                'Service Name: {}, Service Name Key: {}, Service Health: {}, Service Status: {}, Service Startup Type: {}'
+            ).format(key, value.name_key, value.health, value.state,
+                     value.startup_type)
 
 
 def main():
