@@ -9,6 +9,7 @@
 - [Quick Start Guide](#quick-start-guide)
 - [Run SDK Samples](#run-sdk-samples)
 - [API Documentation](#api-documentation)
+- [Troubleshooting](#troubleshooting)
 - [Repository Administrator Resources](#repository-administrator-resources)
 - [VMware Resources](#vmware-resources)
 
@@ -239,6 +240,10 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 * [NSX Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy/index.html)
 * [NSX VMC App](https://vmware.github.io/vsphere-automation-sdk-python/nsx/vmc_app/index.html)
+
+## Troubleshooting
+
+Common issues you may run into while installing the sdk and running samples are listed [here](https://github.com/vmware/vsphere-automation-sdk-python/wiki/Troubleshooting)
 
 ## Repository Administrator Resources
 
