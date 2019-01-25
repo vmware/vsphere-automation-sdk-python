@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.nsx_vmc_app package &mdash; NSX-T Policy SDK 2.3.0.0.1 documentation</title>
+  <title>com.vmware.nsx_vmc_app package &mdash; NSX-T Policy SDK 2.3.0.0.2 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                2.3.0.0.1
+                2.3.0.0.2
               </div>
             
           
@@ -812,7 +812,7 @@ it is present in a request to server it will be ignored.</li>
 
 <dl class="class">
 <dt id="com.vmware.nsx_vmc_app.model_client.DirectConnectBgpInfo">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx_vmc_app.model_client.</code><code class="descname">DirectConnectBgpInfo</code><span class="sig-paren">(</span><em>local_as_num=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_vmc_app.model_client.DirectConnectBgpInfo" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.nsx_vmc_app.model_client.</code><code class="descname">DirectConnectBgpInfo</code><span class="sig-paren">(</span><em>local_as_num=None</em>, <em>mtu=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_vmc_app.model_client.DirectConnectBgpInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>Direct Connect BGP related information</p>
 <div class="admonition tip">
@@ -824,8 +824,14 @@ names.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>local_as_num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The ASN paired with the VGW attached to the VPC. AWS allowed
-private BGP ASN range - [64512, 65534] and [4200000000, 4294967294]</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>local_as_num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The ASN paired with the VGW attached to the VPC. AWS allowed
+private BGP ASN range - [64512, 65534] and [4200000000, 4294967294]</li>
+<li><strong>mtu</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Maximum transmission unit allowed by the VIF format: int32
+This attribute may be present in responses from the server, but if
+it is present in a request to server it will be ignored.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1887,7 +1893,7 @@ it is present in a request to server it will be ignored.</li>
 
 <dl class="class">
 <dt id="com.vmware.nsx_vmc_app.model_client.VirtualInterface">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx_vmc_app.model_client.</code><code class="descname">VirtualInterface</code><span class="sig-paren">(</span><em>bgp_status=None</em>, <em>direct_connect_id=None</em>, <em>id=None</em>, <em>name=None</em>, <em>state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_vmc_app.model_client.VirtualInterface" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.nsx_vmc_app.model_client.</code><code class="descname">VirtualInterface</code><span class="sig-paren">(</span><em>bgp_status=None</em>, <em>direct_connect_id=None</em>, <em>id=None</em>, <em>local_ip=None</em>, <em>mtu=None</em>, <em>name=None</em>, <em>remote_asn=None</em>, <em>remote_ip=None</em>, <em>state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_vmc_app.model_client.VirtualInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -1909,7 +1915,19 @@ names.</p>
 </li>
 <li><strong>direct_connect_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier for the Direct Connect</li>
 <li><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier for the virtual interface</li>
+<li><strong>local_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – amazon side address format: ipv4
+This attribute may be present in responses from the server, but if
+it is present in a request to server it will be ignored.</li>
+<li><strong>mtu</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Maximum transmission unit allowed by the VIF format: int32
+This attribute may be present in responses from the server, but if
+it is present in a request to server it will be ignored.</li>
 <li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – VIF name</li>
+<li><strong>remote_asn</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Remote autonomous system number of vif
+This attribute may be present in responses from the server, but if
+it is present in a request to server it will be ignored.</li>
+<li><strong>remote_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – customer address format: ipv4
+This attribute may be present in responses from the server, but if
+it is present in a request to server it will be ignored.</li>
 <li><strong>state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><a class="reference internal" href="#com.vmware.nsx_vmc_app.model_client.VirtualInterface.STATE_CONFIRMING" title="com.vmware.nsx_vmc_app.model_client.VirtualInterface.STATE_CONFIRMING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">VirtualInterface.STATE_CONFIRMING</span></code></a></li>
@@ -2047,7 +2065,6 @@ names.</p>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   
