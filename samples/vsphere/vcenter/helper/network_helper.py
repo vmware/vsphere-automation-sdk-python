@@ -19,9 +19,10 @@ from com.vmware.vcenter_client import Network
 from samples.vsphere.vcenter.helper import datacenter_helper
 
 
-def get_standard_network_backing(client,
-                                 std_porggroup_name,
-                                 datacenter_name):
+def get_network_backing(client,
+                        porggroup_name,
+                        datacenter_name,
+                        portgroup_type):
     """
     Gets a standard portgroup network backing for a given Datacenter
     Note: The method assumes that there is only one standard portgroup
@@ -33,45 +34,16 @@ def get_standard_network_backing(client,
         return None
 
     filter = Network.FilterSpec(datacenters=set([datacenter]),
-                                names=set([std_porggroup_name]),
-                                types=set([Network.Type.STANDARD_PORTGROUP]))
+                                names=set([porggroup_name]),
+                                types=set([portgroup_type]))
     network_summaries = client.vcenter.Network.list(filter=filter)
 
     if len(network_summaries) > 0:
         network = network_summaries[0].network
-        print("Selecting Standard Portgroup Network '{}' ({})".
-              format(std_porggroup_name, network))
+        print("Selecting {} Portgroup Network '{}' ({})".
+              format(portgroup_type, porggroup_name, network))
         return network
     else:
-        print("Standard Portgroup Network not found in Datacenter '{}'".
-              format(datacenter_name))
-        return None
-
-
-def get_distributed_network_backing(client,
-                                    dv_portgroup_name,
-                                    datacenter_name):
-    """
-    Gets a distributed portgroup network backing for a given Datacenter
-    Note: The method assumes that there is only one distributed portgroup
-    and datacenter with the mentioned names.
-    """
-    datacenter = datacenter_helper.get_datacenter(client, datacenter_name)
-    if not datacenter:
-        print("Datacenter '{}' not found".format(datacenter_name))
-        return None
-
-    filter = Network.FilterSpec(datacenters=set([datacenter]),
-                                names=set([dv_portgroup_name]),
-                                types=set([Network.Type.DISTRIBUTED_PORTGROUP]))
-    network_summaries = client.vcenter.Network.list(filter=filter)
-
-    if len(network_summaries) > 0:
-        network = network_summaries[0].network
-        print("Selecting Distributed Portgroup Network '{}' ({})".
-              format(dv_portgroup_name, network))
-        return network
-    else:
-        print("Distributed Portgroup Network not found in Datacenter '{}'".
+        print("Portgroup Network not found in Datacenter '{}'".
               format(datacenter_name))
         return None
