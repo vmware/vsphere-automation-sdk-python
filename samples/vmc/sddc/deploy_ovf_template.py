@@ -16,9 +16,12 @@
 __author__ = 'VMware, Inc.'
 __vcenter_version__ = 'VMware Cloud on AWS'
 
+from pprint import pprint as pp
+
 from com.vmware.content.library_client import Item
 from com.vmware.vcenter.ovf_client import LibraryItem
-from com.vmware.vcenter_client import ResourcePool, Folder
+from com.vmware.vcenter_client import ResourcePool, Folder, Network
+from com.vmware.vcenter.vm.hardware_client import Ethernet
 from vmware.vapi.vsphere.client import create_vsphere_client
 
 from samples.vsphere.common import sample_cli, sample_util
@@ -58,6 +61,10 @@ class DeployOvfTemplate:
                             help='(Optional) The name of the folder to be used. '
                                  'Default: "Workloads"')
 
+        parser.add_argument('--opaquenetworkname',
+                            help='(Optional) The name of the opaque network to be added '
+                                 'to the deployed vm')
+
         args = sample_util.process_cli_args(parser.parse_args())
 
         self.vm_id = None
@@ -65,6 +72,7 @@ class DeployOvfTemplate:
         self.vm_name = args.vmname
         self.resourcepoolname = args.resourcepoolname
         self.foldername = args.foldername
+        self.opaquenetworkname = args.opaquenetworkname
         self.cleardata = args.cleardata
 
         # Connect to vAPI Endpoint on vCenter Server
@@ -144,6 +152,32 @@ class DeployOvfTemplate:
             print('Deployment failed.')
             for error in result.error.errors:
                 print('OVF error: {}'.format(error.message))
+
+        # Add an opaque network portgroup to the deployed VM
+        if self.opaquenetworkname:
+            filter = Network.FilterSpec(
+                names=set([self.opaquenetworkname]),
+                types=set([Network.Type.OPAQUE_NETWORK]))
+            network_summaries = self.client.vcenter.Network.list(filter=filter)
+            if not network_summaries:
+                raise ValueError("Opaque network {} can not find".format(
+                    self.opaquenetworkname))
+            network = network_summaries[0].network
+
+            nic_create_spec = Ethernet.CreateSpec(
+                start_connected=True,
+                mac_type=Ethernet.MacAddressType.GENERATED,
+                backing=Ethernet.BackingSpec(
+                    type=Ethernet.BackingType.OPAQUE_NETWORK,
+                    network=network))
+            print('vm.hardware.Ethernet.create({}, {}) -> {}'.format(
+                self.vm_id, nic_create_spec, network))
+            nic = self.client.vcenter.vm.hardware.Ethernet.create(
+                self.vm_id, nic_create_spec)
+
+            nic_info = self.client.vcenter.vm.hardware.Ethernet.get(self.vm_id, nic)
+            print('vm.hardware.Ethernet.get({}, {}) -> {}'.format(
+                self.vm_id, nic, pp(nic_info)))
 
     def delete_vm(self):
         if self.cleardata:
