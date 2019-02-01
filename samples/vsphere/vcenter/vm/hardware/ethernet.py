@@ -19,6 +19,8 @@ __vcenter_version__ = '6.5+'
 from vmware.vapi.vsphere.client import create_vsphere_client
 
 from com.vmware.vcenter.vm.hardware_client import Ethernet
+from com.vmware.vcenter_client import Network
+
 from samples.vsphere.common.sample_util import parse_cli_args_vm
 from samples.vsphere.common.sample_util import pp
 from samples.vsphere.vcenter.helper import network_helper
@@ -69,16 +71,27 @@ def run():
     print("Using VM '{}' ({}) for Disk Sample".format(vm_name, vm))
 
     # Get standard portgroup to use as backing for sample
-    standard_network = network_helper.get_standard_network_backing(
+    standard_network = network_helper.get_network_backing(
         client,
         testbed.config['STDPORTGROUP_NAME'],
-        testbed.config['VM_DATACENTER_NAME'])
+        testbed.config['VM_DATACENTER_NAME'],
+        Network.Type.STANDARD_PORTGROUP)
 
     # Get distributed portgroup to use as backing for sample
-    distributed_network = network_helper.get_distributed_network_backing(
+    distributed_network = network_helper.get_network_backing(
         client,
         testbed.config['VDPORTGROUP1_NAME'],
-        testbed.config['VM_DATACENTER_NAME'])
+        testbed.config['VM_DATACENTER_NAME'],
+        Network.Type.DISTRIBUTED_PORTGROUP)
+
+    # Get opaque portgroup to use as backing for sample
+    opaque_network = None
+    if testbed.config['OPAQUEPORTGROUP1_NAME']:
+        opaque_network = network_helper.get_network_backing(
+              client,
+              testbed.config['OPAQUEPORTGROUP1_NAME'],
+              testbed.config['VM_DATACENTER_NAME'],
+              Network.Type.OPAQUE_NETWORK)
 
     print('\n# Example: List all Ethernet adapters for a VM')
     nic_summaries = client.vcenter.vm.hardware.Ethernet.list(vm=vm)
@@ -167,6 +180,21 @@ def run():
     nic_info = client.vcenter.vm.hardware.Ethernet.get(vm, nic)
     print('vm.hardware.Ethernet.get({}, {}) -> {}'.
           format(vm, nic, pp(nic_info)))
+
+    if opaque_network:
+        print('\n# Example: Create Ethernet Nic using OPAQUE PORTGROUP with '
+              'default settings')
+        nic_create_spec = Ethernet.CreateSpec(
+              backing=Ethernet.BackingSpec(
+                    type=Ethernet.BackingType.OPAQUE_NETWORK,
+                    network=opaque_network))
+        nic = client.vcenter.vm.hardware.Ethernet.create(vm, nic_create_spec)
+        print('vm.hardware.Ethernet.create({}, {}) -> {}'.
+              format(vm, nic_create_spec, nic))
+        nics_to_delete.append(nic)
+        nic_info = client.vcenter.vm.hardware.Ethernet.get(vm, nic)
+        print('vm.hardware.Ethernet.get({}, {}) -> {}'.
+              format(vm, nic, pp(nic_info)))
 
     # Change the last nic that was created
     print('\n# Example: Update Ethernet Nic with different backing')

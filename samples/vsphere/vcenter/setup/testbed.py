@@ -42,8 +42,8 @@ config["CLUSTER1_NAME"] = "Cluster1"
 
 config["VDSWITCH1_NAME"] = "DSwitch1"
 config["VDPORTGROUP1_NAME"] = "Static_Portgroup_on_DSwitch_1"
-
 config["STDPORTGROUP_NAME"] = "VM Network"
+config["OPAQUEPORTGROUP1_NAME"] = ""
 
 # The main datacenter and datastore that will be used for the VM tests
 config["VM_DATACENTER_NAME"] = config["DATACENTER2_NAME"]
