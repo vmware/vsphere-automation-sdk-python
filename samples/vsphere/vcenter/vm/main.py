@@ -65,7 +65,7 @@ class VMSetup(object):
         print('standard_network={}'.format(standard_network))
 
         distributed_network = samples.vsphere.vcenter.helper \
-            .network_helper.get_distributed_network_backing(
+            .network_helper.get_network_backing(
             context.client,
             context.testbed.config['VDPORTGROUP1_NAME'],
             context.testbed.config['VM_DATACENTER_NAME'],
