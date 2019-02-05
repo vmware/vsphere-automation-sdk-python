@@ -14,6 +14,8 @@
 __author__ = 'VMware, Inc.'
 __vcenter_version__ = '6.5+'
 
+from com.vmware.vcenter_client import Network
+
 import samples.vsphere.vcenter.helper.network_helper
 import samples.vsphere.vcenter.vm.hardware.main
 import samples.vsphere.vcenter.vm.placement
@@ -55,17 +57,19 @@ class VMSetup(object):
         # 2. DISTRIBUTED_PORTGROUP on DATACENTER2
         ###########################################################################
         standard_network = samples.vsphere.vcenter.helper \
-            .network_helper.get_standard_network_backing(
+            .network_helper.get_network_backing(
             context.client,
             context.testbed.config['STDPORTGROUP_NAME'],
-            context.testbed.config['VM_DATACENTER_NAME'])
+            context.testbed.config['VM_DATACENTER_NAME'],
+            Network.Type.STANDARD_PORTGROUP)
         print('standard_network={}'.format(standard_network))
 
         distributed_network = samples.vsphere.vcenter.helper \
             .network_helper.get_distributed_network_backing(
             context.client,
             context.testbed.config['VDPORTGROUP1_NAME'],
-            context.testbed.config['VM_DATACENTER_NAME'])
+            context.testbed.config['VM_DATACENTER_NAME'],
+            Network.Type.DISTRIBUTED_PORTGROUP)
         print('distributed_network={}'.format(distributed_network))
 
         print('=' * 79)

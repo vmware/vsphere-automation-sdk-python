@@ -21,7 +21,7 @@ from com.vmware.vcenter.vm.hardware_client import (
     Disk, Ethernet)
 from com.vmware.vcenter.vm.hardware_client import ScsiAddressSpec
 from com.vmware.vcenter.vm_client import (Power)
-from com.vmware.vcenter_client import VM
+from com.vmware.vcenter_client import VM, Network
 from vmware.vapi.vsphere.client import create_vsphere_client
 
 from samples.vsphere.common.ssl_helper import get_unverified_session
@@ -84,10 +84,11 @@ class CreateBasicVM(object):
                 datastore_name)
 
         # Get a standard network backing
-        standard_network = network_helper.get_standard_network_backing(
+        standard_network = network_helper.get_network_backing(
             self.client,
             std_portgroup_name,
-            datacenter_name)
+            datacenter_name,
+            Network.Type.STANDARD_PORTGROUP)
 
         """
         Create a basic VM.

@@ -21,7 +21,7 @@ from com.vmware.vcenter.vm.hardware_client import (
     Cpu, Memory, Disk, Ethernet, Cdrom, Serial, Parallel, Floppy, Boot)
 from com.vmware.vcenter.vm.hardware_client import ScsiAddressSpec
 from com.vmware.vcenter.vm_client import (Hardware, Power)
-from com.vmware.vcenter_client import VM
+from com.vmware.vcenter_client import VM, Network
 from vmware.vapi.vsphere.client import create_vsphere_client
 
 from samples.vsphere.common.ssl_helper import get_unverified_session
@@ -94,17 +94,19 @@ class CreateExhaustiveVM(object):
 
         # Get a standard network backing
         if not self.standard_network:
-            self.standard_network = network_helper.get_standard_network_backing(
+            self.standard_network = network_helper.get_network_backing(
                 self.client,
                 std_portgroup_name,
-                datacenter_name)
+                datacenter_name,
+                Network.Type.STANDARD_PORTGROUP)
 
         # Get a distributed network backing
         if not self.distributed_network:
-            self.distributed_network = network_helper.get_distributed_network_backing(
+            self.distributed_network = network_helper.get_network_backing(
                 self.client,
                 dv_portgroup_name,
-                datacenter_name)
+                datacenter_name,
+                Network.Type.DISTRIBUTED_PORTGROUP)
 
         """
         Create an exhaustive VM.
