@@ -89,7 +89,7 @@ class AddRemoveHosts(object):
 
     def add_host(self):
         print('\n# Example: Add 1 ESX hosts to SDDC {}:'.format(self.sddc_id))
-        esx_config = EsxConfig(1)
+        esx_config = EsxConfig(num_hosts=1)
 
         try:
             task = self.vmc_client.orgs.sddcs.Esxs.create(org=self.org_id,
@@ -108,7 +108,7 @@ class AddRemoveHosts(object):
     def remove_host(self):
         print('\n# Example: Remove 1 ESX host from SDDC {}:'.
               format(self.sddc_id))
-        esx_config = EsxConfig(1)
+        esx_config = EsxConfig(num_hosts=1)
 
         try:
             task = self.vmc_client.orgs.sddcs.Esxs.create(org=self.org_id,
