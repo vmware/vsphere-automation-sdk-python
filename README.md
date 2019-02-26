@@ -47,8 +47,7 @@ See example below for specifying the --extra-index-url parameter.
 
 ```cmd
 git clone https://github.com/vmware/vsphere-automation-sdk-python.git
-cd vsphere-automation-sdk-python
-pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file:///<absolute_path_to_sdk>/lib
+pip install --upgrade --force-reinstall -r vsphere-automation-sdk-python/requirements.txt --extra-index-url file://${PWD}/vsphere-automation-sdk-python/lib
 ```
 
 Example pip install command on Mac OSX. 
