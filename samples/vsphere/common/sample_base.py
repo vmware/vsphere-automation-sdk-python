@@ -75,14 +75,7 @@ class SampleBase(object):
         for name in dir(self):
             attr = getattr(self, name)
             if callable(attr) and name == '_execute':
-                try:
-                    attr()  # calling the method
-                except Exception as e:
-                    # print the exception and move on to the cleanup stage if cleardata is set to True.
-                    traceback.print_exc()
-                    if bool(self.cleardata) is not True:
-                        # re-throw the exception
-                        raise Exception(e)
+                attr()  # calling the method
 
     def after(self):
         if bool(self.cleardata) is True:
