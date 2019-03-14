@@ -64,5 +64,6 @@ def main():
     auth_example = AuthExample()
     auth_example.get_domains()
 
+
 if __name__ == '__main__':
     main()
