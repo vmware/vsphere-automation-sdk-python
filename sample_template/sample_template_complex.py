@@ -38,7 +38,7 @@ class Sample(object):
         parser = sample_cli.build_arg_parser()
 
         # Add your custom input arguments
-        parser.add_argument('-n', '--vm_name',
+        parser.add_argument('--vm_name',
                             action='store',
                             default='Sample_Default_VM_for_Simple_Testbed',
                             help='Name of the testing vm')
