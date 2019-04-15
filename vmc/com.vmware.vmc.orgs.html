@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="com.vmware.vmc.orgs.sddcs package" href="com.vmware.vmc.orgs.sddcs.html" />
     <link rel="prev" title="com.vmware.vmc package" href="com.vmware.vmc.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -225,6 +227,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.addons_client">com.vmware.vmc.orgs.sddcs.addons_client module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.dns_client">com.vmware.vmc.orgs.sddcs.dns_client module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.networking_client">com.vmware.vmc.orgs.sddcs.networking_client module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.networks_client">com.vmware.vmc.orgs.sddcs.networks_client module</a></li>
@@ -252,7 +255,7 @@
 </table>
 <dl class="method">
 <dt id="com.vmware.vmc.orgs.account_link_client.CompatibleSubnets.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>linked_account_id=None</em>, <em>region=None</em>, <em>sddc=None</em>, <em>force_refresh=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.CompatibleSubnets.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>linked_account_id=None</em>, <em>region=None</em>, <em>sddc=None</em>, <em>force_refresh=None</em>, <em>instance_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.CompatibleSubnets.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a customer’s compatible subnets for account linking</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -265,6 +268,7 @@
 <li><strong>sddc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – sddc (optional)</li>
 <li><strong>force_refresh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – When true, forces the mappings for datacenters to be refreshed for
 the connected account. (optional)</li>
+<li><strong>instance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The server instance type to be used. (optional)</li>
 </ul>
 </td>
 </tr>
@@ -327,7 +331,7 @@ Forbidden</td>
 </table>
 <dl class="method">
 <dt id="com.vmware.vmc.orgs.account_link_client.CompatibleSubnetsAsync.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>linked_account_id=None</em>, <em>region=None</em>, <em>sddc=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.CompatibleSubnetsAsync.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>linked_account_id=None</em>, <em>region=None</em>, <em>sddc=None</em>, <em>instance_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.CompatibleSubnetsAsync.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a customer’s compatible subnets for account linking via a task.
 The information is returned as a member of the task (found in
 task.params[‘subnet_list_result’] when you are notified it is
@@ -342,6 +346,7 @@ complete), and it’s documented under ref
 <li><strong>linked_account_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The linked connected account identifier (optional)</li>
 <li><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The region of the cloud resources to work in (optional)</li>
 <li><strong>sddc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – sddc (optional)</li>
+<li><strong>instance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The server instance type to be used. (optional)</li>
 </ul>
 </td>
 </tr>
@@ -451,23 +456,32 @@ Forbidden</p>
 
 <dl class="method">
 <dt id="com.vmware.vmc.orgs.account_link_client.ConnectedAccounts.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>org</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.ConnectedAccounts.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>provider=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.account_link_client.ConnectedAccounts.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of connected accounts</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
+<li><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The cloud provider of the SDDC (AWS or ZeroCloud). Default value is
+AWS. (optional)</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.AwsCustomerConnectedAccount" title="com.vmware.vmc.model_client.AwsCustomerConnectedAccount"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.AwsCustomerConnectedAccount</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.AwsCustomerConnectedAccount" title="com.vmware.vmc.model_client.AwsCustomerConnectedAccount"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.AwsCustomerConnectedAccount</span></code></a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
-Unauthorized</td>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
-Forbidden</td>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -878,7 +892,9 @@ even if it can lead to data loss (This is an privileged operation).
 If = ‘addToAll’, will add esxs to all clusters in the SDDC (This is
 an privileged operation). If = ‘removeFromAll’, will delete the
 esxs from all clusters in the SDDC (This is an privileged
-operation). Default behaviour is ‘add’ (optional)</li>
+operation). If = ‘attach-diskgroup’, will attach the provided
+diskgroups to a given host (privileged). Default behaviour is ‘add’
+(optional)</li>
 </ul>
 </td>
 </tr>
@@ -1468,29 +1484,41 @@ Forbidden</p>
 </table>
 <dl class="method">
 <dt id="com.vmware.vmc.orgs.tbrs_client.SupportWindow.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>org</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.tbrs_client.SupportWindow.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>org</em>, <em>minimum_seats_available=None</em>, <em>created_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.orgs.tbrs_client.SupportWindow.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all available support windows</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier. (required)</li>
+<li><strong>minimum_seats_available</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – minimum seats available (used as a filter) (optional)</li>
+<li><strong>created_by</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – user name which was used to create the support window (used as a
+filter) (optional)</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.SupportWindow" title="com.vmware.vmc.model_client.SupportWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.SupportWindow</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="com.vmware.vmc.html#com.vmware.vmc.model_client.SupportWindow" title="com.vmware.vmc.model_client.SupportWindow"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.SupportWindow</span></code></a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
-Unauthorized</td>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
-Invalid request</td>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Invalid request</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
-Forbidden</td>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
-No support windows are available</td>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+No support windows are available</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1553,7 +1581,7 @@ Feature does not exist</p>
         <a href="com.vmware.vmc.orgs.sddcs.html" class="btn btn-neutral float-right" title="com.vmware.vmc.orgs.sddcs package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="com.vmware.vmc.html" class="btn btn-neutral" title="com.vmware.vmc package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="com.vmware.vmc.html" class="btn btn-neutral float-left" title="com.vmware.vmc package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1579,26 +1607,16 @@ Feature does not exist</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
