@@ -238,8 +238,10 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 ### NSX API Documentation
 
-* [NSX Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy/index.html) - primary API for managing logical networks
-* [NSX VMC Cloud Service](https://vmware.github.io/vsphere-automation-sdk-python/nsx/vmc_app/index.html) - for managing AWS underlay networks
+* [NSX Policy API for On-Premise Customers](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy_on_prem/index.html) - primary API for managing logical networks
+* [NSX Policy API for VMware Cloud on AWS Customers](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy_vm/index.html) - primary API for managing logical networks
+* [NSX Manager API](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx/index.html) - APIs for managing NSX cluster nodes and fabric nodes
+* [NSX VMC AWS Integration API](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_vmc_aws_integration/index.html) - for managing AWS underlay networks
 
 ## Troubleshooting
 
