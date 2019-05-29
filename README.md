@@ -25,7 +25,7 @@ vCenter 6.0, 6.5 and 6.7.
 Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
 
 ## Supported NSX-T Releases
-NSX-T 2.2
+NSX-T 2.2, 2.3, VMC 1.7
 
 ## VMware Cloud on AWS Support
 The VMware Cloud on AWS API and samples are currently available as a preview and are subject to change in the future.
@@ -238,8 +238,10 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 ### NSX API Documentation
 
-* [NSX Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy/index.html) - primary API for managing logical networks
-* [NSX VMC Cloud Service](https://vmware.github.io/vsphere-automation-sdk-python/nsx/vmc_app/index.html) - for managing AWS underlay networks
+* [NSX Manager APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx/index.html) - API for managing NSX-T cluster and transport nodes for on-prem customers
+* [NSX Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy/index.html) - primary API for managing logical networks for on-prem customers
+* [NSX VMC Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_vmc_policy/index.html) - primary API for managing logical networks for VMC customers
+* [NSX VMC AWS Integration APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_vmc_aws_integration/index.html) - API for managing AWS underlay networks for VMC customers
 
 ## Troubleshooting
 
