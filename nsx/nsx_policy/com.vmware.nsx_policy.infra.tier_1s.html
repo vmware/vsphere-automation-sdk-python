@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.nsx_policy.infra.tier_1s package &mdash; NSX-T Policy SDK 2.3.0.0.2 documentation</title>
+  <title>com.vmware.nsx_policy.infra.tier_1s package &mdash; NSX-T Policy SDK 2.3.0.0.3 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context package" href="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                2.3.0.0.2
+                2.3.0.0.3
               </div>
             
           
@@ -179,235 +181,227 @@
 <dt id="com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules">
 <em class="property">class </em><code class="descclassname">com.vmware.nsx_policy.infra.tier_1s.nat_client.</code><code class="descname">NatRules</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>nat_id</em>, <em>nat_rule_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete NAT Rule.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</li>
-<li><strong>nat_rule_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Rule ID (required)</li>
+<dd><p>Delete NAT Rule from Tier-1 denoted by Tier-1 ID, under NAT section
+denoted by &lt;nat-id&gt;. Under tier-1 there will be 3 different
+NATs(sections). (INTERNAL, USER and DEFAULT) For more details related
+to NAT section please refer to PolicyNAT schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</p></li>
+<li><p><strong>nat_rule_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Rule ID (required)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>nat_id</em>, <em>nat_rule_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get NAT Rule.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</li>
-<li><strong>nat_rule_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Rule ID (required)</li>
+<dd><p>Get NAT Rule from Tier-1 denoted by Tier-1 ID, under NAT section
+denoted by &lt;nat-id&gt;. Under tier-1 there will be 3 different
+NATs(sections). (INTERNAL, USER and DEFAULT) For more details related
+to NAT section please refer to PolicyNAT schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</p></li>
+<li><p><strong>nat_rule_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Rule ID (required)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRule" title="com.vmware.nsx_policy.model_client.PolicyNatRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRule</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.nsx_policy.model.PolicyNatRule</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRule" title="com.vmware.nsx_policy.model_client.PolicyNatRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRule</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx_policy.model.PolicyNatRule</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.list">
 <code class="descname">list</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>nat_id</em>, <em>cursor=None</em>, <em>included_fields=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.list" title="Permalink to this definition">¶</a></dt>
-<dd><p>List NAT Rules.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</li>
-<li><strong>cursor</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Opaque cursor to be used for getting next page of records (supplied
-by current result page) (optional)</li>
-<li><strong>included_fields</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Comma separated list of fields that should be included in query
-result (optional)</li>
-<li><strong>page_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Maximum number of results to return in this page (server may return
-fewer) (optional, default to 1000)</li>
-<li><strong>sort_ascending</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (optional)</li>
-<li><strong>sort_by</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Field by which records are sorted (optional)</li>
+<dd><p>List NAT Rules from Tier-1 denoted by Tier-1 ID, under NAT section
+denoted by &lt;nat-id&gt;. Under tier-1 there will be 3 different
+NATs(sections). (INTERNAL, USER and DEFAULT) For more details related
+to NAT section please refer to PolicyNAT schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</p></li>
+<li><p><strong>cursor</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Opaque cursor to be used for getting next page of records (supplied
+by current result page) (optional)</p></li>
+<li><p><strong>included_fields</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Comma separated list of fields that should be included in query
+result (optional)</p></li>
+<li><p><strong>page_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Maximum number of results to return in this page (server may return
+fewer) (optional, default to 1000)</p></li>
+<li><p><strong>sort_ascending</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (optional)</p></li>
+<li><p><strong>sort_by</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Field by which records are sorted (optional)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRuleListResult" title="com.vmware.nsx_policy.model_client.PolicyNatRuleListResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRuleListResult</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.nsx_policy.model.PolicyNatRuleListResult</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRuleListResult" title="com.vmware.nsx_policy.model_client.PolicyNatRuleListResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRuleListResult</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx_policy.model.PolicyNatRuleListResult</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.patch">
 <code class="descname">patch</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>nat_id</em>, <em>nat_rule_id</em>, <em>policy_nat_rule</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.patch" title="Permalink to this definition">¶</a></dt>
 <dd><p>If a NAT Rule is not already present on Tier-1 denoted by Tier-1 ID,
-create a new NAT Rule. If it already exists, update the NAT Rule.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</li>
-<li><strong>nat_rule_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Rule ID (required)</li>
-<li><strong>policy_nat_rule</strong> (<a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRule" title="com.vmware.nsx_policy.model_client.PolicyNatRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRule</span></code></a>) – (required)</li>
+under NAT section denoted by &lt;nat-id&gt;, create a new NAT Rule. If it
+already exists, update the NAT Rule. Under tier-1 there will be 3
+different NATs(sections). (INTERNAL, USER and DEFAULT) For more details
+related to NAT section please refer to PolicyNAT schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</p></li>
+<li><p><strong>nat_rule_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Rule ID (required)</p></li>
+<li><p><strong>policy_nat_rule</strong> (<a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRule" title="com.vmware.nsx_policy.model_client.PolicyNatRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRule</span></code></a>) – (required)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.update">
 <code class="descname">update</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>nat_id</em>, <em>nat_rule_id</em>, <em>policy_nat_rule</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.nat_client.NatRules.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update NAT Rule.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</li>
-<li><strong>nat_rule_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Rule ID (required)</li>
-<li><strong>policy_nat_rule</strong> (<a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRule" title="com.vmware.nsx_policy.model_client.PolicyNatRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRule</span></code></a>) – (required)</li>
+<dd><p>Update NAT Rule on Tier-1 denoted by Tier-1 ID, under NAT section
+denoted by &lt;nat-id&gt;. Under tier-1 there will be 3 different
+NATs(sections). (INTERNAL, USER and DEFAULT) For more details related
+to NAT section please refer to PolicyNAT schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>nat_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – NAT id (required)</p></li>
+<li><p><strong>nat_rule_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Rule ID (required)</p></li>
+<li><p><strong>policy_nat_rule</strong> (<a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRule" title="com.vmware.nsx_policy.model_client.PolicyNatRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRule</span></code></a>) – (required)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRule" title="com.vmware.nsx_policy.model_client.PolicyNatRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRule</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.nsx_policy.model.PolicyNatRule</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.PolicyNatRule" title="com.vmware.nsx_policy.model_client.PolicyNatRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.PolicyNatRule</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx_policy.model.PolicyNatRule</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -417,14 +411,11 @@ Not Found</p>
 <em class="property">class </em><code class="descclassname">com.vmware.nsx_policy.infra.tier_1s.nat_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.nat_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
 <p>Initialize StubFactoryBase</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -434,94 +425,83 @@ Not Found</p>
 <dt id="com.vmware.nsx_policy.infra.tier_1s.segments_client.StaticArp">
 <em class="property">class </em><code class="descclassname">com.vmware.nsx_policy.infra.tier_1s.segments_client.</code><code class="descname">StaticArp</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.segments_client.StaticArp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_1s.segments_client.StaticArp.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>segment_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.segments_client.StaticArp.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete static ARP config</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>segment_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Segment ID (required)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>segment_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Segment ID (required)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_1s.segments_client.StaticArp.get">
 <code class="descname">get</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>segment_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.segments_client.StaticArp.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read static ARP config</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>segment_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Segment ID (required)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>segment_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Segment ID (required)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.StaticARPConfig" title="com.vmware.nsx_policy.model_client.StaticARPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.StaticARPConfig</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.nsx_policy.model.StaticARPConfig</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.StaticARPConfig" title="com.vmware.nsx_policy.model_client.StaticARPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.StaticARPConfig</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx_policy.model.StaticARPConfig</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -529,39 +509,35 @@ Not Found</p>
 <code class="descname">patch</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>segment_id</em>, <em>static_arp_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.segments_client.StaticArp.patch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create static ARP config with tier-1 and segment IDs provided if it
 doesn’t exist, update with provided config if it’s already created.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>segment_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Segment ID (required)</li>
-<li><strong>static_arp_config</strong> (<a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.StaticARPConfig" title="com.vmware.nsx_policy.model_client.StaticARPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.StaticARPConfig</span></code></a>) – (required)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>segment_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Segment ID (required)</p></li>
+<li><p><strong>static_arp_config</strong> (<a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.StaticARPConfig" title="com.vmware.nsx_policy.model_client.StaticARPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.StaticARPConfig</span></code></a>) – (required)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -569,45 +545,41 @@ Not Found</p>
 <code class="descname">update</code><span class="sig-paren">(</span><em>tier1_id</em>, <em>segment_id</em>, <em>static_arp_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.segments_client.StaticArp.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create static ARP config with tier-1 and segment IDs provided if it
 doesn’t exist, update with provided config if it’s already created.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</li>
-<li><strong>segment_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Segment ID (required)</li>
-<li><strong>static_arp_config</strong> (<a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.StaticARPConfig" title="com.vmware.nsx_policy.model_client.StaticARPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.StaticARPConfig</span></code></a>) – (required)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tier1_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Tier-1 ID (required)</p></li>
+<li><p><strong>segment_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Segment ID (required)</p></li>
+<li><p><strong>static_arp_config</strong> (<a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.StaticARPConfig" title="com.vmware.nsx_policy.model_client.StaticARPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.StaticARPConfig</span></code></a>) – (required)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.StaticARPConfig" title="com.vmware.nsx_policy.model_client.StaticARPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.StaticARPConfig</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.nsx_policy.model.StaticARPConfig</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx_policy.html#com.vmware.nsx_policy.model_client.StaticARPConfig" title="com.vmware.nsx_policy.model_client.StaticARPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx_policy.model_client.StaticARPConfig</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx_policy.model.StaticARPConfig</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -617,14 +589,11 @@ Not Found</p>
 <em class="property">class </em><code class="descclassname">com.vmware.nsx_policy.infra.tier_1s.segments_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_1s.segments_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
 <p>Initialize StubFactoryBase</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -639,7 +608,7 @@ Not Found</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context.html" class="btn btn-neutral" title="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context.html" class="btn btn-neutral float-left" title="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -648,7 +617,7 @@ Not Found</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, VMware, Inc.
+        &copy; Copyright 2019, VMware, Inc.
 
     </p>
   </div>
@@ -665,25 +634,16 @@ Not Found</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
