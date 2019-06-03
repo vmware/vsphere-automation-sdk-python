@@ -57,6 +57,8 @@ Example pip install command on Mac OSX.
 
 ```cmd
 pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file:///Users/strefethen/github/vsphere-automation-sdk-python/lib
+or 
+pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file://$PWD/lib
 ```
 
 Example pip install command on Windows. 
