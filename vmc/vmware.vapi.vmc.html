@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>vmware.vapi.vmc package &mdash; VMware Cloud on AWS Console API 1.4.0 documentation</title>
+  <title>vmware.vapi.vmc package &mdash; VMware Cloud on AWS Console API 1.5.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.4.0
+                1.5.0
               </div>
             
           
@@ -180,16 +180,20 @@
 VMC API</p>
 <p>Initialize VmcClient by creating a stub factory instance using a CSP
 Security context filter added to the filter chain of the connector</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code>) – Requests HTTP session instance</p></li>
-<li><p><strong>refresh_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Refresh token obtained from CSP</p></li>
-<li><p><strong>vmc_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – URL of the VMC service</p></li>
-<li><p><strong>csp_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – URL of the CSP service</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code>) – Requests HTTP session instance</li>
+<li><strong>refresh_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Refresh token obtained from CSP</li>
+<li><strong>vmc_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – URL of the VMC service</li>
+<li><strong>csp_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – URL of the CSP service</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -197,21 +201,25 @@ Security context filter added to the filter chain of the connector</p>
 <code class="descclassname">vmware.vapi.vmc.client.</code><code class="descname">create_vmc_client</code><span class="sig-paren">(</span><em>refresh_token</em>, <em>session=None</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vmc.client.create_vmc_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper method to create an instance of the VMC API client using the public
 VMC and CSP URL.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>refresh_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Refresh token obtained from CSP</p></li>
-<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Requests HTTP session instance. If not specified, then one
-is automatically created and used</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>refresh_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Refresh token obtained from CSP</li>
+<li><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Requests HTTP session instance. If not specified, then one
+is automatically created and used</li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#vmware.vapi.vmc.client.VmcClient" title="vmware.vapi.vmc.client.VmcClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.vmc.client.VmcClient</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>VMC Client instance</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#vmware.vapi.vmc.client.VmcClient" title="vmware.vapi.vmc.client.VmcClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.vmc.client.VmcClient</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">VMC Client instance</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -225,28 +233,34 @@ is automatically created and used</p></li>
 <p>CSP Security Context filter in API Provider chain adds the security
 context based on a refresh token to the execution context passed in.</p>
 <p>Initialize SecurityContextFilter</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code>) – Requests Session object to use for making HTTP calls</p></li>
-<li><p><strong>refresh_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Refresh token to use for obtaining an access token</p></li>
-<li><p><strong>refresh_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – URL that allows exchanging a refresh token for an
-access token</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code>) – Requests Session object to use for making HTTP calls</li>
+<li><strong>refresh_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Refresh token to use for obtaining an access token</li>
+<li><strong>refresh_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – URL that allows exchanging a refresh token for an
+access token</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.get_max_retries">
 <code class="descname">get_max_retries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.get_max_retries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the max number of retries</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Number of retries</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Number of retries</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -255,17 +269,18 @@ access token</p></li>
 <dd><p>Retrieve security context. If this method is called after an error
 occured, then a new access token is obtained using the refresh token and
 a new security context is created.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>on_error</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether this method is called after getting an error</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.core.SecurityContext</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Security context</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>on_error</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether this method is called after getting an error</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.core.SecurityContext</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Security context</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -273,18 +288,19 @@ a new security context is created.</p>
 <code class="descname">should_retry</code><span class="sig-paren">(</span><em>error_value</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.should_retry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether the request should be retried or not based on the error
 specified.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>error_value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.data.value.ErrorValue</span></code>) – Method error</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Returns True if request should be retried in case the error is
-either Unauthenticated or Unauthorized else False</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>error_value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.data.value.ErrorValue</span></code>) – Method error</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Returns True if request should be retried in case the error is
+either Unauthenticated or Unauthorized else False</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
