@@ -7,23 +7,18 @@ Before you start working with this project, please read our [Developer Certifica
 ### Sample Template
 
 [Sample template](sample_template) contains boilerplate code that can be used to build a new sample.
-Please copy the file and use it as a starting point to write a new sample.
+Please copy one of the files and use it as a starting point to write a new sample.
 
 ### Required Information
 
 The following information must be included in the README.md or in the sample docstring in case README already exists in same folder.
 * Author Name
   * This can include full name, email address or other identifiable piece of information that would allow interested parties to contact author with questions.
+* Compatible vCenter version
+  * This should be the vCenter version when the API is introduced, something like "6.5+" or "6.8.1+".
 * Minimal/High Level Description
   * What does the sample do ?
 * Any KNOWN limitations or dependencies
-
-### Suggested Information
-
-The following information should be included when possible. Inclusion of information provides valuable information to consumers of the resource.
-* vSphere version against which the sample was developed/tested
-* SDK version against which the sample was developed/tested
-* Python version against which the sample was developed/tested
 
 ### Contribution Process
 
@@ -35,5 +30,4 @@ The following information should be included when possible. Inclusion of informa
 
 ### Code Style
 
-Please conform to pep8 standards. Check your code by running the pep8 tool.
-    https://pypi.python.org/pypi/pep8
+Please conform to pep8 standards: https://pypi.python.org/pypi/pep8 with exceptions listed in setup.cfg
