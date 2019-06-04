@@ -48,7 +48,7 @@ See example below for specifying the --extra-index-url parameter.
 ```cmd
 git clone https://github.com/vmware/vsphere-automation-sdk-python.git
 cd vsphere-automation-sdk-python
-pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file:///<absolute_path_to_sdk>/lib
+pip install --upgrade -r requirements.txt --extra-index-url file:///<absolute_path_to_sdk>/lib
 ```
 
 Example pip install command on Mac OSX. 
@@ -56,15 +56,15 @@ Example pip install command on Mac OSX.
 *NOTE*: Be sure to change username "strefethen" to your username:
 
 ```cmd
-pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file:///Users/strefethen/github/vsphere-automation-sdk-python/lib
+pip install --upgrade -r requirements.txt --extra-index-url file:///Users/strefethen/github/vsphere-automation-sdk-python/lib
 or 
-pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file://$PWD/lib
+pip install --upgrade -r requirements.txt --extra-index-url file://$PWD/lib
 ```
 
 Example pip install command on Windows. 
 
 ```cmd
-pip install --upgrade --force-reinstall -r requirements.txt --extra-index-url file:\\\C:\Users\strefethen\github\vsphere-automation-sdk-python\lib
+pip install --upgrade -r requirements.txt --extra-index-url file:\\\C:\Users\strefethen\github\vsphere-automation-sdk-python\lib
 ```
 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2
