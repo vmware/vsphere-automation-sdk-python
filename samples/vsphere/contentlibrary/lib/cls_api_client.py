@@ -1,6 +1,6 @@
 """
 * *******************************************************
-* Copyright VMware, Inc. 2016-2018. All Rights Reserved.
+* Copyright VMware, Inc. 2016-2019. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -17,7 +17,7 @@ __vcenter_version__ = '6.0+'
 from com.vmware.content_client import (Library,
                                        LocalLibrary,
                                        SubscribedLibrary)
-from com.vmware.content.library_client import Item, SubscribedItem
+from com.vmware.content.library_client import Item, SubscribedItem, Subscriptions
 from com.vmware.content.library.item_client import DownloadSession
 from com.vmware.content.library.item_client import UpdateSession
 from com.vmware.content.library.item.downloadsession_client import File as DownloadSessionFile
@@ -76,6 +76,9 @@ class ClsApiClient(object):
         # Returns the service for managing library items containing virtual
         # machine templates
         self.vmtx_service = VmtxLibraryItem(self.service_manager.stub_config)
+
+        # ####
+        self.subscriptions = Subscriptions(self.service_manager.stub_config)
 
         # Creates the service that communicates with virtual machines
         self.vm_service = VM(self.service_manager.stub_config)
