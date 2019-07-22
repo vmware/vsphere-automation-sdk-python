@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2017. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2017-2019. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -118,7 +118,7 @@ class CreateDeleteSDDC(object):
         account_ids = self.vmc_client.orgs.account_link.ConnectedAccounts.get(
             self.org_id)
 
-        if len(account_ids) > 0 :
+        if len(account_ids) > 0:
             account_id = account_ids[0].id
 
             vpc_map = self.vmc_client.orgs.account_link.CompatibleSubnets.get(
@@ -161,6 +161,15 @@ class CreateDeleteSDDC(object):
         self.print_output([sddc])
 
     def delete_sddc(self):
+        # Get SDDC ID by name
+        sddcs = self.vmc_client.orgs.Sddcs.list(self.org_id)
+        for sddc in sddcs:
+            if sddc.name == self.sddc_name:
+                self.sddc_id = sddc.id
+                break
+        else:
+            raise ValueError('Cannot find sddc "{}"'.format(sddc_name))
+
         print('\n# Example: Delete SDDC {} from org {}'.format(
             self.sddc_id, self.org_id))
 
@@ -192,8 +201,7 @@ class CreateDeleteSDDC(object):
 
     def print_output(self, sddcs):
         for sddc in sddcs:
-            print('ID: {}, Name: {}, AWS Region: {}'.format(
-                sddc.id, sddc.name, sddc.resource_config.region))
+            print('ID: {}, Name: {}'.format(sddc.id, sddc.name))
 
     def get_subnet_id(self, vpc_map):
         for v in vpc_map.values():
