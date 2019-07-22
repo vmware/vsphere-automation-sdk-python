@@ -16,7 +16,6 @@
 __author__ = 'VMware, Inc.'
 
 import argparse
-import requests
 from com.vmware.nsx_policy_client_for_vmc import create_nsx_policy_client_for_vmc
 from vmware.vapi.bindings.struct import PrettyPrinter as NsxPrettyPrinter
 from com.vmware.nsx_policy.model_client import ApiError
@@ -85,7 +84,7 @@ class NSXPolicyL3VPN(object):
         try:
             context = self.get_l3_vpn_context()
             local_end_point_ip = context.available_local_addresses[0].address_value
-            print "local_end_point_ip={}".format(local_end_point_ip)
+            print("local_end_point_ip={}".format(local_end_point_ip))
             destination_subnet = [L3VpnSubnet(subnet="10.3.0.0/16")]  # Value should be per the user setup config
             source_subnet = [L3VpnSubnet(subnet="10.2.0.0/16")]  # Value should be per the user setup config
 
@@ -135,7 +134,7 @@ class NSXPolicyL3VPN(object):
         try:
             context = self.get_l3_vpn_context()
             local_end_point_ip = context.available_local_addresses[0].address_value
-            print "local_end_point_ip={}".format(local_end_point_ip)
+            print("local_end_point_ip={}".format(local_end_point_ip))
             tunnel_subnet = TunnelSubnet(ip_addresses=["169.254.2.1"],  # Value should be per the user setup config
                                          prefix_length=24)  # Value should be per the user setup config
             bgpconfig1 = BgpNeighborConfig(links=None,
@@ -152,10 +151,10 @@ class NSXPolicyL3VPN(object):
             neighbor_list = self.nsx_client.infra.tier_0s.locale_services.bgp.Neighbors.list(tier0_id="vmc",
                                                                                              locale_service_id="default"
                                                                                              )
-            print "List of neighbors={}".format(neighbor_list)
+            print("List of neighbors={}".format(neighbor_list))
             get_neighbhor = self.nsx_client.infra.tier_0s.locale_services.bgp.Neighbors.get(
                 tier0_id="vmc", locale_service_id="default", neighbor_id="rb_neighbor_1")
-            print "get_neighbhor={}".format(get_neighbhor)
+            print("get_neighbhor={}".format(get_neighbhor))
 
             l3vpn_session = RouteBasedL3VpnSession(routing_config_path=get_neighbhor.path,
                                                    tunnel_subnets=[
