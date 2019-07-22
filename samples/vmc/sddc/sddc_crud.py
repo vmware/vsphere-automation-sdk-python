@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2017. All Rights Reserved.
+* Copyright (c) VMware, Inc. 2017-2019. All Rights Reserved.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -112,27 +112,33 @@ class CreateDeleteSDDC(object):
         print('\n# Example: Create a SDDC ({}) in org {}:'.format(
             self.sddc_name, self.org_id))
 
-        account_id = self.vmc_client.orgs.account_link.ConnectedAccounts.get(
-            self.org_id)[0].id
+        account_linking_config = None
 
-        vpc_map = self.vmc_client.orgs.account_link.CompatibleSubnets.get(
-            org=self.org_id, linked_account_id=account_id).vpc_map
+        # Get connected accounts if any
+        account_ids = self.vmc_client.orgs.account_link.ConnectedAccounts.get(
+            self.org_id)
 
-        customer_subnet_id = self.get_subnet_id(vpc_map)
-        if not customer_subnet_id:
-            raise ValueError('No available subnet for region {}'.format(
-                self.region))
+        if len(account_ids) > 0:
+            account_id = account_ids[0].id
+
+            vpc_map = self.vmc_client.orgs.account_link.CompatibleSubnets.get(
+                org=self.org_id, linked_account_id=account_id).vpc_map
+
+            customer_subnet_id = self.get_subnet_id(vpc_map)
+            if not customer_subnet_id:
+                raise ValueError('No available subnet for region {}'.format(
+                    self.region))
+
+            account_linking_config = AccountLinkSddcConfig(
+                customer_subnet_ids=[customer_subnet_id],
+                connected_account_id=account_id)
 
         sddc_config = AwsSddcConfig(
             region=self.region,
             name=self.sddc_name,
-            account_link_sddc_config=[
-                AccountLinkSddcConfig(
-                    customer_subnet_ids=[customer_subnet_id],
-                    connected_account_id=account_id)
-            ],
+            account_link_sddc_config=[account_linking_config] if account_linking_config else None,
             provider=os.environ.get('VMC_PROVIDER', SddcConfig.PROVIDER_AWS),
-            num_hosts=1,
+            num_hosts=4,
             deployment_type=SddcConfig.DEPLOYMENT_TYPE_SINGLEAZ)
 
         try:
@@ -155,6 +161,15 @@ class CreateDeleteSDDC(object):
         self.print_output([sddc])
 
     def delete_sddc(self):
+        # Get SDDC ID by name
+        sddcs = self.vmc_client.orgs.Sddcs.list(self.org_id)
+        for sddc in sddcs:
+            if sddc.name == self.sddc_name:
+                self.sddc_id = sddc.id
+                break
+        else:
+            raise ValueError('Cannot find sddc "{}"'.format(sddc_name))
+
         print('\n# Example: Delete SDDC {} from org {}'.format(
             self.sddc_id, self.org_id))
 
@@ -186,8 +201,7 @@ class CreateDeleteSDDC(object):
 
     def print_output(self, sddcs):
         for sddc in sddcs:
-            print('ID: {}, Name: {}, AWS Region: {}'.format(
-                sddc.id, sddc.name, sddc.resource_config.region))
+            print('ID: {}, Name: {}'.format(sddc.id, sddc.name))
 
     def get_subnet_id(self, vpc_map):
         for v in vpc_map.values():
