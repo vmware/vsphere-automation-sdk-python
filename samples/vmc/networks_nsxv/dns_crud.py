@@ -33,17 +33,19 @@ class DNSCrud(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('-r', '--refresh-token',
+
+        required_args = parser.add_argument_group('required arguments')
+        required_args.add_argument('--refresh-token',
                             required=True,
                             help='VMware Cloud API refresh token')
 
-        parser.add_argument('-o', '--org-id',
+        required_args.add_argument('--org-id',
                             required=True,
                             help='Organization identifier.')
 
-        parser.add_argument('-s', '--sddc-id',
+        required_args.add_argument('--sddc-id',
                             required=True,
-                            help='Sddc Identifier.')
+                            help='SDDC Identifier.')
 
         parser.add_argument('--use-compute-gateway',
                             action='store_true',
@@ -51,7 +53,7 @@ class DNSCrud(object):
                             help='Use compute gateway. Default is using '
                                  'management gateway')
 
-        parser.add_argument('-c', '--cleardata',
+        parser.add_argument('--cleardata',
                             action='store_true',
                             help='Clean up after sample run')
         args = parser.parse_args()

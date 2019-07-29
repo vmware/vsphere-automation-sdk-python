@@ -36,17 +36,17 @@ class ConnectTovSphereWithDefaultCredentials(object):
 
     def __init__(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument(
-            '-r',
+        required_args = parser.add_argument_group('required arguments')
+        required_args.add_argument(
             '--refresh-token',
             required=True,
             help='VMware Cloud API refresh token')
 
-        parser.add_argument(
+        required_args.add_argument(
             '-o', '--org-id', required=True, help='Organization identifier.')
 
-        parser.add_argument(
-            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
+        required_args.add_argument(
+            '-s', '--sddc-id', required=True, help='SDDC Identifier.')
         args = parser.parse_args()
 
         self.refresh_token = args.refresh_token

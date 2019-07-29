@@ -28,16 +28,16 @@ Sample Prerequisites:
 
 parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-parser.add_argument('--refresh-token',
+required_args = parser.add_argument_group('required arguments')
+required_args.add_argument('--refresh-token',
                     required=True,
                     help='VMware Cloud API refresh token')
 
-parser.add_argument('--org-id',
+required_args.add_argument('--org-id',
                     required=True,
                     help='Organization identifier.')
 
-parser.add_argument('--task-id',
+required_args.add_argument('--task-id',
                     required=True,
                     help='Task ID to be cancelled')
 

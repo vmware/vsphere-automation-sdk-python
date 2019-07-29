@@ -42,23 +42,24 @@ class NSXPolicyL3VPN(object):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-        parser.add_argument('--refresh_token',
+        required_args = parser.add_argument_group('required arguments')
+        required_args.add_argument('--refresh_token',
                             required=True,
                             help='Refresh token obtained from CSP')
 
-        parser.add_argument('--org_id',
+        required_args.add_argument('--org_id',
                             required=True,
                             help='Orgization ID')
 
-        parser.add_argument('--sddc_id',
+        required_args.add_argument('--sddc_id',
                             required=True,
-                            help='Sddc ID')
+                            help='SDDC ID')
 
-        parser.add_argument('--remote_endpoint_public_ip',
+        required_args.add_argument('--remote_endpoint_public_ip',
                             required=True,
                             help='L3 VPN Remote end point\'s public ip')
 
-        parser.add_argument('--passphrase',
+        required_args.add_argument('--passphrase',
                             required=True,
                             help='Passphrase used for VPN')
 

@@ -33,17 +33,18 @@ class PublicIPsCrud(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument(
-            '-r',
+
+        required_args = parser.add_argument_group('required arguments')
+        required_args.add_argument(
             '--refresh-token',
             required=True,
             help='VMware Cloud API refresh token')
 
-        parser.add_argument(
-            '-o', '--org-id', required=True, help='Organization identifier.')
+        required_args.add_argument(
+            '--org-id', required=True, help='Organization identifier.')
 
-        parser.add_argument(
-            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
+        required_args.add_argument(
+            '--sddc-id', required=True, help='Sddc Identifier.')
 
         parser.add_argument(
             '--notes',
@@ -51,7 +52,6 @@ class PublicIPsCrud(object):
             help='Notes of the new public IP')
 
         parser.add_argument(
-            '-c',
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')

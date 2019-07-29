@@ -36,17 +36,16 @@ class CreateDeleteSDDC(object):
     def __init__(self):
         parser = argparse.ArgumentParser()
 
-        parser.add_argument(
-            '-r',
+        required_args = parser.add_argument_group('required arguments')
+        required_args.add_argument(
             '--refresh-token',
             required=True,
             help='VMware Cloud API refresh token')
 
-        parser.add_argument(
-            '-o', '--org-id', required=True, help='Organization identifier.')
+        required_args.add_argument(
+            '--org-id', required=True, help='Organization identifier.')
 
         parser.add_argument(
-            '-sn',
             '--sddc-name',
             help="Name of the SDDC to be created. "
             "Default is 'Sample SDDC xx'")
@@ -54,31 +53,26 @@ class CreateDeleteSDDC(object):
         parser.add_argument('--region', default='US_WEST_2', help='AWS Region')
 
         parser.add_argument(
-            '-i',
             '--interval-sec',
             default=60,
             help='Task pulling interval in sec')
 
         parser.add_argument(
-            '-ls',
             '--listsddc',
             action='store_true',
             help='List SDDCs in the specified Org')
 
         parser.add_argument(
-            '-cs',
             '--createsddc',
             action='store_true',
             help='Create an SDDC in the specified Org')
 
         parser.add_argument(
-            '-ds',
             '--deletesddc',
             action='store_true',
             help='Deletes the SDDC in the specified Org ')
 
         parser.add_argument(
-            '-c',
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')
