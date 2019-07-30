@@ -31,7 +31,8 @@ def build_arg_parser():
     parser = argparse.ArgumentParser(
         description='Standard Arguments for talking to vCenter')
 
-    required_args = parser.add_argument_group('required arguments')
+    required_args = parser.add_argument_group(
+            'required arguments')
     required_args.add_argument('-s', '--server',
                         action='store',
                         help='vSphere service IP to connect to')

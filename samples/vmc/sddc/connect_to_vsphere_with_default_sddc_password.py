@@ -36,7 +36,8 @@ class ConnectTovSphereWithDefaultCredentials(object):
 
     def __init__(self):
         parser = argparse.ArgumentParser()
-        required_args = parser.add_argument_group('required arguments')
+        required_args = parser.add_argument_group(
+            'required arguments')
         required_args.add_argument(
             '--refresh-token',
             required=True,

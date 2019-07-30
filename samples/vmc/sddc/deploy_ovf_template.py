@@ -41,7 +41,8 @@ class DeployOvfTemplate:
         self.vm_name = 'deployed-vm-' + str(generate_random_uuid())
 
         parser = sample_cli.build_arg_parser()
-        required_args = parser.add_argument_group('required arguments')
+        required_args = parser.add_argument_group(
+            'required arguments')
         required_args.add_argument('--libitemname',
                             required=True,
                             help='The name of the library item to deploy. '

@@ -36,7 +36,8 @@ class AuthExample(object):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-        required_args = parser.add_argument_group('required arguments')
+        required_args = parser.add_argument_group(
+            'required arguments')
         required_args.add_argument('-r', '--refresh-token',
                             required=True,
                             help='VMware Cloud API refresh token')

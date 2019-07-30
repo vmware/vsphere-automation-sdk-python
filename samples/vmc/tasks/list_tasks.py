@@ -28,8 +28,10 @@ Sample Prerequisites:
 accepted = [Task.STATUS_STARTED, Task.STATUS_CANCELING, Task.STATUS_FINISHED,
             Task.STATUS_FAILED, Task.STATUS_CANCELED]
 
-parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-required_args = parser.add_argument_group('required arguments')
+parser = argparse.ArgumentParser(
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+required_args = parser.add_argument_group(
+    'required arguments')
 
 required_args.add_argument('--refresh-token',
                     required=True,
