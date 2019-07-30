@@ -31,15 +31,16 @@ def build_arg_parser():
     parser = argparse.ArgumentParser(
         description='Standard Arguments for talking to vCenter')
 
-    parser.add_argument('-s', '--server',
+    required_args = parser.add_argument_group('required arguments')
+    required_args.add_argument('-s', '--server',
                         action='store',
                         help='vSphere service IP to connect to')
 
-    parser.add_argument('-u', '--username',
+    required_args.add_argument('-u', '--username',
                         action='store',
                         help='Username to use when connecting to vc')
 
-    parser.add_argument('-p', '--password',
+    required_args.add_argument('-p', '--password',
                         action='store',
                         help='Password to use when connecting to vc')
 
