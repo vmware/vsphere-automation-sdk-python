@@ -14,8 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
-
+from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
 from com.vmware.vmc.model_client import (AddressFWSourceDestination,
                                          Application, FirewallRules,
                                          Nsxfirewallrule, Nsxfirewallservice)
@@ -32,35 +31,25 @@ class FirewallRulesCrud(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-        required_args = parser.add_argument_group(
-            'required arguments')
-        required_args.add_argument(
-            '--refresh-token',
-            required=True,
-            help='VMware Cloud API refresh token')
-
         required_args.add_argument(
             '--org-id', required=True, help='Organization identifier.')
 
         required_args.add_argument(
             '--sddc-id', required=True, help='Sddc Identifier.')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--rule-name',
             default='Sample Firewall Rule',
             help='Name of the new firewall rule')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--use-compute-gateway',
             action='store_true',
             default=False,
             help='Use compute gateway. Default is using '
             'management gateway')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')

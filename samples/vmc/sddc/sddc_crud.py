@@ -14,14 +14,13 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
 import os
 from random import randrange
 
 from com.vmware.vapi.std.errors_client import InvalidRequest
 from com.vmware.vmc.model_client import AwsSddcConfig, ErrorResponse, AccountLinkSddcConfig, SddcConfig
 from vmware.vapi.vmc.client import create_vmc_client
-
+from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
 from samples.vmc.helpers.vmc_task_helper import wait_for_task
 
 
@@ -34,46 +33,37 @@ class CreateDeleteSDDC(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser()
-
-        required_args = parser.add_argument_group(
-            'required arguments')
-        required_args.add_argument(
-            '--refresh-token',
-            required=True,
-            help='VMware Cloud API refresh token')
-
         required_args.add_argument(
             '--org-id', required=True, help='Organization identifier.')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--sddc-name',
             help="Name of the SDDC to be created. "
             "Default is 'Sample SDDC xx'")
 
-        parser.add_argument('--region', default='US_WEST_2', help='AWS Region')
+        optional_args.add_argument('--region', default='US_WEST_2', help='AWS Region')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--interval-sec',
             default=60,
             help='Task pulling interval in sec')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--listsddc',
             action='store_true',
             help='List SDDCs in the specified Org')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--createsddc',
             action='store_true',
             help='Create an SDDC in the specified Org')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--deletesddc',
             action='store_true',
             help='Deletes the SDDC in the specified Org ')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')

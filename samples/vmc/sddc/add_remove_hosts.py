@@ -15,10 +15,10 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
 import atexit
 import requests
 
+from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
 from com.vmware.vmc.model_client import EsxConfig, ErrorResponse
 from com.vmware.vapi.std.errors_client import InvalidRequest
 from vmware.vapi.vmc.client import create_vmc_client
@@ -43,15 +43,6 @@ class AddRemoveHosts(object):
         self.interval_sec = None
 
     def options(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-        required_args = parser.add_argument_group(
-            'required arguments')
-        required_args.add_argument('--refresh-token',
-                            required=True,
-                            help='VMware Cloud API refresh token')
-
         required_args.add_argument('--org-id',
                             required=True,
                             help='Organization identifier.')
@@ -60,7 +51,7 @@ class AddRemoveHosts(object):
                             required=True,
                             help='Sddc Identifier.')
 
-        parser.add_argument('--interval-sec',
+        optional_args.add_argument('--interval-sec',
                             default=60,
                             help='Task pulling interval in sec')
 

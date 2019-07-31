@@ -16,8 +16,9 @@
 __author__ = 'VMware, Inc.'
 __vcenter_version__ = '6.8.1+'
 
-import argparse
 import requests
+
+from samples.vmc.helpers.sample_cli import parser, required_args
 from com.vmware.nsx_policy_client_for_vmc import create_nsx_policy_client_for_vmc
 from com.vmware.nsx_vmc_app_client_for_vmc import create_nsx_vmc_app_client_for_vmc
 from com.vmware.nsx_vmc_app.model_client import PublicIp
@@ -36,15 +37,6 @@ class NSXPolicyNAT(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-        required_args = parser.add_argument_group(
-            'required arguments')
-        required_args.add_argument('--refresh_token',
-                            required=True,
-                            help='Refresh token obtained from CSP')
-
         required_args.add_argument('--org_id',
                             required=True,
                             help='Orgization ID')

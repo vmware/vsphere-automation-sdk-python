@@ -14,7 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
+from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
 from com.vmware.vmc.model_client import Nsxnatrule, NatRules
 from vmware.vapi.vmc.client import create_vmc_client
 
@@ -29,36 +29,26 @@ class NatRuleCrud(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-        required_args = parser.add_argument_group(
-            'required arguments')
-        required_args.add_argument(
-            '--refresh-token',
-            required=True,
-            help='VMware Cloud API refresh token')
-
         required_args.add_argument(
             '--org-id', required=True, help='Organization identifier.')
 
         required_args.add_argument(
             '--sddc-id', required=True, help='SDDC Identifier.')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--public-ip', help='Public IP range for the NAT rule')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--rule-description',
             default='Sample NAT rule',
             help='Description for the rule')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--internal-ip',
             default='192.168.200.1/24',
             help='NAT rule subnet')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')

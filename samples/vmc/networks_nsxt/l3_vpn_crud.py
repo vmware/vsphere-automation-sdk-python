@@ -15,7 +15,7 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
+from samples.vmc.helpers.sample_cli import parser, required_args
 from com.vmware.nsx_policy_client_for_vmc import create_nsx_policy_client_for_vmc
 from vmware.vapi.bindings.struct import PrettyPrinter as NsxPrettyPrinter
 from com.vmware.nsx_policy.model_client import ApiError
@@ -39,11 +39,6 @@ class NSXPolicyL3VPN(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-        required_args = parser.add_argument_group(
-            'required arguments')
         required_args.add_argument('--refresh_token',
                             required=True,
                             help='Refresh token obtained from CSP')

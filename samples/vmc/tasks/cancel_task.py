@@ -13,8 +13,7 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
-
+from samples.vmc.helpers.sample_cli import parser, required_args
 from com.vmware.vmc.model_client import Task
 from vmware.vapi.vmc.client import create_vmc_client
 
@@ -25,14 +24,6 @@ Sample Prerequisites:
     - VMware Cloud on AWS console API access
     - A running task
 """
-
-parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-required_args = parser.add_argument_group(
-            'required arguments')
-required_args.add_argument('--refresh-token',
-                    required=True,
-                    help='VMware Cloud API refresh token')
 
 required_args.add_argument('--org-id',
                     required=True,

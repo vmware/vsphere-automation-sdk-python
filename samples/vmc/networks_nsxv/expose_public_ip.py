@@ -16,9 +16,9 @@
 __author__ = 'VMware, Inc.'
 __vcenter_version__ = 'VMware Cloud on AWS'
 
-import argparse
 import random
 
+from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
 from com.vmware.vmc.model_client import *
 from vmware.vapi.vmc.client import create_vmc_client
 from samples.vmc.helpers.vmc_task_helper import wait_for_task
@@ -36,15 +36,6 @@ class ExposePublicIP(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-        required_args = parser.add_argument_group(
-            'required arguments')
-        required_args.add_argument('--refresh-token',
-                            required=True,
-                            help='VMware Cloud API refresh token')
-
         required_args.add_argument('--org-id',
                             required=True,
                             help='Organization identifier.')
@@ -53,15 +44,15 @@ class ExposePublicIP(object):
                             required=True,
                             help='SDDC Identifier.')
 
-        parser.add_argument('--notes',
+        optional_args.add_argument('--notes',
                             default='Sample public IP ' + str(random.randint(0, 100)),
                             help='Notes of the new public IP')
 
-        parser.add_argument('--fw-rule-name',
+        optional_args.add_argument('--fw-rule-name',
                             default='Sample firewall rule ' + str(random.randint(0, 100)),
                             help='Name of the compute gae')
 
-        parser.add_argument('--nat-rule-description',
+        optional_args.add_argument('--nat-rule-description',
                             default='Sample NAT rule ' + str(random.randint(0, 100)),
                             help='Description for the NAT rule')
 
@@ -69,7 +60,7 @@ class ExposePublicIP(object):
                             required=True,
                             help='Private IP of the VM')
 
-        parser.add_argument('--cleardata',
+        optional_args.add_argument('--cleardata',
                             action='store_true',
                             help='Clean up after sample run')
         args = parser.parse_args()
