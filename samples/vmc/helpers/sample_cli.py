@@ -30,7 +30,7 @@ required_args = parser.add_argument_group(
         'required arguments')
 optional_args = parser.add_argument_group(
         'optional arguments')
-    
+
 required_args.add_argument(
         '--refresh_token',
         required=True,
