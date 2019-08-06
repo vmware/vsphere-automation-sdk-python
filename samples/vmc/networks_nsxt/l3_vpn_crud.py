@@ -39,18 +39,6 @@ class NSXPolicyL3VPN(object):
     """
 
     def __init__(self):
-        required_args.add_argument('--refresh_token',
-                            required=True,
-                            help='Refresh token obtained from CSP')
-
-        required_args.add_argument('--org_id',
-                            required=True,
-                            help='Orgization ID')
-
-        required_args.add_argument('--sddc_id',
-                            required=True,
-                            help='SDDC ID')
-
         required_args.add_argument('--remote_endpoint_public_ip',
                             required=True,
                             help='L3 VPN Remote end point\'s public ip')

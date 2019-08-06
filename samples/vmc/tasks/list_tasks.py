@@ -27,13 +27,25 @@ Sample Prerequisites:
 accepted = [Task.STATUS_STARTED, Task.STATUS_CANCELING, Task.STATUS_FINISHED,
             Task.STATUS_FAILED, Task.STATUS_CANCELED]
 
-required_args.add_argument('--org-id',
-                    required=True,
-                    help='Organization identifier.')
+parser = argparse.ArgumentParser(
+        description='Standard Arguments for talking to vCenter')
 
-required_args.add_argument('--task-status',
-                    help='Task status to filter. Possible values are: {} \
-                    Show all tasks if no value is passed'.format(accepted))
+required_args = parser.add_argument_group(
+        'required arguments')
+
+required_args.add_argument(
+        '--refresh_token',
+        required=True,
+        help='Refresh token obtained from CSP')
+required_args.add_argument(
+        '--org-id',
+        required=True,
+        help='Organization identifier.')
+
+required_args.add_argument(
+        '--task-status',
+        help='Task status to filter. Possible values are: {} \
+        Show all tasks if no value is passed'.format(accepted))
 
 args = parser.parse_args()
 

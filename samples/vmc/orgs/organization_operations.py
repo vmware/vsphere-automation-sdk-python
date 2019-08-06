@@ -15,9 +15,9 @@
 __author__ = 'VMware, Inc.'
 
 import requests
+import argparse
 import atexit
 
-from samples.vmc.helpers.sample_cli import parser
 from vmware.vapi.vmc.client import create_vmc_client
 
 
@@ -36,6 +36,15 @@ class OperationsOnOrganizations(object):
         self.refresh_token = None
 
     def options(self):
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        required_args = parser.add_argument_group(
+            'required arguments')
+        required_args.add_argument(
+            '--refresh_token',
+            required=True,
+            help='VMware Cloud API refresh token')
+
         self.refresh_token = parser.parse_args().refresh_token
 
     def setup(self):

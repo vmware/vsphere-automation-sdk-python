@@ -36,14 +36,6 @@ class ExposePublicIP(object):
     """
 
     def __init__(self):
-        required_args.add_argument('--org-id',
-                            required=True,
-                            help='Organization identifier.')
-
-        required_args.add_argument('--sddc-id',
-                            required=True,
-                            help='SDDC Identifier.')
-
         optional_args.add_argument('--notes',
                             default='Sample public IP ' + str(random.randint(0, 100)),
                             help='Notes of the new public IP')

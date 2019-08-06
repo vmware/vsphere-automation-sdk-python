@@ -37,14 +37,6 @@ class NSXPolicyNAT(object):
     """
 
     def __init__(self):
-        required_args.add_argument('--org_id',
-                            required=True,
-                            help='Orgization ID')
-
-        required_args.add_argument('--sddc_id',
-                            required=True,
-                            help='SDDC ID')
-
         args = parser.parse_args()
 
         self.nsx_client = create_nsx_policy_client_for_vmc(

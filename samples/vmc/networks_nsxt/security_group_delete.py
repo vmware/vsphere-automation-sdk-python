@@ -39,14 +39,6 @@ Sample Prerequisites:
     - SDDC deployed in VMware Cloud on AWS
     - A NSX-T security group
 """
-required_args.add_argument('--org_id',
-                    required=True,
-                    help='Orgization ID')
-
-required_args.add_argument('--sddc_id',
-                    required=True,
-                    help='SDDC ID')
-
 optional_args.add_argument('--gateway_type',
                     default='mgw',
                     help='Gateway type. Either mgw or cgw')

@@ -43,14 +43,6 @@ class AddRemoveHosts(object):
         self.interval_sec = None
 
     def options(self):
-        required_args.add_argument('--org-id',
-                            required=True,
-                            help='Organization identifier.')
-
-        required_args.add_argument('--sddc-id',
-                            required=True,
-                            help='Sddc Identifier.')
-
         optional_args.add_argument('--interval-sec',
                             default=60,
                             help='Task pulling interval in sec')

@@ -16,11 +16,11 @@ __author__ = 'VMware, Inc.'
 
 import os
 from random import randrange
+import argparse
 
 from com.vmware.vapi.std.errors_client import InvalidRequest
 from com.vmware.vmc.model_client import AwsSddcConfig, ErrorResponse, AccountLinkSddcConfig, SddcConfig
 from vmware.vapi.vmc.client import create_vmc_client
-from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
 from samples.vmc.helpers.vmc_task_helper import wait_for_task
 
 
@@ -33,8 +33,23 @@ class CreateDeleteSDDC(object):
     """
 
     def __init__(self):
+        parser = argparse.ArgumentParser(
+        description='Standard Arguments for talking to vCenter')
+
+        required_args = parser.add_argument_group(
+            'required arguments')
+        optional_args = parser.add_argument_group(
+            'optional arguments')
+
         required_args.add_argument(
-            '--org-id', required=True, help='Organization identifier.')
+            '--refresh_token',
+            required=True,
+            help='Refresh token obtained from CSP')
+
+        required_args.add_argument(
+            '--org_id',
+            required=True,
+            help='Organization identifier.')
 
         optional_args.add_argument(
             '--sddc-name',

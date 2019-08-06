@@ -13,7 +13,7 @@
 
 __author__ = 'VMware, Inc.'
 
-from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
+import argparse
 from com.vmware.vmc.model_client import Task
 from vmware.vapi.vmc.client import create_vmc_client
 
@@ -27,13 +27,28 @@ Sample Prerequisites:
 accepted = [Task.STATUS_STARTED, Task.STATUS_CANCELING, Task.STATUS_FINISHED,
             Task.STATUS_FAILED, Task.STATUS_CANCELED]
 
-required_args.add_argument('--org-id',
-                    required=True,
-                    help='Organization identifier.')
+parser = argparse.ArgumentParser(
+        description='Standard Arguments for talking to vCenter')
 
-optional_args.add_argument('--task-status',
-                    help='Task status to filter. Possible values are: {} \
-                    Show all tasks if no value is passed'.format(accepted))
+required_args = parser.add_argument_group(
+        'required arguments')
+optional_args = parser.add_argument_group(
+        'optional arguments')
+
+required_args.add_argument(
+        '--refresh_token',
+        required=True,
+        help='Refresh token obtained from CSP')
+
+required_args.add_argument(
+        '--org-id',
+        required=True,
+        help='Organization identifier.')
+
+optional_args.add_argument(
+        '--task-status',
+        help='Task status to filter. Possible values are: {} \
+        Show all tasks if no value is passed'.format(accepted))
 
 args = parser.parse_args()
 

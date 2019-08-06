@@ -17,10 +17,14 @@ __copyright__ = 'Copyright 2019 VMware, Inc. All rights reserved.'
 import argparse
 
 """
-Builds a standard argument parser with required and optional argument
-groups
+Builds a standard argument parser with required and optional argument groups
+
+Most of the VMC samples require these three standard required arguments.
+If any of these arguments are not required, then build your own parser
 
 --refresh_token
+--org_id
+--sddc_id
 
 """
 parser = argparse.ArgumentParser(
@@ -35,3 +39,11 @@ required_args.add_argument(
         '--refresh_token',
         required=True,
         help='Refresh token obtained from CSP')
+required_args.add_argument(
+        '--org_id',
+        required=True,
+        help='Orgization ID')
+required_args.add_argument(
+        '--sddc_id',
+        required=True,
+        help='SDDC ID')

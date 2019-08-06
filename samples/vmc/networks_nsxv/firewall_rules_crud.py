@@ -31,12 +31,6 @@ class FirewallRulesCrud(object):
     """
 
     def __init__(self):
-        required_args.add_argument(
-            '--org-id', required=True, help='Organization identifier.')
-
-        required_args.add_argument(
-            '--sddc-id', required=True, help='Sddc Identifier.')
-
         optional_args.add_argument(
             '--rule-name',
             default='Sample Firewall Rule',
