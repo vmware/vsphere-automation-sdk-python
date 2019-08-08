@@ -18,7 +18,7 @@ __vcenter_version__ = 'VMware Cloud on AWS'
 
 import requests
 
-from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
+from samples.vmc.helpers.sample_cli import parser, optional_args
 from com.vmware.nsx_policy.infra_client import Domains
 from com.vmware.nsx_policy_client_for_vmc import create_nsx_policy_client_for_vmc
 from vmware.vapi.bindings.struct import PrettyPrinter

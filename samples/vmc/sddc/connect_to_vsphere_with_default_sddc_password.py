@@ -19,7 +19,7 @@ __vcenter_version__ = 'VMware Cloud on AWS'
 from com.vmware.vapi.std.errors_client import NotFound
 from com.vmware.vmc.model_client import ErrorResponse
 from six.moves.urllib import parse
-from samples.vmc.helpers.sample_cli import parser, required_args
+from samples.vmc.helpers.sample_cli import parser
 from vmware.vapi.vmc.client import create_vmc_client
 from vmware.vapi.vsphere.client import create_vsphere_client
 

@@ -18,7 +18,7 @@ __vcenter_version__ = '6.8.1+'
 
 import requests
 
-from samples.vmc.helpers.sample_cli import parser, required_args
+from samples.vmc.helpers.sample_cli import parser
 from com.vmware.nsx_policy_client_for_vmc import create_nsx_policy_client_for_vmc
 from com.vmware.nsx_vmc_app_client_for_vmc import create_nsx_vmc_app_client_for_vmc
 from com.vmware.nsx_vmc_app.model_client import PublicIp

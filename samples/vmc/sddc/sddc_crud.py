@@ -33,8 +33,7 @@ class CreateDeleteSDDC(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-        description='Standard Arguments for talking to vCenter')
+        parser = argparse.ArgumentParser()
 
         required_args = parser.add_argument_group(
             'required arguments')

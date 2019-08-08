@@ -13,7 +13,7 @@
 
 __author__ = 'VMware, Inc.'
 
-from samples.vmc.helpers.sample_cli import parser, required_args
+import argparse
 from com.vmware.vmc.model_client import Task
 from vmware.vapi.vmc.client import create_vmc_client
 
@@ -28,7 +28,7 @@ accepted = [Task.STATUS_STARTED, Task.STATUS_CANCELING, Task.STATUS_FINISHED,
             Task.STATUS_FAILED, Task.STATUS_CANCELED]
 
 parser = argparse.ArgumentParser(
-        description='Standard Arguments for talking to vCenter')
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 required_args = parser.add_argument_group(
         'required arguments')

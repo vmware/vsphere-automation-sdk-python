@@ -35,14 +35,17 @@ def build_arg_parser():
             'required arguments')
     required_args.add_argument('-s', '--server',
                         action='store',
+                        required=True,
                         help='vSphere service IP to connect to')
 
     required_args.add_argument('-u', '--username',
                         action='store',
+                        required=True,
                         help='Username to use when connecting to vc')
 
     required_args.add_argument('-p', '--password',
                         action='store',
+                        required=True,
                         help='Password to use when connecting to vc')
 
     parser.add_argument('-c', '--cleardata',

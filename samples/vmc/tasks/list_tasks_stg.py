@@ -28,7 +28,7 @@ accepted = [Task.STATUS_STARTED, Task.STATUS_CANCELING, Task.STATUS_FINISHED,
             Task.STATUS_FAILED, Task.STATUS_CANCELED]
 
 parser = argparse.ArgumentParser(
-        description='Standard Arguments for talking to vCenter')
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 required_args = parser.add_argument_group(
         'required arguments')

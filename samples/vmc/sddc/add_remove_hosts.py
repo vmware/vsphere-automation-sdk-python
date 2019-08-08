@@ -18,7 +18,7 @@ __author__ = 'VMware, Inc.'
 import atexit
 import requests
 
-from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
+from samples.vmc.helpers.sample_cli import parser, optional_args
 from com.vmware.vmc.model_client import EsxConfig, ErrorResponse
 from com.vmware.vapi.std.errors_client import InvalidRequest
 from vmware.vapi.vmc.client import create_vmc_client

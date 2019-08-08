@@ -14,7 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 
-from samples.vmc.helpers.sample_cli import parser, required_args, optional_args
+from samples.vmc.helpers.sample_cli import parser, optional_args
 from com.vmware.vmc.model_client import Ipsec, IpsecSite, IpsecSites, Subnets
 from vmware.vapi.vmc.client import create_vmc_client
 
