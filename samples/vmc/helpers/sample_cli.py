@@ -27,8 +27,7 @@ If any of these arguments are not required, then build your own parser
 --sddc_id
 
 """
-parser = argparse.ArgumentParser(
-        description='Standard Arguments for talking to vCenter')
+parser = argparse.ArgumentParser()
 
 required_args = parser.add_argument_group(
         'required arguments')
