@@ -14,8 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
-
+from samples.vmc.helpers.sample_cli import parser, optional_args
 from com.vmware.vmc.model_client import Ipsec, IpsecSite, IpsecSites, Subnets
 from vmware.vapi.vmc.client import create_vmc_client
 
@@ -30,59 +29,44 @@ class IpsecVPNsCrud(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument(
-            '-r',
-            '--refresh-token',
-            required=True,
-            help='VMware Cloud API refresh token')
-
-        parser.add_argument(
-            '-o', '--org-id', required=True, help='Organization identifier.')
-
-        parser.add_argument(
-            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
-
-        parser.add_argument(
+        optional_args.add_argument(
             '--use-compute-gateway',
             action='store_true',
             default=False,
             help='Use compute gateway. Default is using '
             'management gateway')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--vpn-name',
             default='Sample IPsec VPN',
             help='Name of the new VPN')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--public-ip',
             default='10.10.10.10',
             help='IP (IPv4) address or FQDN of the Peer')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--private-ip',
             default='192.168.10.10',
             help='Local IP of the IPsec Site')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--remote-networks',
             default='192.168.20.10/24',
             help='Peer subnets for which VPN is configured')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--local-networks',
             default='192.168.30.10/24',
             help='Local subnets for which VPN is configured')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--key',
             default='00000000',
             help='Pre Shared Key for the IPsec Site')
 
-        parser.add_argument(
-            '-c',
+        optional_args.add_argument(
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')

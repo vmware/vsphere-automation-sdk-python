@@ -15,11 +15,11 @@
 __author__ = 'VMware, Inc.'
 __vcenter_version__ = 'VMware Cloud on AWS'
 
-import argparse
 
 from com.vmware.vapi.std.errors_client import NotFound
 from com.vmware.vmc.model_client import ErrorResponse
 from six.moves.urllib import parse
+from samples.vmc.helpers.sample_cli import parser
 from vmware.vapi.vmc.client import create_vmc_client
 from vmware.vapi.vsphere.client import create_vsphere_client
 
@@ -35,18 +35,6 @@ class ConnectTovSphereWithDefaultCredentials(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument(
-            '-r',
-            '--refresh-token',
-            required=True,
-            help='VMware Cloud API refresh token')
-
-        parser.add_argument(
-            '-o', '--org-id', required=True, help='Organization identifier.')
-
-        parser.add_argument(
-            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
         args = parser.parse_args()
 
         self.refresh_token = args.refresh_token

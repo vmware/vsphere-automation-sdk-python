@@ -14,14 +14,13 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
 import os
 from random import randrange
+import argparse
 
 from com.vmware.vapi.std.errors_client import InvalidRequest
 from com.vmware.vmc.model_client import AwsSddcConfig, ErrorResponse, AccountLinkSddcConfig, SddcConfig
 from vmware.vapi.vmc.client import create_vmc_client
-
 from samples.vmc.helpers.vmc_task_helper import wait_for_task
 
 
@@ -36,49 +35,49 @@ class CreateDeleteSDDC(object):
     def __init__(self):
         parser = argparse.ArgumentParser()
 
-        parser.add_argument(
-            '-r',
-            '--refresh-token',
+        required_args = parser.add_argument_group(
+            'required arguments')
+        optional_args = parser.add_argument_group(
+            'optional arguments')
+
+        required_args.add_argument(
+            '--refresh_token',
             required=True,
-            help='VMware Cloud API refresh token')
+            help='Refresh token obtained from CSP')
 
-        parser.add_argument(
-            '-o', '--org-id', required=True, help='Organization identifier.')
+        required_args.add_argument(
+            '--org_id',
+            required=True,
+            help='Organization identifier.')
 
-        parser.add_argument(
-            '-sn',
+        optional_args.add_argument(
             '--sddc-name',
             help="Name of the SDDC to be created. "
             "Default is 'Sample SDDC xx'")
 
-        parser.add_argument('--region', default='US_WEST_2', help='AWS Region')
+        optional_args.add_argument('--region', default='US_WEST_2', help='AWS Region')
 
-        parser.add_argument(
-            '-i',
+        optional_args.add_argument(
             '--interval-sec',
             default=60,
             help='Task pulling interval in sec')
 
-        parser.add_argument(
-            '-ls',
+        optional_args.add_argument(
             '--listsddc',
             action='store_true',
             help='List SDDCs in the specified Org')
 
-        parser.add_argument(
-            '-cs',
+        optional_args.add_argument(
             '--createsddc',
             action='store_true',
             help='Create an SDDC in the specified Org')
 
-        parser.add_argument(
-            '-ds',
+        optional_args.add_argument(
             '--deletesddc',
             action='store_true',
             help='Deletes the SDDC in the specified Org ')
 
-        parser.add_argument(
-            '-c',
+        optional_args.add_argument(
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')

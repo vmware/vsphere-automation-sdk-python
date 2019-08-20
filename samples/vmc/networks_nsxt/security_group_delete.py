@@ -16,10 +16,10 @@
 __author__ = 'VMware, Inc'
 __vcenter_version__ = 'VMware Cloud on AWS'
 
-import argparse
 import random
 
 import requests
+from samples.vmc.helpers.sample_cli import parser, optional_args
 from com.vmware.nsx_policy.infra_client import Domains
 from com.vmware.nsx_policy.model_client import (Expression, Group,
                                                 IPAddressExpression)
@@ -39,26 +39,11 @@ Sample Prerequisites:
     - SDDC deployed in VMware Cloud on AWS
     - A NSX-T security group
 """
-parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-parser.add_argument('--refresh_token',
-                    required=True,
-                    help='Refresh token obtained from CSP')
-
-parser.add_argument('--org_id',
-                    required=True,
-                    help='Orgization ID')
-
-parser.add_argument('--sddc_id',
-                    required=True,
-                    help='Sddc ID')
-
-parser.add_argument('--gateway_type',
+optional_args.add_argument('--gateway_type',
                     default='mgw',
                     help='Gateway type. Either mgw or cgw')
 
-parser.add_argument('--group_id',
+optional_args.add_argument('--group_id',
                     help='ID of the group to be deleted')
 
 args = parser.parse_args()

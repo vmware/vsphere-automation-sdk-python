@@ -41,28 +41,30 @@ class DeployOvfTemplate:
         self.vm_name = 'deployed-vm-' + str(generate_random_uuid())
 
         parser = sample_cli.build_arg_parser()
-        parser.add_argument('--libitemname',
+        required_args = parser.add_argument_group(
+            'required arguments')
+        required_args.add_argument('--libitemname',
                             required=True,
-                            help='(Required) The name of the library item to deploy. '
+                            help='The name of the library item to deploy. '
                                  'The library item should contain an OVF package.')
 
         parser.add_argument('--vmname',
                             default=self.vm_name,
-                            help='(Optional) The name of the Virtual Machine to be deployed. '
+                            help='The name of the Virtual Machine to be deployed. '
                                  'Default: "{}"'.format(self.vm_name))
 
         parser.add_argument('--resourcepoolname',
                             default='Compute-ResourcePool',
-                            help='(Optional) The name of the resource pool to be used. '
+                            help='The name of the resource pool to be used. '
                                  'Default: "Compute-ResourcePool"')
 
         parser.add_argument('--foldername',
                             default='Workloads',
-                            help='(Optional) The name of the folder to be used. '
+                            help='The name of the folder to be used. '
                                  'Default: "Workloads"')
 
         parser.add_argument('--opaquenetworkname',
-                            help='(Optional) The name of the opaque network to be added '
+                            help='The name of the opaque network to be added '
                                  'to the deployed vm')
 
         args = sample_util.process_cli_args(parser.parse_args())

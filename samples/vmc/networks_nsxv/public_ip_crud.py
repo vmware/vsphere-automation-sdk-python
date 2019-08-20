@@ -14,7 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
+from samples.vmc.helpers.sample_cli import parser, optional_args
 from com.vmware.vmc.model_client import SddcAllocatePublicIpSpec
 from vmware.vapi.vmc.client import create_vmc_client
 
@@ -31,27 +31,12 @@ class PublicIPsCrud(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument(
-            '-r',
-            '--refresh-token',
-            required=True,
-            help='VMware Cloud API refresh token')
-
-        parser.add_argument(
-            '-o', '--org-id', required=True, help='Organization identifier.')
-
-        parser.add_argument(
-            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
-
-        parser.add_argument(
+        optional_args.add_argument(
             '--notes',
             default='Sample public IP',
             help='Notes of the new public IP')
 
-        parser.add_argument(
-            '-c',
+        optional_args.add_argument(
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')

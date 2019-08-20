@@ -14,7 +14,6 @@
 __author__ = 'VMware, Inc.'
 
 import argparse
-
 from com.vmware.vmc.model_client import Task
 from vmware.vapi.vmc.client import create_vmc_client
 
@@ -28,19 +27,25 @@ Sample Prerequisites:
 accepted = [Task.STATUS_STARTED, Task.STATUS_CANCELING, Task.STATUS_FINISHED,
             Task.STATUS_FAILED, Task.STATUS_CANCELED]
 
-parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument('--refresh-token',
-                    required=True,
-                    help='VMware Cloud API refresh token')
+required_args = parser.add_argument_group(
+        'required arguments')
 
-parser.add_argument('--org-id',
-                    required=True,
-                    help='Organization identifier.')
+required_args.add_argument(
+        '--refresh_token',
+        required=True,
+        help='Refresh token obtained from CSP')
+required_args.add_argument(
+        '--org-id',
+        required=True,
+        help='Organization identifier.')
 
-parser.add_argument('--task-status',
-                    help='Task status to filter. Possible values are: {} \
-                    Show all tasks if no value is passed'.format(accepted))
+required_args.add_argument(
+        '--task-status',
+        help='Task status to filter. Possible values are: {} \
+        Show all tasks if no value is passed'.format(accepted))
 
 args = parser.parse_args()
 

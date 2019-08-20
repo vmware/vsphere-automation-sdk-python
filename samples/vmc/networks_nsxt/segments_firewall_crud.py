@@ -15,9 +15,8 @@
 
 __author__ = 'VMware, Inc.'
 
-
-import argparse
 import requests
+from samples.vmc.helpers.sample_cli import parser
 from com.vmware.nsx_policy_client_for_vmc import create_nsx_policy_client_for_vmc
 from com.vmware.nsx_policy.model_client import Rule
 from vmware.vapi.bindings.struct import PrettyPrinter as NsxPrettyPrinter
@@ -34,21 +33,6 @@ class NSXPolicySegmentFirewall(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-        parser.add_argument('--refresh_token',
-                            required=True,
-                            help='Refresh token obtained from CSP')
-
-        parser.add_argument('--org_id',
-                            required=True,
-                            help='Orgization ID')
-
-        parser.add_argument('--sddc_id',
-                            required=True,
-                            help='Sddc ID')
-
         args = parser.parse_args()
 
         self.nsx_client = create_nsx_policy_client_for_vmc(

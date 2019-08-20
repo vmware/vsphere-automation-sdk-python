@@ -14,8 +14,7 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
-
+from samples.vmc.helpers.sample_cli import parser, optional_args
 from com.vmware.vmc.model_client import (L2Extension, SddcNetwork,
                                          SddcNetworkAddressGroups,
                                          SddcNetworkAddressGroup,
@@ -34,37 +33,22 @@ class LogicalNetworkCrud(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument(
-            '-r',
-            '--refresh-token',
-            required=True,
-            help='VMware Cloud API refresh token')
-
-        parser.add_argument(
-            '-o', '--org-id', required=True, help='Organization identifier.')
-
-        parser.add_argument(
-            '-s', '--sddc-id', required=True, help='Sddc Identifier.')
-
-        parser.add_argument(
+        optional_args.add_argument(
             '--network-name',
             default='Sample Logical Network',
             help='Name of the new logical network')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--subnet',
             default='192.168.100.1/24',
             help='Logical network subnet')
 
-        parser.add_argument(
+        optional_args.add_argument(
             '--dhcp-range',
             default='192.168.100.2-192.168.100.254',
             help='DHCP IP range for the logical network')
 
-        parser.add_argument(
-            '-c',
+        optional_args.add_argument(
             '--cleardata',
             action='store_true',
             help='Clean up after sample run')

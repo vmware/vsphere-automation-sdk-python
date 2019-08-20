@@ -15,9 +15,8 @@
 
 __author__ = 'VMware, Inc.'
 
-import argparse
 import pprint
-
+from samples.vmc.helpers.sample_cli import parser
 from com.vmware.nsx_policy_client_for_vmc import (
     create_nsx_policy_client_for_vmc)
 
@@ -33,20 +32,6 @@ class AuthExample(object):
     """
 
     def __init__(self):
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('-r', '--refresh-token',
-                            required=True,
-                            help='VMware Cloud API refresh token')
-
-        parser.add_argument('-o', '--org-id',
-                            required=True,
-                            help='Organization identifier.')
-
-        parser.add_argument('-s', '--sddc-id',
-                            required=True,
-                            help='Sddc Identifier.')
-
         args = parser.parse_args()
 
         self.org_id = args.org_id

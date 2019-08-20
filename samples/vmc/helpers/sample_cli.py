@@ -12,44 +12,37 @@
 """
 
 __author__ = 'VMware, Inc.'
+__copyright__ = 'Copyright 2019 VMware, Inc. All rights reserved.'
 
 import argparse
-from com.vmware.vmc.model_client import Task
-from vmware.vapi.vmc.client import create_vmc_client
 
 """
-Demonstrates how to cancel a running task
+Builds a standard argument parser with required and optional argument groups
 
-Sample Prerequisites:
-    - VMware Cloud on AWS console API access
-    - A running task
+Most of the VMC samples require these three standard required arguments.
+If any of these arguments are not required, then build your own parser
+
+--refresh_token
+--org_id
+--sddc_id
+
 """
-
-parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser = argparse.ArgumentParser()
 
 required_args = parser.add_argument_group(
         'required arguments')
+optional_args = parser.add_argument_group(
+        'optional arguments')
 
 required_args.add_argument(
         '--refresh_token',
         required=True,
         help='Refresh token obtained from CSP')
-
 required_args.add_argument(
-        '--org-id',
+        '--org_id',
         required=True,
-        help='Organization identifier.')
-
+        help='Orgization ID')
 required_args.add_argument(
-        '--task-id',
+        '--sddc_id',
         required=True,
-        help='Task ID to be cancelled')
-
-args = parser.parse_args()
-
-vmc_client = create_vmc_client(args.refresh_token)
-
-vmc_client.orgs.Tasks.update(org=args.org_id, task=args.task_id, action='cancel')
-
-print('Task "{}" is cancelled'.format(args.task_id))
+        help='SDDC ID')
