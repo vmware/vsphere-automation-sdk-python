@@ -39,7 +39,7 @@ class NSXPolicyL3VPN(object):
     """
 
     def __init__(self):
-        required_args.add_argument('--remote_endpoint_public_ip',
+        required_args.add_argument('--remote-endpoint-public-ip',
                             required=True,
                             help='L3 VPN Remote end point\'s public ip')
 

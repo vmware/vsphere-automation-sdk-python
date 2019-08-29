@@ -32,7 +32,7 @@ required_args = parser.add_argument_group(
         'required arguments')
 
 required_args.add_argument(
-        '--refresh_token',
+        '--refresh-token',
         required=True,
         help='Refresh token obtained from CSP')
 

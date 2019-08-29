@@ -217,9 +217,10 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 * [vSphere 6.7.1 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.1/)
 * Previous releases:    [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0)    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1)       [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5)    [6.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.0) 
 
-### VMware Cloud on AWS Console API Documentation
+### VMware Cloud on AWS API Documentation
 
 * [VMware Cloud on AWS Console API](https://vmware.github.io/vsphere-automation-sdk-python/vmc/index.html)
+* [VMware Cloud on AWS Disaster Recovery as a Service (DRaaS) API](https://vmware.github.io/vsphere-automation-sdk-python/vmc-draas/index.html)
 
 ### NSX API Documentation
 
@@ -240,7 +241,7 @@ Board members are volunteers from the SDK community and VMware staff members, bo
 
 Members:
 * Tianhao He (VMware)
-* Steve Trefethen (VMware)
+* Pavan Bidkar (VMware)
 
 ## VMware Resources
 

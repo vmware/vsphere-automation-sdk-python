@@ -35,14 +35,14 @@ optional_args = parser.add_argument_group(
         'optional arguments')
 
 required_args.add_argument(
-        '--refresh_token',
+        '--refresh-token',
         required=True,
         help='Refresh token obtained from CSP')
 required_args.add_argument(
-        '--org_id',
+        '--org-id',
         required=True,
         help='Orgization ID')
 required_args.add_argument(
-        '--sddc_id',
+        '--sddc-id',
         required=True,
         help='SDDC ID')
