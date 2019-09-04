@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc package &mdash; VMware Cloud on AWS Console API 1.9.0 documentation</title>
+  <title>com.vmware.vmc package &mdash; VMware Cloud on AWS Console API 1.10.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.9.0
+                1.10.0
               </div>
             
           
@@ -342,7 +342,7 @@ or internal. Can define multiple.</p></li>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.Agent">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Agent</code><span class="sig-paren">(</span><em class="sig-param">cert_enabled=None</em>, <em class="sig-param">internal_ip=None</em>, <em class="sig-param">hostname_verifier_enabled=None</em>, <em class="sig-param">network_netmask=None</em>, <em class="sig-param">network_gateway=None</em>, <em class="sig-param">provider='Agent'</em>, <em class="sig-param">is_master=None</em>, <em class="sig-param">agent_state=None</em>, <em class="sig-param">agent_url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Agent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Agent</code><span class="sig-paren">(</span><em class="sig-param">internal_ip=None</em>, <em class="sig-param">cert_enabled=None</em>, <em class="sig-param">management_ip=None</em>, <em class="sig-param">hostname_verifier_enabled=None</em>, <em class="sig-param">network_netmask=None</em>, <em class="sig-param">network_gateway=None</em>, <em class="sig-param">provider='Agent'</em>, <em class="sig-param">is_master=None</em>, <em class="sig-param">agent_state=None</em>, <em class="sig-param">agent_url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Agent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -352,9 +352,12 @@ names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>internal_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The internal IP address of the agent which is provided by the
+underlying cloud provider</p></li>
 <li><p><strong>cert_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using CA signed
 certificate</p></li>
-<li><p><strong>internal_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Internal IP address of the agent</p></li>
+<li><p><strong>management_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The internal management IP address of the agent exposed to the
+SDDC, which might be different from the internal IP</p></li>
 <li><p><strong>hostname_verifier_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using FQDN in the
 certificate</p></li>
 <li><p><strong>network_netmask</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Network netmask of the agent</p></li>
@@ -508,7 +511,7 @@ define multiple.</p></li>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.AwsAgent">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsAgent</code><span class="sig-paren">(</span><em class="sig-param">instance_id=None</em>, <em class="sig-param">key_pair=None</em>, <em class="sig-param">cert_enabled=None</em>, <em class="sig-param">internal_ip=None</em>, <em class="sig-param">hostname_verifier_enabled=None</em>, <em class="sig-param">network_netmask=None</em>, <em class="sig-param">network_gateway=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">is_master=None</em>, <em class="sig-param">agent_state=None</em>, <em class="sig-param">agent_url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsAgent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsAgent</code><span class="sig-paren">(</span><em class="sig-param">instance_id=None</em>, <em class="sig-param">key_pair=None</em>, <em class="sig-param">internal_ip=None</em>, <em class="sig-param">cert_enabled=None</em>, <em class="sig-param">management_ip=None</em>, <em class="sig-param">hostname_verifier_enabled=None</em>, <em class="sig-param">network_netmask=None</em>, <em class="sig-param">network_gateway=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">is_master=None</em>, <em class="sig-param">agent_state=None</em>, <em class="sig-param">agent_url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsAgent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -520,9 +523,12 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>instance_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>key_pair</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.AwsKeyPair" title="com.vmware.vmc.model_client.AwsKeyPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">AwsKeyPair</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>internal_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The internal IP address of the agent which is provided by the
+underlying cloud provider</p></li>
 <li><p><strong>cert_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using CA signed
 certificate</p></li>
-<li><p><strong>internal_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Internal IP address of the agent</p></li>
+<li><p><strong>management_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The internal management IP address of the agent exposed to the
+SDDC, which might be different from the internal IP</p></li>
 <li><p><strong>hostname_verifier_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using FQDN in the
 certificate</p></li>
 <li><p><strong>network_netmask</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Network netmask of the agent</p></li>
@@ -659,7 +665,7 @@ account’s perspective</p></li>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.AwsEsxHost">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsEsxHost</code><span class="sig-paren">(</span><em class="sig-param">internal_public_ip_pool=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">availability_zone=None</em>, <em class="sig-param">esx_id=None</em>, <em class="sig-param">hostname=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">mac_address=None</em>, <em class="sig-param">custom_properties=None</em>, <em class="sig-param">esx_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsEsxHost" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsEsxHost</code><span class="sig-paren">(</span><em class="sig-param">internal_public_ip_pool=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">availability_zone=None</em>, <em class="sig-param">esx_id=None</em>, <em class="sig-param">hostname=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">instance_type=None</em>, <em class="sig-param">mac_address=None</em>, <em class="sig-param">custom_properties=None</em>, <em class="sig-param">esx_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsEsxHost" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -675,6 +681,7 @@ names.</p>
 <li><p><strong>esx_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>hostname</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>instance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Backing cloud provider instance type for host.</p></li>
 <li><p><strong>mac_address</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>custom_properties</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>esx_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
@@ -740,7 +747,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.AwsSddcConfig">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsSddcConfig</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">account_link_sddc_config=None</em>, <em class="sig-param">vpc_cidr=None</em>, <em class="sig-param">num_hosts=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">vxlan_subnet=None</em>, <em class="sig-param">account_link_config=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">skip_creating_vxlan=None</em>, <em class="sig-param">sso_domain=None</em>, <em class="sig-param">sddc_template_id=None</em>, <em class="sig-param">deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsSddcConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsSddcConfig</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">one_node_reduced_capacity=None</em>, <em class="sig-param">vpc_cidr=None</em>, <em class="sig-param">skip_creating_vxlan=None</em>, <em class="sig-param">vxlan_subnet=None</em>, <em class="sig-param">size=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">account_link_sddc_config=None</em>, <em class="sig-param">num_hosts=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">account_link_config=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">sso_domain=None</em>, <em class="sig-param">sddc_template_id=None</em>, <em class="sig-param">deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsSddcConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -751,27 +758,33 @@ names.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>one_node_reduced_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Whether this sddc is reduced capacity 1NODE.</p></li>
+<li><p><strong>vpc_cidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS VPC IP range. Only prefix of 16 or 20 is currently supported.</p></li>
+<li><p><strong>skip_creating_vxlan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – skip creating vxlan for compute gateway for SDDC provisioning</p></li>
+<li><p><strong>vxlan_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – VXLAN IP subnet in CIDR for compute gateway</p></li>
+<li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The size of the vCenter and NSX appliances. xlarge sddcSize
+corresponds to an ‘extra_large’ vCenter appliance and ‘large’ NSX
+appliance. ‘medium’ sddcSize corresponds to ‘medium’ vCenter
+appliance and ‘medium’ NSX appliance. Value defaults to ‘medium’.</p></li>
 <li><p><strong>storage_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The storage capacity value to be requested for the sddc primary
 cluster, in GiBs. If provided, instead of using the direct-attached
 storage, a capacity value amount of seperable storage will be used.
 format: int64</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>account_link_sddc_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.AccountLinkSddcConfig" title="com.vmware.vmc.model_client.AccountLinkSddcConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccountLinkSddcConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A list of the SDDC linking configurations to use.</p></li>
-<li><p><strong>vpc_cidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS VPC IP range. Only prefix of 16 or 20 is currently supported.</p></li>
 <li><p><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – </p></li>
 <li><p><strong>sddc_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Denotes the sddc type , if the value is null or empty, the type is
 considered as default.</p></li>
-<li><p><strong>vxlan_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – VXLAN IP subnet in CIDR for compute gateway</p></li>
 <li><p><strong>account_link_config</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.AccountLinkConfig" title="com.vmware.vmc.model_client.AccountLinkConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccountLinkConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The account linking configuration, we will keep this one and remove
 accountLinkSddcConfig finally.</p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><p><a class="reference internal" href="#com.vmware.vmc.model_client.SddcConfig.PROVIDER_AWS" title="com.vmware.vmc.model_client.SddcConfig.PROVIDER_AWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcConfig.PROVIDER_AWS</span></code></a></p></li>
+<li><p><a class="reference internal" href="#com.vmware.vmc.model_client.SddcConfig.PROVIDER_ZEROCLOUD" title="com.vmware.vmc.model_client.SddcConfig.PROVIDER_ZEROCLOUD"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcConfig.PROVIDER_ZEROCLOUD</span></code></a></p></li>
 </ul>
 <p>Determines what additional properties are available based on cloud
 provider.</p>
 </p></li>
-<li><p><strong>skip_creating_vxlan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – skip creating vxlan for compute gateway for SDDC provisioning</p></li>
 <li><p><strong>sso_domain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The SSO domain name to use for vSphere users. If not specified,
 vmc.local will be used.</p></li>
 <li><p><strong>sddc_template_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If provided, configuration from the template will applied to the
@@ -897,6 +910,7 @@ SingleAZ SDDCs will provision over one.</p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><p><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_AWS" title="com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_AWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.PROVIDER_AWS</span></code></a></p></li>
+<li><p><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_ZEROCLOUD" title="com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_ZEROCLOUD"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.PROVIDER_ZEROCLOUD</span></code></a></p></li>
 </ul>
 <blockquote>
 <div><p>Discriminator for additional properties</p>
@@ -1091,7 +1105,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.Cluster">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Cluster</code><span class="sig-paren">(</span><em class="sig-param">esx_host_list=None</em>, <em class="sig-param">cluster_state=None</em>, <em class="sig-param">aws_kms_info=None</em>, <em class="sig-param">host_cpu_cores_count=None</em>, <em class="sig-param">cluster_id=None</em>, <em class="sig-param">cluster_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Cluster" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Cluster</code><span class="sig-paren">(</span><em class="sig-param">esx_host_list=None</em>, <em class="sig-param">cluster_state=None</em>, <em class="sig-param">aws_kms_info=None</em>, <em class="sig-param">host_cpu_cores_count=None</em>, <em class="sig-param">instance_type=None</em>, <em class="sig-param">cluster_id=None</em>, <em class="sig-param">cluster_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Cluster" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1113,6 +1127,7 @@ names.</p>
 <li><p><strong>aws_kms_info</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.AwsKmsInfo" title="com.vmware.vmc.model_client.AwsKmsInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">AwsKmsInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS Key Management Service information associated with this cluster</p></li>
 <li><p><strong>host_cpu_cores_count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Number of cores enabled on ESX hosts added to this cluster format:
 int32</p></li>
+<li><p><strong>instance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Backing cloud provider instance type for cluster.</p></li>
 <li><p><strong>cluster_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>cluster_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 </ul>
@@ -2120,7 +2135,7 @@ specific cluster.</p></li>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.EsxHost">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">EsxHost</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">availability_zone=None</em>, <em class="sig-param">esx_id=None</em>, <em class="sig-param">hostname=None</em>, <em class="sig-param">provider='EsxHost'</em>, <em class="sig-param">mac_address=None</em>, <em class="sig-param">custom_properties=None</em>, <em class="sig-param">esx_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.EsxHost" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">EsxHost</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">availability_zone=None</em>, <em class="sig-param">esx_id=None</em>, <em class="sig-param">hostname=None</em>, <em class="sig-param">provider='EsxHost'</em>, <em class="sig-param">instance_type=None</em>, <em class="sig-param">mac_address=None</em>, <em class="sig-param">custom_properties=None</em>, <em class="sig-param">esx_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.EsxHost" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -2135,6 +2150,7 @@ names.</p>
 <li><p><strong>esx_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>hostname</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>instance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Backing cloud provider instance type for host.</p></li>
 <li><p><strong>mac_address</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>custom_properties</strong> ((<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>esx_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
@@ -4519,7 +4535,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.Sddc">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Sddc</code><span class="sig-paren">(</span><em class="sig-param">updated=None</em>, <em class="sig-param">user_id=None</em>, <em class="sig-param">updated_by_user_id=None</em>, <em class="sig-param">created=None</em>, <em class="sig-param">version=None</em>, <em class="sig-param">updated_by_user_name=None</em>, <em class="sig-param">user_name=None</em>, <em class="sig-param">id=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">sddc_state=None</em>, <em class="sig-param">expiration_date=None</em>, <em class="sig-param">org_id=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">provider=None</em>, <em class="sig-param">account_link_state=None</em>, <em class="sig-param">sddc_access_state=None</em>, <em class="sig-param">resource_config=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Sddc" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Sddc</code><span class="sig-paren">(</span><em class="sig-param">updated=None</em>, <em class="sig-param">user_id=None</em>, <em class="sig-param">updated_by_user_id=None</em>, <em class="sig-param">created=None</em>, <em class="sig-param">version=None</em>, <em class="sig-param">updated_by_user_name=None</em>, <em class="sig-param">user_name=None</em>, <em class="sig-param">id=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">sddc_state=None</em>, <em class="sig-param">expiration_date=None</em>, <em class="sig-param">org_id=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">one_node_reduced_capacity=None</em>, <em class="sig-param">provider=None</em>, <em class="sig-param">account_link_state=None</em>, <em class="sig-param">sddc_access_state=None</em>, <em class="sig-param">resource_config=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Sddc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -4552,9 +4568,11 @@ names.</p>
 format: date-time</p></li>
 <li><p><strong>org_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>sddc_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Type of the sddc</p></li>
+<li><p><strong>one_node_reduced_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Whether this sddc is reduced capacity 1NODE</p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><p><a class="reference internal" href="#com.vmware.vmc.model_client.Sddc.PROVIDER_AWS" title="com.vmware.vmc.model_client.Sddc.PROVIDER_AWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Sddc.PROVIDER_AWS</span></code></a></p></li>
+<li><p><a class="reference internal" href="#com.vmware.vmc.model_client.Sddc.PROVIDER_ZEROCLOUD" title="com.vmware.vmc.model_client.Sddc.PROVIDER_ZEROCLOUD"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Sddc.PROVIDER_ZEROCLOUD</span></code></a></p></li>
 </ul>
 </p></li>
 <li><p><strong>account_link_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
@@ -4591,6 +4609,11 @@ ENABLED</p></li>
 <dl class="attribute">
 <dt id="com.vmware.vmc.model_client.Sddc.PROVIDER_AWS">
 <code class="sig-name descname">PROVIDER_AWS</code><em class="property"> = 'AWS'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Sddc.PROVIDER_AWS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.Sddc.PROVIDER_ZEROCLOUD">
+<code class="sig-name descname">PROVIDER_ZEROCLOUD</code><em class="property"> = 'ZEROCLOUD'</em><a class="headerlink" href="#com.vmware.vmc.model_client.Sddc.PROVIDER_ZEROCLOUD" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -4648,7 +4671,7 @@ allocated.</p></li>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.SddcConfig">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">SddcConfig</code><span class="sig-paren">(</span><em class="sig-param">storage_capacity=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">account_link_sddc_config=None</em>, <em class="sig-param">vpc_cidr=None</em>, <em class="sig-param">num_hosts=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">vxlan_subnet=None</em>, <em class="sig-param">account_link_config=None</em>, <em class="sig-param">provider='SddcConfig'</em>, <em class="sig-param">skip_creating_vxlan=None</em>, <em class="sig-param">sso_domain=None</em>, <em class="sig-param">sddc_template_id=None</em>, <em class="sig-param">deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">SddcConfig</code><span class="sig-paren">(</span><em class="sig-param">one_node_reduced_capacity=None</em>, <em class="sig-param">vpc_cidr=None</em>, <em class="sig-param">skip_creating_vxlan=None</em>, <em class="sig-param">vxlan_subnet=None</em>, <em class="sig-param">size=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">account_link_sddc_config=None</em>, <em class="sig-param">num_hosts=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">account_link_config=None</em>, <em class="sig-param">provider='SddcConfig'</em>, <em class="sig-param">sso_domain=None</em>, <em class="sig-param">sddc_template_id=None</em>, <em class="sig-param">deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -4658,27 +4681,33 @@ names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>one_node_reduced_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Whether this sddc is reduced capacity 1NODE.</p></li>
+<li><p><strong>vpc_cidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS VPC IP range. Only prefix of 16 or 20 is currently supported.</p></li>
+<li><p><strong>skip_creating_vxlan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – skip creating vxlan for compute gateway for SDDC provisioning</p></li>
+<li><p><strong>vxlan_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – VXLAN IP subnet in CIDR for compute gateway</p></li>
+<li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The size of the vCenter and NSX appliances. xlarge sddcSize
+corresponds to an ‘extra_large’ vCenter appliance and ‘large’ NSX
+appliance. ‘medium’ sddcSize corresponds to ‘medium’ vCenter
+appliance and ‘medium’ NSX appliance. Value defaults to ‘medium’.</p></li>
 <li><p><strong>storage_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The storage capacity value to be requested for the sddc primary
 cluster, in GiBs. If provided, instead of using the direct-attached
 storage, a capacity value amount of seperable storage will be used.
 format: int64</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>account_link_sddc_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.AccountLinkSddcConfig" title="com.vmware.vmc.model_client.AccountLinkSddcConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccountLinkSddcConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A list of the SDDC linking configurations to use.</p></li>
-<li><p><strong>vpc_cidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS VPC IP range. Only prefix of 16 or 20 is currently supported.</p></li>
 <li><p><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – </p></li>
 <li><p><strong>sddc_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Denotes the sddc type , if the value is null or empty, the type is
 considered as default.</p></li>
-<li><p><strong>vxlan_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – VXLAN IP subnet in CIDR for compute gateway</p></li>
 <li><p><strong>account_link_config</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.AccountLinkConfig" title="com.vmware.vmc.model_client.AccountLinkConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccountLinkConfig</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The account linking configuration, we will keep this one and remove
 accountLinkSddcConfig finally.</p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><p><a class="reference internal" href="#com.vmware.vmc.model_client.SddcConfig.PROVIDER_AWS" title="com.vmware.vmc.model_client.SddcConfig.PROVIDER_AWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcConfig.PROVIDER_AWS</span></code></a></p></li>
+<li><p><a class="reference internal" href="#com.vmware.vmc.model_client.SddcConfig.PROVIDER_ZEROCLOUD" title="com.vmware.vmc.model_client.SddcConfig.PROVIDER_ZEROCLOUD"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcConfig.PROVIDER_ZEROCLOUD</span></code></a></p></li>
 </ul>
 <p>Determines what additional properties are available based on cloud
 provider.</p>
 </p></li>
-<li><p><strong>skip_creating_vxlan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – skip creating vxlan for compute gateway for SDDC provisioning</p></li>
 <li><p><strong>sso_domain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The SSO domain name to use for vSphere users. If not specified,
 vmc.local will be used.</p></li>
 <li><p><strong>sddc_template_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If provided, configuration from the template will applied to the
@@ -4707,6 +4736,11 @@ SingleAZ.</p>
 <dl class="attribute">
 <dt id="com.vmware.vmc.model_client.SddcConfig.PROVIDER_AWS">
 <code class="sig-name descname">PROVIDER_AWS</code><em class="property"> = 'AWS'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcConfig.PROVIDER_AWS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SddcConfig.PROVIDER_ZEROCLOUD">
+<code class="sig-name descname">PROVIDER_ZEROCLOUD</code><em class="property"> = 'ZEROCLOUD'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcConfig.PROVIDER_ZEROCLOUD" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -4950,6 +4984,7 @@ SingleAZ SDDCs will provision over one.</p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><p><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_AWS" title="com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_AWS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.PROVIDER_AWS</span></code></a></p></li>
+<li><p><a class="reference internal" href="#com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_ZEROCLOUD" title="com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_ZEROCLOUD"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SddcResourceConfig.PROVIDER_ZEROCLOUD</span></code></a></p></li>
 </ul>
 <blockquote>
 <div><p>Discriminator for additional properties</p>
@@ -5006,6 +5041,11 @@ the management VMs</p></li>
 <dl class="attribute">
 <dt id="com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_AWS">
 <code class="sig-name descname">PROVIDER_AWS</code><em class="property"> = 'AWS'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_AWS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_ZEROCLOUD">
+<code class="sig-name descname">PROVIDER_ZEROCLOUD</code><em class="property"> = 'ZEROCLOUD'</em><a class="headerlink" href="#com.vmware.vmc.model_client.SddcResourceConfig.PROVIDER_ZEROCLOUD" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -6495,6 +6535,12 @@ Forbidden</p>
 <li><p><strong>validate_only</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – When true, only validates the given sddc configuration without
 provisioning. (optional)</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#com.vmware.vmc.model_client.Task" title="com.vmware.vmc.model_client.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.model_client.Task</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.vmc.model.Task</p>
 </dd>
 <dt class="field-even">Raise</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
