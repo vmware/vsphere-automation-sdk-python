@@ -41,12 +41,12 @@ class CreateDeleteSDDC(object):
             'optional arguments')
 
         required_args.add_argument(
-            '--refresh-token',
+            '--refresh_token',
             required=True,
             help='Refresh token obtained from CSP')
 
         required_args.add_argument(
-            '--org-id',
+            '--org_id',
             required=True,
             help='Organization identifier.')
 

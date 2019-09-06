@@ -36,7 +36,7 @@ Create a new NSX-T Group on MGW or CGW
 Sample Prerequisites:
     - SDDC deployed in VMware Cloud on AWS
 """
-optional_args.add_argument('--gateway-type',
+optional_args.add_argument('--gateway_type',
                     default='mgw',
                     help='Gateway type. Either mgw or cgw')
 
@@ -44,11 +44,11 @@ required_args.add_argument('--name',
                     required=True,
                     help='Name of the security group to be created')
 
-optional_args.add_argument('--ip-address',
+optional_args.add_argument('--ip_address',
                     default='172.31.0.0/24',
                     help='IP address for the expression')
 
-optional_args.add_argument('--group-id',
+optional_args.add_argument('--group_id',
                     help='ID of the group. A random ID will be used by default')
 
 args = parser.parse_args()

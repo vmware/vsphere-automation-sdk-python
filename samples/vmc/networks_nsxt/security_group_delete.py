@@ -39,11 +39,11 @@ Sample Prerequisites:
     - SDDC deployed in VMware Cloud on AWS
     - A NSX-T security group
 """
-optional_args.add_argument('--gateway-type',
+optional_args.add_argument('--gateway_type',
                     default='mgw',
                     help='Gateway type. Either mgw or cgw')
 
-optional_args.add_argument('--group-id',
+optional_args.add_argument('--group_id',
                     help='ID of the group to be deleted')
 
 args = parser.parse_args()
