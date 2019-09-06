@@ -217,7 +217,11 @@ names.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>srm_extension_key_suffix</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Optional custom extension key suffix for SRM. If not specified,
-default extension key will be used.</td>
+default extension key will be used. The custom extension suffix
+must contain 13 characters or less, be composed of letters,
+numbers, ., -, and _ characters. The extension suffix must begin
+and end with a letter or number. The suffix is appended to
+com.vmware.vcDr- to form the full extension key.</td>
 </tr>
 </tbody>
 </table>
@@ -267,6 +271,60 @@ names.</p>
 NSX-V SDDCs.</li>
 <li><strong>srm_extension_key_suffix</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Optional custom extension key suffix for SRM. If not specified,
 default extension key will be used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.draas.model_client.ReplicaDisk">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.draas.model_client.</code><code class="descname">ReplicaDisk</code><span class="sig-paren">(</span><em>space_requirement=None</em>, <em>name=None</em>, <em>collection_id=None</em>, <em>datastores_for_single_host_move=None</em>, <em>movable=None</em>, <em>disk_id=None</em>, <em>datastore_mo_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.draas.model_client.ReplicaDisk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>space_requirement</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>collection_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>datastores_for_single_host_move</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.struct.VapiStruct</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>movable</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>disk_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>datastore_mo_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.draas.model_client.ReplicaDiskCollection">
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.draas.model_client.</code><code class="descname">ReplicaDiskCollection</code><span class="sig-paren">(</span><em>collection_id=None</em>, <em>generated=None</em>, <em>disks=None</em>, <em>placeholder_vm_mo_id=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.draas.model_client.ReplicaDiskCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collection_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>generated</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>disks</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.draas.model_client.ReplicaDisk" title="com.vmware.vmc.draas.model_client.ReplicaDisk"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReplicaDisk</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>placeholder_vm_mo_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
+<li><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 </ul>
 </td>
 </tr>
@@ -506,7 +564,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.draas.model_client.SiteRecoveryVersions">
-<em class="property">class </em><code class="descclassname">com.vmware.vmc.draas.model_client.</code><code class="descname">SiteRecoveryVersions</code><span class="sig-paren">(</span><em>sddc_id=None</em>, <em>node_versions=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.draas.model_client.SiteRecoveryVersions" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.vmc.draas.model_client.</code><code class="descname">SiteRecoveryVersions</code><span class="sig-paren">(</span><em>generated=None</em>, <em>sddc_id=None</em>, <em>node_versions=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.draas.model_client.SiteRecoveryVersions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -518,6 +576,7 @@ names.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>generated</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.datetime</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>sddc_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </li>
 <li><strong>node_versions</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.draas.model_client.SiteRecoveryNodeVersion" title="com.vmware.vmc.draas.model_client.SiteRecoveryNodeVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">SiteRecoveryNodeVersion</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – list of site recovery node version</li>
 </ul>
