@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc package &mdash; VMware Cloud on AWS Console API 1.10.0 documentation</title>
+  <title>com.vmware.vmc package &mdash; VMware Cloud on AWS Console API 1.11.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.10.0
+                1.11.0
               </div>
             
           
@@ -747,7 +747,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.AwsSddcConfig">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsSddcConfig</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">one_node_reduced_capacity=None</em>, <em class="sig-param">vpc_cidr=None</em>, <em class="sig-param">skip_creating_vxlan=None</em>, <em class="sig-param">vxlan_subnet=None</em>, <em class="sig-param">size=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">account_link_sddc_config=None</em>, <em class="sig-param">num_hosts=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">account_link_config=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">sso_domain=None</em>, <em class="sig-param">sddc_template_id=None</em>, <em class="sig-param">deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsSddcConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsSddcConfig</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">one_node_reduced_capacity=None</em>, <em class="sig-param">vpc_cidr=None</em>, <em class="sig-param">host_instance_type=None</em>, <em class="sig-param">skip_creating_vxlan=None</em>, <em class="sig-param">vxlan_subnet=None</em>, <em class="sig-param">size=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">account_link_sddc_config=None</em>, <em class="sig-param">num_hosts=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">account_link_config=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">sso_domain=None</em>, <em class="sig-param">sddc_template_id=None</em>, <em class="sig-param">deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsSddcConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -760,6 +760,8 @@ names.</p>
 <li><p><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>one_node_reduced_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Whether this sddc is reduced capacity 1NODE.</p></li>
 <li><p><strong>vpc_cidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS VPC IP range. Only prefix of 16 or 20 is currently supported.</p></li>
+<li><p><strong>host_instance_type</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.HostInstanceTypes" title="com.vmware.vmc.model_client.HostInstanceTypes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HostInstanceTypes</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The instance type for the esx hosts in the primary cluster of the
+SDDC.</p></li>
 <li><p><strong>skip_creating_vxlan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – skip creating vxlan for compute gateway for SDDC provisioning</p></li>
 <li><p><strong>vxlan_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – VXLAN IP subnet in CIDR for compute gateway</p></li>
 <li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The size of the vCenter and NSX appliances. xlarge sddcSize
@@ -1105,7 +1107,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.Cluster">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Cluster</code><span class="sig-paren">(</span><em class="sig-param">esx_host_list=None</em>, <em class="sig-param">cluster_state=None</em>, <em class="sig-param">aws_kms_info=None</em>, <em class="sig-param">host_cpu_cores_count=None</em>, <em class="sig-param">instance_type=None</em>, <em class="sig-param">cluster_id=None</em>, <em class="sig-param">cluster_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Cluster" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Cluster</code><span class="sig-paren">(</span><em class="sig-param">esx_host_list=None</em>, <em class="sig-param">cluster_state=None</em>, <em class="sig-param">aws_kms_info=None</em>, <em class="sig-param">esx_host_info=None</em>, <em class="sig-param">host_cpu_cores_count=None</em>, <em class="sig-param">cluster_id=None</em>, <em class="sig-param">cluster_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Cluster" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1125,9 +1127,9 @@ names.</p>
 </ul>
 </p></li>
 <li><p><strong>aws_kms_info</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.AwsKmsInfo" title="com.vmware.vmc.model_client.AwsKmsInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">AwsKmsInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS Key Management Service information associated with this cluster</p></li>
+<li><p><strong>esx_host_info</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.EsxHostInfo" title="com.vmware.vmc.model_client.EsxHostInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">EsxHostInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Information of the hosts added to this cluster</p></li>
 <li><p><strong>host_cpu_cores_count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Number of cores enabled on ESX hosts added to this cluster format:
 int32</p></li>
-<li><p><strong>instance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Backing cloud provider instance type for cluster.</p></li>
 <li><p><strong>cluster_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>cluster_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 </ul>
@@ -1157,7 +1159,7 @@ int32</p></li>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.ClusterConfig">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">ClusterConfig</code><span class="sig-paren">(</span><em class="sig-param">host_cpu_cores_count=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">num_hosts=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ClusterConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">ClusterConfig</code><span class="sig-paren">(</span><em class="sig-param">host_cpu_cores_count=None</em>, <em class="sig-param">host_instance_type=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">num_hosts=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ClusterConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1169,6 +1171,7 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>host_cpu_cores_count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Customize CPU cores on hosts in a cluster. Specify number of cores
 to be enabled on hosts in a cluster. format: int32</p></li>
+<li><p><strong>host_instance_type</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.HostInstanceTypes" title="com.vmware.vmc.model_client.HostInstanceTypes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HostInstanceTypes</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The instance type for the esx hosts added to this cluster.</p></li>
 <li><p><strong>storage_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – For EBS-backed instances only, the requested storage capacity in
 GiB. format: int64</p></li>
 <li><p><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – </p></li>
@@ -2229,6 +2232,22 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.EsxHostInfo">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">EsxHostInfo</code><span class="sig-paren">(</span><em class="sig-param">instance_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.EsxHostInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>instance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Backing cloud provider instance type for cluster.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.ExtendedAttribute">
 <em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">ExtendedAttribute</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ExtendedAttribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
@@ -2685,6 +2704,37 @@ names.</p>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.HostInstanceTypes">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">HostInstanceTypes</code><span class="sig-paren">(</span><em class="sig-param">string</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.HostInstanceTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.enum.Enum</span></code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class represents an enumerated type in the interface language
+definition. The class contains class attributes which represent the
+values in the current version of the enumerated type. Newer versions of
+the enumerated type may contain new values. To use new values of the
+enumerated type in communication with a server that supports the newer
+version of the API, you instantiate this class. See <a class="reference internal" href="enumeration.html#enumeration-description"><span class="std std-ref">enumerated
+type description page</span></a>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – String value for the <a class="reference internal" href="#com.vmware.vmc.model_client.HostInstanceTypes" title="com.vmware.vmc.model_client.HostInstanceTypes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HostInstanceTypes</span></code></a> instance.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.HostInstanceTypes.I3_METAL">
+<code class="sig-name descname">I3_METAL</code><em class="property"> = HostInstanceTypes(string='I3_METAL')</em><a class="headerlink" href="#com.vmware.vmc.model_client.HostInstanceTypes.I3_METAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="com.vmware.vmc.model_client.HostInstanceTypes.R5_METAL">
+<code class="sig-name descname">R5_METAL</code><em class="property"> = HostInstanceTypes(string='R5_METAL')</em><a class="headerlink" href="#com.vmware.vmc.model_client.HostInstanceTypes.R5_METAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -4671,7 +4721,7 @@ allocated.</p></li>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.SddcConfig">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">SddcConfig</code><span class="sig-paren">(</span><em class="sig-param">one_node_reduced_capacity=None</em>, <em class="sig-param">vpc_cidr=None</em>, <em class="sig-param">skip_creating_vxlan=None</em>, <em class="sig-param">vxlan_subnet=None</em>, <em class="sig-param">size=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">account_link_sddc_config=None</em>, <em class="sig-param">num_hosts=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">account_link_config=None</em>, <em class="sig-param">provider='SddcConfig'</em>, <em class="sig-param">sso_domain=None</em>, <em class="sig-param">sddc_template_id=None</em>, <em class="sig-param">deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">SddcConfig</code><span class="sig-paren">(</span><em class="sig-param">one_node_reduced_capacity=None</em>, <em class="sig-param">vpc_cidr=None</em>, <em class="sig-param">host_instance_type=None</em>, <em class="sig-param">skip_creating_vxlan=None</em>, <em class="sig-param">vxlan_subnet=None</em>, <em class="sig-param">size=None</em>, <em class="sig-param">storage_capacity=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">account_link_sddc_config=None</em>, <em class="sig-param">num_hosts=None</em>, <em class="sig-param">sddc_type=None</em>, <em class="sig-param">account_link_config=None</em>, <em class="sig-param">provider='SddcConfig'</em>, <em class="sig-param">sso_domain=None</em>, <em class="sig-param">sddc_template_id=None</em>, <em class="sig-param">deployment_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SddcConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -4683,6 +4733,8 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>one_node_reduced_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Whether this sddc is reduced capacity 1NODE.</p></li>
 <li><p><strong>vpc_cidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – AWS VPC IP range. Only prefix of 16 or 20 is currently supported.</p></li>
+<li><p><strong>host_instance_type</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.HostInstanceTypes" title="com.vmware.vmc.model_client.HostInstanceTypes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HostInstanceTypes</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The instance type for the esx hosts in the primary cluster of the
+SDDC.</p></li>
 <li><p><strong>skip_creating_vxlan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – skip creating vxlan for compute gateway for SDDC provisioning</p></li>
 <li><p><strong>vxlan_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – VXLAN IP subnet in CIDR for compute gateway</p></li>
 <li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The size of the vCenter and NSX appliances. xlarge sddcSize
@@ -5214,9 +5266,9 @@ names.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>default_message</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Error message in English.</p></li>
-<li><p><strong>original_service</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The original service name of the error.</p></li>
+<li><p><strong>original_service</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The original service name of the error.</p></li>
 <li><p><strong>localized_message</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The localized message.</p></li>
-<li><p><strong>original_service_error_code</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The original error code of the service.</p></li>
+<li><p><strong>original_service_error_code</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The original error code of the service.</p></li>
 </ul>
 </dd>
 </dl>
