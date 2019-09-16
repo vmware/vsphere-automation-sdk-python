@@ -13,9 +13,9 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-from samples.vmc.helpers.sample_cli import parser
-
 from vmware.vapi.vmc.client import create_vmc_client
+
+from samples.vmc.helpers.sample_cli import parser
 
 
 class VmcSiteRecoveryInfo(object):

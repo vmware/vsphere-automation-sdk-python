@@ -14,14 +14,13 @@
 """
 __author__ = 'VMware, Inc.'
 
-from samples.vmc.helpers.sample_cli import parser, optional_args
-
-from vmware.vapi.vmc.client import create_vmc_client
-from com.vmware.vmc.draas.model_client import ProvisionSrmConfig
-from com.vmware.vmc.draas.model_client import ErrorResponse
-
 from com.vmware.vapi.std.errors_client import InvalidRequest
+from com.vmware.vmc.draas.model_client import ErrorResponse
+from com.vmware.vmc.draas.model_client import ProvisionSrmConfig
+from vmware.vapi.vmc.client import create_vmc_client
+
 from samples.vmc.draas.helpers.draas_task_helper import wait_for_task
+from samples.vmc.helpers.sample_cli import parser, optional_args
 
 
 class DeployAdditionalInstance(object):
