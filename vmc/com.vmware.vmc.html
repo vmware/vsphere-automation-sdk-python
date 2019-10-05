@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc package &mdash; VMware Cloud on AWS Console API 1.13.0 documentation</title>
+  <title>com.vmware.vmc package &mdash; VMware Cloud on AWS Console API 1.14.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.13.0
+                1.14.0
               </div>
             
           
@@ -1107,7 +1107,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.Cluster">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Cluster</code><span class="sig-paren">(</span><em class="sig-param">esx_host_list=None</em>, <em class="sig-param">cluster_state=None</em>, <em class="sig-param">aws_kms_info=None</em>, <em class="sig-param">esx_host_info=None</em>, <em class="sig-param">host_cpu_cores_count=None</em>, <em class="sig-param">cluster_id=None</em>, <em class="sig-param">cluster_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Cluster" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Cluster</code><span class="sig-paren">(</span><em class="sig-param">esx_host_list=None</em>, <em class="sig-param">cluster_state=None</em>, <em class="sig-param">aws_kms_info=None</em>, <em class="sig-param">esx_host_info=None</em>, <em class="sig-param">host_cpu_cores_count=None</em>, <em class="sig-param">cluster_capacity=None</em>, <em class="sig-param">cluster_id=None</em>, <em class="sig-param">cluster_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Cluster" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1130,6 +1130,7 @@ names.</p>
 <li><p><strong>esx_host_info</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.EsxHostInfo" title="com.vmware.vmc.model_client.EsxHostInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">EsxHostInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Information of the hosts added to this cluster</p></li>
 <li><p><strong>host_cpu_cores_count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Number of cores enabled on ESX hosts added to this cluster format:
 int32</p></li>
+<li><p><strong>cluster_capacity</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.EntityCapacity" title="com.vmware.vmc.model_client.EntityCapacity"><code class="xref py py-class docutils literal notranslate"><span class="pre">EntityCapacity</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The capacity of this cluster.</p></li>
 <li><p><strong>cluster_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>cluster_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 </ul>
@@ -2086,6 +2087,30 @@ names.</p>
 <li><p><strong>security_group_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Security Group of Eni.</p></li>
 <li><p><strong>private_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Private ip of eni.</p></li>
 <li><p><strong>mac_address</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Mac address of nic.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.EntityCapacity">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">EntityCapacity</code><span class="sig-paren">(</span><em class="sig-param">storage_capacity_gib=None</em>, <em class="sig-param">memory_capacity_gib=None</em>, <em class="sig-param">number_of_sockets=None</em>, <em class="sig-param">total_number_of_cores=None</em>, <em class="sig-param">number_of_ssds=None</em>, <em class="sig-param">cpu_capacity_ghz=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.EntityCapacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Decribes the capacity of a given entity.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>storage_capacity_gib</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>memory_capacity_gib</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>number_of_sockets</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>total_number_of_cores</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>number_of_ssds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>cpu_capacity_ghz</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 </ul>
 </dd>
 </dl>
