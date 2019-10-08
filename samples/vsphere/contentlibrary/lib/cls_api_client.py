@@ -94,7 +94,8 @@ class ClsApiClient(object):
         # templates contained in a library item
         self.versions_service = Versions(self.service_manager.stub_config)
 
-	# Returns the service for managing the history of content changes made
+        # Returns the service for managing the history of content changes made
         # to a library item
         self.changes_service = Changes(self.service_manager.stub_config)
+        
         # TODO: Add the other CLS services, eg. storage, config, type
