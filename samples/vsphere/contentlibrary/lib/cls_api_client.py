@@ -97,5 +97,5 @@ class ClsApiClient(object):
         # Returns the service for managing the history of content changes made
         # to a library item
         self.changes_service = Changes(self.service_manager.stub_config)
-        
+
         # TODO: Add the other CLS services, eg. storage, config, type
