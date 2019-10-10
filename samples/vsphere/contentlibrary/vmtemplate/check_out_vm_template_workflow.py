@@ -33,7 +33,7 @@ from samples.vsphere.vcenter.helper.resource_pool_helper import (
     get_resource_pool)
 
 
-class CheckOutVmTemplate(SampleBase):
+class CheckOutVmTemplateWorkflow(SampleBase):
     """
     Demonstrates how to check out a VM from a library item containing a virtual
     machine template, check in the VM checked out from the item, and rollback
@@ -173,7 +173,7 @@ class CheckOutVmTemplate(SampleBase):
 
 
 def main():
-    sample = CheckOutVmTemplate()
+    sample = CheckOutVmTemplateWorkflow()
     sample.main()
 
 
