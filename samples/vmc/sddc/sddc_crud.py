@@ -215,7 +215,7 @@ class CreateDeleteSDDC(object):
         for v in vpc_map.values():
             for subnet in v.subnets:
                 # Compare the AWS SDDC Region with the compatible subnet region
-                if subnet.region_name.lower() == self.region.replace("_","-").lower() \
+                if subnet.region_name.lower() == self.region.replace("_", "-").lower() \
                         and subnet.compatible:
                     return subnet.subnet_id
 
