@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc package &mdash; vmc 1.17.0 documentation</title>
+  <title>com.vmware.vmc package &mdash; vmc 1.18.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.17.0
+                1.18.0
               </div>
             
           
@@ -177,6 +177,11 @@
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vmc.orgs.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html">com.vmware.vmc.orgs.sddcs package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.clusters.html">com.vmware.vmc.orgs.sddcs.clusters package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.clusters.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.clusters.html#module-com.vmware.vmc.orgs.sddcs.clusters.config_client">com.vmware.vmc.orgs.sddcs.clusters.config_client module</a></li>
+</ul>
+</li>
 <li class="toctree-l5"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.networks.html">com.vmware.vmc.orgs.sddcs.networks package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.networks.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l7"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.networks.cgws.html">com.vmware.vmc.orgs.sddcs.networks.cgws package</a><ul>
@@ -228,6 +233,7 @@
 </li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.addons_client">com.vmware.vmc.orgs.sddcs.addons_client module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.clusters_client">com.vmware.vmc.orgs.sddcs.clusters_client module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.dns_client">com.vmware.vmc.orgs.sddcs.dns_client module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.management_vms_client">com.vmware.vmc.orgs.sddcs.management_vms_client module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.vmc.orgs.sddcs.html#module-com.vmware.vmc.orgs.sddcs.networking_client">com.vmware.vmc.orgs.sddcs.networking_client module</a></li>
@@ -1195,6 +1201,27 @@ to be enabled on hosts in a cluster. format: int32</p></li>
 <li><p><strong>storage_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – For EBS-backed instances only, the requested storage capacity in
 GiB. format: int64</p></li>
 <li><p><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ClusterReconfigureParams">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">ClusterReconfigureParams</code><span class="sig-paren">(</span><em class="sig-param">storage_capacity=None</em>, <em class="sig-param">bias=None</em>, <em class="sig-param">num_hosts=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ClusterReconfigureParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>storage_capacity</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The final desired storage capacity after reconfiguring the cluster
+in GiB. format: int64</p></li>
+<li><p><strong>bias</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Bias value as obtained from the storage constraints call.</p></li>
+<li><p><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – Number of hosts in the cluster after reconfiguring. format: int32</p></li>
 </ul>
 </dd>
 </dl>
@@ -4108,7 +4135,7 @@ names.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>product</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
-<li><p><strong>product_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>product_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Deprecated. Please use product and type fields instead.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>currency</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
@@ -5686,7 +5713,7 @@ be network address specified in CIDR format and can accept
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.SubscriptionDetails">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">SubscriptionDetails</code><span class="sig-paren">(</span><em class="sig-param">status=None</em>, <em class="sig-param">anniversary_billing_date=None</em>, <em class="sig-param">end_date=None</em>, <em class="sig-param">auto_renewed_allowed=None</em>, <em class="sig-param">commitment_term=None</em>, <em class="sig-param">csp_subscription_id=None</em>, <em class="sig-param">billing_subscription_id=None</em>, <em class="sig-param">offer_version=None</em>, <em class="sig-param">offer_type=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">product_id=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">product_name=None</em>, <em class="sig-param">offer_name=None</em>, <em class="sig-param">commitment_term_uom=None</em>, <em class="sig-param">start_date=None</em>, <em class="sig-param">quantity=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SubscriptionDetails" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">SubscriptionDetails</code><span class="sig-paren">(</span><em class="sig-param">status=None</em>, <em class="sig-param">anniversary_billing_date=None</em>, <em class="sig-param">end_date=None</em>, <em class="sig-param">billing_frequency=None</em>, <em class="sig-param">auto_renewed_allowed=None</em>, <em class="sig-param">commitment_term=None</em>, <em class="sig-param">csp_subscription_id=None</em>, <em class="sig-param">billing_subscription_id=None</em>, <em class="sig-param">offer_version=None</em>, <em class="sig-param">offer_type=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">product_id=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">product_name=None</em>, <em class="sig-param">offer_name=None</em>, <em class="sig-param">commitment_term_uom=None</em>, <em class="sig-param">start_date=None</em>, <em class="sig-param">quantity=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SubscriptionDetails" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>details of a subscription</p>
 <div class="admonition tip">
@@ -5710,6 +5737,8 @@ names.</p>
 </p></li>
 <li><p><strong>anniversary_billing_date</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>end_date</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>billing_frequency</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The frequency at which the customer is billed. Currently supported
+values are “Upfront” and “Monthly”</p></li>
 <li><p><strong>auto_renewed_allowed</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>commitment_term</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>csp_subscription_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
@@ -5800,7 +5829,7 @@ names.</p>
 /vmc/api/orgs/{orgId}/products.</p></li>
 <li><p><strong>product_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Old identifier for product. *Deprecarted*. See product and type</p></li>
 <li><p><strong>product_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
-<li><p><strong>billing_frequency</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Frequency of the billing.</p></li>
+<li><p><strong>billing_frequency</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Frequency of the billing.</p></li>
 <li><p><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>commitment_term</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>offer_context_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
@@ -6024,8 +6053,8 @@ names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>unit_price</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
-<li><p><strong>billing_frequency</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>unit_price</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>billing_frequency</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -6046,7 +6075,7 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>product</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
-<li><p><strong>product_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>product_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Deprecated. Please use product and type fields instead.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>currency</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
 <li><p><strong>region</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
@@ -6054,12 +6083,12 @@ names.</p>
 <li><p><strong>unit_price</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (deprecated. unit_price is moved into TermBillingOptions. For
 backward compatibility, this field reflect “Prepaid” price at the
 offer level.)</p></li>
-<li><p><strong>billing_options</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.TermBillingOptions" title="com.vmware.vmc.model_client.TermBillingOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">TermBillingOptions</span></code></a>) – </p></li>
+<li><p><strong>billing_options</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.TermBillingOptions" title="com.vmware.vmc.model_client.TermBillingOptions"><code class="xref py py-class docutils literal notranslate"><span class="pre">TermBillingOptions</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>version</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
-<li><p><strong>offer_context_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
-<li><p><strong>product_charge_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>offer_context_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>product_charge_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
-<li><p><strong>product_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>product_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -6541,6 +6570,75 @@ names.</p>
 <li><p><strong>decryption_failures</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>packets_in</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>tx_bytes_from_local_subnet</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.VsanAvailableCapacity">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">VsanAvailableCapacity</code><span class="sig-paren">(</span><em class="sig-param">cost=None</em>, <em class="sig-param">quality=None</em>, <em class="sig-param">size=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.VsanAvailableCapacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Infomation about an available vSAN capacity in a cluster.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cost</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>quality</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.VsanClusterReconfigBias">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">VsanClusterReconfigBias</code><span class="sig-paren">(</span><em class="sig-param">short_description=None</em>, <em class="sig-param">full_description=None</em>, <em class="sig-param">id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.VsanClusterReconfigBias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Bias for reconfiguring vSAN in a cluster.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>short_description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>full_description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.VsanClusterReconfigConstraints">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">VsanClusterReconfigConstraints</code><span class="sig-paren">(</span><em class="sig-param">reconfig_biases=None</em>, <em class="sig-param">available_capacities=None</em>, <em class="sig-param">default_capacities=None</em>, <em class="sig-param">hosts=None</em>, <em class="sig-param">default_reconfig_bias_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.VsanClusterReconfigConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Storage constraint information for reconfiguring vSAN in existing cluster.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reconfig_biases</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.VsanClusterReconfigBias" title="com.vmware.vmc.model_client.VsanClusterReconfigBias"><code class="xref py py-class docutils literal notranslate"><span class="pre">VsanClusterReconfigBias</span></code></a>) – Biases to reconfigure vSAN in an existing cluster.</p></li>
+<li><p><strong>available_capacities</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.VsanAvailableCapacity" title="com.vmware.vmc.model_client.VsanAvailableCapacity"><code class="xref py py-class docutils literal notranslate"><span class="pre">VsanAvailableCapacity</span></code></a>) – A map of VsanClusterReconfigBias id to the list of
+VsanAvailableCapacity. It gives all of available vSAN capacities
+for each of reconfiguration biases.</p></li>
+<li><p><strong>default_capacities</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <a class="reference internal" href="#com.vmware.vmc.model_client.VsanAvailableCapacity" title="com.vmware.vmc.model_client.VsanAvailableCapacity"><code class="xref py py-class docutils literal notranslate"><span class="pre">VsanAvailableCapacity</span></code></a>) – A map of VsanClusterReconfigBias id to a VsanAvailableCapacity. It
+gives the default VsanAvailableCapacity for each of reconfiguration
+biases.</p></li>
+<li><p><strong>hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – The number of hosts in a cluster for the constraints. format: int32</p></li>
+<li><p><strong>default_reconfig_bias_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The id of default VsanClusterReconfigBias for this constraints.</p></li>
 </ul>
 </dd>
 </dl>
