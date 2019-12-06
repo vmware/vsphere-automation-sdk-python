@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc package &mdash; vmc 1.18.0 documentation</title>
+  <title>com.vmware.vmc package &mdash; vmc 1.19.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.18.0
+                1.19.0
               </div>
             
           
@@ -348,7 +348,7 @@ or internal. Can define multiple.</p></li>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.Agent">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Agent</code><span class="sig-paren">(</span><em class="sig-param">internal_ip=None</em>, <em class="sig-param">cert_enabled=None</em>, <em class="sig-param">management_ip=None</em>, <em class="sig-param">hostname_verifier_enabled=None</em>, <em class="sig-param">network_netmask=None</em>, <em class="sig-param">network_gateway=None</em>, <em class="sig-param">provider='Agent'</em>, <em class="sig-param">is_master=None</em>, <em class="sig-param">agent_state=None</em>, <em class="sig-param">agent_url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Agent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">Agent</code><span class="sig-paren">(</span><em class="sig-param">internal_ip=None</em>, <em class="sig-param">agent_url=None</em>, <em class="sig-param">management_ip=None</em>, <em class="sig-param">hostname_verifier_enabled=None</em>, <em class="sig-param">master=None</em>, <em class="sig-param">network_netmask=None</em>, <em class="sig-param">network_gateway=None</em>, <em class="sig-param">provider='Agent'</em>, <em class="sig-param">cert_enabled=None</em>, <em class="sig-param">agent_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.Agent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -360,17 +360,19 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>internal_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The internal IP address of the agent which is provided by the
 underlying cloud provider</p></li>
-<li><p><strong>cert_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using CA signed
-certificate</p></li>
+<li><p><strong>agent_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The accessible URL of the agent service, it is resolved to public
+IP address from the Internet and private IP address within SDDC</p></li>
 <li><p><strong>management_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The internal management IP address of the agent exposed to the
 SDDC, which might be different from the internal IP</p></li>
 <li><p><strong>hostname_verifier_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using FQDN in the
 certificate</p></li>
+<li><p><strong>master</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is the master, only the
+master Agent is accessible</p></li>
 <li><p><strong>network_netmask</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Network netmask of the agent</p></li>
 <li><p><strong>network_gateway</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Network gateway of the agent</p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The cloud provider</p></li>
-<li><p><strong>is_master</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is the master, only the
-master Agent is accessible</p></li>
+<li><p><strong>cert_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using CA signed
+certificate</p></li>
 <li><p><strong>agent_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><p><a class="reference internal" href="#com.vmware.vmc.model_client.Agent.AGENT_STATE_NOT_READY" title="com.vmware.vmc.model_client.Agent.AGENT_STATE_NOT_READY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Agent.AGENT_STATE_NOT_READY</span></code></a></p></li>
@@ -385,8 +387,6 @@ master Agent is accessible</p></li>
 <div><p>Agent state</p>
 </div></blockquote>
 </p></li>
-<li><p><strong>agent_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The accessible URL of the agent service, it is resolved to public
-IP address from the Internet and private IP address within SDDC</p></li>
 </ul>
 </dd>
 </dl>
@@ -536,7 +536,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.AwsAgent">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsAgent</code><span class="sig-paren">(</span><em class="sig-param">instance_id=None</em>, <em class="sig-param">key_pair=None</em>, <em class="sig-param">internal_ip=None</em>, <em class="sig-param">cert_enabled=None</em>, <em class="sig-param">management_ip=None</em>, <em class="sig-param">hostname_verifier_enabled=None</em>, <em class="sig-param">network_netmask=None</em>, <em class="sig-param">network_gateway=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">is_master=None</em>, <em class="sig-param">agent_state=None</em>, <em class="sig-param">agent_url=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsAgent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AwsAgent</code><span class="sig-paren">(</span><em class="sig-param">instance_id=None</em>, <em class="sig-param">key_pair=None</em>, <em class="sig-param">internal_ip=None</em>, <em class="sig-param">agent_url=None</em>, <em class="sig-param">management_ip=None</em>, <em class="sig-param">hostname_verifier_enabled=None</em>, <em class="sig-param">master=None</em>, <em class="sig-param">network_netmask=None</em>, <em class="sig-param">network_gateway=None</em>, <em class="sig-param">provider='AWS'</em>, <em class="sig-param">cert_enabled=None</em>, <em class="sig-param">agent_state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AwsAgent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -550,17 +550,19 @@ names.</p>
 <li><p><strong>key_pair</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.AwsKeyPair" title="com.vmware.vmc.model_client.AwsKeyPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">AwsKeyPair</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>internal_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The internal IP address of the agent which is provided by the
 underlying cloud provider</p></li>
-<li><p><strong>cert_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using CA signed
-certificate</p></li>
+<li><p><strong>agent_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The accessible URL of the agent service, it is resolved to public
+IP address from the Internet and private IP address within SDDC</p></li>
 <li><p><strong>management_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The internal management IP address of the agent exposed to the
 SDDC, which might be different from the internal IP</p></li>
 <li><p><strong>hostname_verifier_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using FQDN in the
 certificate</p></li>
+<li><p><strong>master</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is the master, only the
+master Agent is accessible</p></li>
 <li><p><strong>network_netmask</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Network netmask of the agent</p></li>
 <li><p><strong>network_gateway</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Network gateway of the agent</p></li>
 <li><p><strong>provider</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The cloud provider</p></li>
-<li><p><strong>is_master</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is the master, only the
-master Agent is accessible</p></li>
+<li><p><strong>cert_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Boolean flag to indicate if the agent is using CA signed
+certificate</p></li>
 <li><p><strong>agent_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>Possible values are:</p>
 <ul>
 <li><p><a class="reference internal" href="#com.vmware.vmc.model_client.Agent.AGENT_STATE_NOT_READY" title="com.vmware.vmc.model_client.Agent.AGENT_STATE_NOT_READY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Agent.AGENT_STATE_NOT_READY</span></code></a></p></li>
@@ -575,8 +577,6 @@ master Agent is accessible</p></li>
 <div><p>Agent state</p>
 </div></blockquote>
 </p></li>
-<li><p><strong>agent_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The accessible URL of the agent service, it is resolved to public
-IP address from the Internet and private IP address within SDDC</p></li>
 </ul>
 </dd>
 </dl>
