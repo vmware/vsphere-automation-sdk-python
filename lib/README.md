@@ -8,7 +8,6 @@ vapi_runtime	                      | vAPI runtime responsible for serialization/
 vapi_client_bindings                | Client stubs for vSphere Automation APIs
 vmc_client_bindings                 | Client stubs for VMware Cloud on AWS Console APIs
 vmc_draas_client_bindings           | Client stubs for VMware Cloud (VMC) Disaster Recovery as a Service (DRaaS) APIs
-
 nsx-python-sdk                      | Client stubs for VMware NSX-T APIs
 nsx-policy-python-sdk               | Client stubs for VMware NSX-T Policy APIs
 vmc-app-python-sdk                  | Client stubs for VMware NSX-T VMC app APIs (for AWS underlay management)
