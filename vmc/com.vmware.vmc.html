@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc package &mdash; vmc 1.20.0 documentation</title>
+  <title>com.vmware.vmc package &mdash; vmc 1.21.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.20.0
+                1.21.0
               </div>
             
           
@@ -315,6 +315,27 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>customer_subnet_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
 <li><p><strong>connected_account_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The ID of the customer connected account to work with.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.AdditionalHostSpec">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">AdditionalHostSpec</code><span class="sig-paren">(</span><em class="sig-param">additional_host_count=None</em>, <em class="sig-param">storage_policy_reconfig_info=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.AdditionalHostSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Represents part of a structure of host provisioning spec.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>additional_host_count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The additional valid host count.</p></li>
+<li><p><strong>storage_policy_reconfig_info</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.StoragePolicyReconfigInfo" title="com.vmware.vmc.model_client.StoragePolicyReconfigInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoragePolicyReconfigInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Information regarding storage policy reconfiguration. It will be
+set to null if no storage policy reconfiguration is available.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1202,6 +1223,23 @@ to be enabled on hosts in a cluster. format: int32</p></li>
 GiB. format: int64</p></li>
 <li><p><strong>num_hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – </p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.ClusterProvisionSpec">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">ClusterProvisionSpec</code><span class="sig-paren">(</span><em class="sig-param">instance_type_configs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.ClusterProvisionSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Represents a provisioning spec for a new cluster in an sddc.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>instance_type_configs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.InstanceTypeConfigForCluster" title="com.vmware.vmc.model_client.InstanceTypeConfigForCluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstanceTypeConfigForCluster</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of instances available for the new cluster.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2866,6 +2904,28 @@ expires.</p></li>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.HostProvisionSpec">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">HostProvisionSpec</code><span class="sig-paren">(</span><em class="sig-param">additional_host_specs=None</em>, <em class="sig-param">instance_provisioning_error_cause=None</em>, <em class="sig-param">entity_capacity=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.HostProvisionSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Represents a provisioning spec for an add host operation in the given sddc.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>additional_host_specs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vmc.model_client.AdditionalHostSpec" title="com.vmware.vmc.model_client.AdditionalHostSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdditionalHostSpec</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
+<li><p><strong>instance_provisioning_error_cause</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Error due to which instance provisioning is restricted on the
+cluster.</p></li>
+<li><p><strong>entity_capacity</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.EntityCapacity" title="com.vmware.vmc.model_client.EntityCapacity"><code class="xref py py-class docutils literal notranslate"><span class="pre">EntityCapacity</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The capacity of the given host.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.InstanceTypeConfig">
 <em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">InstanceTypeConfig</code><span class="sig-paren">(</span><em class="sig-param">instance_type=None</em>, <em class="sig-param">hosts=None</em>, <em class="sig-param">display_name=None</em>, <em class="sig-param">entity_capacity=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.InstanceTypeConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
@@ -2883,6 +2943,33 @@ names.</p>
 user can select for sddc provision</p></li>
 <li><p><strong>display_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Display name of instance_type.</p></li>
 <li><p><strong>entity_capacity</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.EntityCapacity" title="com.vmware.vmc.model_client.EntityCapacity"><code class="xref py py-class docutils literal notranslate"><span class="pre">EntityCapacity</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The capacity of the given instance type.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vmc.model_client.InstanceTypeConfigForCluster">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">InstanceTypeConfigForCluster</code><span class="sig-paren">(</span><em class="sig-param">instance_type=None</em>, <em class="sig-param">display_name=None</em>, <em class="sig-param">instance_provisioning_error_cause=None</em>, <em class="sig-param">hosts=None</em>, <em class="sig-param">entity_capacity=None</em>, <em class="sig-param">cpu_cores=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.InstanceTypeConfigForCluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Represents a structure for instance type config</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Instance type name.</p></li>
+<li><p><strong>display_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Display name of instance_type.</p></li>
+<li><p><strong>instance_provisioning_error_cause</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Error due to which instance provisioning is restricted on the
+cluster.</p></li>
+<li><p><strong>hosts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Array of number of hosts allowed for this operation. Range of hosts
+user can select for sddc provision</p></li>
+<li><p><strong>entity_capacity</strong> (<a class="reference internal" href="#com.vmware.vmc.model_client.EntityCapacity" title="com.vmware.vmc.model_client.EntityCapacity"><code class="xref py py-class docutils literal notranslate"><span class="pre">EntityCapacity</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The capacity of the given entity.</p></li>
+<li><p><strong>cpu_cores</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Array of valid cpu cores values for the given instance type. Range
+of cpu cores user can select for new cluster.</p></li>
 </ul>
 </dd>
 </dl>
@@ -5558,6 +5645,24 @@ names.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="com.vmware.vmc.model_client.StoragePolicyReconfigInfo">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">StoragePolicyReconfigInfo</code><span class="sig-paren">(</span><em class="sig-param">reconfig_needed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.StoragePolicyReconfigInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Information regarding storage policy reconfiguration.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reconfig_needed</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If ‘true’, policy reconfiguration is required. Otherwise, policy
+reconfiguration is not required.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.vmc.model_client.StubFactory">
 <em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
@@ -5646,7 +5751,7 @@ names.</p>
 
 <dl class="class">
 <dt id="com.vmware.vmc.model_client.SubnetInfo">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">SubnetInfo</code><span class="sig-paren">(</span><em class="sig-param">compatible=None</em>, <em class="sig-param">connected_account_id=None</em>, <em class="sig-param">region_name=None</em>, <em class="sig-param">availability_zone=None</em>, <em class="sig-param">subnet_id=None</em>, <em class="sig-param">subnet_cidr_block=None</em>, <em class="sig-param">note=None</em>, <em class="sig-param">vpc_id=None</em>, <em class="sig-param">vpc_cidr_block=None</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SubnetInfo" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vmc.model_client.</code><code class="sig-name descname">SubnetInfo</code><span class="sig-paren">(</span><em class="sig-param">compatible=None</em>, <em class="sig-param">connected_account_id=None</em>, <em class="sig-param">region_name=None</em>, <em class="sig-param">availability_zone=None</em>, <em class="sig-param">subnet_id=None</em>, <em class="sig-param">availability_zone_id=None</em>, <em class="sig-param">subnet_cidr_block=None</em>, <em class="sig-param">note=None</em>, <em class="sig-param">vpc_id=None</em>, <em class="sig-param">vpc_cidr_block=None</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.model_client.SubnetInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -5661,6 +5766,7 @@ names.</p>
 <li><p><strong>region_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The region this subnet is from.</p></li>
 <li><p><strong>availability_zone</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The availability zone (customer-centric) this subnet is in.</p></li>
 <li><p><strong>subnet_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The ID of the subnet.</p></li>
+<li><p><strong>availability_zone_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The availability zone id (customer-centric) this subnet is in.</p></li>
 <li><p><strong>subnet_cidr_block</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The CIDR block of the subnet.</p></li>
 <li><p><strong>note</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Why a subnet is marked as not compatible. May be blank if
 compatible.</p></li>
@@ -6945,7 +7051,7 @@ later use. This flag is applicable only to SDDCs in ACTIVE state.
 <li><p><strong>template_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Only applicable when retainConfiguration is also set to ‘true’.
 When set, this value will be used as the name of the SDDC
 configuration template generated. (optional)</p></li>
-<li><p><strong>force</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If = ‘true’, will delete forcefully. Beware: do not use the force
+<li><p><strong>force</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If = true, will delete forcefully. Beware: do not use the force
 flag if there is a chance an active provisioning or deleting task
 is running against this SDDC. This option is restricted. (optional)</p></li>
 </ul>
@@ -7352,7 +7458,7 @@ Cannot find the task with given identifier</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>
