@@ -18,6 +18,7 @@ from com.vmware.content_client import (Library,
                                        LocalLibrary,
                                        SubscribedLibrary)
 from com.vmware.content.library_client import Item, SubscribedItem, Subscriptions
+from com.vmware.content.library.item_client import Changes
 from com.vmware.content.library.item_client import DownloadSession
 from com.vmware.content.library.item_client import UpdateSession
 from com.vmware.content.library.item.downloadsession_client import File as DownloadSessionFile
@@ -26,6 +27,7 @@ from com.vmware.vcenter_client import VM
 from com.vmware.vcenter.iso_client import Image
 from com.vmware.vcenter.ovf_client import LibraryItem
 from com.vmware.vcenter.vm_template_client import LibraryItems as VmtxLibraryItem
+from com.vmware.vcenter.vm_template.library_items_client import CheckOuts, Versions
 
 
 class ClsApiClient(object):
@@ -77,9 +79,23 @@ class ClsApiClient(object):
         # machine templates
         self.vmtx_service = VmtxLibraryItem(self.service_manager.stub_config)
 
-        # ####
+        # Returns the service for managing subscription information of
+        # the subscribers of a published library.
         self.subscriptions = Subscriptions(self.service_manager.stub_config)
 
         # Creates the service that communicates with virtual machines
         self.vm_service = VM(self.service_manager.stub_config)
+
+        # Returns the service for managing checkouts of a library item containing
+        # a virtual machine template
+        self.check_outs_service = CheckOuts(self.service_manager.stub_config)
+
+        # Returns the service for managing the live versions of the virtual machine
+        # templates contained in a library item
+        self.versions_service = Versions(self.service_manager.stub_config)
+
+        # Returns the service for managing the history of content changes made
+        # to a library item
+        self.changes_service = Changes(self.service_manager.stub_config)
+
         # TODO: Add the other CLS services, eg. storage, config, type
