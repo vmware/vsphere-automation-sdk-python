@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.nsx.logical_routers package &mdash; NSX-T SDK 2.3.0.0.3 documentation</title>
+  <title>com.vmware.nsx.logical_routers package &mdash; NSX-T SDK 2.5.1.0.1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.3.0.0.3
+                2.5.1.0.1
               </div>
             
           
@@ -206,7 +206,7 @@
 <span id="com-vmware-nsx-logical-routers-nat-client-module"></span><h2>com.vmware.nsx.logical_routers.nat_client module<a class="headerlink" href="#module-com.vmware.nsx.logical_routers.nat_client" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.nat_client.Rules">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.nat_client.</code><code class="descname">Rules</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.nat_client.</code><code class="sig-name descname">Rules</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -215,7 +215,7 @@
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.nat_client.Rules.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>nat_rule</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.create" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">nat_rule</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a NAT rule in a specific logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -254,8 +254,51 @@ Not Found</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="com.vmware.nsx.logical_routers.nat_client.Rules.createmultiple">
+<code class="sig-name descname">createmultiple</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">nat_rule_list</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.createmultiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create multiple NAT rules in a specific logical router. The API
+succeeds only when all rules are accepted and created successfully. Any
+one validation voilation will fail the API, no rule will be created.
+The ruleIds of each rules can be found from the responsed message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logical_router_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
+<li><p><strong>nat_rule_list</strong> (<a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.NatRuleList" title="com.vmware.nsx.model_client.NatRuleList"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.NatRuleList</span></code></a>) – (required)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.NatRuleList" title="com.vmware.nsx.model_client.NatRuleList"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.NatRuleList</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx.model.NatRuleList</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+Service Unavailable</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Bad Request, Precondition Failed</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+Internal Server Error</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Not Found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="com.vmware.nsx.logical_routers.nat_client.Rules.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>rule_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.delete" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">rule_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete a specific NAT rule from a logical router</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -289,7 +332,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.nat_client.Rules.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>rule_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">rule_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a specific NAT rule from a given logical router</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -329,7 +372,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.nat_client.Rules.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>cursor=None</em>, <em>included_fields=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns paginated list of all user defined NAT rules of the specific
 logical router</p>
 <dl class="field-list simple">
@@ -377,7 +420,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.nat_client.Rules.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>rule_id</em>, <em>nat_rule</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">rule_id</em>, <em class="sig-param">nat_rule</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.Rules.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a specific NAT rule from a given logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -420,7 +463,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.nat_client.StubFactory">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.nat_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.nat_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.nat_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
 <p>Initialize StubFactoryBase</p>
 <dl class="field-list simple">
@@ -435,7 +478,7 @@ Not Found</p>
 <span id="com-vmware-nsx-logical-routers-routing-client-module"></span><h2>com.vmware.nsx.logical_routers.routing_client module<a class="headerlink" href="#module-com.vmware.nsx.logical_routers.routing_client" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Advertisement">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">Advertisement</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Advertisement" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">Advertisement</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Advertisement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -444,7 +487,7 @@ Not Found</p>
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Advertisement.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>logical_router_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Advertisement.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Advertisement.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns information about the routes to be advertised by the specified
 TIER1 logical router.</p>
 <dl class="field-list simple">
@@ -482,7 +525,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Advertisement.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>advertisement_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Advertisement.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">advertisement_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Advertisement.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modifies the route advertisement configuration on the specified logical
 router.</p>
 <dl class="field-list simple">
@@ -525,7 +568,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.BfdConfig">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">BfdConfig</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.BfdConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">BfdConfig</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.BfdConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -534,7 +577,7 @@ Not Found</p>
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.BfdConfig.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>logical_router_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.BfdConfig.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.BfdConfig.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the BFD configuration for all routing BFD peers. This will be
 inherited | by all BFD peers for LogicalRouter unless overriden while
 configuring the Peer.</p>
@@ -573,7 +616,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.BfdConfig.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>bfd_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.BfdConfig.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">bfd_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.BfdConfig.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modifies the BFD configuration for routing BFD peers. Note - the
 configuration | changes apply only to those routing BFD peers for which
 the BFD configuration has | not been overridden at Peer level.</p>
@@ -617,7 +660,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Bgp">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">Bgp</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Bgp" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">Bgp</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Bgp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -626,7 +669,7 @@ Not Found</p>
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Bgp.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>logical_router_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Bgp.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Bgp.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns information about the BGP configuration on a specified logical
 router. Information includes whether or not the BGP configuration is
 enabled, the AS number, and whether or not graceful restart is enabled.</p>
@@ -665,7 +708,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Bgp.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>bgp_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Bgp.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">bgp_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Bgp.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modifies the BGP configuration on a specified TIER0 logical router.
 Modifiable parameters include enabled, graceful_restart, as_number.</p>
 <dl class="field-list simple">
@@ -708,7 +751,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.ForwardingTable">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">ForwardingTable</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">ForwardingTable</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -717,19 +760,19 @@ Not Found</p>
 </dl>
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.ForwardingTable.LIST_SOURCE_CACHED">
-<code class="descname">LIST_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable.LIST_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable.LIST_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable.list" title="com.vmware.nsx.logical_routers.routing_client.ForwardingTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">ForwardingTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.ForwardingTable.LIST_SOURCE_REALTIME">
-<code class="descname">LIST_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable.LIST_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable.LIST_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable.list" title="com.vmware.nsx.logical_routers.routing_client.ForwardingTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">ForwardingTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.ForwardingTable.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>transport_node_id</em>, <em>cursor=None</em>, <em>included_fields=None</em>, <em>network_prefix=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em>, <em>source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">transport_node_id</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">network_prefix=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em>, <em class="sig-param">source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.ForwardingTable.list" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -739,7 +782,7 @@ Not Found</p>
 by current result page) (optional)</p></li>
 <li><p><strong>included_fields</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Comma separated list of fields that should be included in query
 result (optional)</p></li>
-<li><p><strong>network_prefix</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IPv4 CIDR Block (optional)</p></li>
+<li><p><strong>network_prefix</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IPv4 or IPv6 CIDR Block (optional)</p></li>
 <li><p><strong>page_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Maximum number of results to return in this page (server may return
 fewer) (optional, default to 1000)</p></li>
 <li><p><strong>sort_ascending</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (optional)</p></li>
@@ -780,7 +823,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.IpPrefixLists">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">IpPrefixLists</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">IpPrefixLists</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -789,7 +832,7 @@ Not Found</p>
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>ip_prefix_list</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.create" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">ip_prefix_list</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a new IPPrefixList on a Logical Router</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -829,7 +872,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.delete" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a specific IPPrefixList on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -863,7 +906,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a specific IPPrefixList on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -903,7 +946,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>cursor=None</em>, <em>included_fields=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Paginated List of IPPrefixLists</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -950,7 +993,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em>, <em>ip_prefix_list</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em>, <em class="sig-param">ip_prefix_list</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.IpPrefixLists.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a specific IPPrefixList on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -993,7 +1036,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Redistribution">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">Redistribution</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Redistribution" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">Redistribution</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Redistribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1002,7 +1045,7 @@ Not Found</p>
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Redistribution.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>logical_router_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Redistribution.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Redistribution.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns information about configured route redistribution for the
 specified logical router.</p>
 <dl class="field-list simple">
@@ -1040,7 +1083,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.Redistribution.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>redistribution_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Redistribution.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">redistribution_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.Redistribution.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modifies existing route redistribution rules for the specified TIER0
 logical router.</p>
 <dl class="field-list simple">
@@ -1083,7 +1126,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteMaps">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">RouteMaps</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">RouteMaps</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1092,7 +1135,7 @@ Not Found</p>
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteMaps.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>route_map</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.create" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">route_map</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a new RouteMap on a Logical Router</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1132,7 +1175,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteMaps.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.delete" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a specific RouteMap on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1166,7 +1209,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteMaps.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a specific RouteMap on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1206,7 +1249,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteMaps.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>cursor=None</em>, <em>included_fields=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Paginated List of RouteMaps</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1253,7 +1296,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteMaps.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em>, <em>route_map</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em>, <em class="sig-param">route_map</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteMaps.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a specific RouteMap on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1296,7 +1339,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteTable">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">RouteTable</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">RouteTable</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1305,19 +1348,19 @@ Not Found</p>
 </dl>
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteTable.LIST_SOURCE_CACHED">
-<code class="descname">LIST_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable.LIST_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable.LIST_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable.list" title="com.vmware.nsx.logical_routers.routing_client.RouteTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">RouteTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteTable.LIST_SOURCE_REALTIME">
-<code class="descname">LIST_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable.LIST_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable.LIST_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable.list" title="com.vmware.nsx.logical_routers.routing_client.RouteTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">RouteTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RouteTable.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>transport_node_id</em>, <em>cursor=None</em>, <em>included_fields=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em>, <em>source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">transport_node_id</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em>, <em class="sig-param">source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RouteTable.list" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1367,7 +1410,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RoutingTable">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">RoutingTable</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">RoutingTable</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1376,37 +1419,37 @@ Not Found</p>
 </dl>
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_BGP">
-<code class="descname">LIST_ROUTE_SOURCE_BGP</code><em class="property"> = 'BGP'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_BGP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_ROUTE_SOURCE_BGP</code><em class="property"> = 'BGP'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_BGP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">routeSource</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.list" title="com.vmware.nsx.logical_routers.routing_client.RoutingTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">RoutingTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_CONNECTED">
-<code class="descname">LIST_ROUTE_SOURCE_CONNECTED</code><em class="property"> = 'CONNECTED'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_CONNECTED" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_ROUTE_SOURCE_CONNECTED</code><em class="property"> = 'CONNECTED'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_CONNECTED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">routeSource</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.list" title="com.vmware.nsx.logical_routers.routing_client.RoutingTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">RoutingTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_STATIC">
-<code class="descname">LIST_ROUTE_SOURCE_STATIC</code><em class="property"> = 'STATIC'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_STATIC" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_ROUTE_SOURCE_STATIC</code><em class="property"> = 'STATIC'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_ROUTE_SOURCE_STATIC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">routeSource</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.list" title="com.vmware.nsx.logical_routers.routing_client.RoutingTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">RoutingTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_SOURCE_CACHED">
-<code class="descname">LIST_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.list" title="com.vmware.nsx.logical_routers.routing_client.RoutingTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">RoutingTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_SOURCE_REALTIME">
-<code class="descname">LIST_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">LIST_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.LIST_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.list" title="com.vmware.nsx.logical_routers.routing_client.RoutingTable.list"><code class="xref py py-func docutils literal notranslate"><span class="pre">RoutingTable.list()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.RoutingTable.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>transport_node_id</em>, <em>cursor=None</em>, <em>included_fields=None</em>, <em>network_prefix=None</em>, <em>page_size=None</em>, <em>route_source=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em>, <em>source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">transport_node_id</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">network_prefix=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">route_source=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em>, <em class="sig-param">source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.RoutingTable.list" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1416,11 +1459,10 @@ Not Found</p>
 by current result page) (optional)</p></li>
 <li><p><strong>included_fields</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Comma separated list of fields that should be included in query
 result (optional)</p></li>
-<li><p><strong>network_prefix</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IPv4 CIDR Block (optional)</p></li>
+<li><p><strong>network_prefix</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IPv4 or IPv6 CIDR Block (optional)</p></li>
 <li><p><strong>page_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Maximum number of results to return in this page (server may return
 fewer) (optional, default to 1000)</p></li>
-<li><p><strong>route_source</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – To filter the RIB table based on the source from which route is
-learned. (optional)</p></li>
+<li><p><strong>route_source</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Route source filter parameter (optional)</p></li>
 <li><p><strong>sort_ascending</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (optional)</p></li>
 <li><p><strong>sort_by</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Field by which records are sorted (optional)</p></li>
 <li><p><strong>source</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Data source type. (optional)</p></li>
@@ -1459,7 +1501,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.StaticRoutes">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">StaticRoutes</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">StaticRoutes</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1468,7 +1510,7 @@ Not Found</p>
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.StaticRoutes.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>static_route</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.create" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">static_route</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a new static route on a Logical Router</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1508,7 +1550,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.StaticRoutes.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.delete" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a specific static route on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1542,7 +1584,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.StaticRoutes.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a specific static routes on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1582,7 +1624,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.StaticRoutes.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>cursor=None</em>, <em>included_fields=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns information about configured static routes, including the
 network address and next hops for each static route.</p>
 <dl class="field-list simple">
@@ -1630,7 +1672,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.logical_routers.routing_client.StaticRoutes.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>logical_router_id</em>, <em>id</em>, <em>static_route</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">id</em>, <em class="sig-param">static_route</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StaticRoutes.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a specific static route on the specified logical router.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1673,7 +1715,78 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.logical_routers.routing_client.StubFactory">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.routing_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.routing_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
+<p>Initialize StubFactoryBase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-com.vmware.nsx.logical_routers.service_cluster_client">
+<span id="com-vmware-nsx-logical-routers-service-cluster-client-module"></span><h2>com.vmware.nsx.logical_routers.service_cluster_client module<a class="headerlink" href="#module-com.vmware.nsx.logical_routers.service_cluster_client" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="com.vmware.nsx.logical_routers.service_cluster_client.State">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.service_cluster_client.</code><code class="sig-name descname">State</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.service_cluster_client.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="com.vmware.nsx.logical_routers.service_cluster_client.State.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">logical_router_id</em>, <em class="sig-param">barrier_id=None</em>, <em class="sig-param">request_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.service_cluster_client.State.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return realized state information of a logical service router cluster.
+Any configuration update that affects the logical service router
+cluster can use this API to get its realized state by passing a
+request_id returned by the configuration change operation. e.g. Update
+configuration of nat, bgp, bfd, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logical_router_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
+<li><p><strong>barrier_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (optional)</p></li>
+<li><p><strong>request_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Realization request ID (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.LogicalServiceRouterClusterState" title="com.vmware.nsx.model_client.LogicalServiceRouterClusterState"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.LogicalServiceRouterClusterState</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx.model.LogicalServiceRouterClusterState</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+Service Unavailable</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Bad Request, Precondition Failed</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+Internal Server Error</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Not Found</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.nsx.logical_routers.service_cluster_client.StubFactory">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.logical_routers.service_cluster_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.logical_routers.service_cluster_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
 <p>Initialize StubFactoryBase</p>
 <dl class="field-list simple">
@@ -1706,7 +1819,7 @@ Not Found</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.nsx.lldp package &mdash; NSX-T SDK 2.3.0.0.3 documentation</title>
+  <title>com.vmware.nsx.lldp package &mdash; NSX-T SDK 2.5.1.0.1 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="com.vmware.nsx.loadbalancer package" href="com.vmware.nsx.loadbalancer.html" />
-    <link rel="prev" title="com.vmware.nsx.firewall.sections package" href="com.vmware.nsx.firewall.sections.html" /> 
+    <link rel="prev" title="com.vmware.nsx.intelligence.nodes package" href="com.vmware.nsx.intelligence.nodes.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.3.0.0.3
+                2.5.1.0.1
               </div>
             
           
@@ -174,11 +174,114 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-com.vmware.nsx.lldp.fabric_nodes_client">
+<span id="com-vmware-nsx-lldp-fabric-nodes-client-module"></span><h2>com.vmware.nsx.lldp.fabric_nodes_client module<a class="headerlink" href="#module-com.vmware.nsx.lldp.fabric_nodes_client" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="com.vmware.nsx.lldp.fabric_nodes_client.Interfaces">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.lldp.fabric_nodes_client.</code><code class="sig-name descname">Interfaces</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.fabric_nodes_client.Interfaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="com.vmware.nsx.lldp.fabric_nodes_client.Interfaces.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">fabric_node_id</em>, <em class="sig-param">interface_name</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.fabric_nodes_client.Interfaces.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read LLDP Neighbor Properties for a specific interface of Fabric Node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fabric_node_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – ID of fabric node (required)</p></li>
+<li><p><strong>interface_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Interface name to read (required)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.InterfaceNeighborProperties" title="com.vmware.nsx.model_client.InterfaceNeighborProperties"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.InterfaceNeighborProperties</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx.model.InterfaceNeighborProperties</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+Service Unavailable</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Bad Request, Precondition Failed</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+Internal Server Error</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Not Found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.nsx.lldp.fabric_nodes_client.Interfaces.list">
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">fabric_node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.fabric_nodes_client.Interfaces.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List LLDP Neighbor Properties for all interfaces of Fabric Node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fabric_node_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – ID of fabric node (required)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.InterfaceNeighborPropertyListResult" title="com.vmware.nsx.model_client.InterfaceNeighborPropertyListResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.InterfaceNeighborPropertyListResult</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx.model.InterfaceNeighborPropertyListResult</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+Service Unavailable</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Bad Request, Precondition Failed</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+Internal Server Error</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Not Found</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.nsx.lldp.fabric_nodes_client.StubFactory">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.lldp.fabric_nodes_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.fabric_nodes_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
+<p>Initialize StubFactoryBase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-com.vmware.nsx.lldp.transport_nodes_client">
 <span id="com-vmware-nsx-lldp-transport-nodes-client-module"></span><h2>com.vmware.nsx.lldp.transport_nodes_client module<a class="headerlink" href="#module-com.vmware.nsx.lldp.transport_nodes_client" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="com.vmware.nsx.lldp.transport_nodes_client.Interfaces">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.lldp.transport_nodes_client.</code><code class="descname">Interfaces</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.transport_nodes_client.Interfaces" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.lldp.transport_nodes_client.</code><code class="sig-name descname">Interfaces</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.transport_nodes_client.Interfaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -187,8 +290,9 @@
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx.lldp.transport_nodes_client.Interfaces.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>node_id</em>, <em>interface_name</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.transport_nodes_client.Interfaces.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read LLDP Neighbor Properties</p>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">node_id</em>, <em class="sig-param">interface_name</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.transport_nodes_client.Interfaces.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read LLDP Neighbor Properties for a specific interface of Transport
+Node</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -227,8 +331,8 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.lldp.transport_nodes_client.Interfaces.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.transport_nodes_client.Interfaces.list" title="Permalink to this definition">¶</a></dt>
-<dd><p>List LLDP Neighbor Properties</p>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.transport_nodes_client.Interfaces.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List LLDP Neighbor Properties for all interfaces of Transport Node</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>node_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – ID of transport node (required)</p>
@@ -266,7 +370,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.lldp.transport_nodes_client.StubFactory">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.lldp.transport_nodes_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.transport_nodes_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.lldp.transport_nodes_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.lldp.transport_nodes_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
 <p>Initialize StubFactoryBase</p>
 <dl class="field-list simple">
@@ -290,7 +394,7 @@ Not Found</p>
         <a href="com.vmware.nsx.loadbalancer.html" class="btn btn-neutral float-right" title="com.vmware.nsx.loadbalancer package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="com.vmware.nsx.firewall.sections.html" class="btn btn-neutral float-left" title="com.vmware.nsx.firewall.sections package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="com.vmware.nsx.intelligence.nodes.html" class="btn btn-neutral float-left" title="com.vmware.nsx.intelligence.nodes package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -299,7 +403,7 @@ Not Found</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>
