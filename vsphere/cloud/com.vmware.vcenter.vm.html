@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vcenter.vm package &mdash; vSphere Automation SDK for Python. 6.9.1 documentation</title>
+  <title>com.vmware.vcenter.vm package &mdash; vSphere Automation SDK for Python. 7.0.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="com.vmware.vcenter.vm.hardware package" href="com.vmware.vcenter.vm.hardware.html" />
+    <link rel="next" title="com.vmware.vcenter.vm.guest package" href="com.vmware.vcenter.vm.guest.html" />
     <link rel="prev" title="com.vmware.vcenter.vcha package" href="com.vmware.vcenter.vcha.html" /> 
 </head>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                6.9.1
+                7.0.0.0
               </div>
             
           
@@ -96,6 +96,7 @@
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.html#module-com.vmware.content_client">com.vmware.content_client module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.html#module-com.vmware.vapi_client">com.vmware.vapi_client module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.html#module-com.vmware.vcenter_client">com.vmware.vcenter_client module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.html#module-com.vmware.vstats_client">com.vmware.vstats_client module</a></li>
 </ul>
 </li>
 </ul>
@@ -179,6 +180,11 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="com.vmware.vcenter.vm.guest.html">com.vmware.vcenter.vm.guest package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vcenter.vm.guest.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="com.vmware.vcenter.vm.guest.html#module-com.vmware.vcenter.vm.guest.networking_client">com.vmware.vcenter.vm.guest.networking_client module</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="com.vmware.vcenter.vm.hardware.html">com.vmware.vcenter.vm.hardware package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vcenter.vm.hardware.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="com.vmware.vcenter.vm.hardware.html#module-com.vmware.vcenter.vm.hardware.adapter_client">com.vmware.vcenter.vm.hardware.adapter_client module</a></li>
@@ -199,14 +205,20 @@
 <div class="section" id="module-com.vmware.vcenter.vm.compute_client">
 <span id="com-vmware-vcenter-vm-compute-client-module"></span><h2>com.vmware.vcenter.vm.compute_client module<a class="headerlink" href="#module-com.vmware.vcenter.vm.compute_client" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.vm.compute_client</span></code> module provides classes for
-quering the status of compute policies on virtual machines.</p>
+quering the status of compute policies on virtual machines in VMware Cloud on
+AWS. Usage beyond VMware Cloud on AWS is not supported.</p>
 <dl class="class">
 <dt id="com.vmware.vcenter.vm.compute_client.Policies">
 <em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.compute_client.</code><code class="sig-name descname">Policies</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.compute_client.Policies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Policies</span></code> class provides methods to query the status of policies on
-virtual machines. <strong>Warning:</strong> This class is available as technical
-preview. It may be changed in a future release.</p>
+virtual machines in VMware Cloud on AWS. Usage beyond VMware Cloud on AWS
+is not supported. <strong>Warning:</strong> This class is available as Technology
+Preview. These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback, VMware
+does not guarantee backwards compatibility and recommends against using
+them in production environments. Some Technology Preview APIs might only be
+applicable to specific environments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
@@ -218,7 +230,11 @@ preview. It may be changed in a future release.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Policies.Info</span></code> class contains information about the compliance of a
 virtual machine with a compute policy. <strong>Warning:</strong> This class is available
-as technical preview. It may be changed in a future release.</p>
+as Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change based
+on feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some Technology
+Preview APIs might only be applicable to specific environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -227,8 +243,13 @@ names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>status</strong> (<a class="reference internal" href="com.vmware.vcenter.compute.html#com.vmware.vcenter.compute.policies_client.ObjectCompliance" title="com.vmware.vcenter.compute.policies_client.ObjectCompliance"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies_client.ObjectCompliance</span></code></a>) – The compliance status of the policy on a specified
-object.**Warning:** This attribute is available as technical
-preview. It may be changed in a future release.</p>
+object.**Warning:** This attribute is available as Technology
+Preview. These are early access APIs provided to test, automate and
+provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some
+Technology Preview APIs might only be applicable to specific
+environments.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -237,8 +258,14 @@ preview. It may be changed in a future release.</p>
 <dt id="com.vmware.vcenter.vm.compute_client.Policies.get">
 <code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">vm</em>, <em class="sig-param">policy</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.compute_client.Policies.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns information about the compliance of a virtual machine with a
-compute policy. <strong>Warning:</strong> This method is available as technical
-preview. It may be changed in a future release.</p>
+compute policy in VMware Cloud on AWS. Usage beyond VMware Cloud on AWS
+is not supported. <strong>Warning:</strong> This method is available as Technology
+Preview. These are early access APIs provided to test, automate and
+provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some
+Technology Preview APIs might only be applicable to specific
+environments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -290,6 +317,186 @@ if the user doesn’t have the required privileges.</p>
 with the guest operating system. This includes information about the state of
 local file systems and network interfaces and methods to manipulate the guest
 file system and processes.</p>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.guest_client.Customization">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.guest_client.</code><code class="sig-name descname">Customization</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.Customization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Customization</span></code> class provides methods to apply a customization
+specification to a virtual machine. This class was added in vSphere API
+7.0.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.guest_client.Customization.SetSpec">
+<em class="property">class </em><code class="sig-name descname">SetSpec</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">spec=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.Customization.SetSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Customization.SetSpec</span></code> class contains specification information that
+has to be applied to a virtual machine. This class was added in vSphere API
+7.0.0.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The name of the customization specification that has be retrieved
+from the virtual center inventory and applied for the virtual
+machine. Either one of <code class="docutils literal notranslate"><span class="pre">name</span></code> or <code class="docutils literal notranslate"><span class="pre">spec</span></code> or none of them should
+be specified. This attribute was added in vSphere API 7.0.0.
+If None and <code class="docutils literal notranslate"><span class="pre">spec</span></code> is also None when executing
+<a class="reference internal" href="#com.vmware.vcenter.vm.guest_client.Customization.set" title="com.vmware.vcenter.vm.guest_client.Customization.set"><code class="xref py py-func docutils literal notranslate"><span class="pre">Customization.set()</span></code></a> operationg, then any pending
+customization for the virtual machine will be cleared.</p></li>
+<li><p><strong>spec</strong> (<a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.guest_client.CustomizationSpec" title="com.vmware.vcenter.guest_client.CustomizationSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vcenter.guest_client.CustomizationSpec</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The customization specification that has to be applied for the
+virtual machine. Either one of <code class="docutils literal notranslate"><span class="pre">name</span></code> or <code class="docutils literal notranslate"><span class="pre">spec</span></code> or none of them
+should be specified. This attribute was added in vSphere API 7.0.0.
+If None and <code class="docutils literal notranslate"><span class="pre">name</span></code> is also None when executing
+<a class="reference internal" href="#com.vmware.vcenter.vm.guest_client.Customization.set" title="com.vmware.vcenter.vm.guest_client.Customization.set"><code class="xref py py-func docutils literal notranslate"><span class="pre">Customization.set()</span></code></a> operationg, then any pending
+customization for the virtual machine will be cleared.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.guest_client.Customization.set">
+<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">vm</em>, <em class="sig-param">spec</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.Customization.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a customization specification in <code class="docutils literal notranslate"><span class="pre">spec</span></code> on the virtual
+machine in <code class="docutils literal notranslate"><span class="pre">vm</span></code>. This method only sets the specification settings for
+the virtual machine. The actual customization happens inside the guest
+when the virtual machine is powered on. If <code class="docutils literal notranslate"><span class="pre">spec</span></code> has None values,
+then any pending customization settings for the virtual machine are
+cleared. If there is a pending customization for the virtual machine
+and <code class="docutils literal notranslate"><span class="pre">spec</span></code> has valid content, then the existing customization setting
+will be overwritten with the new settings. This method was added in
+vSphere API 7.0.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The unique identifier of the virtual machine that needs to be
+customized.
+The parameter must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">VirtualMachine</span></code>.</p></li>
+<li><p><strong>spec</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.guest_client.Customization.SetSpec" title="com.vmware.vcenter.vm.guest_client.Customization.SetSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">Customization.SetSpec</span></code></a>) – The customization settings to be applied to the guest operating
+system.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.InvalidArgument" title="com.vmware.vapi.std.errors_client.InvalidArgument"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidArgument</span></code></a> 
+if the customization settings in <code class="docutils literal notranslate"><span class="pre">spec</span></code> are not valid.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotAllowedInCurrentState" title="com.vmware.vapi.std.errors_client.NotAllowedInCurrentState"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></code></a> 
+if the virtual machine <code class="docutils literal notranslate"><span class="pre">vm</span></code> is not in a powered off state.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code></a> 
+if a customization specification is not found with the unique name
+in <code class="docutils literal notranslate"><span class="pre">spec</span></code>.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code></a> 
+If the virtual machine <code class="docutils literal notranslate"><span class="pre">vm</span></code> is not found.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code></a> 
+if the system is unable to communicate with a service to complete
+the request.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthenticated" title="com.vmware.vapi.std.errors_client.Unauthenticated"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code></a> 
+if the user can not be authenticated.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Unauthorized" title="com.vmware.vapi.std.errors_client.Unauthorized"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code></a> 
+if the user doesn’t have the required privileges.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.guest_client.DhcpConfigInfo">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.guest_client.</code><code class="sig-name descname">DhcpConfigInfo</code><span class="sig-paren">(</span><em class="sig-param">ipv4_enabled=None</em>, <em class="sig-param">ipv6_enabled=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.DhcpConfigInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DhcpConfigInfo</span></code> class specifies when Dynamic Host Configuration
+Protocol is enabled. This class was added in vSphere API 7.0.0.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipv4_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – True if IPv4 DHCP is enabled, false otherwise. This attribute was
+added in vSphere API 7.0.0.</p></li>
+<li><p><strong>ipv6_enabled</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – True if IPv6 DHCP is enabled, false otherwise. This attribute was
+added in vSphere API 7.0.0.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.guest_client.DnsAssignedValues">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.guest_client.</code><code class="sig-name descname">DnsAssignedValues</code><span class="sig-paren">(</span><em class="sig-param">host_name=None</em>, <em class="sig-param">domain_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.DnsAssignedValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The {\&#64;name DnsAssignedValues) class describes values assigned by a
+Domain Name Server (DNS). This class was added in vSphere API 7.0.0.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The host name portion of DNS name. For example, “esx01” part of
+esx01.example.com. This attribute was added in vSphere API 7.0.0.</p></li>
+<li><p><strong>domain_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The domain name portion of the DNS name. “example.com” part of
+esx01.example.com. This attribute was added in vSphere API 7.0.0.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.guest_client.DnsConfigInfo">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.guest_client.</code><code class="sig-name descname">DnsConfigInfo</code><span class="sig-paren">(</span><em class="sig-param">ip_addresses=None</em>, <em class="sig-param">search_domains=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.DnsConfigInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DnsConfigInfo</span></code> class describes the configuration of RFC 1034 DNS
+settings. This class was added in vSphere API 7.0.0.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ip_addresses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The IP addresses of the DNS servers in order of use. IPv4 addresses
+are specified using dotted decimal notation. For example,
+“192.0.2.1”. IPv6 addresses are 128-bit addresses represented as
+eight fields of up to four hexadecimal digits. A colon separates
+each field (:). For example, 2001:DB8:101::230:6eff:fe04:d9ff. The
+address can also consist of the symbol ‘::’ to represent multiple
+16-bit groups of contiguous 0’s only once in an address as
+described in RFC 2373. This attribute was added in vSphere API
+7.0.0.</p></li>
+<li><p><strong>search_domains</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The domain in which to search for hosts, placed in order of
+preference. These are the domain name portion of the DNS names.
+This attribute was added in vSphere API 7.0.0.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="class">
 <dt id="com.vmware.vcenter.vm.guest_client.Identity">
 <em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.guest_client.</code><code class="sig-name descname">Identity</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.Identity" title="Permalink to this definition">¶</a></dt>
@@ -383,7 +590,7 @@ in vSphere API 6.7.</p>
 </dl>
 <dl class="class">
 <dt id="com.vmware.vcenter.vm.guest_client.LocalFilesystem.Info">
-<em class="property">class </em><code class="sig-name descname">Info</code><span class="sig-paren">(</span><em class="sig-param">capacity=None</em>, <em class="sig-param">free_space=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.LocalFilesystem.Info" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Info</code><span class="sig-paren">(</span><em class="sig-param">capacity=None</em>, <em class="sig-param">free_space=None</em>, <em class="sig-param">filesystem=None</em>, <em class="sig-param">mappings=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.LocalFilesystem.Info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">LocalFilesystem.Info</span></code> class contains information about a local file
 system configured in the guest operating system. This class was added in
@@ -400,7 +607,38 @@ names.</p>
 added in vSphere API 6.7.</p></li>
 <li><p><strong>free_space</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code>) – Free space on the file system, in bytes. This attribute was added
 in vSphere API 6.7.</p></li>
+<li><p><strong>filesystem</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Filesystem type, if known. For example, ext3 or NTFS. This
+attribute was added in vSphere API 7.0.0.
+<code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code> if VMware Tools reports a value.</p></li>
+<li><p><strong>mappings</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#com.vmware.vcenter.vm.guest_client.LocalFilesystem.VirtualDiskMapping" title="com.vmware.vcenter.vm.guest_client.LocalFilesystem.VirtualDiskMapping"><code class="xref py py-class docutils literal notranslate"><span class="pre">LocalFilesystem.VirtualDiskMapping</span></code></a>) – VirtualDisks backing the guest partition, if known. This attribute
+was added in vSphere API 7.0.0.
+This attribute is optional because it was added in a newer version
+than its parent node.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.guest_client.LocalFilesystem.VirtualDiskMapping">
+<em class="property">class </em><code class="sig-name descname">VirtualDiskMapping</code><span class="sig-paren">(</span><em class="sig-param">disk=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.LocalFilesystem.VirtualDiskMapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>Describes the virtual disk backing a local guest disk. This class was added
+in vSphere API 7.0.0.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>disk</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The virtual disk. This attribute was added in vSphere API 7.0.0.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.vm.hardware.Disk</span></code>. When methods return a
+value of this class as a return value, the attribute will be an
+identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.vm.hardware.Disk</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -438,6 +676,78 @@ if VMware Tools is not running.</p>
 <dt class="field-odd">Raise</dt>
 <dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code></a> 
 if VMware Tools has not provided any data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.guest_client.Networking">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.guest_client.</code><code class="sig-name descname">Networking</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.Networking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Networking</span></code> class provides methods for retrieving guest operating
+system network information. This class was added in vSphere API 7.0.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.guest_client.Networking.Info">
+<em class="property">class </em><code class="sig-name descname">Info</code><span class="sig-paren">(</span><em class="sig-param">dns_values=None</em>, <em class="sig-param">dns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.Networking.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Networking.Info</span></code> class contains information about networking as
+configured in the guest operating system. This class was added in vSphere
+API 7.0.0.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dns_values</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.guest_client.DnsAssignedValues" title="com.vmware.vcenter.vm.guest_client.DnsAssignedValues"><code class="xref py py-class docutils literal notranslate"><span class="pre">DnsAssignedValues</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Client DNS values. Data assigned by DNS. This attribute was added
+in vSphere API 7.0.0.
+If None no DNS assigned value exists.</p></li>
+<li><p><strong>dns</strong> (<a class="reference internal" href="#com.vmware.vcenter.vm.guest_client.DnsConfigInfo" title="com.vmware.vcenter.vm.guest_client.DnsConfigInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">DnsConfigInfo</span></code></a> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Client DNS configuration. How DNS queries are resolved. This
+attribute was added in vSphere API 7.0.0.
+If None no DNS assigned value exists.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.guest_client.Networking.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">vm</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.guest_client.Networking.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns information about the network configuration in the guest
+operating system. This method was added in vSphere API 7.0.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Virtual machine ID
+The parameter must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">VirtualMachine</span></code>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#com.vmware.vcenter.vm.guest_client.Networking.Info" title="com.vmware.vcenter.vm.guest_client.Networking.Info"><code class="xref py py-class docutils literal notranslate"><span class="pre">Networking.Info</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Information about the networking configuration in the guest
+operating system.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></code></a> 
+if the system reports an error while responding to the request.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code></a> 
+if the virtual machine is not found.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.ServiceUnavailable" title="com.vmware.vapi.std.errors_client.ServiceUnavailable"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code></a> 
+if VMware Tools is not running.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6174,6 +6484,148 @@ accessed.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-com.vmware.vcenter.vm.tools_client">
+<span id="com-vmware-vcenter-vm-tools-client-module"></span><h2>com.vmware.vcenter.vm.tools_client module<a class="headerlink" href="#module-com.vmware.vcenter.vm.tools_client" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.vm_client</span></code> module provides classes for managing
+VMware Tools.</p>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.tools_client.Installer">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.tools_client.</code><code class="sig-name descname">Installer</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.tools_client.Installer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Installer</span></code> (\&#64;term service} provides methods to install VMware
+Tools in the guest operating system. This class was added in vSphere API
+7.0.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.tools_client.Installer.Info">
+<em class="property">class </em><code class="sig-name descname">Info</code><span class="sig-paren">(</span><em class="sig-param">is_connected=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.tools_client.Installer.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Installer.Info</span></code> class contains information about the VMWare Tools
+installer. This class was added in vSphere API 7.0.0.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>is_connected</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Flag indicating whether the VMware Tools installer is mounted as a
+CD-ROM. This attribute was added in vSphere API 7.0.0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.tools_client.Installer.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">vm</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.tools_client.Installer.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects the VMware Tools CD installer as a CD-ROM for the guest
+operating system. On Windows guest operating systems with autorun, this
+should cause the installer to initiate the Tools installation which
+will need user input to complete. On other (non-Windows) guest
+operating systems this will make the Tools installation available, and
+a a user will need to do guest-specific actions. On Linux, this
+includes opening an archive and running the installer. To monitor the
+status of the Tools install, clients should check the <code class="docutils literal notranslate"><span class="pre">versionStatus</span></code>
+and <code class="docutils literal notranslate"><span class="pre">runState</span></code> from <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.vm_client.Tools.get" title="com.vmware.vcenter.vm_client.Tools.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.vm_client.Tools.get()</span></code></a>.
+This method was added in vSphere API 7.0.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Virtual machine ID
+The parameter must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">VirtualMachine</span></code>.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code></a> 
+if the virtual machine is not found.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotAllowedInCurrentState" title="com.vmware.vapi.std.errors_client.NotAllowedInCurrentState"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></code></a> 
+if the virtual machine is not powered on.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.AlreadyInDesiredState" title="com.vmware.vapi.std.errors_client.AlreadyInDesiredState"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.AlreadyInDesiredState</span></code></a> 
+if the VMware Tools CD is already connected.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></code></a> 
+if the Tools installation fails in the guest operating system.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.tools_client.Installer.disconnect">
+<code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><em class="sig-param">vm</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.tools_client.Installer.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect the VMware Tools installer CD image. This method was added
+in vSphere API 7.0.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Virtual machine ID
+The parameter must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">VirtualMachine</span></code>.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></code></a> 
+if the system reports an error while responding to the request.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code></a> 
+if the virtual machine is not found.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotAllowedInCurrentState" title="com.vmware.vapi.std.errors_client.NotAllowedInCurrentState"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotAllowedInCurrentState</span></code></a> 
+if the virtual machine is not powered on.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="com.vmware.vcenter.vm.tools_client.Installer.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">vm</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.tools_client.Installer.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about the VMware Tools installer. This method was added
+in vSphere API 7.0.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vm</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the virtual machine.
+The parameter must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">VirtualMachine</span></code>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#com.vmware.vcenter.vm.tools_client.Installer.Info" title="com.vmware.vcenter.vm.tools_client.Installer.Info"><code class="xref py py-class docutils literal notranslate"><span class="pre">Installer.Info</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>information about the VMware Tools installer.</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.Error" title="com.vmware.vapi.std.errors_client.Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Error</span></code></a> 
+if the system reports an error while responding to the request.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="com.vmware.vapi.std.html#com.vmware.vapi.std.errors_client.NotFound" title="com.vmware.vapi.std.errors_client.NotFound"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code></a> 
+if the virtual machine is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.vm.tools_client.StubFactory">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.vm.tools_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.vm.tools_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
+<p>Initialize StubFactoryBase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -6184,7 +6636,7 @@ accessed.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="com.vmware.vcenter.vm.hardware.html" class="btn btn-neutral float-right" title="com.vmware.vcenter.vm.hardware package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="com.vmware.vcenter.vm.guest.html" class="btn btn-neutral float-right" title="com.vmware.vcenter.vm.guest package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="com.vmware.vcenter.vcha.html" class="btn btn-neutral float-left" title="com.vmware.vcenter.vcha package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -6196,7 +6648,7 @@ accessed.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>

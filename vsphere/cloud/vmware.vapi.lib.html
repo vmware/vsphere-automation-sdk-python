@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>vmware.vapi.lib package &mdash; vSphere Automation SDK for Python. 6.9.1 documentation</title>
+  <title>vmware.vapi.lib package &mdash; vSphere Automation SDK for Python. 7.0.0.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                6.9.1
+                7.0.0.0
               </div>
             
           
@@ -174,119 +174,8 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-vmware.vapi.lib.connect">
-<span id="vmware-vapi-lib-connect-module"></span><h2>vmware.vapi.lib.connect module<a class="headerlink" href="#module-vmware.vapi.lib.connect" title="Permalink to this headline">¶</a></h2>
-<p>vAPI Connection factory</p>
-<dl class="function">
-<dt id="vmware.vapi.lib.connect.check_file_exists">
-<code class="sig-prename descclassname">vmware.vapi.lib.connect.</code><code class="sig-name descname">check_file_exists</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.lib.connect.check_file_exists" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if name is a file and exists</p>
-<p>:type  <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param file name</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware.vapi.lib.connect.get_connector">
-<code class="sig-prename descclassname">vmware.vapi.lib.connect.</code><code class="sig-name descname">get_connector</code><span class="sig-paren">(</span><em class="sig-param">rpc_provider_name</em>, <em class="sig-param">msg_protocol</em>, <em class="sig-param">ssl_context=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.lib.connect.get_connector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a connection to the vAPI Provider using the specified arguments</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rpc_provider_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The RPC provider to be used for the connection.
-Valid values are ‘http’, ‘https’ and ‘requests’</p></li>
-<li><p><strong>msg_protocol</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The message protocol to be used for the connection.
-Valid values are ‘json’.</p></li>
-<li><p><strong>ssl_context</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">OpenSSL.SSL.Context</span></code>) – SSL context to use for SSL connections</p></li>
-<li><p><strong>kwargs</strong> – Additional arguments for the RPC provider</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.protocol.client.connector.Connector</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Connection to the vAPI provider</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware.vapi.lib.connect.get_requests_connector">
-<code class="sig-prename descclassname">vmware.vapi.lib.connect.</code><code class="sig-name descname">get_requests_connector</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">msg_protocol='json'</em>, <em class="sig-param">url=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">pool_size=8</em>, <em class="sig-param">provider_filter_chain=None</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.lib.connect.get_requests_connector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a connection that uses ‘requests’ library for http(s) connections to
-a vAPI Provider.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code>) – Session object</p></li>
-<li><p><strong>msg_protocol</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Message protocol to be used for the connection. Valid
-values are ‘json’.</p></li>
-<li><p><strong>url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – HTTP(S) URL to be used</p></li>
-<li><p><strong>timeout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Request timeout</p></li>
-<li><p><strong>pool_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Connection pool size to be used</p></li>
-<li><p><strong>provider_filter_chain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of
-<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.provider.filter.ApiProviderFilter</span></code>) – List of API filters in order they are to be
-chained</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.protocol.client.connector.Connector</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Connection to the vAPI provider</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware.vapi.lib.connect.get_requests_hok_connector">
-<code class="sig-prename descclassname">vmware.vapi.lib.connect.</code><code class="sig-name descname">get_requests_hok_connector</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">msg_protocol='json'</em>, <em class="sig-param">url=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">pool_size=8</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.lib.connect.get_requests_hok_connector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a connection that uses SAML Hok based authentication using ‘requests’
-library to connect to a vAPI Provider.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code>) – Session object</p></li>
-<li><p><strong>msg_protocol</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Message protocol to be used for the connection. Valid
-values are ‘json’.</p></li>
-<li><p><strong>url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – HTTP(S) URL to be used</p></li>
-<li><p><strong>timeout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Request timeout</p></li>
-<li><p><strong>pool_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Connection pool size to be used</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.protocol.client.connector.Connector</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Connection to the vAPI provider</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware.vapi.lib.connect.get_saml_hok_connector">
-<code class="sig-prename descclassname">vmware.vapi.lib.connect.</code><code class="sig-name descname">get_saml_hok_connector</code><span class="sig-paren">(</span><em class="sig-param">rpc_provider_name</em>, <em class="sig-param">msg_protocol='json'</em>, <em class="sig-param">ssl_context=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.lib.connect.get_saml_hok_connector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a connection that uses SAML Hok based authentication
-to connect to a vAPI Provider</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rpc_provider_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The RPC provider to be used for the connection.
-Valid values are ‘http’, ‘https’ or ‘requests’</p></li>
-<li><p><strong>msg_protocol</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The message protocol to be used for the connection.
-Valid values are ‘json’.</p></li>
-<li><p><strong>ssl_context</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">OpenSSL.SSL.Context</span></code>) – SSL context to use for SSL connections</p></li>
-<li><p><strong>kwargs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code>) – Additional arguments for the RPC provider</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.protocol.client.connector.Connector</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Connection to the vAPI provider</p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="section" id="vmware-vapi-lib-connect-module">
+<h2>vmware.vapi.lib.connect module<a class="headerlink" href="#vmware-vapi-lib-connect-module" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -310,7 +199,7 @@ Valid values are ‘json’.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>

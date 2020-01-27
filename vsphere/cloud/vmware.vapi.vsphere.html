@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>vmware.vapi.vsphere package &mdash; vSphere Automation SDK for Python. 6.9.1 documentation</title>
+  <title>vmware.vapi.vsphere package &mdash; vSphere Automation SDK for Python. 7.0.0.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                6.9.1
+                7.0.0.0
               </div>
             
           
@@ -173,83 +173,8 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-vmware.vapi.vsphere.client">
-<span id="vmware-vapi-vsphere-client-module"></span><h2>vmware.vapi.vsphere.client module<a class="headerlink" href="#module-vmware.vapi.vsphere.client" title="Permalink to this headline">¶</a></h2>
-<p>vSphere Client</p>
-<dl class="class">
-<dt id="vmware.vapi.vsphere.client.StubFactory">
-<em class="property">class </em><code class="sig-prename descclassname">vmware.vapi.vsphere.client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vsphere.client.StubFactory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
-<p>Initialize StubFactoryBase</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="class">
-<dt id="vmware.vapi.vsphere.client.VsphereClient">
-<em class="property">class </em><code class="sig-prename descclassname">vmware.vapi.vsphere.client.</code><code class="sig-name descname">VsphereClient</code><span class="sig-paren">(</span><em class="sig-param">session</em>, <em class="sig-param">server</em>, <em class="sig-param">username</em>, <em class="sig-param">password</em>, <em class="sig-param">bearer_token</em>, <em class="sig-param">hok_token</em>, <em class="sig-param">private_key</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vsphere.client.VsphereClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.ApiClient</span></code></p>
-<p>vSphere Client class that provides access to stubs for all services in the
-vSphere API</p>
-<p>Initialize VsphereClient by creating a parent stub factory instance
-of all vSphere components.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code>) – Requests HTTP session instance. If not specified,</p>
-</dd>
-</dl>
-<p>then one is automatically created and used
-:type  server: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param server: vCenter host name or IP address
-:type  username: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param username: Name of the user
-:type  password: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param password: Password of the user
-:type  bearer_token: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param bearer_token: SAML Bearer Token
-:type  hok_token: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param hok_token: SAML Hok Token
-:type  private_key: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>
-:param private_key: Absolute file path of the private key of the user</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware.vapi.vsphere.client.create_vsphere_client">
-<code class="sig-prename descclassname">vmware.vapi.vsphere.client.</code><code class="sig-name descname">create_vsphere_client</code><span class="sig-paren">(</span><em class="sig-param">server</em>, <em class="sig-param">username=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">bearer_token=None</em>, <em class="sig-param">hok_token=None</em>, <em class="sig-param">private_key=None</em>, <em class="sig-param">session=None</em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vsphere.client.create_vsphere_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper method to create an instance of the vSphere API client.
-Please provide one of the following options to authenticate:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>username and password,</p></li>
-<li><p>bearer_token,</p></li>
-<li><p>hok_token and private_key</p></li>
-</ul>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>server</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – vCenter host name or IP address</p></li>
-<li><p><strong>username</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the user</p></li>
-<li><p><strong>password</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Password of the user</p></li>
-<li><p><strong>bearer_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – SAML Bearer Token</p></li>
-<li><p><strong>hok_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – SAML Hok Token</p></li>
-<li><p><strong>private_key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Absolute file path of the private key of the user</p></li>
-<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Requests HTTP session instance. If not specified, then one
-is automatically created and used</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.vmc.client.VsphereClient</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Vsphere Client instance</p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="section" id="vmware-vapi-vsphere-client-module">
+<h2>vmware.vapi.vsphere.client module<a class="headerlink" href="#vmware-vapi-vsphere-client-module" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -271,7 +196,7 @@ is automatically created and used</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>

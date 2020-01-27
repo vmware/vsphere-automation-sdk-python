@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vcenter.compute.policies.capabilities package &mdash; vSphere Automation SDK for Python. 6.9.1 documentation</title>
+  <title>com.vmware.vcenter.compute.policies.capabilities package &mdash; vSphere Automation SDK for Python. 7.0.0.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                6.9.1
+                7.0.0.0
               </div>
             
           
@@ -96,6 +96,7 @@
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.html#module-com.vmware.content_client">com.vmware.content_client module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.html#module-com.vmware.vapi_client">com.vmware.vapi_client module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="com.vmware.html#module-com.vmware.vcenter_client">com.vmware.vcenter_client module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="com.vmware.html#module-com.vmware.vstats_client">com.vmware.vstats_client module</a></li>
 </ul>
 </li>
 </ul>
@@ -182,21 +183,30 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client">
-<span id="com-vmware-vcenter-compute-policies-capabilities-disable-drs-vmotion-client-module"></span><h2>com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client module<a class="headerlink" href="#module-com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client">
+<span id="com-vmware-vcenter-compute-policies-capabilities-cluster-scale-in-ignore-vm-capabilities-client-module"></span><h2>com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client module<a class="headerlink" href="#module-com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client" title="Permalink to this headline">¶</a></h2>
 <p>The
-<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client</span></code>
-module provides classes for the Disable DRS vMotion capability offered by
-vCenter.</p>
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client</span></code>
+module provides classes for the Scale-In Ignore Virtual Machine Capabilities
+capability offered by vCenter in VMware Cloud on AWS. Usage beyond VMware Cloud
+on AWS is not supported.</p>
 <dl class="class">
-<dt id="com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.CreateSpec">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
+<dt id="com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.CreateSpec">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">vm_capabilities=None</em>, <em class="sig-param">capability='com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities'</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
-<p>The <code class="docutils literal notranslate"><span class="pre">CreateSpec</span></code> class contains information used to create a new
-DisableDrsVmotion policy, see
-<a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.create" title="com.vmware.vcenter.compute_client.Policies.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.create()</span></code></a>. <strong>Warning:</strong>
-This class is available as technical preview. It may be changed in a future
-release.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">CreateSpec</span></code> class contains information used to create a new policy
+to ignore virtual machine capabilities when scaling-in a cluster, see
+<a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.create" title="com.vmware.vcenter.compute_client.Policies.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.create()</span></code></a>. When considering
+scaling-in a cluster, policies that have been created with one of the
+listed <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_capabilities</span></code> are ignored for virtual machines
+that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_tag</span></code> in VMware Cloud on
+AWS. Usage beyond VMware Cloud on AWS is not supported. <strong>Warning:</strong> This
+class is available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature. Since this
+can change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production environments.
+Some Technology Preview APIs might only be applicable to specific
+environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -205,36 +215,95 @@ names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
-Virtual machines with this tag will not be migrated away from the
-host on which they are powered on, except when the host is put into
-maintenance mode or failed over. <strong>Warning:</strong> This attribute is
-available as technical preview. It may be changed in a future
-release.
+<li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – When considering scaling-in a cluster, policies that have been
+created with one of the listed <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_capabilities</span></code>
+are ignored for virtual machines that have this tag. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
 a value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>.</p></li>
+<li><p><strong>vm_capabilities</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – When considering scaling-in a cluster, policies that have been
+created with one of these capabilities are ignored for virtual
+machines that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_tag</span></code>.
+This <code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code> must contain at least one item. Currently, the
+only allowed capability identifier is
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client</span></code>.
+In the future, other capabilities may be specified. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must contain identifiers for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability:VirtualMachine</span></code>.
+When methods return a value of this class as a return value, the
+attribute will contain identifiers for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability:VirtualMachine</span></code>.</p></li>
+<li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
+return a value of this class as a return value, the attribute will
+be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. The name needs to be unique within this vCenter
-server. <strong>Warning:</strong> This attribute is available as technical
-preview. It may be changed in a future release.</p></li>
+server. <strong>Warning:</strong> This attribute is available as Technology
+Preview. These are early access APIs provided to test, automate and
+provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some
+Technology Preview APIs might only be applicable to specific
+environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.CreateSpec.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.CreateSpec.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
-<dt id="com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.Info">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.</code><code class="sig-name descname">Info</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">capability=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.Info" title="Permalink to this definition">¶</a></dt>
+<dt id="com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.Info">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.</code><code class="sig-name descname">Info</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">vm_capabilities=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">capability=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.Info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
-<p>The <code class="docutils literal notranslate"><span class="pre">Info</span></code> class contains information about a DisableDrsVmotion policy,
-see <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.get" title="com.vmware.vcenter.compute_client.Policies.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.get()</span></code></a>. <strong>Warning:</strong>
-This class is available as technical preview. It may be changed in a future
-release.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Info</span></code> class contains information about a policy to ignore virtual
+machine capabilities when scaling-in a cluster, see
+<a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.get" title="com.vmware.vcenter.compute_client.Policies.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.get()</span></code></a>. When considering
+scaling-in a cluster, policies that have been created with one of the
+listed <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_capabilities</span></code> are ignored for virtual machines that
+have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_tag</span></code> in VMware Cloud on AWS. Usage
+beyond VMware Cloud on AWS is not supported. <strong>Warning:</strong> This class is
+available as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some Technology
+Preview APIs might only be applicable to specific environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -243,25 +312,57 @@ names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
-Virtual machines with this tag will not be migrated away from the
-host on which they are powered on, except when the host is put into
-maintenance mode or failed over. <strong>Warning:</strong> This attribute is
-available as technical preview. It may be changed in a future
-release.
+<li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – When considering scaling-in a cluster, policies that have been
+created with one of the listed <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_capabilities</span></code> are
+ignored for virtual machines that have this tag. <strong>Warning:</strong> This
+attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
 a value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>.</p></li>
+<li><p><strong>vm_capabilities</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – When considering scaling-in a cluster, policies that have been
+created with one of these capabilities are ignored for virtual
+machines that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_tag</span></code>.
+<strong>Warning:</strong> This attribute is available as Technology Preview.
+These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback,
+VMware does not guarantee backwards compatibility and recommends
+against using them in production environments. Some Technology
+Preview APIs might only be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must contain identifiers for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability:VirtualMachine</span></code>.
+When methods return a value of this class as a return value, the
+attribute will contain identifiers for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability:VirtualMachine</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.</p></li>
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
-This attribute is available as technical preview. It may be changed
-in a future release.
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
@@ -271,6 +372,184 @@ be an identifier for the resource type:
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.Info.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.Info.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.StubFactory">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.cluster_scale_in_ignore_vm_capabilities_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
+<p>Initialize StubFactoryBase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client">
+<span id="com-vmware-vcenter-compute-policies-capabilities-disable-drs-vmotion-client-module"></span><h2>com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client module<a class="headerlink" href="#module-com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client" title="Permalink to this headline">¶</a></h2>
+<p>The
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client</span></code>
+module provides classes for the Disable DRS vMotion capability offered by
+vCenter in VMware Cloud on AWS. Usage beyond VMware Cloud on AWS is not
+supported.</p>
+<dl class="class">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.CreateSpec">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">capability='com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion'</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">CreateSpec</span></code> class contains information used to create a new
+DisableDrsVmotion policy, see
+<a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.create" title="com.vmware.vcenter.compute_client.Policies.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.create()</span></code></a>, in VMware Cloud
+on AWS. Usage beyond VMware Cloud on AWS is not supported. <strong>Warning:</strong>
+This class is available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature. Since this
+can change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production environments.
+Some Technology Preview APIs might only be applicable to specific
+environments.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
+Virtual machines with this tag will not be migrated away from the
+host on which they are powered on, except when the host is put into
+maintenance mode or failed over. <strong>Warning:</strong> This attribute is
+available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature.
+Since this can change based on feedback, VMware does not guarantee
+backwards compatibility and recommends against using them in
+production environments. Some Technology Preview APIs might only be
+applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
+a value of this class as a return value, the attribute will be an
+identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>.</p></li>
+<li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
+return a value of this class as a return value, the attribute will
+be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. The name needs to be unique within this vCenter
+server. <strong>Warning:</strong> This attribute is available as Technology
+Preview. These are early access APIs provided to test, automate and
+provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some
+Technology Preview APIs might only be applicable to specific
+environments.</p></li>
+<li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.CreateSpec.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.CreateSpec.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.Info">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.</code><code class="sig-name descname">Info</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">capability=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Info</span></code> class contains information about a DisableDrsVmotion policy,
+see <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.get" title="com.vmware.vcenter.compute_client.Policies.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.get()</span></code></a> in VMware Cloud
+on AWS. Usage beyond VMware Cloud on AWS is not supported. <strong>Warning:</strong>
+This class is available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature. Since this
+can change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production environments.
+Some Technology Preview APIs might only be applicable to specific
+environments.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The arguments are used to initialize data attributes with the same
+names.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
+Virtual machines with this tag will not be migrated away from the
+host on which they are powered on, except when the host is put into
+maintenance mode or failed over. <strong>Warning:</strong> This attribute is
+available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature.
+Since this can change based on feedback, VMware does not guarantee
+backwards compatibility and recommends against using them in
+production environments. Some Technology Preview APIs might only be
+applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
+a value of this class as a return value, the attribute will be an
+identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. <strong>Warning:</strong> This attribute is available as
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
+<li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
+<li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
+return a value of this class as a return value, the attribute will
+be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.Info.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.disable_drs_vmotion_client.Info.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -290,18 +569,24 @@ be an identifier for the resource type:
 <span id="com-vmware-vcenter-compute-policies-capabilities-vm-host-affinity-client-module"></span><h2>com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client module<a class="headerlink" href="#module-com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client" title="Permalink to this headline">¶</a></h2>
 <p>The
 <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client</span></code>
-module provides classes for the VM Host affinity capability offered by vCenter.</p>
+module provides classes for the VM Host affinity capability offered by vCenter
+in VMware Cloud on AWS. Usage beyond VMware Cloud on AWS is not supported.</p>
 <dl class="class">
 <dt id="com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.CreateSpec">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">host_tag=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">host_tag=None</em>, <em class="sig-param">capability='com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity'</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">CreateSpec</span></code> class contains information used to create a new virtual
 machine to host affinity policy, see
 <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.create" title="com.vmware.vcenter.compute_client.Policies.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.create()</span></code></a>. Virtual machines
 that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_tag</span></code> will be affine to
-hosts that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.host_tag</span></code>.
-<strong>Warning:</strong> This class is available as technical preview. It may be
-changed in a future release.</p>
+hosts that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.host_tag</span></code> in VMware
+Cloud on AWS. Usage beyond VMware Cloud on AWS is not supported.
+<strong>Warning:</strong> This class is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the feature.
+Since this can change based on feedback, VMware does not guarantee
+backwards compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable to
+specific environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -313,8 +598,12 @@ names.</p>
 <li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
 Virtual machines with this tag will be affine to the hosts
 indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.host_tag</span></code>. <strong>Warning:</strong> This
-attribute is available as technical preview. It may be changed in a
-future release.
+attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
@@ -324,21 +613,55 @@ identifier for the resource type:
 <li><p><strong>host_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a host. Virtual
 machines indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_tag</span></code> will be affine to
 hosts with this tag. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:HostSystem</span></code>. When methods return a
 value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:HostSystem</span></code>.</p></li>
+<li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
+return a value of this class as a return value, the attribute will
+be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. The name needs to be unique within this vCenter
-server. <strong>Warning:</strong> This attribute is available as technical
-preview. It may be changed in a future release.</p></li>
+server. <strong>Warning:</strong> This attribute is available as Technology
+Preview. These are early access APIs provided to test, automate and
+provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some
+Technology Preview APIs might only be applicable to specific
+environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.CreateSpec.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.CreateSpec.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -349,9 +672,14 @@ as technical preview. It may be changed in a future release.</p></li>
 affinity policy, see
 <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.get" title="com.vmware.vcenter.compute_client.Policies.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.get()</span></code></a>. Virtual machines
 that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_tag</span></code> will be affine to hosts
-that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.host_tag</span></code>. <strong>Warning:</strong> This
-class is available as technical preview. It may be changed in a future
-release.</p>
+that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.host_tag</span></code> in VMware Cloud on
+AWS. Usage beyond VMware Cloud on AWS is not supported. <strong>Warning:</strong> This
+class is available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature. Since this
+can change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production environments.
+Some Technology Preview APIs might only be applicable to specific
+environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -363,8 +691,12 @@ names.</p>
 <li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
 Virtual machines with this tag will be affine to the hosts
 indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.host_tag</span></code>. <strong>Warning:</strong> This attribute is
-available as technical preview. It may be changed in a future
-release.
+available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature.
+Since this can change based on feedback, VMware does not guarantee
+backwards compatibility and recommends against using them in
+production environments. Some Technology Preview APIs might only be
+applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
@@ -374,7 +706,12 @@ identifier for the resource type:
 <li><p><strong>host_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a host. Virtual
 machines indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_tag</span></code> will be affine to hosts
 with this tag. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:HostSystem</span></code>. When methods return a
@@ -382,12 +719,26 @@ value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:HostSystem</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.</p></li>
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
-This attribute is available as technical preview. It may be changed
-in a future release.
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
@@ -397,6 +748,12 @@ be an identifier for the resource type:
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.Info.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_host_affinity_client.Info.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -417,18 +774,24 @@ be an identifier for the resource type:
 <p>The
 <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client</span></code>
 module provides classes for the VM Host anti-affinity capability offered by
-vCenter.</p>
+vCenter in VMware Cloud on AWS. Usage beyond VMware Cloud on AWS is not
+supported.</p>
 <dl class="class">
 <dt id="com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.CreateSpec">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">host_tag=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">host_tag=None</em>, <em class="sig-param">capability='com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity'</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">CreateSpec</span></code> class contains information used to create a new virtual
 machine to host anti-affinity policy, see
 <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.create" title="com.vmware.vcenter.compute_client.Policies.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.create()</span></code></a>. Virtual machines
 that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_tag</span></code> will be
 anti-affine to hosts that have the tag indicated by
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.host_tag</span></code>. <strong>Warning:</strong> This class is available as
-technical preview. It may be changed in a future release.</p>
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.host_tag</span></code> in VMware Cloud on AWS. Usage beyond VMware
+Cloud on AWS is not supported. <strong>Warning:</strong> This class is available as
+Technology Preview. These are early access APIs provided to test, automate
+and provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and recommends
+against using them in production environments. Some Technology Preview APIs
+might only be applicable to specific environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -440,8 +803,12 @@ names.</p>
 <li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
 Virtual machines with this tag will be anti-affine to the hosts
 indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.host_tag</span></code>. <strong>Warning:</strong> This
-attribute is available as technical preview. It may be changed in a
-future release.
+attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
@@ -451,21 +818,55 @@ identifier for the resource type:
 <li><p><strong>host_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a host. Virtual
 machines indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_tag</span></code> will be anti-affine
 to hosts with this tag. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:HostSystem</span></code>. When methods return a
 value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:HostSystem</span></code>.</p></li>
+<li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
+return a value of this class as a return value, the attribute will
+be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. The name needs to be unique within this vCenter
-server. <strong>Warning:</strong> This attribute is available as technical
-preview. It may be changed in a future release.</p></li>
+server. <strong>Warning:</strong> This attribute is available as Technology
+Preview. These are early access APIs provided to test, automate and
+provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some
+Technology Preview APIs might only be applicable to specific
+environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.CreateSpec.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.CreateSpec.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -476,9 +877,14 @@ as technical preview. It may be changed in a future release.</p></li>
 anti-affinity policy, see
 <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.get" title="com.vmware.vcenter.compute_client.Policies.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.get()</span></code></a>. Virtual machines
 that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_tag</span></code> will be anti-affine to
-hosts that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.host_tag</span></code>. <strong>Warning:</strong>
-This class is available as technical preview. It may be changed in a future
-release.</p>
+hosts that have the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.host_tag</span></code> in VMware Cloud
+on AWS. Usage beyond VMware Cloud on AWS is not supported. <strong>Warning:</strong>
+This class is available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature. Since this
+can change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production environments.
+Some Technology Preview APIs might only be applicable to specific
+environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -490,8 +896,12 @@ names.</p>
 <li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
 Virtual machines with this tag will be anti-affine to the hosts
 indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.host_tag</span></code>. <strong>Warning:</strong> This attribute is
-available as technical preview. It may be changed in a future
-release.
+available as Technology Preview. These are early access APIs
+provided to test, automate and provide feedback on the feature.
+Since this can change based on feedback, VMware does not guarantee
+backwards compatibility and recommends against using them in
+production environments. Some Technology Preview APIs might only be
+applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
@@ -501,7 +911,12 @@ identifier for the resource type:
 <li><p><strong>host_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a host. Virtual
 machines indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_tag</span></code> will be anti-affine to
 hosts with this tag. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:HostSystem</span></code>. When methods return a
@@ -509,12 +924,26 @@ value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:HostSystem</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.</p></li>
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
-This attribute is available as technical preview. It may be changed
-in a future release.
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
@@ -524,6 +953,12 @@ be an identifier for the resource type:
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.Info.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_host_anti_affinity_client.Info.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -542,17 +977,23 @@ be an identifier for the resource type:
 <div class="section" id="module-com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client">
 <span id="com-vmware-vcenter-compute-policies-capabilities-vm-vm-affinity-client-module"></span><h2>com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client module<a class="headerlink" href="#module-com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client</span></code>
-module provides classes for the VM-VM affinity capability offered by vCenter.</p>
+module provides classes for the VM-VM affinity capability offered by vCenter in
+VMware Cloud on AWS. Usage beyond VMware Cloud on AWS is not supported.</p>
 <dl class="class">
 <dt id="com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.CreateSpec">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">capability='com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity'</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">CreateSpec</span></code> class contains information used to create a new VM-VM
 affinity policy, see
 <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.create" title="com.vmware.vcenter.compute_client.Policies.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.create()</span></code></a>. All virtual
 machines that share the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_tag</span></code> will be
-affined to each other. <strong>Warning:</strong> This class is available as technical
-preview. It may be changed in a future release.</p>
+affined to each other in VMware Cloud on AWS. Usage beyond VMware Cloud on
+AWS is not supported. <strong>Warning:</strong> This class is available as Technology
+Preview. These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback, VMware
+does not guarantee backwards compatibility and recommends against using
+them in production environments. Some Technology Preview APIs might only be
+applicable to specific environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -563,22 +1004,55 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
 Virtual machines with this tag will be affined to each other.
-<strong>Warning:</strong> This attribute is available as technical preview. It
-may be changed in a future release.
+<strong>Warning:</strong> This attribute is available as Technology Preview.
+These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback,
+VMware does not guarantee backwards compatibility and recommends
+against using them in production environments. Some Technology
+Preview APIs might only be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
 a value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>.</p></li>
+<li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
+return a value of this class as a return value, the attribute will
+be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. The name needs to be unique within this vCenter
-server. <strong>Warning:</strong> This attribute is available as technical
-preview. It may be changed in a future release.</p></li>
+server. <strong>Warning:</strong> This attribute is available as Technology
+Preview. These are early access APIs provided to test, automate and
+provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some
+Technology Preview APIs might only be applicable to specific
+environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.CreateSpec.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.CreateSpec.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -588,8 +1062,13 @@ as technical preview. It may be changed in a future release.</p></li>
 <p>The <code class="docutils literal notranslate"><span class="pre">Info</span></code> class contains information about a VM-VM affinity policy, see
 <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.get" title="com.vmware.vcenter.compute_client.Policies.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.get()</span></code></a>. All virtual
 machines that share the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_tag</span></code> are affined to
-each other. <strong>Warning:</strong> This class is available as technical preview. It
-may be changed in a future release.</p>
+each other in VMware Cloud on AWS. Usage beyond VMware Cloud on AWS is not
+supported. <strong>Warning:</strong> This class is available as Technology Preview.
+These are early access APIs provided to test, automate and provide feedback
+on the feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them in
+production environments. Some Technology Preview APIs might only be
+applicable to specific environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -600,8 +1079,12 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
 Virtual machines with this tag will be affined to each other.
-<strong>Warning:</strong> This attribute is available as technical preview. It
-may be changed in a future release.
+<strong>Warning:</strong> This attribute is available as Technology Preview.
+These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback,
+VMware does not guarantee backwards compatibility and recommends
+against using them in production environments. Some Technology
+Preview APIs might only be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
@@ -609,12 +1092,26 @@ a value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.</p></li>
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
-This attribute is available as technical preview. It may be changed
-in a future release.
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
@@ -624,6 +1121,12 @@ be an identifier for the resource type:
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.Info.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_vm_affinity_client.Info.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -644,17 +1147,23 @@ be an identifier for the resource type:
 <p>The
 <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client</span></code>
 module provides classes for the VM VM anti-affinity capability offered by
-vCenter.</p>
+vCenter in VMware Cloud on AWS. Usage beyond VMware Cloud on AWS is not
+supported.</p>
 <dl class="class">
 <dt id="com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.CreateSpec">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.</code><code class="sig-name descname">CreateSpec</code><span class="sig-paren">(</span><em class="sig-param">vm_tag=None</em>, <em class="sig-param">capability='com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity'</em>, <em class="sig-param">name=None</em>, <em class="sig-param">description=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.CreateSpec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.struct.VapiStruct</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">CreateSpec</span></code> class contains information used to create a new VM-VM
 anti-affinity policy, see
 <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.create" title="com.vmware.vcenter.compute_client.Policies.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.create()</span></code></a>. All virtual
 machines that share the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">CreateSpec.vm_tag</span></code> will be
-anti-affine to each other. <strong>Warning:</strong> This class is available as
-technical preview. It may be changed in a future release.</p>
+anti-affine to each other in VMware Cloud on AWS. Usage beyond VMware Cloud
+on AWS is not supported. <strong>Warning:</strong> This class is available as Technology
+Preview. These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback, VMware
+does not guarantee backwards compatibility and recommends against using
+them in production environments. Some Technology Preview APIs might only be
+applicable to specific environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -665,22 +1174,55 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
 Virtual machines with this tag will be anti-affine to each other.
-<strong>Warning:</strong> This attribute is available as technical preview. It
-may be changed in a future release.
+<strong>Warning:</strong> This attribute is available as Technology Preview.
+These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback,
+VMware does not guarantee backwards compatibility and recommends
+against using them in production environments. Some Technology
+Preview APIs might only be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
 a value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>.</p></li>
+<li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
+When clients pass a value of this class as a parameter, the
+attribute must be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
+return a value of this class as a return value, the attribute will
+be an identifier for the resource type:
+<code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. The name needs to be unique within this vCenter
-server. <strong>Warning:</strong> This attribute is available as technical
-preview. It may be changed in a future release.</p></li>
+server. <strong>Warning:</strong> This attribute is available as Technology
+Preview. These are early access APIs provided to test, automate and
+provide feedback on the feature. Since this can change based on
+feedback, VMware does not guarantee backwards compatibility and
+recommends against using them in production environments. Some
+Technology Preview APIs might only be applicable to specific
+environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.CreateSpec.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.CreateSpec.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -690,8 +1232,13 @@ as technical preview. It may be changed in a future release.</p></li>
 <p>The <code class="docutils literal notranslate"><span class="pre">Info</span></code> class contains information about a VM-VM anti-affinity policy,
 see <a class="reference internal" href="com.vmware.vcenter.html#com.vmware.vcenter.compute_client.Policies.get" title="com.vmware.vcenter.compute_client.Policies.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute_client.Policies.get()</span></code></a>. All virtual
 machines that share the tag indicated by <code class="xref py py-attr docutils literal notranslate"><span class="pre">Info.vm_tag</span></code> are
-anti-affine to each other. <strong>Warning:</strong> This class is available as
-technical preview. It may be changed in a future release.</p>
+anti-affine to each other in VMware Cloud on AWS. Usage beyond VMware Cloud
+on AWS is not supported. <strong>Warning:</strong> This class is available as Technology
+Preview. These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback, VMware
+does not guarantee backwards compatibility and recommends against using
+them in production environments. Some Technology Preview APIs might only be
+applicable to specific environments.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The arguments are used to initialize data attributes with the same
@@ -702,8 +1249,12 @@ names.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vm_tag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of a tag that can be associated with a virtual machine.
 Virtual machines with this tag are anti-affine to each other.
-<strong>Warning:</strong> This attribute is available as technical preview. It
-may be changed in a future release.
+<strong>Warning:</strong> This attribute is available as Technology Preview.
+These are early access APIs provided to test, automate and provide
+feedback on the feature. Since this can change based on feedback,
+VMware does not guarantee backwards compatibility and recommends
+against using them in production environments. Some Technology
+Preview APIs might only be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>. When methods return
@@ -711,12 +1262,26 @@ a value of this class as a return value, the attribute will be an
 identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.cis.tagging.Tag:VirtualMachine</span></code>.</p></li>
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the policy. <strong>Warning:</strong> This attribute is available as
-technical preview. It may be changed in a future release.</p></li>
+Technology Preview. These are early access APIs provided to test,
+automate and provide feedback on the feature. Since this can change
+based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>description</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Description of the policy. <strong>Warning:</strong> This attribute is available
-as technical preview. It may be changed in a future release.</p></li>
+as Technology Preview. These are early access APIs provided to
+test, automate and provide feedback on the feature. Since this can
+change based on feedback, VMware does not guarantee backwards
+compatibility and recommends against using them in production
+environments. Some Technology Preview APIs might only be applicable
+to specific environments.</p></li>
 <li><p><strong>capability</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Identifier of the capability this policy is based on. <strong>Warning:</strong>
-This attribute is available as technical preview. It may be changed
-in a future release.
+This attribute is available as Technology Preview. These are early
+access APIs provided to test, automate and provide feedback on the
+feature. Since this can change based on feedback, VMware does not
+guarantee backwards compatibility and recommends against using them
+in production environments. Some Technology Preview APIs might only
+be applicable to specific environments.
 When clients pass a value of this class as a parameter, the
 attribute must be an identifier for the resource type:
 <code class="docutils literal notranslate"><span class="pre">com.vmware.vcenter.compute.policies.Capability</span></code>. When methods
@@ -726,6 +1291,12 @@ be an identifier for the resource type:
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.Info.capability">
+<em class="property">property </em><code class="sig-name descname">capability</code><a class="headerlink" href="#com.vmware.vcenter.compute.policies.capabilities.vm_vm_anti_affinity_client.Info.capability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the discriminator value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -763,7 +1334,7 @@ be an identifier for the resource type:
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>
