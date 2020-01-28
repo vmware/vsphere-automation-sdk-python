@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.nsx.vpn.ipsec package &mdash; NSX-T SDK 2.3.0.0.3 documentation</title>
+  <title>com.vmware.nsx.vpn.ipsec package &mdash; NSX-T SDK 2.5.1.0.1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.3.0.0.3
+                2.5.1.0.1
               </div>
             
           
@@ -179,8 +179,66 @@
 <div class="section" id="module-com.vmware.nsx.vpn.ipsec.sessions_client">
 <span id="com-vmware-nsx-vpn-ipsec-sessions-client-module"></span><h2>com.vmware.nsx.vpn.ipsec.sessions_client module<a class="headerlink" href="#module-com.vmware.nsx.vpn.ipsec.sessions_client" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="com.vmware.nsx.vpn.ipsec.sessions_client.State">
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="sig-name descname">State</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="com.vmware.nsx.vpn.ipsec.sessions_client.State.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">ipsec_vpn_session_id</em>, <em class="sig-param">barrier_id=None</em>, <em class="sig-param">request_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.State.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return realized state information of a ipsec vpn session. Any
+configuration update that affects the ipsec vpn session can use this
+API to get its realized state by passing a request_id returned by the
+configuration change operation. e.g. Update configuration of ipsec vpn
+session, service, endpoints, profiles, etc. It will return a service
+disabled error, if the ipsec vpn service associated with the session is
+disabled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipsec_vpn_session_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
+<li><p><strong>barrier_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (optional)</p></li>
+<li><p><strong>request_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Realization request ID (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.IPSecVPNSessionState" title="com.vmware.nsx.model_client.IPSecVPNSessionState"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.IPSecVPNSessionState</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.nsx.model.IPSecVPNSessionState</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+Service Unavailable</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Bad Request, Precondition Failed</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+Internal Server Error</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Not Found</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Statistics">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="descname">Statistics</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="sig-name descname">Statistics</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -189,19 +247,19 @@
 </dl>
 <dl class="attribute">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.GET_SOURCE_CACHED">
-<code class="descname">GET_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.GET_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">GET_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.GET_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.get" title="com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">Statistics.get()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.GET_SOURCE_REALTIME">
-<code class="descname">GET_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.GET_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">GET_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.GET_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.get" title="com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">Statistics.get()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>session_id</em>, <em>source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">session_id</em>, <em class="sig-param">source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get statistics of a vpn session across all tunnels and IKE session.
 Query parameter “source=realtime” is the only supported source.</p>
 <dl class="field-list simple">
@@ -242,7 +300,7 @@ Not Found</p>
 
 <dl class="method">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><em>session_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.reset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><em class="sig-param">session_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Statistics.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the statistics of the given VPN session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -275,7 +333,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Status">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="descname">Status</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="sig-name descname">Status</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -284,19 +342,19 @@ Not Found</p>
 </dl>
 <dl class="attribute">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Status.GET_SOURCE_CACHED">
-<code class="descname">GET_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status.GET_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">GET_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status.GET_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status.get" title="com.vmware.nsx.vpn.ipsec.sessions_client.Status.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">Status.get()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Status.GET_SOURCE_REALTIME">
-<code class="descname">GET_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status.GET_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">GET_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status.GET_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status.get" title="com.vmware.nsx.vpn.ipsec.sessions_client.Status.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">Status.get()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Status.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>session_id</em>, <em>source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">session_id</em>, <em class="sig-param">source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Status.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>List status of IPSec session. Query parameter source supports both
 realtime and cached mode.</p>
 <dl class="field-list simple">
@@ -339,7 +397,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.StubFactory">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
 <p>Initialize StubFactoryBase</p>
 <dl class="field-list simple">
@@ -351,7 +409,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Summary">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="descname">Summary</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.vpn.ipsec.sessions_client.</code><code class="sig-name descname">Summary</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -360,19 +418,19 @@ Not Found</p>
 </dl>
 <dl class="attribute">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Summary.GET_SOURCE_CACHED">
-<code class="descname">GET_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary.GET_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">GET_SOURCE_CACHED</code><em class="property"> = 'cached'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary.GET_SOURCE_CACHED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary.get" title="com.vmware.nsx.vpn.ipsec.sessions_client.Summary.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">Summary.get()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Summary.GET_SOURCE_REALTIME">
-<code class="descname">GET_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary.GET_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">GET_SOURCE_REALTIME</code><em class="property"> = 'realtime'</em><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary.GET_SOURCE_REALTIME" title="Permalink to this definition">¶</a></dt>
 <dd><p>Possible value for <code class="docutils literal notranslate"><span class="pre">source</span></code> of method <a class="reference internal" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary.get" title="com.vmware.nsx.vpn.ipsec.sessions_client.Summary.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">Summary.get()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="com.vmware.nsx.vpn.ipsec.sessions_client.Summary.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>site_id=None</em>, <em>source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">site_id=None</em>, <em class="sig-param">source=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.vpn.ipsec.sessions_client.Summary.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>VPN session summary gets summary per vpn sessions and IKE session.
 Query parameter source supports only cached mode.</p>
 <dl class="field-list simple">
@@ -436,7 +494,7 @@ Not Found</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>

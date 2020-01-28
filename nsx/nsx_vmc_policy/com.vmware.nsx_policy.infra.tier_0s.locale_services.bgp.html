@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp package &mdash; NSX-T Policy API 2.3.0.0.3 documentation</title>
+  <title>com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp package &mdash; NSX-T Policy API 2.5.1.0.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context package" href="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context.html" />
+    <link rel="next" title="com.vmware.nsx_policy.infra.tier_0s.locale_services.ipsec_vpn_services package" href="com.vmware.nsx_policy.infra.tier_0s.locale_services.ipsec_vpn_services.html" />
     <link rel="prev" title="com.vmware.nsx_policy.infra.tier_0s.locale_services package" href="com.vmware.nsx_policy.infra.tier_0s.locale_services.html" /> 
 </head>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.3.0.0.3
+                2.5.1.0.1
               </div>
             
           
@@ -184,7 +184,7 @@
 <span id="com-vmware-nsx-policy-infra-tier-0s-locale-services-bgp-neighbors-client-module"></span><h2>com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client module<a class="headerlink" href="#module-com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.AdvertisedRoutes">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.</code><code class="descname">AdvertisedRoutes</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.AdvertisedRoutes" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.</code><code class="sig-name descname">AdvertisedRoutes</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.AdvertisedRoutes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -193,7 +193,7 @@
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.AdvertisedRoutes.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>tier0_id</em>, <em>locale_service_id</em>, <em>neighbor_id</em>, <em>cursor=None</em>, <em>enforcement_point_path=None</em>, <em>included_fields=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.AdvertisedRoutes.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">tier0_id</em>, <em class="sig-param">locale_service_id</em>, <em class="sig-param">neighbor_id</em>, <em class="sig-param">count=None</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">enforcement_point_path=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.AdvertisedRoutes.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns routes advertised by BGP neighbor from all edge transport nodes
 on which this neighbor is currently enabled. The query parameter
 “source=cached” is not supported.</p>
@@ -203,6 +203,7 @@ on which this neighbor is currently enabled. The query parameter
 <li><p><strong>tier0_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
 <li><p><strong>locale_service_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
 <li><p><strong>neighbor_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
+<li><p><strong>count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Number of routes to retrieve (optional, default to 1000)</p></li>
 <li><p><strong>cursor</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Opaque cursor to be used for getting next page of records (supplied
 by current result page) (optional)</p></li>
 <li><p><strong>enforcement_point_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Enforcement point path (optional)</p></li>
@@ -247,7 +248,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.Routes">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.</code><code class="descname">Routes</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.Routes" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.</code><code class="sig-name descname">Routes</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.Routes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -256,7 +257,7 @@ Not Found</p>
 </dl>
 <dl class="method">
 <dt id="com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.Routes.list">
-<code class="descname">list</code><span class="sig-paren">(</span><em>tier0_id</em>, <em>locale_service_id</em>, <em>neighbor_id</em>, <em>cursor=None</em>, <em>enforcement_point_path=None</em>, <em>included_fields=None</em>, <em>page_size=None</em>, <em>sort_ascending=None</em>, <em>sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.Routes.list" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param">tier0_id</em>, <em class="sig-param">locale_service_id</em>, <em class="sig-param">neighbor_id</em>, <em class="sig-param">count=None</em>, <em class="sig-param">cursor=None</em>, <em class="sig-param">enforcement_point_path=None</em>, <em class="sig-param">included_fields=None</em>, <em class="sig-param">page_size=None</em>, <em class="sig-param">sort_ascending=None</em>, <em class="sig-param">sort_by=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.Routes.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns routes learned by BGP neighbor from all edge nodes on which
 this neighbor is currently enabled.</p>
 <dl class="field-list simple">
@@ -265,6 +266,7 @@ this neighbor is currently enabled.</p>
 <li><p><strong>tier0_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
 <li><p><strong>locale_service_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
 <li><p><strong>neighbor_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
+<li><p><strong>count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Number of routes to retrieve (optional, default to 1000)</p></li>
 <li><p><strong>cursor</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Opaque cursor to be used for getting next page of records (supplied
 by current result page) (optional)</p></li>
 <li><p><strong>enforcement_point_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Enforcement point path (optional)</p></li>
@@ -309,7 +311,7 @@ Not Found</p>
 
 <dl class="class">
 <dt id="com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.StubFactory">
-<em class="property">class </em><code class="descclassname">com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param">stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx_policy.infra.tier_0s.locale_services.bgp.neighbors_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
 <p>Initialize StubFactoryBase</p>
 <dl class="field-list simple">
@@ -330,7 +332,7 @@ Not Found</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context.html" class="btn btn-neutral float-right" title="com.vmware.nsx_policy.infra.tier_0s.locale_services.l2vpn_context package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="com.vmware.nsx_policy.infra.tier_0s.locale_services.ipsec_vpn_services.html" class="btn btn-neutral float-right" title="com.vmware.nsx_policy.infra.tier_0s.locale_services.ipsec_vpn_services package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="com.vmware.nsx_policy.infra.tier_0s.locale_services.html" class="btn btn-neutral float-left" title="com.vmware.nsx_policy.infra.tier_0s.locale_services package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -342,7 +344,7 @@ Not Found</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, VMware, Inc.
+        &copy; Copyright 2020, VMware, Inc.
 
     </p>
   </div>
