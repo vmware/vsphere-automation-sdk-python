@@ -21,11 +21,11 @@ samples require the vSphere Management SDK packages (pyVmomi) to be installed on
 The samples have been developed to work with python 2.7.x and 3.3+
 
 ## Supported OnPrem vCenter Releases
-vCenter 6.0, 6.5 and 6.7. 
+vCenter 6.0, 6.5, 6.7 and 7.0. 
 Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
 
 ## Supported NSX-T Releases
-NSX-T 2.2, 2.3, 2.5, VMC 1.7
+NSX-T 2.2, 2.3, 3.0 and VMC 1.7, 1.8, 1.9
 
 ## VMware Cloud on AWS Support
 The VMware Cloud on AWS API and samples are currently available as a preview and are subject to change in the future.
@@ -47,7 +47,7 @@ Be sure to upgrade to the latest pip and setuptools.
 
 ```cmd
 pip install --upgrade pip setuptools
-pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
+pip install --upgrade git+https://gitlab.eng.vmware.com/vapi-sdk/vsphere-automation-sdk-python.git
 ```
 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2
@@ -214,16 +214,17 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 ### vSphere API Documentation
 
 * [VMware Cloud on AWS vSphere (latest version)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/cloud/index.html)
-* [vSphere 6.7.1 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.1/)
-* Previous releases:    [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0)    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1)       [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5)    [6.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.0) 
+* [vSphere 7.0 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.0.1/)
+* Previous releases:    [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0)    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1)       [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5)    [6.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.0)      [6.7.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.1/)
 
 ### VMware Cloud on AWS API Documentation
 
 * [VMware Cloud on AWS Console API](https://vmware.github.io/vsphere-automation-sdk-python/vmc/index.html)
 * [VMware Cloud on AWS Disaster Recovery as a Service (DRaaS) API](https://vmware.github.io/vsphere-automation-sdk-python/vmc-draas/index.html)
 
-### NSX API Documentation
 
+### NSX API Documentation
+* [NSX-T Data Center](https://docs.vmware.com/en/VMware-NSX-T-Data-Center/index.html)
 * [NSX Manager APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx/index.html) - API for managing NSX-T cluster and transport nodes for on-prem customers
 * [NSX Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy/index.html) - primary API for managing logical networks for on-prem customers
 * [NSX VMC Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_vmc_policy/index.html) - primary API for managing logical networks for VMC customers
@@ -240,8 +241,7 @@ Common issues you may run into while installing the sdk and running samples are 
 Board members are volunteers from the SDK community and VMware staff members, board members are not held responsible for any issues which may occur from running of samples from this repository.
 
 Members:
-* Tianhao He (VMware)
-* Pavan Bidkar (VMware)
+* Anusha Hegde (VMware)
 
 ## VMware Resources
 
