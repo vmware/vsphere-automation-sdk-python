@@ -47,7 +47,7 @@ Be sure to upgrade to the latest pip and setuptools.
 
 ```cmd
 pip install --upgrade pip setuptools
-pip install --upgrade git+https://gitlab.eng.vmware.com/vapi-sdk/vsphere-automation-sdk-python.git
+pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
 ```
 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2
