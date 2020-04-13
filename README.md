@@ -215,7 +215,7 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 * [VMware Cloud on AWS vSphere (latest version)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/cloud/index.html)
 * [vSphere 7.0 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.0.1/)
-* Previous releases:    [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0)    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1)       [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5)    [6.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.0)      [6.7.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.1/)
+* Previous releases:    [6.7.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.1/)    [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0)    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1)       [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5)    [6.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.0)
 
 ### VMware Cloud on AWS API Documentation
 
@@ -242,6 +242,7 @@ Board members are volunteers from the SDK community and VMware staff members, bo
 
 Members:
 * Anusha Hegde (VMware)
+* Pavan Bidkar (VMware)
 
 ## VMware Resources
 
