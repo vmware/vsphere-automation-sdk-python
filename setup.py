@@ -5,7 +5,7 @@ import os
 from setuptools import setup
 
 setup(name='vSphere Automation SDK',
-      version='1.27.0',
+      version='1.28.0',
       description='VMware vSphere Automation SDK for Python',
       url='https://github.com/vmware/vsphere-automation-sdk-python',
       author='VMware, Inc.',
@@ -23,6 +23,6 @@ setup(name='vSphere Automation SDK',
         'nsx-policy-python-sdk @ file://localhost/{}/lib/nsx-policy-python-sdk/nsx_policy_python_sdk-2.5.1.0.1.15419398-py2.py3-none-any.whl'.format(os.getcwd()),
         'nsx-vmc-policy-python-sdk @ file://localhost/{}/lib/nsx-vmc-policy-python-sdk/nsx_vmc_policy_python_sdk-2.5.1.0.1.15419398-py2.py3-none-any.whl'.format(os.getcwd()),
         'nsx-vmc-aws-integration-python-sdk @ file://localhost/{}/lib/nsx-vmc-aws-integration-python-sdk/nsx_vmc_aws_integration_python_sdk-2.5.1.0.1.15419398-py2.py3-none-any.whl'.format(os.getcwd()),
-        'vmc-draas-client-bindings @ file://localhost/{}/lib/vmc-draas-client-bindings/vmc_draas_client_bindings-1.7.0-py2.py3-none-any.whl'.format(os.getcwd()),
+        'vmc-draas-client-bindings @ file://localhost/{}/lib/vmc-draas-client-bindings/vmc_draas_client_bindings-1.8.0-py2.py3-none-any.whl'.format(os.getcwd()),
       ]
       )
