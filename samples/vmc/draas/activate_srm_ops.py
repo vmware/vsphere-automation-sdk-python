@@ -17,7 +17,6 @@ __author__ = 'VMware, Inc.'
 import time
 from samples.vmc.helpers.sample_cli import parser, optional_args
 
-from vmware.vapi.vmc.vmc_draas_client import create_vmc_draas_client
 from vmware.vapi.vmc.client import create_vmc_client
 
 
@@ -45,7 +44,6 @@ class SrmActivationOperations(object):
 
         self.cleanup = args.cleardata
         self.vmc_client = create_vmc_client(refresh_token=args.refresh_token)
-        self.draas_client = create_vmc_draas_client(refresh_token=args.refresh_token)
 
     def setup(self):
         # Check if the organization exists
@@ -61,8 +59,8 @@ class SrmActivationOperations(object):
 
     # Activate SRM Addon in a SDDC
     def activate_srm(self):
-        if self.draas_client.SiteRecovery.get(self.org_id, self.sddc_id).site_recovery_state != "ACTIVATED":
-            srm_activation = self.draas_client.SiteRecovery.post(self.org_id,
+        if self.vmc_client.draas.SiteRecovery.get(self.org_id, self.sddc_id).site_recovery_state != "ACTIVATED":
+            srm_activation = self.vmc_client.draas.SiteRecovery.post(self.org_id,
                                                                  self.sddc_id,
                                                                  activate_site_recovery_config=None)
             print("Activation of SRM {} : {}".format(srm_activation.status,
@@ -79,7 +77,7 @@ class SrmActivationOperations(object):
         timeout = time.time() + self.max_wait_time
         while time.time() < timeout:
             time.sleep(self.query_wait_time)
-            status = self.draas_client.SiteRecovery.get(self.org_id, self.sddc_id)
+            status = self.vmc_client.draas.SiteRecovery.get(self.org_id, self.sddc_id)
             if status.site_recovery_state in ['ACTIVATED', 'DEACTIVATED', 'CANCELLED', 'FAILED']:
                 print("Site Recovery (DRaaS) Activation Status in {} : {}"
                       .format(status.updated, status.site_recovery_state))
@@ -95,7 +93,7 @@ class SrmActivationOperations(object):
     def deactivate_srm(self):
         if self.cleanup:
             print("Deactivating SRM")
-            self.draas_client.SiteRecovery.delete(self.org_id,
+            self.vmc_client.draas.SiteRecovery.delete(self.org_id,
                                                   self.sddc_id,
                                                   force=True)
             self.query_activation_status()

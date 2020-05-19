@@ -17,7 +17,6 @@ __author__ = 'VMware, Inc.'
 import time
 from samples.vmc.helpers.sample_cli import parser, optional_args
 
-from vmware.vapi.vmc.vmc_draas_client import create_vmc_draas_client
 from vmware.vapi.vmc.client import create_vmc_client
 from com.vmware.vmc.draas.model_client import ProvisionSrmConfig
 
@@ -46,7 +45,6 @@ class DeployAdditionalNode(object):
 
         self.cleanup = args.cleardata
         self.vmc_client = create_vmc_client(refresh_token=args.refresh_token)
-        self.draas_client = create_vmc_draas_client(refresh_token=args.refresh_token)
 
     def setup(self):
         # Check if the organization exists
@@ -61,13 +59,13 @@ class DeployAdditionalNode(object):
                              format(self.sddc_id, self.org_id))
 
         # Check if the SRM Add-on is activated in VMC
-        if "ACTIVATED" != self.draas_client.SiteRecovery.get(self.org_id, self.sddc_id).site_recovery_state:
+        if "ACTIVATED" != self.vmc_client.draas.SiteRecovery.get(self.org_id, self.sddc_id).site_recovery_state:
             raise ValueError("DRaaS is not activated in SDDC with ID {} & org with ID {}".
                              format(self.sddc_id, self.org_id))
 
     # Deploy Additional SRM Node
     def deploy_srm(self):
-        deploy_srm = self.draas_client.SiteRecoverySrmNodes.post(
+        deploy_srm = self.vmc_client.draas.SiteRecoverySrmNodes.post(
             self.org_id,
             self.sddc_id,
             ProvisionSrmConfig(srm_extension_key_suffix=self.node_extension_id))
@@ -79,12 +77,12 @@ class DeployAdditionalNode(object):
        Hence querying the SRM activation status with resource_id and state for the status.
     '''
     def query_deployment(self, deployed_node_id):
-        srm_node_details = self.draas_client.SiteRecovery.get(self.org_id, self.sddc_id).srm_nodes
+        srm_node_details = self.vmc_client.draas.SiteRecovery.get(self.org_id, self.sddc_id).srm_nodes
         for node_index in range(len(srm_node_details)):
             if deployed_node_id == srm_node_details[node_index].id:
                 timeout = time.time() + self.max_wait_time
                 while time.time() < timeout:
-                    node_details = self.draas_client.SiteRecovery.get(self.org_id, self.sddc_id)
+                    node_details = self.vmc_client.draas.SiteRecovery.get(self.org_id, self.sddc_id)
                     time.sleep(self.wait_time)
                     if node_details.srm_nodes[node_index].state in ['READY', 'DELETING', 'CANCELLED', 'FAILED']:
                         print("Site Recovery (DRaaS) Additonal Node Deployment Status {} : {}"
@@ -104,7 +102,7 @@ class DeployAdditionalNode(object):
     def delete_node(self, node_id):
         if self.cleanup:
             print("Removing the Additional Node")
-            self.draas_client.SiteRecoverySrmNodes.delete(
+            self.vmc_client.draas.SiteRecoverySrmNodes.delete(
                 self.org_id,
                 self.sddc_id,
                 node_id)

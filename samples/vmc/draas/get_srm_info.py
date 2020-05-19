@@ -1,8 +1,7 @@
 import argparse
 import requests
 
-from vmware.vapi.vmc.vmc_draas_client import create_vmc_draas_client
-
+from vmware.vapi.vmc.client import create_vmc_client
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -25,6 +24,6 @@ refresh_token = args.refresh_token
 org_id = args.org_id
 sddc_id = args.sddc_id
 
-client = create_vmc_draas_client(refresh_token)
-site_recovery_activation_task = client.SiteRecovery.get(org_id, sddc_id)
+client = create_vmc_client(refresh_token)
+site_recovery_activation_task = client.draas.SiteRecovery.get(org_id, sddc_id)
 print(site_recovery_activation_task)
