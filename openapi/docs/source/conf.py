@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../sdk/vmc/console;../../sdk/vmc/draas'))
+sys.path.insert(0, os.path.abspath('../../sdk/vmc/draas'))
 
 
 # -- Project information -----------------------------------------------------
@@ -46,7 +46,7 @@ master_doc = 'index'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'test', 'setup.py']
+exclude_patterns = ['_build', '**test**', 'setup.py']
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -71,6 +71,12 @@ html_theme_path = ['theme']
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_context = {
+    'css_files': [
+        '_static/theme_overrides.css',  # override wide tables in RTD theme
+        ],
+     }
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 html_show_sphinx = False

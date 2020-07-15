@@ -52,14 +52,6 @@ vmware.vmc.console.api.dns\_api module
    :undoc-members:
    :show-inheritance:
 
-vmware.vmc.console.api.edges\_api module
-----------------------------------------
-
-.. automodule:: vmware.vmc.console.api.edges_api
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 vmware.vmc.console.api.esx\_api module
 --------------------------------------
 
@@ -92,26 +84,10 @@ vmware.vmc.console.api.msft\_licensing\_api module
    :undoc-members:
    :show-inheritance:
 
-vmware.vmc.console.api.network\_api module
-------------------------------------------
-
-.. automodule:: vmware.vmc.console.api.network_api
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 vmware.vmc.console.api.orgs\_api module
 ---------------------------------------
 
 .. automodule:: vmware.vmc.console.api.orgs_api
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-vmware.vmc.console.api.publicip\_api module
--------------------------------------------
-
-.. automodule:: vmware.vmc.console.api.publicip_api
    :members:
    :undoc-members:
    :show-inheritance:
@@ -128,14 +104,6 @@ vmware.vmc.console.api.sddc\_api module
 ---------------------------------------
 
 .. automodule:: vmware.vmc.console.api.sddc_api
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-vmware.vmc.console.api.sddc\_networks\_api module
--------------------------------------------------
-
-.. automodule:: vmware.vmc.console.api.sddc_networks_api
    :members:
    :undoc-members:
    :show-inheritance:

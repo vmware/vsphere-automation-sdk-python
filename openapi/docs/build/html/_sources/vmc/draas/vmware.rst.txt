@@ -8,7 +8,6 @@ Subpackages
    :maxdepth: 4
 
    vmware.vmc
-   vmware.vmc_draas
 
 Module contents
 ---------------
