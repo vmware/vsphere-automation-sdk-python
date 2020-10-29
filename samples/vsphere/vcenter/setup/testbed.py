@@ -65,7 +65,7 @@ config["BACKENDS_DATASTORE_ROOT_PATH"] = "[{}] Sample_Backends".format(config["V
 config["DISK_DATACENTER_NAME"] = config["VM_DATACENTER_NAME"]
 config["DISK_DATASTORE_ROOT_PATH"] = config["BACKENDS_DATASTORE_ROOT_PATH"] + "/disk"
 
-config["ISO_SRC_URL"] = "https://dl.bintray.com/vmware/photon/iso/1.0TP2/x86_64/photon-minimal-1.0TP2.iso"
+config["ISO_SRC_URL"] = "https://packages.vmware.com/photon/3.0/Rev3/iso/photon-minimal-3.0-a383732.iso"
 config["ISO_DATACENTER_NAME"] = config["VM_DATACENTER_NAME"]
 config["ISO_DATASTORE_ROOT_PATH"] = config["BACKENDS_DATASTORE_ROOT_PATH"] + "/iso"
 config["ISO_DATASTORE_PATH"] = config["ISO_DATASTORE_ROOT_PATH"] + "/photonOS.iso"
