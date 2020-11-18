@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>com.vmware.vmc package &mdash; draas 1.14.0 documentation</title>
+  <title>com.vmware.vmc package &mdash; draas 1.15.0 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.14.0
+                1.15.0
               </div>
             
           
@@ -546,6 +546,85 @@ Forbidden</p>
 </dd>
 <dt class="field-even">Raise</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Cannot find the task with given identifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="com.vmware.vmc.draas_client.Task.list">
+<code class="sig-name descname">list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">org</span></em>, <em class="sig-param"><span class="n">filter</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.draas_client.Task.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all tasks with optional filtering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier (required)</p></li>
+<li><p><strong>filter</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Filter expression Binary Operators: ‘eq’, ‘ne’, ‘lt’, ‘gt’, ‘le’,
+‘ge’, ‘mul’, ‘div’, ‘mod’, ‘sub’, ‘add’ Unary Operators: ‘not’, ‘-‘
+(minus) String Operators: ‘startswith’, ‘endswith’, ‘length’,
+‘contains’, ‘tolower’, ‘toupper’, Nested attributes are composed
+using ‘.’ Dates must be formatted as yyyy-MM-dd or
+yyyy-MM-ddTHH:mm:ss[.SSS]Z Strings should enclosed in single
+quotes, escape single quote with two single quotes The special
+literal ‘created’ will be mapped to the time the resource was first
+created. Examples: - $filter=(updated gt 2016-08-09T13:00:00Z) and
+(org_id eq 278710ff4e-6b6d-4d4e-aefb-ca637f38609e) -
+$filter=(created eq 2016-08-09) - $filter=(created gt 2016-08-09)
+and (sddc.status eq ‘READY’) (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#com.vmware.vmc.draas_client.Task.list" title="com.vmware.vmc.draas_client.Task.list"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="com.vmware.vmc.draas.html#com.vmware.vmc.draas.model_client.Task" title="com.vmware.vmc.draas.model_client.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.draas.model_client.Task</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="com.vmware.vmc.draas_client.Task.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">org</span></em>, <em class="sig-param"><span class="n">task</span></em>, <em class="sig-param"><span class="n">action</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.vmc.draas_client.Task.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request that a running task be canceled. This is advisory only, some
+tasks may not be cancelable, and some tasks might take an arbitrary
+amount of time to respond to a cancelation request. The task must be
+monitored to determine subsequent status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>org</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Organization identifier (required)</p></li>
+<li><p><strong>task</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – task identifier (required)</p></li>
+<li><p><strong>action</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – If = ‘cancel’, task will be canceled (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="com.vmware.vmc.draas.html#com.vmware.vmc.draas.model_client.Task" title="com.vmware.vmc.draas.model_client.Task"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vmc.draas.model_client.Task</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>com.vmware.vmc.draas.model.Task</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthenticated</span></code> 
+Unauthorized</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Invalid action or bad argument</p>
+</dd>
+<dt class="field-even">Raise</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Cannot find the task with given identifier</p>
 </dd>
 </dl>
