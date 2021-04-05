@@ -1,13 +1,13 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html4" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>com.vmware.nsx.dns package &mdash; NSX-T SDK 3.0.2.0.0 documentation</title>
+  <title>com.vmware.nsx.dns package &mdash; NSX-T SDK 3.0.3.0.0 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -26,10 +29,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -51,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> NSX-T SDK
+            <a href="index.html" class="icon icon-home"> NSX-T SDK
           
 
           
@@ -61,7 +64,7 @@
             
             
               <div class="version">
-                3.0.2.0.0
+                3.0.3.0.0
               </div>
             
           
@@ -141,6 +144,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -158,7 +163,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/com.vmware.nsx.dns.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -179,18 +184,21 @@
 </div>
 <div class="section" id="module-com.vmware.nsx.dns.forwarders_client">
 <span id="com-vmware-nsx-dns-forwarders-client-module"></span><h2>com.vmware.nsx.dns.forwarders_client module<a class="headerlink" href="#module-com.vmware.nsx.dns.forwarders_client" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
+<dl class="class">
 <dt id="com.vmware.nsx.dns.forwarders_client.FailedQueries">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="sig-name descname">FailedQueries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.FailedQueries" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="descname">FailedQueries</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.FailedQueries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
-</dd>
-</dl>
-<dl class="py method">
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
 <dt id="com.vmware.nsx.dns.forwarders_client.FailedQueries.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">forwarder_id</span></em>, <em class="sig-param"><span class="n">count</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.FailedQueries.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>forwarder_id</em>, <em>count=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.FailedQueries.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the given count of recent failed DNS queries from DNS forwarder.
 Since the DNS forwarder is running in Acitve/Standby HA mode on
 transport nodes, the given count of queries will be returned from each
@@ -198,261 +206,280 @@ nodes. Hence the total queries returned could be doubled. If no count
 is specified, 100 recent failed queries are returned. If the recent
 failures is less than the given count, all the failures will be
 returned. The maximum count is 1,000.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
-<li><p><strong>count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The count of the failed DNS queries (optional, default to 100)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</li>
+<li><strong>count</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The count of the failed DNS queries (optional, default to 100)</li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.DnsFailedQueries" title="com.vmware.nsx.model_client.DnsFailedQueries"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.DnsFailedQueries</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>com.vmware.nsx.model.DnsFailedQueries</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.DnsFailedQueries" title="com.vmware.nsx.model_client.DnsFailedQueries"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.DnsFailedQueries</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.nsx.model.DnsFailedQueries</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="com.vmware.nsx.dns.forwarders_client.Nslookup">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="sig-name descname">Nslookup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Nslookup" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="descname">Nslookup</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Nslookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
-</dd>
-</dl>
-<dl class="py method">
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
 <dt id="com.vmware.nsx.dns.forwarders_client.Nslookup.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">forwarder_id</span></em>, <em class="sig-param"><span class="n">address</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">server_ip</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source_ip</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Nslookup.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>forwarder_id</em>, <em>address=None</em>, <em>server_ip=None</em>, <em>source_ip=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Nslookup.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query the nameserver for an ip-address or a FQDN of the given an
 address optionally using an specified DNS server. If the address is a
 fqdn, nslookup will resolve ip-address with it. If the address is an
 ip-address, do a reverse lookup and answer fqdn(s).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
-<li><p><strong>address</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IP address or FQDN for nslookup (optional)</p></li>
-<li><p><strong>server_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IPv4 address (optional)</p></li>
-<li><p><strong>source_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IPv4 address (optional)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</li>
+<li><strong>address</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IP address or FQDN for nslookup (optional)</li>
+<li><strong>server_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IPv4 address (optional)</li>
+<li><strong>source_ip</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – IPv4 address (optional)</li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.DnsAnswer" title="com.vmware.nsx.model_client.DnsAnswer"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.DnsAnswer</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>com.vmware.nsx.model.DnsAnswer</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.DnsAnswer" title="com.vmware.nsx.model_client.DnsAnswer"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.DnsAnswer</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.nsx.model.DnsAnswer</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="com.vmware.nsx.dns.forwarders_client.State">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="sig-name descname">State</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.State" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="descname">State</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.State" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
-</dd>
-</dl>
-<dl class="py method">
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
 <dt id="com.vmware.nsx.dns.forwarders_client.State.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">forwarder_id</span></em>, <em class="sig-param"><span class="n">barrier_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">request_id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.State.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>forwarder_id</em>, <em>barrier_id=None</em>, <em>request_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.State.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the realized state information of a DNS forwarder. After a DNS
 forwarder was created or updated, you can invoke this API to check the
 realization state of the forwarder.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p></li>
-<li><p><strong>barrier_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (optional)</p></li>
-<li><p><strong>request_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Realization request ID (optional)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</li>
+<li><strong>barrier_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">long</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – (optional)</li>
+<li><strong>request_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Realization request ID (optional)</li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.ConfigurationState" title="com.vmware.nsx.model_client.ConfigurationState"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.ConfigurationState</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>com.vmware.nsx.model.ConfigurationState</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.ConfigurationState" title="com.vmware.nsx.model_client.ConfigurationState"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.ConfigurationState</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">com.vmware.nsx.model.ConfigurationState</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
 Service Unavailable</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
 Bad Request, Precondition Failed</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
 Internal Server Error</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
 Forbidden</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
 Not Found</p>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="com.vmware.nsx.dns.forwarders_client.Statistics">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="sig-name descname">Statistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Statistics" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="descname">Statistics</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
-</dd>
-</dl>
-<dl class="py method">
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
 <dt id="com.vmware.nsx.dns.forwarders_client.Statistics.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">forwarder_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Statistics.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>forwarder_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Statistics.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the statistics of the given dns forwarder specified by
 forwarder id.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.DnsForwarderStatistics" title="com.vmware.nsx.model_client.DnsForwarderStatistics"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.DnsForwarderStatistics</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>com.vmware.nsx.model.DnsForwarderStatistics</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
-Service Unavailable</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
-Bad Request, Precondition Failed</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
-Internal Server Error</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
-Forbidden</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
-Not Found</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.DnsForwarderStatistics" title="com.vmware.nsx.model_client.DnsForwarderStatistics"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.DnsForwarderStatistics</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">com.vmware.nsx.model.DnsForwarderStatistics</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+Service Unavailable</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Bad Request, Precondition Failed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+Internal Server Error</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Not Found</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="com.vmware.nsx.dns.forwarders_client.Status">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="sig-name descname">Status</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Status" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="descname">Status</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.VapiInterface</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</p>
-</dd>
-</dl>
-<dl class="py method">
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Configuration to be used for creating the stub.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
 <dt id="com.vmware.nsx.dns.forwarders_client.Status.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">forwarder_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Status.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>forwarder_id</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.Status.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the current status of the given DNS forwarder.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.DnsForwarderStatus" title="com.vmware.nsx.model_client.DnsForwarderStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.DnsForwarderStatus</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>com.vmware.nsx.model.DnsForwarderStatus</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
-Service Unavailable</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
-Bad Request, Precondition Failed</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
-Internal Server Error</p>
-</dd>
-<dt class="field-odd">Raise</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
-Forbidden</p>
-</dd>
-<dt class="field-even">Raise</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
-Not Found</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>forwarder_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – (required)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="com.vmware.nsx.html#com.vmware.nsx.model_client.DnsForwarderStatus" title="com.vmware.nsx.model_client.DnsForwarderStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.nsx.model_client.DnsForwarderStatus</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">com.vmware.nsx.model.DnsForwarderStatus</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.ServiceUnavailable</span></code> 
+Service Unavailable</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InvalidRequest</span></code> 
+Bad Request, Precondition Failed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.InternalServerError</span></code> 
+Internal Server Error</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.Unauthorized</span></code> 
+Forbidden</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">com.vmware.vapi.std.errors_client.NotFound</span></code> 
+Not Found</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="class">
 <dt id="com.vmware.nsx.dns.forwarders_client.StubFactory">
-<em class="property">class </em><code class="sig-prename descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="sig-name descname">StubFactory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stub_config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.StubFactory" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">com.vmware.nsx.dns.forwarders_client.</code><code class="descname">StubFactory</code><span class="sig-paren">(</span><em>stub_config</em><span class="sig-paren">)</span><a class="headerlink" href="#com.vmware.nsx.dns.forwarders_client.StubFactory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubFactoryBase</span></code></p>
 <p>Initialize StubFactoryBase</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stub_config</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.bindings.stub.StubConfiguration</span></code>) – Stub config instance</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -463,37 +490,29 @@ Not Found</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="com.vmware.nsx.edge_clusters.html" class="btn btn-neutral float-right" title="com.vmware.nsx.edge_clusters package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="com.vmware.nsx.directory.domains.html" class="btn btn-neutral float-left" title="com.vmware.nsx.directory.domains package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="com.vmware.nsx.edge_clusters.html" class="btn btn-neutral float-right" title="com.vmware.nsx.edge_clusters package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="com.vmware.nsx.directory.domains.html" class="btn btn-neutral float-left" title="com.vmware.nsx.directory.domains package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, VMware, Inc.
+        &#169; Copyright 2021, VMware, Inc..
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
