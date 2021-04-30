@@ -21,7 +21,7 @@ samples require the vSphere Management SDK packages (pyVmomi) to be installed on
 The samples have been developed to work with python 2.7.x and 3.3+
 
 ## Supported OnPrem vCenter Releases
-vCenter 6.0, 6.5, 6.7, 7.0, 7.0U1 and 7.0U2.
+vCenter 6.0, 6.5, 6.7, 7.0, 7.0U1, 7.0U2 and 7.0U2 mp1.
 Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
 
 ## Supported NSX-T Releases
@@ -214,7 +214,6 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 ### vSphere API Documentation
 
 * [VMware Cloud on AWS vSphere (latest version)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/cloud/index.html)
-* [vSphere 7.0 Update 2 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.2.0/)
 * Previous releases:    [7.0 U1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.1.0/) [7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.0.1/)   [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0)    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1)       [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5)    [6.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.0)
 
 ### VMware Cloud on AWS API Documentation
