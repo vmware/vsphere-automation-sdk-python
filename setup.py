@@ -12,8 +12,6 @@ setup(name='vSphere Automation SDK',
       license='MIT',
       install_requires=[
         'lxml >= 4.3.0',
-        'suds ; python_version < "3"',
-        'suds-jurko ; python_version >= "3.0"',
         'pyVmomi >= 6.7',
         'vapi-runtime @ file://localhost/{}/lib/vapi-runtime/vapi_runtime-2.25.0-py2.py3-none-any.whl'.format(os.getcwd()),
 	  'vapi-client-bindings @ file://localhost/{}/lib/vapi-client-bindings/vapi_client_bindings-3.6.0-py2.py3-none-any.whl'.format(os.getcwd()),
