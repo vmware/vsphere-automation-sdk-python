@@ -131,7 +131,7 @@ class LibraryPublishSubscribe(SampleBase):
         assert not sub_item.cached, 'Subscribed item must not be cached'
 
         # Force synchronize the subscribed library item to fetch and cache the content
-        self.client.subscribed_item_service.sync(sub_item_id, True)
+        self.client.subscribed_item_service.sync(sub_item_id, True, False)
         # It is not mandatory to verify sync, it is just for demonstrating the sample workflow.
         assert (ClsSyncHelper(self.client, self.SYNC_TIMEOUT_SEC).
                 verify_item_sync(sub_item_id))
