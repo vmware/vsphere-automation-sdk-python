@@ -1,0 +1,106 @@
+{
+  "STRUCTURE": {
+    "com.vmware.vcenter.guest.customization_specs.spec": {
+      "description": "This is a generic ipv4 customizationSpec for linux VM customization. Created by VIM API",
+      "name": "defaultCustSpec01",
+      "spec": {
+        "STRUCTURE": {
+          "com.vmware.vcenter.guest.customization_spec": {
+            "configuration_spec": {
+              "STRUCTURE": {
+                "com.vmware.vcenter.guest.configuration_spec": {
+                  "linux_config": {
+                    "OPTIONAL": {
+                      "STRUCTURE": {
+                        "com.vmware.vcenter.guest.linux_configuration": {
+                          "domain": "VMWare.com",
+                          "hostname": {
+                            "STRUCTURE": {
+                              "com.vmware.vcenter.guest.hostname_generator": {
+                                "fixed_name": {
+                                  "OPTIONAL": "vapiCustName123"
+                                },
+                                "prefix": {
+                                  "OPTIONAL": null
+                                },
+                                "type": "FIXED"
+                              }
+                            }
+                          },
+                          "time_zone": {
+                            "OPTIONAL": null
+                          },
+                          "script_text": {
+                            "OPTIONAL": null
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "windows_config": {
+                    "OPTIONAL": null
+                  }
+                }
+              }
+            },
+            "global_DNS_settings": {
+              "STRUCTURE": {
+                "com.vmware.vcenter.guest.global_DNS_settings": {
+                  "dns_servers": {
+                    "OPTIONAL": []
+                  },
+                  "dns_suffix_list": {
+                    "OPTIONAL": []
+                  }
+                }
+              }
+            },
+            "interfaces": [
+              {
+                "STRUCTURE": {
+                  "com.vmware.vcenter.guest.adapter_mapping": {
+                    "adapter": {
+                      "STRUCTURE": {
+                        "com.vmware.vcenter.guest.IP_settings": {
+                          "ipv4": {
+                            "OPTIONAL": {
+                              "STRUCTURE": {
+                                "com.vmware.vcenter.guest.ipv4": {
+                                  "gateways": {
+                                    "OPTIONAL": [
+                                      "192.168.12.1"
+                                    ]
+                                  },
+                                  "ip_address": {
+                                    "OPTIONAL": "192.168.12.11"
+                                  },
+                                  "prefix": {
+                                    "OPTIONAL": 31
+                                  },
+                                  "type": "STATIC"
+                                }
+                              }
+                            }
+                          },
+                          "ipv6": {
+                            "OPTIONAL": null
+                          },
+                          "windows": {
+                            "OPTIONAL": null
+                          }
+                        }
+                      }
+                    },
+                    "mac_address": {
+                      "OPTIONAL": null
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
