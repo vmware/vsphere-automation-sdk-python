@@ -28,7 +28,7 @@ Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Vi
 NSX-T 2.2, 2.3, 3.0 and VMC 1.7, 1.8, 1.9, 1.10, 1.11, 1.12, 1.14, 1.15, 1.16, 1.17, 1.18
 
 ## Latest VMware Cloud on AWS Release:
-VMC M17
+VMC M18 (1.18) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
 
 ## Quick Start Guide
 
