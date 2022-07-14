@@ -44,7 +44,8 @@ optional_args.add_argument('--gateway-type',
                     default='mgw',
                     help='Gateway type. Either mgw or cgw')
 
-optional_args.add_argument('--group-id',
+required_args.add_argument('--group-id',
+                    required=True,
                     help='ID of the group to be updated')
 
 required_args.add_argument('--name',
