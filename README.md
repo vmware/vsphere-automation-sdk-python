@@ -214,8 +214,9 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 ### vSphere API Documentation
 
 * [VMware Cloud on AWS vSphere (latest version)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/cloud/index.html)
-* [vSphere 7.0.3.2 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.2/)
-* Previous Releases:	vSphere [7.0 Update 3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/),
+* [vSphere 8.0.0.0 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.0/)
+* Previous Releases:	vSphere [7.0.3.2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.2/),
+[7.0 U3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/)
 [7.0 U2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.2.0/),   [7.0 U1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.1.0/),   [7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.0.1/),   [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0),    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1),    [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5).
 
 ### VMware Cloud on AWS API Documentation
