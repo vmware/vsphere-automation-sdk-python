@@ -25,10 +25,10 @@ vCenter 6.5, 6.7, 7.0, 7.0U1, 7.0U2 and 7.0U2 mp1, 7.0U3, 7.0.3.2
 Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
 
 ## Supported NSX-T Releases
-NSX-T 2.2, 2.3, 3.0 and VMC 1.7, 1.8, 1.9, 1.10, 1.11, 1.12, 1.14, 1.15, 1.16, 1.17, 1.18
+NSX-T 2.2, 2.3, 3.0 and VMC 1.7, 1.8, 1.9, 1.10, 1.11, 1.12, 1.14, 1.15, 1.16, 1.17, 1.18, 1.19
 
 ## Latest VMware Cloud on AWS Release:
-VMC M18 (1.18) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
+VMC M19 (1.19) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
 
 ## Quick Start Guide
 
@@ -214,8 +214,9 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 ### vSphere API Documentation
 
 * [VMware Cloud on AWS vSphere (latest version)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/cloud/index.html)
-* [vSphere 7.0.3.2 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.2/)
-* Previous Releases:	vSphere [7.0 Update 3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/),
+* [vSphere 8.0.0.0 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.0/)
+* Previous Releases:	vSphere [7.0.3.2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.2/),
+[7.0 U3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/)
 [7.0 U2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.2.0/),   [7.0 U1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.1.0/),   [7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.0.1/),   [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0),    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1),    [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5).
 
 ### VMware Cloud on AWS API Documentation
@@ -243,9 +244,9 @@ Board members are volunteers from the SDK community and VMware staff members, bo
 
 Members:
 * Ankit Agrawal (VMware)
+* Jobin George (VMware)
 * Martin Tsvetanov (VMware)
 * Shweta Purohit (VMware)
-* Vandit Mehta (VMware)
 
 ## VMware Resources
 
