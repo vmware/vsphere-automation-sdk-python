@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>vmware.vapi.vmc package &mdash; draas 1.18.0 documentation</title>
+  <title>vmware.vapi.vmc package &mdash; draas 1.20.0 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.18.0
+                1.20.0
               </div>
             
           
@@ -179,8 +179,80 @@
 <div class="section" id="vmware-vapi-vmc-client-module">
 <h2>vmware.vapi.vmc.client module<a class="headerlink" href="#vmware-vapi-vmc-client-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="vmware-vapi-vmc-csp-filter-module">
-<h2>vmware.vapi.vmc.csp_filter module<a class="headerlink" href="#vmware-vapi-vmc-csp-filter-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-vmware.vapi.vmc.csp_filter">
+<span id="vmware-vapi-vmc-csp-filter-module"></span><h2>vmware.vapi.vmc.csp_filter module<a class="headerlink" href="#module-vmware.vapi.vmc.csp_filter" title="Permalink to this headline">¶</a></h2>
+<p>CSP Refresh token based SecurityContextFilter</p>
+<dl class="py class">
+<dt id="vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">vmware.vapi.vmc.csp_filter.</span></code><code class="sig-name descname"><span class="pre">CSPSecurityContextFilter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh_token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh_url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.security.client.security_context_filter.SecurityContextFilter</span></code></p>
+<p>CSP Security Context filter in API Provider chain adds the security
+context based on a refresh token to the execution context passed in.</p>
+<p>Initialize SecurityContextFilter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">requests.Session</span></code>) – Requests Session object to use for making HTTP calls</p></li>
+<li><p><strong>refresh_token</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Refresh token to use for obtaining an access token</p></li>
+<li><p><strong>refresh_url</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – URL that allows exchanging a refresh token for an
+access token</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.get_max_retries">
+<code class="sig-name descname"><span class="pre">get_max_retries</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.get_max_retries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the max number of retries</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Number of retries</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.get_security_context">
+<code class="sig-name descname"><span class="pre">get_security_context</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.get_security_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve security context. If this method is called after an error
+occured, then a new access token is obtained using the refresh token and
+a new security context is created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>on_error</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether this method is called after getting an error</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.core.SecurityContext</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Security context</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.should_retry">
+<code class="sig-name descname"><span class="pre">should_retry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vmware.vapi.vmc.csp_filter.CSPSecurityContextFilter.should_retry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the request should be retried or not based on the error
+specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>error_value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">vmware.vapi.data.value.ErrorValue</span></code>) – Method error</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns True if request should be retried in case the error is
+either Unauthenticated or Unauthorized else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -197,7 +269,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, VMware, Inc..
+        &#169; Copyright 2022, VMware, Inc..
 
     </p>
   </div>
