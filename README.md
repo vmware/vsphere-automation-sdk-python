@@ -18,7 +18,7 @@ This document describes the vSphere Automation Python SDK samples that use the v
 python client library. Additionally, some of the samples demonstrate the combined use of the
 vSphere Automation and vSphere APIs. To support this combined use, the vSphere Automation Python SDK
 samples require the vSphere Management SDK packages (pyVmomi) to be installed on the client.
-The samples have been developed to work with python 2.7.x and 3.3+
+The samples have been developed to work with python 3.8+
 
 ## Supported OnPrem vCenter Releases
 vCenter 6.5, 6.7, 7.0, 7.0U1, 7.0U2 and 7.0U2 mp1, 7.0U3, 7.0.3.2
@@ -28,7 +28,7 @@ Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Vi
 NSX-T 2.2 - 4.0 and VMC 1.7 - 1.20
 
 ## Latest VMware Cloud on AWS Release:
-VMC M19 (1.19) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
+VMC M20 (1.20) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
 
 ## Quick Start Guide
 
@@ -42,15 +42,57 @@ A Python virtual environment is also highly recommended.
 * [Install a virtual env for Python 3](https://docs.python.org/3/tutorial/venv.html)
 
 ### Installing Required Python Packages
+SDK package installation commands may differ depending on the environment where it is being installed. The three installation options provided below are for different environments. 
+*pip* and *setuptools* are common requirements for these installation types, upgrade to the latest *pip* and *setuptools*.
 
-Be sure to upgrade to the latest pip and setuptools.
+**NOTE:** The SDK also requires OpenSSL 1.0.1+ in order to support TLS1.1 & 1.2
 
+##### 1. Typical Installation
+This is the recommended way to install the SDK. The installation is done from [PyPI](https://pypi.org/) and [Automation SDK Python Github](https://github.com/vmware/vsphere-automation-sdk-python) repositories.
+
+Install/Update latest setuptools from PyPI
 ```cmd
 pip install --upgrade pip setuptools
-pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
+```
+Install SDK packages from Github.
+```cmd
+pip install --upgrade git+https://gitlab.eng.vmware.com/vapi-sdk/vsphere-automation-sdk-python.git
 ```
 
-**NOTE:** The SDK also requires OpenSSL 1.0.1+ if you want to connect to vSphere 6.5+ in order to support TLS1.1 & 1.2
+##### 2. Local installation
+Local installation can be used in an environment which either do not have Github access or users do not want to install from Github repository.
+
+Install all the wheel files from SDK's lib directory
+```cmd
+pip install -U lib/*/*.whl
+```
+Install dependencies like *lxml* and *pyvmomi* from PyPI as other requirements were installed from SDK's lib directory
+```cmd
+pip install -U <SDK_DIRECTORY>
+```
+
+##### 3. Installation in an air gap environment
+For this type of environment an additional step is required to ensure SDK's dependencies are available.
+Following dependencies have to be downloaded from PyPI and transferred to the air gap environment.
+
+**NOTE:** This step has to be done in an environment which has PyPI access.
+```cmd
+pip download  -r requirements_pypi.txt -d lib
+zip -r lib.zip lib/
+```
+Follow these steps in the air gap environment.
+Unzip the lib.zip under automation SDK home directory
+```cmd
+unzip lib.zip
+```
+Install all the dependencies and packages
+```cmd
+pip install -U lib/*/*.whl
+```
+This is to install the "vSphere-Automation-SDK" which provides an SDK version. It also ensures that all the SDK requirements are installed. If not, the installation will fail.
+```cmd
+pip install -U `pwd`
+```
 
 ### Connect to a vCenter Server
 
@@ -79,7 +121,7 @@ Output in a Python Interpreter:
 
 ```shell
 (venv) het-m03:vsphere-automation-sdk-python het$ python
-Python 3.6.3 (v3.6.3:2c5fed86e0, Oct  3 2017, 00:32:08)
+Python 3.9.8 (main, Nov 10 2021, 06:03:50)
 [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import requests
@@ -112,7 +154,7 @@ Output in a Python Interpreter:
 
 ```shell
 (venv) het-m03:vsphere-automation-sdk-python het$ python
-Python 3.6.3 (v3.6.3:2c5fed86e0, Oct  3 2017, 00:32:08)
+Python 3.9.8 (main, Nov 10 2021, 06:03:50)
 [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>> from vmware.vapi.vmc.client import create_vmc_client
@@ -213,7 +255,7 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 ### vSphere API Documentation
 
-* [VMware Cloud on AWS vSphere (latest version)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/cloud/index.html)
+* [VMware vSphere REST API Reference documentation](https://developer.vmware.com/docs/vsphere-automation/latest/)
 * [vSphere 8.0.0.0 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.0/)
 * Previous Releases:	vSphere [7.0.3.2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.2/),
 [7.0 U3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/)
@@ -221,6 +263,7 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 ### VMware Cloud on AWS API Documentation
 
+* [VMware Cloud on AWS REST APIs](http://developers.eng.vmware.com/docs/vmc/latest/) 
 * [VMware Cloud on AWS Console API](https://vmware.github.io/vsphere-automation-sdk-python/vmc/index.html)
 * [VMware Cloud on AWS Disaster Recovery as a Service (DRaaS) API](https://vmware.github.io/vsphere-automation-sdk-python/vmc-draas/index.html)
 
@@ -247,6 +290,7 @@ Members:
 * Jobin George (VMware)
 * Martin Tsvetanov (VMware)
 * Shweta Purohit (VMware)
+* Kunal Singh (VMware)
 
 ## VMware Resources
 
