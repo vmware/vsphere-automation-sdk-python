@@ -25,7 +25,7 @@ vCenter 6.5, 6.7, 7.0, 7.0U1, 7.0U2 and 7.0U2 mp1, 7.0U3, 7.0.3.2
 Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
 
 ## Supported NSX-T Releases
-NSX-T 2.2, 2.3, 3.0 and VMC 1.7, 1.8, 1.9, 1.10, 1.11, 1.12, 1.14, 1.15, 1.16, 1.17, 1.18, 1.19
+NSX-T 2.2 - 4.0 and VMC 1.7 - 1.20
 
 ## Latest VMware Cloud on AWS Release:
 VMC M20 (1.20) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
