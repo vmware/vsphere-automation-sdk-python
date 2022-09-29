@@ -42,7 +42,8 @@ A Python virtual environment is also highly recommended.
 * [Install a virtual env for Python 3](https://docs.python.org/3/tutorial/venv.html)
 
 ### Installing Required Python Packages
-SDK package installation commands may differ depending on the environment where it is installed. The three installation options are provided for different environments. Be sure to upgrade to the latest pip and setuptools.
+SDK package installation commands may differ depending on the environment where it is being installed. The three installation options provided below are for different environments. 
+*pip* and *setuptools* are common requirements for these installation types, upgrade to the latest *pip* and *setuptools*.
 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ in order to support TLS1.1 & 1.2
 
@@ -61,25 +62,25 @@ pip install --upgrade git+https://gitlab.eng.vmware.com/vapi-sdk/vsphere-automat
 ##### 2. Local installation
 Local installation can be used in an environment which either do not have Github access or users do not want to install from Github repository.
 
-Install all the wheel files from SDK lib directory
+Install all the wheel files from SDK's lib directory
 ```cmd
 pip install -U lib/*/*.whl
 ```
-Install dependencies like lxml and pyvmomi from PyPi as other requirements were installed from SDK lib directory
+Install dependencies like *lxml* and *pyvmomi* from PyPI as other requirements were installed from SDK's lib directory
 ```cmd
 pip install -U <SDK_DIRECTORY>
 ```
 
 ##### 3. Installation in an air gap environment
-For these type of environment an additional step is required to ensure SDK's dependencies are available.
-Following dependencies have to be downloaded from PyPi and transferred to the air gap environment.
+For this type of environment an additional step is required to ensure SDK's dependencies are available.
+Following dependencies have to be downloaded from PyPI and transferred to the air gap environment.
 
-This step has to be done in an environment which has PyPI access.
+**NOTE:** This step has to be done in an environment which has PyPI access.
 ```cmd
 pip download  -r requirements_pypi.txt -d lib
 zip -r lib.zip lib/
 ```
-Following on the air gap environment.
+Follow these steps in the air gap environment.
 Unzip the lib.zip under automation SDK home directory
 ```cmd
 unzip lib.zip
@@ -88,7 +89,7 @@ Install all the dependencies and packages
 ```cmd
 pip install -U lib/*/*.whl
 ```
-This is to install the “vSphere-Automation-SDK” which provides an SDK version. This also ensures that everything the SDK needs is installed. If not this will fail.
+This is to install the "vSphere-Automation-SDK" which provides an SDK version. It also ensures that all the SDK requirements are installed. If not, the installation will fail.
 ```cmd
 pip install -U `pwd`
 ```
