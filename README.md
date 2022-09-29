@@ -48,9 +48,9 @@ SDK package installation commands may differ depending on the environment where 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ in order to support TLS1.1 & 1.2
 
 ##### 1. Typical Installation
-This is the recommended way to install the SDK. The installation is done from [PyPi](https://pypi.org/) and [Automation SDK Python Github](https://github.com/vmware/vsphere-automation-sdk-python) repositories.
+This is the recommended way to install the SDK. The installation is done from [PyPI](https://pypi.org/) and [Automation SDK Python Github](https://github.com/vmware/vsphere-automation-sdk-python) repositories.
 
-Install/Update latest setuptools from PyPi
+Install/Update latest setuptools from PyPI
 ```cmd
 pip install --upgrade pip setuptools
 ```
