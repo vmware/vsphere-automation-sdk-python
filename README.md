@@ -56,7 +56,7 @@ pip install --upgrade pip setuptools
 ```
 Install SDK packages from Github.
 ```cmd
-pip install --upgrade git+https://gitlab.eng.vmware.com/vapi-sdk/vsphere-automation-sdk-python.git
+pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
 ```
 
 ##### 2. Local installation
