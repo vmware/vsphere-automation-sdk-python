@@ -68,7 +68,10 @@ pip install -U lib/*/*.whl
 ```
 Install dependencies like *lxml* and *pyvmomi* from PyPI as other requirements were installed from SDK's lib directory
 ```cmd
-pip install -U <SDK_DIRECTORY>
+pip install -U <SDK_DIRECTORY_PATH>
+eg:pip install -U /root/vsphere-automation-sdk-python
+
+pip install -U <sdk.zip>
 ```
 
 ##### 3. Installation in an air gap environment
