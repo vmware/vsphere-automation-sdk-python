@@ -70,7 +70,7 @@ Install dependencies like *lxml* and *pyvmomi* from PyPI as other requirements w
 ```cmd
 pip install -U <SDK_DIRECTORY_PATH>
 eg:pip install -U /root/vsphere-automation-sdk-python
-
+Or
 pip install -U <sdk.zip>
 ```
 
