@@ -50,9 +50,17 @@ SDK package installation commands may differ depending on the environment where 
 ##### 1. Typical Installation
 This is the recommended way to install the SDK. The installation is done from [PyPI](https://pypi.org/) and [Automation SDK Python Github](https://github.com/vmware/vsphere-automation-sdk-python) repositories.
 
-Install/Update latest setuptools from PyPI
+Install/Update latest pip from PyPI
 ```cmd
-pip install --upgrade pip setuptools
+pip install --upgrade pip
+```
+Install/Update setuptools to version 62.0.0 for python version > 3.6
+```cmd
+pip install --upgrade setuptools==62.0.0
+```
+for older python versions Install/Update setuptools to version 36.2.0
+```cmd
+pip install --upgrade setuptools==36.2.0
 ```
 Install SDK packages from Github.
 ```cmd
