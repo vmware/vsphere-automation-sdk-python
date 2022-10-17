@@ -22,7 +22,7 @@ The samples have been developed to work with python 3.8+
 
 ## Supported OnPrem vCenter Releases
 vCenter 6.5, 6.7, 7.0, 7.0U1, 7.0U2 and 7.0U2 mp1, 7.0U3, 7.0.3.2
-Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information. 
+Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information.
 
 ## Supported NSX-T Releases
 NSX-T 2.2 - 4.0 and VMC 1.7 - 1.20
@@ -34,15 +34,13 @@ VMC M20 (1.20) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0
 
 ### Prepare a Python Development Environment
 
-We recommend you to install latest [Python](http://docs.python-guide.org/en/latest/starting/installation/) and
-[pip](https://pypi.python.org/pypi/pip/) on your system.  
+We recommend you to install latest [Python](http://docs.python-guide.org/en/latest/starting/installation/) and [pip](https://pypi.python.org/pypi/pip/) on your system.
 
 A Python virtual environment is also highly recommended.
-* [Install a virtual env for Python 2](https://virtualenv.pypa.io/en/stable/)
 * [Install a virtual env for Python 3](https://docs.python.org/3/tutorial/venv.html)
 
 ### Installing Required Python Packages
-SDK package installation commands may differ depending on the environment where it is being installed. The three installation options provided below are for different environments. 
+SDK package installation commands may differ depending on the environment where it is being installed. The three installation options provided below are for different environments.
 *pip* and *setuptools* are common requirements for these installation types, upgrade to the latest *pip* and *setuptools*.
 
 **NOTE:** The SDK also requires OpenSSL 1.0.1+ in order to support TLS1.1 & 1.2
@@ -50,9 +48,13 @@ SDK package installation commands may differ depending on the environment where 
 ##### 1. Typical Installation
 This is the recommended way to install the SDK. The installation is done from [PyPI](https://pypi.org/) and [Automation SDK Python Github](https://github.com/vmware/vsphere-automation-sdk-python) repositories.
 
-Install/Update latest setuptools from PyPI
+Install/Update latest pip from PyPI
 ```cmd
-pip install --upgrade pip setuptools
+pip install --upgrade pip
+```
+Install/Update setuptools to version 62.0.0
+```cmd
+pip install --upgrade setuptools==62.0.0
 ```
 Install SDK packages from Github.
 ```cmd
@@ -256,8 +258,9 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 ### vSphere API Documentation
 
 * [VMware vSphere REST API Reference documentation](https://developer.vmware.com/docs/vsphere-automation/latest/)
-* [vSphere 8.0.0.0 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.0/)
-* Previous Releases:	vSphere [7.0.3.2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.2/),
+* [vSphere 8.0.0.1 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.1/)
+* Previous Releases:	vSphere [8.0.0.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.0/),
+vSphere [7.0.3.2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.2/),
 [7.0 U3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/)
 [7.0 U2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.2.0/),   [7.0 U1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.1.0/),   [7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.0.1/),   [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0),    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1),    [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5).
 

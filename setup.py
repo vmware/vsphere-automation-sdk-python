@@ -5,7 +5,7 @@ import os
 from setuptools import setup
 
 setup(name='vSphere Automation SDK',
-      version='1.79.0',
+      version='1.80.0',
       description='VMware vSphere Automation SDK for Python',
       url='https://github.com/vmware/vsphere-automation-sdk-python',
       author='VMware, Inc.',
@@ -15,7 +15,7 @@ setup(name='vSphere Automation SDK',
         'lxml >= 4.3.0',
         'pyVmomi >= 6.7',
         'vapi-runtime @ file://localhost/{}/lib/vapi-runtime/vapi_runtime-2.37.0-py2.py3-none-any.whl'.format(os.getcwd()),
-	      'vapi-client-bindings @ file://localhost/{}/lib/vapi-client-bindings/vapi_client_bindings-3.9.0-py2.py3-none-any.whl'.format(os.getcwd()),
+	      'vapi-client-bindings @ file://localhost/{}/lib/vapi-client-bindings/vapi_client_bindings-4.0.0-py2.py3-none-any.whl'.format(os.getcwd()),
 	      'vapi-common-client @ file://localhost/{}/lib/vapi-common-client/vapi_common_client-2.37.0-py2.py3-none-any.whl'.format(os.getcwd()),
         'vmc-client-bindings @ file://localhost/{}/lib/vmc-client-bindings/vmc_client_bindings-1.61.0-py2.py3-none-any.whl'.format(os.getcwd()),
         'nsx-python-sdk @ file://localhost/{}/lib/nsx-python-sdk/nsx_python_sdk-4.0.1.0.0-py2.py3-none-any.whl'.format(os.getcwd()),
