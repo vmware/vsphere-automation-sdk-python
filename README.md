@@ -70,9 +70,15 @@ pip install -U lib/*/*.whl
 ```
 Install dependencies like *lxml* and *pyvmomi* from PyPI as other requirements were installed from SDK's lib directory.
 ```cmd
-pip install -U <SDK_DIRECTORY>
+pip install -U <SDK_DIRECTORY_PATH>
 ```
-
+Where <SDK_DIRECTORY_PATH> is either install directory of the SDK or location of SDK's zip
+e.g.
+```
+pip install -U /root/vsphere-automation-sdk-python
+Or
+pip install -U vsphere-automation-sdk-python-8.0.0.0.zip
+```
 ##### 3. Installation in an air gap environment
 For this type of environment an additional step is required to ensure SDK's dependencies are available.
 Following dependencies have to be downloaded from PyPI and transferred to the air gap environment.
