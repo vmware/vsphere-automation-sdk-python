@@ -21,8 +21,8 @@ samples require the vSphere Management SDK packages (pyVmomi) to be installed on
 The samples have been developed to work with python 3.8+
 
 ## Supported OnPrem vCenter Releases
-vCenter 6.5, 6.7, 7.0, 7.0U1, 7.0U2 and 7.0U2 mp1, 7.0U3, 7.0.3.2
-Certain APIs and samples that are introduced in 6.5 release, such as vCenter, Virtual Machine and Appliance Management. Please refer to the notes in each sample for detailed compatibility information.
+vCenter 7.0, 7.0U1, 7.0U2, 7.0U3 and 8.0.
+Please refer to the notes in each sample for detailed compatibility information.
 
 ## Supported NSX-T Releases
 NSX-T 2.2 - 4.0 and VMC 1.7 - 1.20
@@ -48,11 +48,11 @@ SDK package installation commands may differ depending on the environment where 
 ##### 1. Typical Installation
 This is the recommended way to install the SDK. The installation is done from [PyPI](https://pypi.org/) and [Automation SDK Python Github](https://github.com/vmware/vsphere-automation-sdk-python) repositories.
 
-Install/Update latest pip from PyPI
+Install/Update latest pip from PyPI.
 ```cmd
 pip install --upgrade pip
 ```
-Install/Update setuptools to version 62.0.0
+Install/Update setuptools to version *62.0.0*.
 ```cmd
 pip install --upgrade setuptools==62.0.0
 ```
@@ -64,11 +64,11 @@ pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-pytho
 ##### 2. Local installation
 Local installation can be used in an environment which either do not have Github access or users do not want to install from Github repository.
 
-Install all the wheel files from SDK's lib directory
+Install all the wheel files from SDK's lib directory.
 ```cmd
 pip install -U lib/*/*.whl
 ```
-Install dependencies like *lxml* and *pyvmomi* from PyPI as other requirements were installed from SDK's lib directory
+Install dependencies like *lxml* and *pyvmomi* from PyPI as other requirements were installed from SDK's lib directory.
 ```cmd
 pip install -U <SDK_DIRECTORY>
 ```
@@ -83,11 +83,11 @@ pip download  -r requirements_pypi.txt -d lib
 zip -r lib.zip lib/
 ```
 Follow these steps in the air gap environment.
-Unzip the lib.zip under automation SDK home directory
+Unzip the lib.zip under automation SDK home directory.
 ```cmd
 unzip lib.zip
 ```
-Install all the dependencies and packages
+Install all the dependencies and packages.
 ```cmd
 pip install -U lib/*/*.whl
 ```
@@ -260,9 +260,8 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 * [VMware vSphere REST API Reference documentation](https://developer.vmware.com/docs/vsphere-automation/latest/)
 * [vSphere 8.0.0.1 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.1/)
 * Previous Releases:	vSphere [8.0.0.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.0/),
-vSphere [7.0.3.2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.2/),
 [7.0 U3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/)
-[7.0 U2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.2.0/),   [7.0 U1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.1.0/),   [7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.0.1/),   [6.7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.7.0),    [6.6.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.6.1),    [6.5](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/6.5).
+[7.0 U2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.2.0/),   [7.0 U1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.1.0/),   [7.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.0.1/).
 
 ### VMware Cloud on AWS API Documentation
 
