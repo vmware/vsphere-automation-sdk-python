@@ -28,7 +28,7 @@ import time
 import base64
 import hashlib
 
-from pyVmomi import ThumbprintMismatchException
+from pyVmomi.Security import ThumbprintMismatchException
 
 from uuid import uuid4
 from io import BytesIO
