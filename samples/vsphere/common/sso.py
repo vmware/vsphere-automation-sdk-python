@@ -28,8 +28,7 @@ import time
 import base64
 import hashlib
 
-from pyVmomi import ThumbprintMismatchException
-
+from pyVmomi.Security import ThumbprintMismatchException
 from uuid import uuid4
 from io import BytesIO
 from six.moves.urllib.parse import urlparse
@@ -1013,7 +1012,7 @@ def _extract_element(xml, element_name, namespace):
     @rtype: etree element.
     @return: The extracted element.
     '''
-    assert(len(namespace) == 1)
+    assert (len(namespace) == 1)
     result = xml.xpath("//%s:%s" % (list(namespace.keys())[0], element_name),
                                     namespaces=namespace)
     if result:
