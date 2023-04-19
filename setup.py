@@ -16,7 +16,7 @@ setup(name='vSphere Automation SDK',
         'pyVmomi >=6.7',
         'vapi-runtime @ file://localhost/{}/lib/vapi-runtime/vapi_runtime-2.40.0-py2.py3-none-any.whl'.format(os.getcwd()),
         'vcenter-bindings @ file://localhost/{}/lib/vcenter-bindings/vcenter_bindings-4.1.0-py2.py3-none-any.whl'.format(os.getcwd()),
-        'vapi-common-client @ file://localhost/{}/lib/vapi-common-client/vapi_common_client-2.40.0-py2.py3-none-any.whl'.format(os.getcwd())
+        'vapi-common-client @ file://localhost/{}/lib/vapi-common-client/vapi_common_client-2.40.0-py2.py3-none-any.whl'.format(os.getcwd()),
         'vmc-client-bindings @ file://localhost/{}/lib/vmc-client-bindings/vmc_client_bindings-1.61.0-py2.py3-none-any.whl'.format(os.getcwd()),
         'nsx-python-sdk @ file://localhost/{}/lib/nsx-python-sdk/nsx_python_sdk-4.0.1.0.0-py2.py3-none-any.whl'.format(os.getcwd()),
         'nsx-policy-python-sdk @ file://localhost/{}/lib/nsx-policy-python-sdk/nsx_policy_python_sdk-4.0.1.0.0-py2.py3-none-any.whl'.format(os.getcwd()),
