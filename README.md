@@ -52,7 +52,7 @@ Install/Update latest pip from PyPI.
 ```cmd
 pip install --upgrade pip
 ```
-Install/Update setuptools to version *62.0.0*.
+Install/Update setuptools
 ```cmd
 pip install --upgrade setuptools
 ```
