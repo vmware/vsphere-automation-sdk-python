@@ -4,7 +4,7 @@ import os
 
 from setuptools import setup
 
-setup(name='vSphere Automation SDK',
+setup(name='vsphere-automation-sdk',
       version='1.82.0',
       description='VMware vSphere Automation SDK for Python',
       url='https://github.com/vmware/vsphere-automation-sdk-python',
