@@ -95,7 +95,7 @@ unzip lib.zip
 ```
 Install all the dependencies and packages.
 ```cmd
-pip install -U lib/*/*.whl
+pip install -U lib/**/*.whl
 ```
 This is to install the "vSphere-Automation-SDK" which provides an SDK version. It also ensures that all the SDK requirements are installed. If not, the installation will fail.
 ```cmd
