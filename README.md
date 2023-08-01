@@ -264,7 +264,7 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 ### vSphere API Documentation
 
 * [VMware vSphere REST API Reference documentation](https://developer.vmware.com/docs/vsphere-automation/latest/)
-* [vSphere 8.0.1.0 (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.1.0/)
+* [vSphere 8.0.1.0 Python APIs (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.1.0/)
 * Previous Releases:	vSphere [8.0.0.1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.1/)
 [8.0.0.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.0/),
 [7.0 U3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/)
@@ -273,16 +273,16 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 ### VMware Cloud on AWS API Documentation
 
 * [VMware Cloud on AWS REST APIs](http://developers.eng.vmware.com/docs/vmc/latest/) 
-* [VMware Cloud on AWS Console API](https://vmware.github.io/vsphere-automation-sdk-python/vmc/index.html)
-* [VMware Cloud on AWS Disaster Recovery as a Service (DRaaS) API](https://vmware.github.io/vsphere-automation-sdk-python/vmc-draas/index.html)
+* [VMware Cloud on AWS Console Python APIs](https://vmware.github.io/vsphere-automation-sdk-python/vmc/index.html)
+* [VMware Cloud on AWS Disaster Recovery as a Service (DRaaS) Python APIs](https://vmware.github.io/vsphere-automation-sdk-python/vmc-draas/index.html)
 
 
 ### NSX API Documentation
 * [NSX-T Data Center](https://docs.vmware.com/en/VMware-NSX-T-Data-Center/index.html)
-* [NSX Manager APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx/index.html) - API for managing NSX-T cluster and transport nodes for on-prem customers
-* [NSX Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy/index.html) - primary API for managing logical networks for on-prem customers
-* [NSX VMC Policy](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_vmc_policy/index.html) - primary API for managing logical networks for VMC customers
-* [NSX VMC AWS Integration APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_vmc_aws_integration/index.html) - API for managing AWS underlay networks for VMC customers
+* [NSX Manager Python APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx/index.html) - API for managing NSX-T cluster and transport nodes for on-prem customers
+* [NSX Policy Python APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_policy/index.html) - primary API for managing logical networks for on-prem customers
+* [NSX VMC Policy Python APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_vmc_policy/index.html) - primary API for managing logical networks for VMC customers
+* [NSX VMC AWS Integration Python APIs](https://vmware.github.io/vsphere-automation-sdk-python/nsx/nsx_vmc_aws_integration/index.html) - API for managing AWS underlay networks for VMC customers
 
 ## Troubleshooting
 
