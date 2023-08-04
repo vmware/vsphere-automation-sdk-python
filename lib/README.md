@@ -6,8 +6,8 @@ Name                                | Description
 ------------------------------------| -------------
 vapi_runtime	                    | vAPI runtime responsible for serialization/de-serialization of objects and wire protocol
 vcenter_bindings                    | Client stubs for vSphere Automation APIs
-vmc_bindings                        | Client stubs for VMware Cloud on AWS Console APIs
-vmc_draas_bindings                  | Client stubs for VMware Cloud (VMC) Disaster Recovery as a Service (DRaaS) APIs
+vmwarecloud_aws                     | Client stubs for VMware Cloud on AWS Console APIs
+vmwarecloud_draas                   | Client stubs for VMware Cloud (VMC) Disaster Recovery as a Service (DRaaS) APIs
 nsx-python-sdk                      | Client stubs for VMware NSX-T APIs
 nsx-vmc-policy-python-sdk           | Client stubs for VMware NSX-T on VMC Policy APIs
 nsx-vmc-aws-integration-python-sdk  | Client stubs for VMware NSX-T AWS integration app APIs (for AWS underlay management)
