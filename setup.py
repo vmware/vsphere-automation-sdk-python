@@ -5,7 +5,7 @@ import os
 from setuptools import setup
 
 setup(name='vsphere-automation-sdk',
-      version='1.84.0',
+      version='1.85.0',
       description='VMware vSphere Automation SDK for Python',
       url='https://github.com/vmware/vsphere-automation-sdk-python',
       author='VMware, Inc.',
@@ -22,6 +22,6 @@ setup(name='vsphere-automation-sdk',
         'nsx-policy-python-sdk @ file://localhost/{}/lib/nsx-policy-python-sdk/nsx_policy_python_sdk-4.1.0.1.0-py2.py3-none-any.whl'.format(os.getcwd()),
         'nsx-vmc-policy-python-sdk @ file://localhost/{}/lib/nsx-vmc-policy-python-sdk/nsx_vmc_policy_python_sdk-4.1.0.1.0-py2.py3-none-any.whl'.format(os.getcwd()),
         'nsx-vmc-aws-integration-python-sdk @ file://localhost/{}/lib/nsx-vmc-aws-integration-python-sdk/nsx_vmc_aws_integration_python_sdk-4.1.0.1.0-py2.py3-none-any.whl'.format(os.getcwd()),
-        'vmwarecloud-draas @ file://localhost/{}/lib/vmwarecloud-draas/vmwarecloud_draas-1.22.0-py2.py3-none-any.whl'.format(os.getcwd()),
+        'vmwarecloud-draas @ file://localhost/{}/lib/vmwarecloud-draas/vmwarecloud_draas-1.23.0-py2.py3-none-any.whl'.format(os.getcwd()),
       ]
 )
