@@ -19,7 +19,8 @@ __vcenter_version__ = '7.0.2.0'
 
 
 import requests
-import sys, time
+import sys
+import time
 
 from samples.vsphere.common import sample_cli
 from samples.vsphere.common import sample_util
@@ -45,7 +46,7 @@ Bearer header and the token value from the API.
 The APIs are described under:
 https://developer.vmware.com/apis/vsphere-automation/latest/vcenter/crypto_manager/kms.providers/
 
-Setting and reading the default key provider is achieved using the 
+Setting and reading the default key provider is achieved using the
 CryptoMangerKmip API:
 https://developer.vmware.com/apis/vi-json/latest/crypto-manager-kmip/
 
@@ -54,8 +55,10 @@ Sample Prerequisites:
     - Python 3.9
 """
 
+
 def get_kms_providers(client: VsphereClient) -> kms_client.Providers:
     return vsphere_client.vcenter.crypto_manager.kms.Providers
+
 
 def print_kms_configurations(kmsProviders: kms_client.Providers):
     for provider in kmsProviders.list():
@@ -108,7 +111,7 @@ if not isinstance(cm, vim.encryption.CryptoManagerKmip):
 
 # read demo args
 provider_name = args.key_provider
-password=args.export_password
+password = args.export_password
 
 
 # Print baseline state
@@ -125,7 +128,7 @@ print_kms_configurations(kmsProviders=kmsProviders)
 
 
 print('Backup Native Key Provider')
-res = kmsProviders.export(kmsProviders.ExportSpec(provider=provider_name, 
+res = kmsProviders.export(kmsProviders.ExportSpec(provider=provider_name,
                                                   password=password))
 
 # Download the back up data to complete the backup process. Without this
@@ -151,14 +154,14 @@ kmsProviders.delete(provider=provider_name)
 print_kms_configurations(kmsProviders=kmsProviders)
 
 # Restore Native Key Provider
-ir = kmsProviders.import_provider(kmsProviders.ImportSpec(config=p12data, 
-                password=password, 
+ir = kmsProviders.import_provider(kmsProviders.ImportSpec(config=p12data,
+                password=password,
                 constraints=kmsProviders.ConstraintsSpec(tpm_required=False)))
 print(f'Restore Native Key Provider: {ir}')
 
 # vCenter seems to need respite to set the key provider to all hosts. Immediate
 # read shows warnings.
-time.sleep(1) 
+time.sleep(1)
 print_kms_configurations(kmsProviders=kmsProviders)
 
 # Set default Key Native Provider via pyVMOMI CryptoManagerKmip
@@ -182,4 +185,3 @@ print("Delete Native Key Provider")
 kmsProviders.delete(provider=provider_name)
 
 print("Done.")
-
