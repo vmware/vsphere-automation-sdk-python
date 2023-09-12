@@ -333,7 +333,7 @@ class CustomizationSpecManager(object):
         self.listCustomizationSpecs()
         print("----------------------------")
         newSpecCount = self.specCount
-        if(newSpecCount != existingSpecCount + 1):
+        if (newSpecCount != existingSpecCount + 1):
             raise Exception('Error createSpec due to spec count={}'.
                             format(newSpecCount))
 
@@ -369,7 +369,7 @@ class CustomizationSpecManager(object):
         self.listCustomizationSpecs()
         newSpecCount = self.specCount
         print("----------------------------")
-        if(newSpecCount != existingSpecCount):
+        if (newSpecCount != existingSpecCount):
             raise Exception('Error deleteSpec due to current specCount {}!={}'.
                             format(newSpecCount, existingSpecCount))
 

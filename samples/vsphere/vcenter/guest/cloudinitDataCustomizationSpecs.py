@@ -17,8 +17,8 @@ __author__ = 'VMware, Inc.'
 __copyright__ = 'Copyright 2021 VMware, Inc. All rights reserved.'
 __vcenter_version__ = 'VCenter 7.0 U3'
 
-from com.vmware.vcenter.guest_client import CustomizationSpec,\
-    CloudConfiguration, CloudinitConfiguration, ConfigurationSpec,\
+from com.vmware.vcenter.guest_client import CustomizationSpec, \
+    CloudConfiguration, CloudinitConfiguration, ConfigurationSpec, \
     GlobalDNSSettings
 from pprint import pprint
 from samples.vsphere.common import sample_cli, sample_util
