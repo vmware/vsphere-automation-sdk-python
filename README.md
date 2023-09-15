@@ -10,6 +10,7 @@
 - [Run SDK Samples](#run-sdk-samples)
 - [API Documentation](#api-documentation)
 - [Troubleshooting](#troubleshooting)
+- [Support](#support)
 - [Repository Administrator Resources](#repository-administrator-resources)
 - [VMware Resources](#vmware-resources)
 
@@ -288,6 +289,11 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 ## Troubleshooting
 
 Common issues you may run into while installing the sdk and running samples are listed [here](https://github.com/vmware/vsphere-automation-sdk-python/wiki/Troubleshooting)
+
+## Support
+
+For official support, users with Premium SDK Support, Standard SDK Support and Premier/Success360 customers can reach out to VMware Global Support for any issues.
+For community support, please open a [Github issue](https://github.com/vmware/vsphere-automation-sdk-python/issues) or start a [Discussion](https://github.com/vmware/vsphere-automation-sdk-python/discussions)
 
 ## Repository Administrator Resources
 
