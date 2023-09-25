@@ -29,7 +29,7 @@ Please refer to the notes in each sample for detailed compatibility information.
 NSX-T 2.2 - 4.1.0 and VMC 1.7 - 1.24
 
 ## Latest VMware Cloud on AWS Release:
-VMC M24 (1.24) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
+VMC M22 (1.22) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
 
 ## Quick Start Guide
 
