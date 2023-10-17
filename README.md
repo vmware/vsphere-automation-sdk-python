@@ -26,7 +26,7 @@ vCenter 7.0, 7.0U1, 7.0U2, 7.0U3 , 8.0, 8.0U1, 8.0U2
 Please refer to the notes in each sample for detailed compatibility information.
 
 ## Supported NSX-T Releases
-NSX-T 2.2 - 4.1.0 and VMC 1.7 - 1.24
+NSX-T 2.2 - 4.1.2 and VMC 1.7 - 1.24
 
 ## Latest VMware Cloud on AWS Release:
 VMC M22 (1.22) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
