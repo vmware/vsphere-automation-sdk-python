@@ -292,8 +292,7 @@ Common issues you may run into while installing the sdk and running samples are 
 
 ## Support
 
-For official support, users with Premium SDK Support, Standard SDK Support and Premier/Success360 customers can reach out to [VMware Global Support](https://kb.vmware.com/s/article/87265?lang=en_US) for any issues.
-For community support, please open a [Github issue](https://github.com/vmware/vsphere-automation-sdk-python/issues) or start a [Discussion](https://github.com/vmware/vsphere-automation-sdk-python/discussions)
+For official support, users with 'Active - Premium SDK Support, Standard SDK Support, Premier/Success 360, and [VMware Select Support](https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/docs/vmware-select-support-specific-program-document.pdf) can reach out to [VMware Global Support](https://kb.vmware.com/s/article/87265?lang=en_US) for any issues in line with our [SDK and API Support policy](https://www.vmware.com/support/services/sdk.html). For community support, please open a [Github issue](https://github.com/vmware/vsphere-automation-sdk-python/issues) or start a [Discussion](https://github.com/vmware/vsphere-automation-sdk-python/discussions).
 
 ## Repository Administrator Resources
 
