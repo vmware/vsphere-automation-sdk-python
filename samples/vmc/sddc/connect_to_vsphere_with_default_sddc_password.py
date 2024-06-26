@@ -59,7 +59,7 @@ class ConnectTovSphereWithDefaultCredentials(object):
             sddc = vmc_client.orgs.Sddcs.get(self.org_id, self.sddc_id)
         except NotFound as e:
             error_response = e.data.convert_to(ErrorResponse)
-            raise ValueError(error_response.error_messages)
+            raise ValueError(error_response.error_messages) from e
 
         # Get VC hostname
         server = parse.urlparse(sddc.resource_config.vc_url).hostname
