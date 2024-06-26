@@ -155,7 +155,7 @@ class CreateDeleteSDDC(object):
         except InvalidRequest as e:
             # Convert InvalidRequest to ErrorResponse to get error message
             error_response = e.data.convert_to(ErrorResponse)
-            raise Exception(error_response.error_messages)
+            raise Exception(error_response.error_messages) from e
 
         wait_for_task(
             task_client=self.vmc_client.orgs.Tasks,
@@ -187,7 +187,7 @@ class CreateDeleteSDDC(object):
         except InvalidRequest as e:
             # Convert InvalidRequest to ErrorResponse to get error message
             error_response = e.data.convert_to(ErrorResponse)
-            raise Exception(error_response.error_messages)
+            raise Exception(error_response.error_messages) from e
 
         wait_for_task(
             task_client=self.vmc_client.orgs.Tasks,
