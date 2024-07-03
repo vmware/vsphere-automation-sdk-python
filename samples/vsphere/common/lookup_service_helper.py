@@ -1,6 +1,8 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2013. All Rights Reserved.
+* Copyright (c) 2013, 2024 Broadcom. All Rights Reserved.
+* The term "Broadcom" refers to Broadcom Inc.
+* and/or its subsidiaries.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -11,13 +13,14 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-__author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2013 VMware, Inc. All rights reserved.'
+__author__ = 'Broadcom, Inc.'
+__copyright__ = 'Copyright 2013, 2024 Broadcom, Inc. All rights reserved.'
 
 import os
+from deprecated import deprecated
 from suds.client import Client
 
-
+@deprecated(version='8.0U3', reason='Use well-known endpoint URLs instead of looking them up.')
 class LookupServiceHelper(object):
     def __init__(self, wsdl_url, soap_url, skip_verification):
         self.wsdl_url = wsdl_url

@@ -1,6 +1,8 @@
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2013, 2016. All Rights Reserved.
+* Copyright (c) 2024 Broadcom. All Rights Reserved.
+* Broadcom Confidential. The term "Broadcom" refers to Broadcom Inc.
+* and/or its subsidiaries.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -11,8 +13,10 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-__author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2013, 2016 VMware, Inc. All rights reserved.'
+__author__ = 'Broadcom, Inc.'
+__copyright__ = 'Copyright 2013, 2016, 2024 Broadcom, Inc. All rights reserved.'
+
+from deprecated import deprecated
 
 from vmware.vapi.security.sso import create_saml_bearer_security_context
 from samples.vsphere.common import sso
@@ -20,7 +24,7 @@ from samples.vsphere.common.lookup_service_helper import LookupServiceHelper
 
 from samples.vsphere.common.ssl_helper import get_unverified_context
 
-
+@deprecated(version='8.0U3', reason='External PSC is no longer supported since vCenter 7.0. Use well-known endpoint URLs instead of looking them up.')
 class PlatformServiceController(object):
     """
     Manages services on the infrastructure node (e.g. lookup service, SSO etc.)

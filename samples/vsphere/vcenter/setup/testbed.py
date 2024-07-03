@@ -86,6 +86,15 @@ config["FLOPPY_DATACENTER_NAME"] = config["VM_DATACENTER_NAME"]
 config["FLOPPY_DATASTORE_ROOT_PATH"] = config["BACKENDS_DATASTORE_ROOT_PATH"] + "/floppy"
 config["FLOPPY_DATASTORE_PATH"] = config["FLOPPY_DATASTORE_ROOT_PATH"] + "/fdboot.img"
 
+# Snapservice protection group creation spec
+config["PG_NAME"] = "PG_NAME"
+config["VM_NAMES"] = "VM_NAME1,VM_NAME2,..."
+config["VM_FORMATS"] = "VM_FORMAT1,VM_FORMAT2,..."
+config["SCHEDULE_UNIT"] = "MINUTE"
+config["SCHEDULE"] = 30
+config["RETENTION_UNIT"] = "HOUR"
+config["RETENTION"] = 6
+config["LOCK"] = False
 
 class Testbed(object):
     def __init__(self):

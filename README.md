@@ -3,7 +3,7 @@
 
 ## Table of Contents
 - [Abstract](#abstract)
-- [Supported vCenter Releases](#supported-vcenter-releases)
+- [Supported vCenter Releases](#supported-onprem-vcenter-releases)
 - [Supported NSX-T Releases](#supported-nsx-t-releases)
 - [VMware Cloud on AWS Support](#vmware-cloud-on-aws-support)
 - [Quick Start Guide](#quick-start-guide)
@@ -22,11 +22,11 @@ samples require the vSphere Management SDK packages (pyVmomi) to be installed on
 The samples have been developed to work with python 3.8+
 
 ## Supported OnPrem vCenter Releases
-vCenter 7.0, 7.0U1, 7.0U2, 7.0U3 , 8.0, 8.0U1, 8.0U2
+vCenter 7.0, 7.0U1, 7.0U2, 7.0U3 , 8.0, 8.0U1, 8.0U2, 8.0U3
 Please refer to the notes in each sample for detailed compatibility information.
 
 ## Supported NSX-T Releases
-NSX-T 2.2 - 4.1.2 and VMC 1.7 - 1.24
+NSX-T 2.2 - 4.2.0 and VMC 1.7 - 1.24
 
 ## Latest VMware Cloud on AWS Release:
 VMC M24 (1.24) ([Release Notes](https://docs.vmware.com/en/VMware-Cloud-on-AWS/0/rn/vmc-on-aws-relnotes.html))
@@ -264,9 +264,10 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 ### vSphere API Documentation
 
-* [VMware vSphere REST API Reference documentation](https://developer.vmware.com/docs/vsphere-automation/latest/)
-* [vSphere 8.0 U2 Python APIs (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.2.0/)
-* Previous Releases:	vSphere [8.0 U1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.1.0/)
+* [VMware vSphere REST API Reference documentation](https://developer.broadcom.com/xapis/vsphere-automation-api/latest/)
+* [vSphere 8.0 U3 Python APIs (latest)](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.3.0/)
+* Previous Releases:	vSphere [8.0 U2](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.2.0/)
+[8.0 U1](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.1.0/)
 [8.0 GA](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.1/)
 [8.0.0.0](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/8.0.0.0/),
 [7.0 U3](https://vmware.github.io/vsphere-automation-sdk-python/vsphere/7.0.3.0/)
@@ -274,7 +275,7 @@ $ python samples/vsphere/vcenter/vm/list_vms.py -v
 
 ### VMware Cloud on AWS API Documentation
 
-* [VMware Cloud on AWS REST APIs](http://developers.eng.vmware.com/docs/vmc/latest/) 
+* [VMware Cloud on AWS REST APIs](https://developer.broadcom.com/xapis/vmware-cloud-on-aws-api-reference/latest/) 
 * [VMware Cloud on AWS Console Python APIs](https://vmware.github.io/vsphere-automation-sdk-python/vmc/index.html)
 * [VMware Cloud on AWS Disaster Recovery as a Service (DRaaS) Python APIs](https://vmware.github.io/vsphere-automation-sdk-python/vmc-draas/index.html)
 
@@ -313,5 +314,5 @@ Members:
 * [VMware Sample Exchange](https://code.vmware.com/samples) It is highly recommended to add any and all submitted samples to the VMware Sample Exchange
 * [VMware Code](https://code.vmware.com/home)
 * [VMware Developer Community](https://communities.vmware.com/community/vmtn/developer)
-* VMware vSphere [REST API Reference documentation](https://developer.vmware.com/docs/vsphere-automation/latest/).
+* VMware vSphere [REST API Reference documentation](https://developer.broadcom.com/xapis/vsphere-automation-api/latest/).
 * [VMware Python forum](https://code.vmware.com/forums/7508/vsphere-automation-sdk-for-python)
