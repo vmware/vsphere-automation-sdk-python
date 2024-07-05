@@ -2,7 +2,9 @@
 
 """
 * *******************************************************
-* Copyright (c) VMware, Inc. 2017, 2018. All Rights Reserved.
+* Copyright (c) 2024 Broadcom. All Rights Reserved.
+* The term "Broadcom" refers to Broadcom Inc.
+* and/or its subsidiaries.
 * SPDX-License-Identifier: MIT
 * *******************************************************
 *
@@ -13,11 +15,12 @@
 * NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
 """
 
-__author__ = 'VMware, Inc.'
+__author__ = 'Broadcom, Inc.'
 __vcenter_version__ = '6.0+'
 
 import os
 import argparse
+from deprecated import deprecated
 
 from six.moves.urllib import request, parse
 
@@ -30,6 +33,7 @@ from samples.vsphere.common.ssl_helper import get_unverified_context
 from samples.vsphere.common.ssl_helper import get_unverified_session
 
 
+@deprecated(version='8.0U3', reason='External PSC is no longer supported since vCenter 7.0. Use well-known endpoint URLs instead of looking them up.')
 class ExternalPscSsoWorkflow(object):
     """
     Demonstrates how to Login to vCenter vAPI service with
