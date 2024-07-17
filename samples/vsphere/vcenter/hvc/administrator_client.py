@@ -72,7 +72,8 @@ class AdministratorClient(object):
         # Login to vCenter
         stub_config = vapiconnect.connect(host=args.server,
                                           user=args.username,
-                                          pwd=args.password)
+                                          pwd=args.password,
+                                          skip_verification=args.skipverification)
         # Create admin stub
         self.admin_client = Administrators(stub_config)
         self.cleanup = args.cleardata
