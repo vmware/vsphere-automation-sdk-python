@@ -66,9 +66,14 @@ pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-pytho
 Local installation can be used in an environment which either do not have Github access or users do not want to install from Github repository.
 
 Install all the wheel files from SDK's lib directory.
-```cmd
-pip install -U lib/*/*.whl
-```
+* Linux/Mac:
+    ```cmd
+    pip install -U lib/*/*.whl
+    ```
+* Windows:
+    ```cmd
+    Get-ChildItem -Recurse -Filter *.whl -Path .\lib | ForEach-Object { pip install $_.Fullname }
+    ```
 Install dependencies like *lxml* and *pyvmomi* from PyPI as other requirements were installed from SDK's lib directory.
 ```cmd
 pip install -U <SDK_DIRECTORY_PATH>
