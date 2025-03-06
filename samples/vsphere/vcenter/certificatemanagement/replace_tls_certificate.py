@@ -60,7 +60,7 @@ vsphere_client = create_vsphere_client(server=args.server,
 cert = args.cert.encode(encoding='utf-8').decode('unicode_escape')
 
 if args.key is not None:
-    key = args.encode(encoding='utf-8').key.decode('unicode_escape')
+    key = args.key.encode(encoding='utf-8').decode('unicode_escape')
 else:
     key = args.key
 
