@@ -67,7 +67,7 @@ def cleanup_vdswitch(context):
             task = vdportgroup_mo.Destroy()
             pyVim.task.WaitForTask(task)
 
-            host_name = context.testbed.config['ESX_HOST2']
+            host_name = context.testbed.config['ESX2_HOST']
             remove_host_from_vdswitch(context, vdswitch_mo, host_name)
 
         print("Deleting Distributed Switch '{}' ({})".
@@ -222,7 +222,7 @@ def setup_vdswitch(context):
     }
 
     # Add a Host into the Distributed Switch
-    host2_name = context.testbed.config['ESX_HOST2']
+    host2_name = context.testbed.config['ESX2_HOST']
     add_host_to_vdswitch(context, vdswitch1_name, host2_name)
 
     # @TODO: Add Host Uplink
@@ -243,7 +243,7 @@ def detect_stdportgroup(context, host_name, network_name):
         host_mo = vim.HostSystem(host, context.soap_stub)
 
         for network_mo in host_mo.network:
-            if (type(network_mo) == vim.Network and
+            if (isinstance(network_mo, vim.Network) and
                         network_mo.name == network_name):
                 network = network_mo._moId
                 print(
@@ -262,8 +262,8 @@ def detect_stdportgroups(context):
     """Find Distributed Switch used to run vcenter samples"""
     context.testbed.entities['HOST_STANDARD_SWITCH_IDS'] = {}
     network_name = context.testbed.config['STDPORTGROUP_NAME']
-    host1_name = context.testbed.config['ESX_HOST1']
-    host2_name = context.testbed.config['ESX_HOST2']
+    host1_name = context.testbed.config['ESX1_HOST']
+    host2_name = context.testbed.config['ESX2_HOST']
     return (detect_stdportgroup(context, host1_name, network_name) and
             detect_stdportgroup(context, host2_name, network_name))
 

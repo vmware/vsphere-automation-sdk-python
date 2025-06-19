@@ -1,37 +1,60 @@
-This directory contains samples for snapservice APIs:
-1. Protection Group Create, List and Delete operations:
-   Sample                               | Description
-   -------------------------------------|---------------------------------------------------
-   list_protection_groups.py            | Demonstrates listing protection groups
-   create_protection_group.py           | Demonstrates creating protection group
-   delete_protection_groups.py          | Demonstrates deleting protection groups
+This directory contains below samples for snapservice APIs:
 
-2. Protection Group Snapshot Delete operations:
-   Sample                               | Description
-   -------------------------------------|---------------------------------------------------
-   delete_protection_group_snapshots.py | Demonstrates deleting protection group snapshots
+1. Cluster pair
+
+   | Sample                 | Description                                  |
+   |------------------------|----------------------------------------------|
+   | create_cluster_pair.py | Demonstrates creating cluster pair           |
+   | delete_cluster_pair.py | Demonstrates deleting cluster pair           |
+   | cluster_pairs.py       | Demonstrates listing/getting cluster pair(s) |
+
+2. Clusters
+   
+   | Sample                                                  | Description                                                                         |
+   |---------------------------------------------------------|-------------------------------------------------------------------------------------|
+   | clusters/protection_groups/protection_groups.py         | Demonstrates listing/getting/updating/pausing/resuming/deleting protection group(s) |
+   | clusters/protection_groups/create_protection_group.py   | Demonstrates creating a protection group                                            |
+   | clusters/protection_groups/pg_snapshots/pg_snapshots.py | Demonstrates listing/getting protection group snapshot(s)                           |
+   | clusters/virtual_machines/query_virtual_machines.py     | Demonstrates querying virtual machines                                              |
+   | clusters/virtual_machines/vm_snapshots/vm_snapshots.py  | Demonstrates listing/getting virtual machine snapshot(s)                            |
+
+3. Info
+   
+   | Sample       | Description            |
+   |--------------|------------------------|
+   | info/info.py | Demonstrates info APIs |
+
+4. Sites
+   
+   | Sample                                 | Description                                  |
+   |----------------------------------------|----------------------------------------------|
+   | sites/add_site.py                      | Demonstrates adding site                     |
+   | sites/delete_site.py                   | Demonstrates deleting site                   |
+   | sites/probe_connection.py              | Demonstrates probing connection              |
+   | sites/probe_connection_with_vc_cert.py | Demonstrates probing connection with vc cert |
+   | sites/sites.py                         | Demonstrates listing sites                   |
+
+5. Tasks
+   
+   | Sample               | Description                 |
+   |----------------------|-----------------------------|
+   | tasks/get_task.py    | Demonstrates getting task   |
+   | tasks/query_tasks.py | Demonstrates querying tasks |
+   | tasks/task_utils.py  | Demonstrates task utils     |
 
 ### To view the available command-line options:
-	$ python protection_group/list_protection_groups.py --help
-	$ python protection_group/create_protection_group.py --help
-	$ python protection_group/delete_protection_groups.py --help
-	$ python snapshot/delete_protection_group_snapshots.py --help
+
+    $ python samples/vsan/snapservice/<the-sample-file> --help
 
 ### Running the samples:
-	Fill "Snapservice protection group creation spec" section in vcenter/setup/testbed.py when calling create_pg.py
 
-	$ python protection_group/list_protection_groups.py --server <vCenter Server IP> --username <username> --password <password> --snapservice <snapservice IP> --cluster <cluster name> -v
-
-	$ python protection_group/create_protection_group.py --server <vCenter Server IP> --username <username> --password <password> --snapservice <snapservice IP> --cluster <cluster name> -v
-	$ python protection_group/create_protection_group.py --server <vCenter Server IP> --username <username> --password <password> --snapservice <snapservice IP> --cluster <cluster name> -v -c
-
-	$ python protection_group/delete_protection_groups.py --server <vCenter Server IP> --username <username> --password <password> --snapservice <snapservice IP> --cluster <cluster name> --pgnames <protection groups name to delete> -v
-	$ python protection_group/delete_protection_groups.py --server <vCenter Server IP> --username <username> --password <password> --snapservice <snapservice IP> --cluster <cluster name> --pgnames <protection groups name to delete> -v --force
-
-	$ python snapshot/delete_protection_group_snapshots.py --server <vCenter Server IP> --username <username> --password <password> --snapservice <snapservice IP> --cluster <cluster name> --pgname <protection group name to delete snapshot> --remain <snapshot remain> -v
+    # Fill "Snapservice protection group creation spec" section in vcenter/setup/testbed.py then run the commands
+    # For example, you can use the following command to run the list protection groups sample
+    $ python samples/vsan/snapservice/clusters/protection_groups/protection_groups.py --server <vcenter_host> --snapservice <snapservice_host> --username <username> --password <password>  --cluster <cluster_name> --action list --skipverification
 
 ### Testbed Requirement:
+
     - vCenter Server >= 8.0.3+
     - vSAN ESA disk
     - vSAN Cluster
-    - Snapservice = 8.0.3
+    - Snapservice = 9.0.0

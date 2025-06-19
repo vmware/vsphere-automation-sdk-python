@@ -119,7 +119,7 @@ class CustomizeVM(object):
                                                     time=evtFilterTime)
         eventList = eventMgr.QueryEvents(eventFilterSpec)
         for event in eventList:
-            if type(event) == expectedEvent:
+            if isinstance(event, expectedEvent):
                 print('Find expected customization Event %s' % expectedEvent)
                 return True
         print('Did not find expected customization event, waiting...')

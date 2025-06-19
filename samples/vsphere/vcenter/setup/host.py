@@ -13,41 +13,40 @@
 
 __author__ = 'VMware, Inc.'
 
-
 import pyVim.task
 from com.vmware.vcenter_client import (Folder, Host)
 from pyVmomi import vim
 
 
-def detect_host(context, host_name):
+def detect_host(context, host_ip):
     """Find host based on host name"""
-    names = set([host_name])
+    names = set([host_ip])
 
     host_summaries = context.client.vcenter.Host.list(
         Host.FilterSpec(names=names))
     if len(host_summaries) > 0:
         host = host_summaries[0].host
-        print("Detected Host '{}' as {}".format(host_name, host))
-        context.testbed.entities['HOST_IDS'][host_name] = host
+        print("Detected Host '{}' as {}".format(host_ip, host))
+        context.testbed.entities['HOST_IDS'][host_ip] = host
         return True
     else:
-        print("Host '{}' missing".format(host_name))
+        print("Host '{}' missing".format(host_ip))
         return False
 
 
 def detect_hosts(context):
     """Find host used to run vcenter samples"""
     context.testbed.entities['HOST_IDS'] = {}
-    host1_name = context.testbed.config['ESX_HOST1']
-    host2_name = context.testbed.config['ESX_HOST2']
-    return (detect_host(context, host1_name) and
-            detect_host(context, host2_name))
+    host1_ip = context.testbed.config['ESX1_HOST']
+    host2_ip = context.testbed.config['ESX2_HOST']
+    return (detect_host(context, host1_ip) and
+            detect_host(context, host2_ip))
 
 
 def cleanup_hosts(context):
     """Delete hosts after sample run"""
-    host1_name = context.testbed.config['ESX_HOST1']
-    host2_name = context.testbed.config['ESX_HOST2']
+    host1_name = context.testbed.config['ESX1_HOST']
+    host2_name = context.testbed.config['ESX2_HOST']
     names = set([host1_name, host2_name])
 
     host_summaries = context.client.vcenter.Host.list(
@@ -62,14 +61,11 @@ def cleanup_hosts(context):
         context.client.vcenter.Host.delete(host)
 
 
-def create_host_vapi(context, host_name, datacenter_name):
+def create_host_vapi(context, host_user, host_pwd, host_ip, datacenter_name):
     """
     Adds a single Host to the vCenter inventory under the named Datacenter
     using vAPI.
     """
-    user = context.testbed.config['ESX_USER']
-    pwd = context.testbed.config['ESX_PASS']
-
     # Get the host folder for the Datacenter1 using the folder query
     datacenter = context.testbed.entities['DATACENTER_IDS'][datacenter_name]
     folder_summaries = context.client.vcenter.Folder.list(
@@ -77,25 +73,22 @@ def create_host_vapi(context, host_name, datacenter_name):
     folder = folder_summaries[0].folder
 
     create_spec = Host.CreateSpec(
-        hostname=host_name,
-        user_name=user,
-        password=pwd,
+        hostname=host_ip,
+        user_name=host_user,
+        password=host_pwd,
         folder=folder,
         thumbprint_verification=Host.CreateSpec.ThumbprintVerification.NONE)
     host = context.client.vcenter.Host.create(create_spec)
-    print("Created Host '{}' ({})".format(host, host_name))
+    print("Created Host '{}' ({})".format(host, host_ip))
 
     return host
 
 
-def create_host_vim(context, host_name, datacenter_name):
+def create_host_vim(context, host_user, host_pwd, host_ip, datacenter_name):
     """
     Adds a single Host to the vCenter inventory under the named Datacenter
     using the VIM API.
     """
-    user = context.testbed.config['ESX_USER']
-    pwd = context.testbed.config['ESX_PASS']
-
     # Get the host folder for the Datacenter1 using the folder query
     datacenter = context.testbed.entities['DATACENTER_IDS'][datacenter_name]
 
@@ -105,11 +98,11 @@ def create_host_vim(context, host_name, datacenter_name):
             datacenter_mo = entity
 
     folder_mo = datacenter_mo.hostFolder
-    connect_spec = vim.host.ConnectSpec(hostName=host_name,
-                                        userName=user,
-                                        password=pwd,
+    connect_spec = vim.host.ConnectSpec(hostName=host_ip,
+                                        userName=host_user,
+                                        password=host_pwd,
                                         force=False)
-    print("Creating Host ({})".format(host_name))
+    print("Creating Host ({})".format(host_ip))
     task = folder_mo.AddStandaloneHost(connect_spec,
                                        vim.ComputeResource.ConfigSpec(),
                                        True)
@@ -117,23 +110,23 @@ def create_host_vim(context, host_name, datacenter_name):
 
     # Get host from task result
     host_mo = task.info.result.host[0]
-    print("Created Host '{}' ({})".format(host_mo._moId, host_name))
+    print("Created Host '{}' ({})".format(host_mo._moId, host_ip))
 
     return host_mo._moId
 
 
-def move_host_into_cluster_vim(context, host_name, cluster_name):
+def move_host_into_cluster_vim(context, host_ip, cluster_name):
     """Use vim api to move host to another cluster"""
     TIMEOUT = 30  # sec
 
-    host = context.testbed.entities['HOST_IDS'][host_name]
+    host = context.testbed.entities['HOST_IDS'][host_ip]
     host_mo = vim.HostSystem(host, context.soap_stub)
 
     # Move the host into the cluster
     if not host_mo.runtime.inMaintenanceMode:
         task = host_mo.EnterMaintenanceMode(TIMEOUT)
         pyVim.task.WaitForTask(task)
-    print("Host '{}' ({}) in maintenance mode".format(host, host_name))
+    print("Host '{}' ({}) in maintenance mode".format(host, host_ip))
 
     cluster = context.testbed.entities['CLUSTER_IDS'][cluster_name]
     cluster_mo = vim.ClusterComputeResource(cluster, context.soap_stub)
@@ -141,55 +134,63 @@ def move_host_into_cluster_vim(context, host_name, cluster_name):
     task = cluster_mo.MoveInto([host_mo])
     pyVim.task.WaitForTask(task)
     print("Host '{}' ({}) moved into Cluster {} ({})".
-          format(host, host_name, cluster, cluster_name))
+          format(host, host_ip, cluster, cluster_name))
 
     task = host_mo.ExitMaintenanceMode(TIMEOUT)
     pyVim.task.WaitForTask(task)
-    print("Host '{}' ({}) out of maintenance mode".format(host, host_name))
+    print("Host '{}' ({}) out of maintenance mode".format(host, host_ip))
 
 
 def setup_hosts_vapi(context):
     """Use vsphere automation API to setup host for sample run"""
     # Create Host1 as a standalone host in Datacenter1
-    host1_name = context.testbed.config['ESX_HOST1']
+    host1_ip = context.testbed.config['ESX1_HOST']
+    host1_user = context.testbed.config['ESX1_USER']
+    host1_pwd = context.testbed.config['ESX1_PWD']
     datacenter1_name = context.testbed.config['DATACENTER1_NAME']
-    host1 = create_host_vapi(context, host1_name, datacenter1_name)
+    host1 = create_host_vapi(context, host1_user, host1_pwd, host1_ip, datacenter1_name)
 
     # Create Host2 in a Cluster2
-    host2_name = context.testbed.config['ESX_HOST2']
+    host2_ip = context.testbed.config['ESX2_HOST']
+    host2_user = context.testbed.config['ESX2_USER']
+    host2_pwd = context.testbed.config['ESX2_PWD']
     datacenter2_name = context.testbed.config['DATACENTER2_NAME']
-    host2 = create_host_vapi(context, host2_name, datacenter2_name)
+    host2 = create_host_vapi(context, host2_user, host2_pwd, host2_ip, datacenter2_name)
 
     context.testbed.entities['HOST_IDS'] = {
-        host1_name: host1,
-        host2_name: host2
+        host1_ip: host1,
+        host2_ip: host2
     }
 
     # Move Host2 into Cluster2
     cluster_name = context.testbed.config['CLUSTER1_NAME']
-    move_host_into_cluster_vim(context, host2_name, cluster_name)
+    move_host_into_cluster_vim(context, host2_ip, cluster_name)
 
 
 def setup_hosts_vim(context):
     """Use vim API to setup host for sample run"""
     # Create Host1 as a standalone host in Datacenter1
-    host1_name = context.testbed.config['ESX_HOST1']
+    host1_ip = context.testbed.config['ESX1_HOST']
+    host1_user = context.testbed.config['ESX1_USER']
+    host1_pwd = context.testbed.config['ESX1_PWD']
     datacenter1_name = context.testbed.config['DATACENTER1_NAME']
-    host1 = create_host_vim(context, host1_name, datacenter1_name)
+    host1 = create_host_vim(context, host1_user, host1_pwd, host1_ip, datacenter1_name)
 
     # Create Host2 in a Cluster2
-    host2_name = context.testbed.config['ESX_HOST2']
+    host2_ip = context.testbed.config['ESX2_HOST']
+    host2_user = context.testbed.config['ESX2_USER']
+    host2_pwd = context.testbed.config['ESX2_PWD']
     datacenter2_name = context.testbed.config['DATACENTER2_NAME']
-    host2 = create_host_vim(context, host2_name, datacenter2_name)
+    host2 = create_host_vim(context, host2_user, host2_pwd, host2_ip, datacenter2_name)
 
     context.testbed.entities['HOST_IDS'] = {
-        host1_name: host1,
-        host2_name: host2
+        host1_ip: host1,
+        host2_ip: host2
     }
 
     # Move Host2 into Cluster2
     cluster_name = context.testbed.config['CLUSTER1_NAME']
-    move_host_into_cluster_vim(context, host2_name, cluster_name)
+    move_host_into_cluster_vim(context, host2_ip, cluster_name)
 
 
 def setup_hosts(context):
