@@ -19,18 +19,20 @@ config["SERVER"] = ""
 config["USERNAME"] = "administrator@vsphere.local"
 config["PASSWORD"] = ""
 
-config["ESX_HOST1"] = ""
-config["ESX_HOST2"] = ""
-config["ESX_USER"] = "root"
-config["ESX_PASS"] = ""
+config["ESX1_HOST"] = ""
+config["ESX2_HOST"] = ""
+config["ESX1_USER"] = ""
+config["ESX2_USER"] = ""
+config["ESX1_PWD"] = ""
+config["ESX2_PWD"] = ""
 
 config["USE_NFS"] = True
 config["NFS_HOST"] = ""
 config["NFS_REMOTE_PATH"] = "/store1"
 config["NFS_DATASTORE_NAME"] = "Shared_NFS_Volume"
 
-config["ESX_HOST1_VMFS_DATASTORE"] = "Local_VMFS_Volume_on_Host1"
-config["ESX_HOST2_VMFS_DATASTORE"] = "Local_VMFS_Volume_on_Host2"
+config["ESX1_HOST_VMFS_DATASTORE"] = "Local_VMFS_Volume_on_Host1"
+config["ESX2_HOST_VMFS_DATASTORE"] = "Local_VMFS_Volume_on_Host2"
 
 config["DATACENTER1_NAME"] = "Sample_DC_1"
 config["DATACENTER2_NAME"] = "Sample_DC_2"
@@ -95,6 +97,7 @@ config["SCHEDULE"] = 30
 config["RETENTION_UNIT"] = "HOUR"
 config["RETENTION"] = 6
 config["LOCK"] = False
+
 
 class Testbed(object):
     def __init__(self):

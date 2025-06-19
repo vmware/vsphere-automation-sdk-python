@@ -1,18 +1,4 @@
-#!/usr/bin/env python
-
-"""
-* *******************************************************
-* Copyright (c) VMware, Inc. 2020. All Rights Reserved.
-* SPDX-License-Identifier: MIT
-* *******************************************************
-*
-* DISCLAIMER. THIS PROGRAM IS PROVIDED TO YOU "AS IS" WITHOUT
-* WARRANTIES OR CONDITIONS OF ANY KIND, WHETHER ORAL OR WRITTEN,
-* EXPRESS OR IMPLIED. THE AUTHOR SPECIFICALLY DISCLAIMS ANY IMPLIED
-* WARRANTIES OR CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY,
-* NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
-
-
+'''
 This is a lightweight webserver
 ****Not recommended in a production setting****
 
@@ -35,7 +21,8 @@ We define listeners for two endpoints,
 
 In case, you want to change the names of these endpoints in your client,
 make sure to change in the below server code as well
-"""
+
+'''
 
 try:
     # these imports are specific to Python 2.x

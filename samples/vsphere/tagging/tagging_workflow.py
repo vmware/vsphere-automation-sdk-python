@@ -13,7 +13,7 @@
 """
 
 __author__ = 'VMware, Inc.'
-__copyright__ = 'Copyright 2014, 2016 VMware, Inc. All rights reserved.'
+__copyright__ = 'Copyright 2014, 2022 VMware, Inc. All rights reserved.'
 __vcenter_version__ = '6.0+'
 
 import time
@@ -177,7 +177,7 @@ class TaggingWorkflow:
 
         print('updating the tag...')
         date_time = time.strftime('%d/%m/%Y %H:%M:%S')
-        self.update_tag(self.tag_id, 'Server Tag updated at ' + date_time)
+        self.update_tag(self.tag_id, 'Server Tag updated at ' + date_time, 'updated_' + self.tag_name)
         print('Tag updated; Id: {0}'.format(self.tag_id))
 
         print('Tagging the cluster {0}...'.format(self.cluster_name))
@@ -233,13 +233,16 @@ class TaggingWorkflow:
         create_spec.category_id = category_id
         return self.client.tagging.Tag.create(create_spec)
 
-    def update_tag(self, tag_id, description):
+    def update_tag(self, tag_id, description, name):
         """Update the description of an existing tag.
         User who invokes this API needs edit privilege on the tag.
         """
         update_spec = self.client.tagging.Tag.UpdateSpec()
-        update_spec.setDescription = description
+        update_spec.description = description
+        update_spec.name = name
         self.client.tagging.Tag.update(tag_id, update_spec)
+        update_tag_obj = self.client.tagging.Tag.get(tag_id)
+        print('Tag Updated', "Description '{}', name '{}'".format(update_tag_obj.description, update_tag_obj.name))
 
     def delete_tag(self, tag_id):
         """Delete an existing tag.

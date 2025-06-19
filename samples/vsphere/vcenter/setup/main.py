@@ -44,11 +44,17 @@ if args.vcenterserver:
 if args.vcenterpassword:
     _testbed.config['PASSWORD'] = args.vcenterpassword
 if args.esxhost1:
-    _testbed.config['ESX_HOST1'] = args.esxhost1
+    _testbed.config['ESX1_HOST'] = args.esxhost1
 if args.esxhost2:
-    _testbed.config['ESX_HOST2'] = args.esxhost2
-if args.esxpassword:
-    _testbed.config['ESX_PASS'] = args.esxpassword
+    _testbed.config['ESX2_HOST'] = args.esxhost2
+if args.esxuser1:
+    _testbed.config['ESX1_USER'] = args.esxuser1
+if args.esxuser2:
+    _testbed.config['ESX2_USER'] = args.esxuser2
+if args.esxpassword1:
+    _testbed.config['ESX1_PWD'] = args.esxpassword1
+if args.esxpassword2:
+    _testbed.config['ESX2_PWD'] = args.esxpassword2
 if args.nfsserver:
     _testbed.config['NFS_HOST'] = args.nfsserver
 

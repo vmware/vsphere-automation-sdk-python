@@ -19,7 +19,7 @@ In view of the above, related samples (ex: external_psc_sso_workflow) and other 
 
 Consequently, lookupservice WSDL files will also be removed in next major SDK release. Use well known URL path (https://docs.vmware.com/en/VMware-vSphere/8.0/vsphere-apis-sdks-introduction/GUID-B625C8FE-5E15-4918-98C0-69313E5880FB.html) instead of lookupservice.
 
-For SSO, service endpoint is: "https://{domain}/sts/STSService"
+For SSO, service endpoint is: "https://{domain}/STS/STSService"
 https://docs.vmware.com/en/VMware-vSphere/8.0/vsphere-apis-sdks-introduction/GUID-5384662C-CD05-4CAE-894E-972F14A7ECB7.html
 
 ### Package Dependency Note

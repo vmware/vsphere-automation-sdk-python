@@ -50,8 +50,8 @@ def detect_nfs_datastore_on_host(context, host_name):
 def detect_nfs_datastore(context):
     """Find NFS datastore used to run vcenter samples"""
     context.testbed.entities['HOST_NFS_DATASTORE_IDS'] = {}
-    host1_name = context.testbed.config['ESX_HOST1']
-    host2_name = context.testbed.config['ESX_HOST2']
+    host1_name = context.testbed.config['ESX1_HOST']
+    host2_name = context.testbed.config['ESX2_HOST']
     return (detect_nfs_datastore_on_host(context, host1_name) and
             detect_nfs_datastore_on_host(context, host2_name))
 
@@ -59,8 +59,8 @@ def detect_nfs_datastore(context):
 def cleanup_nfs_datastore(context):
     """Cleanup NFS datastore after running vcenter samples"""
     # Remove NFS datastore from each Host
-    host1_name = context.testbed.config['ESX_HOST1']
-    host2_name = context.testbed.config['ESX_HOST2']
+    host1_name = context.testbed.config['ESX1_HOST']
+    host2_name = context.testbed.config['ESX2_HOST']
     names = set([host1_name, host2_name])
 
     datastore_name = context.testbed.config['NFS_DATASTORE_NAME']
@@ -88,10 +88,10 @@ def cleanup_nfs_datastore(context):
 
 def setup_nfs_datastore(context):
     """Setup NFS datastore for running vcenter samples"""
-    host1_name = context.testbed.config['ESX_HOST1']
+    host1_name = context.testbed.config['ESX1_HOST']
     nfs_datastore1 = setup_nfs_datastore_on_host(context, host1_name)
 
-    host2_name = context.testbed.config['ESX_HOST2']
+    host2_name = context.testbed.config['ESX2_HOST']
     nfs_datastore2 = setup_nfs_datastore_on_host(context, host2_name)
 
     context.testbed.entities['HOST_NFS_DATASTORE_IDS'] = {
@@ -180,11 +180,11 @@ def detect_vmfs_datastores(context):
     """Find VMFS datastore used to run vcenter samples"""
     context.testbed.entities['HOST_VMFS_DATASTORE_IDS'] = {}
 
-    host1_name = context.testbed.config['ESX_HOST1']
-    host1_vmfs_volume = context.testbed.config['ESX_HOST1_VMFS_DATASTORE']
+    host1_name = context.testbed.config['ESX1_HOST']
+    host1_vmfs_volume = context.testbed.config['ESX1_HOST_VMFS_DATASTORE']
 
-    host2_name = context.testbed.config['ESX_HOST2']
-    host2_vmfs_volume = context.testbed.config['ESX_HOST2_VMFS_DATASTORE']
+    host2_name = context.testbed.config['ESX2_HOST']
+    host2_vmfs_volume = context.testbed.config['ESX2_HOST_VMFS_DATASTORE']
 
     # From each host, look for the VMFS Volume
     return (detect_vmfs_datastore(context, host1_name, host1_vmfs_volume) and
@@ -235,11 +235,11 @@ def setup_vmfs_datastore(context, host_name, datastore_name):
 
 def setup_vmfs_datastores(context):
     """Setup VMFS datastore used to run vcenter samples"""
-    host1_name = context.testbed.config['ESX_HOST1']
-    host1_vmfs_volume = context.testbed.config['ESX_HOST1_VMFS_DATASTORE']
+    host1_name = context.testbed.config['ESX1_HOST']
+    host1_vmfs_volume = context.testbed.config['ESX1_HOST_VMFS_DATASTORE']
 
-    host2_name = context.testbed.config['ESX_HOST2']
-    host2_vmfs_volume = context.testbed.config['ESX_HOST2_VMFS_DATASTORE']
+    host2_name = context.testbed.config['ESX2_HOST']
+    host2_vmfs_volume = context.testbed.config['ESX2_HOST_VMFS_DATASTORE']
 
     # From each host, look for the VMFS Volume
     setup_vmfs_datastore(context, host1_name, host1_vmfs_volume)
