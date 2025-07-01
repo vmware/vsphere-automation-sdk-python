@@ -15,7 +15,7 @@ The following information must be included in the README.md or in the sample doc
 * Author Name
   * This can include full name, email address or other identifiable piece of information that would allow interested parties to contact author with questions.
 * Compatible vCenter version
-  * This should be the vCenter version when the API is introduced, something like "7.0"+.
+  * This should be the vCenter version when the API is introduced, something like "6.5+" or "6.8.1+".
 * Minimal/High Level Description
   * What does the sample do ?
 * Any KNOWN limitations or dependencies

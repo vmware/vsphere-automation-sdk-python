@@ -1,4 +1,4 @@
 Directory       | Description
 ----------------| -------------
 vSphere         | Samples for vSphere APIs
-vsan            | Samples Samples for vSAN snapservice APIs
+vmc             | Samples for VMware Cloud on AWS Services (currently in preview)
