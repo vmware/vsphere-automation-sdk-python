@@ -1,5 +1,11 @@
-# VMware vSphere Automation SDK for Python  
-[![Build Status](https://travis-ci.com/vmware/vsphere-automation-sdk-python.svg?token=v9mEJjcpDiQ9DrYbzyaQ&branch=master)](https://travis-ci.com/vmware/vsphere-automation-sdk-python)
+# VMware vSphere Automation SDK for Python
+
+## $\color{Red}{\textsf{IMPORTANT NOTICE}}$
+
+For VCF releases 9.0.0.0 and above, please refer to the new [VCF SDK Python](https://github.com/vmware/vcf-sdk-python) repository for vSphere libraries.
+
+For NSX libraries, refer to the [VMware NSX for Python](https://developer.broadcom.com/sdks/vmware-nsx-for-python/9.0.0) in Broadcom developer portal.
+
 
 ## Table of Contents
 - [Abstract](#abstract)
