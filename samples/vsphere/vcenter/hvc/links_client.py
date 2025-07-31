@@ -86,7 +86,8 @@ class LinksClient(object):
         # Login to vCenter
         stub_config = vapiconnect.connect(host=args.server,
                                           user=args.username,
-                                          pwd=args.password)
+                                          pwd=args.password,
+                                          skip_verification=args.skipverification)
 
         # Create links stub
         self.links_client = Links(stub_config)
